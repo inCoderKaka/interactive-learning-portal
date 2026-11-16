@@ -9,6 +9,7 @@ import { craftTopics, behavioralPrompts } from "./craft";
 import { dsaExtra, dsaNewTopics } from "./extra-dsa";
 import { designExtra, designNewTopics } from "./extra-design";
 import { extraDesigns, extraProblems } from "./extra-exercises";
+import { DESIGN_REFS, LC, PROBLEM_VIDEO, TOPIC_REFS } from "./refs";
 import type { Extra } from "./h";
 
 export const AREAS: { id: Area; name: string; short: string; tag: string; color: string }[] = [
@@ -40,12 +41,24 @@ function assemble(): Topic[] {
     const i = out.findIndex((t) => t.id === after);
     out.splice(i < 0 ? out.length : i + 1, 0, topic);
   }
-  return out.map(withExtra);
+  return out.map(withExtra).map((t) => ({ ...t, refs: TOPIC_REFS[t.id] }));
 }
 
 export const TOPICS: Topic[] = assemble();
-export const PROBLEMS: Problem[] = [...problems1, ...problems2, ...problems3, ...extraProblems];
-export const DESIGNS: Design[] = [...hldDesigns, ...lldDesigns, ...behavioralPrompts, ...extraDesigns];
+/** Direct LeetCode link when the slug is known, otherwise a search by number (imported problems). */
+export function lcLink(lc: number): { url: string; premium: boolean } {
+  const hit = LC[lc];
+  return hit ? { url: `https://leetcode.com/problems/${hit[0]}/`, premium: !!hit[1] } : { url: `https://leetcode.com/problemset/?search=${lc}`, premium: false };
+}
+
+function withLinks(p: Problem): Problem {
+  if (!p.lc) return p;
+  const v = PROBLEM_VIDEO[p.lc];
+  return { ...p, ...lcLink(p.lc), video: v && { kind: "video", title: `${p.title}: walkthrough`, by: v[1], url: `https://www.youtube.com/watch?v=${v[0]}`, yt: v[0] } };
+}
+
+export const PROBLEMS: Problem[] = [...problems1, ...problems2, ...problems3, ...extraProblems].map(withLinks);
+export const DESIGNS: Design[] = [...hldDesigns, ...lldDesigns, ...behavioralPrompts, ...extraDesigns].map((d) => ({ ...d, refs: DESIGN_REFS[d.id] }));
 
 export const topicById = new Map(TOPICS.map((t) => [t.id, t]));
 export const problemById = new Map(PROBLEMS.map((p) => [p.id, p]));

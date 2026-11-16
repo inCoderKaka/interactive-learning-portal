@@ -5,9 +5,10 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, Check, ExternalLink, Eye, EyeOff, HelpCircle, Lightbulb, MessageSquareText, NotebookPen, Shuffle, Sparkles, TimerReset } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { RefLink } from "@/components/References";
 import { useItems, useProblem, useStopwatch, useTrackTime } from "@/lib/hooks";
 import { aiReady, generateTwists, hint as aiHint, reviewCode } from "@/lib/ai";
-import { areaOf, topicById } from "@/content";
+import { areaOf, lcLink, topicById } from "@/content";
 import { CodeEditor, ConfidencePick, FeedbackView, LANGS, NeedAI, RatingBar, Spinner } from "@/components/Work";
 import { Button, DIFF, Empty, Pill, Tabs, cn, fmtClock } from "@/components/ui";
 import type { Feedback, Settings } from "@/lib/types";
@@ -37,6 +38,15 @@ function Reveal({ items, label, icon: Icon, color, oneByOne }: { items: string[]
       </ul>
       {shown.length < items.length && <Button size="sm" className="mt-2.5" onClick={() => setN((x) => x + 1)}><Eye size={14} />{oneByOne ? (n ? `Next ${label} (${n}/${items.length})` : `Show first ${label}`) : `Reveal ${items.length} ${label}s`}</Button>}
     </div>
+  );
+}
+
+function LcLink({ lc }: { lc: number }) {
+  const { url, premium } = lcLink(lc);
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer" title={premium ? "Needs a LeetCode Premium subscription" : undefined} className="ml-auto flex items-center gap-1.5 text-[12px] text-faint hover:text-mute">
+      LeetCode {lc}{premium && <span className="rounded border border-warn/40 px-1 text-[10px] text-warn">Premium</span>}<ExternalLink size={11} />
+    </a>
   );
 }
 
@@ -117,7 +127,7 @@ export default function ProblemPage() {
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
         {/* left: the question */}
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-5">
           <section className="card p-6">
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <Pill color={DIFF[p.diff].color}>{DIFF[p.diff].label}</Pill>
@@ -125,7 +135,7 @@ export default function ProblemPage() {
               {p.tier === 1 && <Pill className="border-line text-mute">Core</Pill>}
               {p.custom && <Pill className="border-line text-mute">From your notes</Pill>}
               {prog?.status === "done" && <Pill color="var(--color-ok)"><Check size={12} />Done</Pill>}
-              {p.lc && <a href={`https://leetcode.com/problems/`} onClick={(e) => { e.preventDefault(); window.open(`https://leetcode.com/problemset/?search=${p.lc}`, "_blank", "noopener"); }} className="ml-auto flex items-center gap-1 text-[12px] text-faint hover:text-mute">LeetCode {p.lc}<ExternalLink size={11} /></a>}
+              {p.lc && <LcLink lc={p.lc} />}
             </div>
             <h1 className="display text-2xl font-semibold sm:text-3xl">{p.title}</h1>
             <p className="mt-3 text-[15.5px] leading-relaxed text-[#d5d8e6]">{p.statement}</p>
@@ -161,6 +171,7 @@ export default function ProblemPage() {
                         <p className="mt-1.5 text-[13.5px] leading-relaxed text-[#cfd3e3]">{a.idea}</p>
                       </motion.div>
                     ))}
+                    {p.video && <RefLink r={p.video} />}
                     {p.approaches.length > 1 && <p className="text-[12.5px] text-mute">Bias check: can you say when each alternative is the <i>better</i> choice? Interviewers ask “why not the other one?”</p>}
                   </div>
                 )
@@ -185,7 +196,7 @@ export default function ProblemPage() {
         </div>
 
         {/* right: the work */}
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-5">
           <section className="card space-y-4 p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <ConfidencePick value={conf} onChange={setConf} />

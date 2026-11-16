@@ -8,6 +8,15 @@ export interface Quiz {
   why: string;
 }
 
+export interface Ref {
+  kind: "video" | "playlist" | "article" | "paper" | "book" | "course" | "tool";
+  title: string;
+  by: string; // channel, author or site
+  url: string;
+  yt?: string; // YouTube video id (videos only)
+  featured?: boolean; // embedded as the one lead video of a topic
+}
+
 export interface Topic {
   id: string;
   area: Area;
@@ -23,6 +32,7 @@ export interface Topic {
   quiz: Quiz[];
   cards?: [string, string][]; // flashcards [front, back]
   prereq?: string[];
+  refs?: Ref[];
 }
 
 export interface Approach {
@@ -45,6 +55,9 @@ export interface Problem {
   twists: string[]; // how an interviewer departs from the LeetCode version
   followUps: string[];
   hints: string[];
+  url?: string; // direct LeetCode link
+  premium?: boolean; // LeetCode subscription needed
+  video?: Ref; // a walkthrough, shown only alongside the approaches
   custom?: boolean;
 }
 
@@ -96,6 +109,7 @@ export interface Design {
   arch?: { nodes: ArchNode[]; edges: ArchEdge[] };
   classes?: { boxes: ClassBox[]; rels: ClassRel[] };
   level?: string; // what separates L4 from L5 on this question
+  refs?: Ref[];
 }
 
 export type ItemKind = "topic" | "problem" | "design" | "mock";

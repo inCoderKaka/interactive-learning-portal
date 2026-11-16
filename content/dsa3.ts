@@ -853,7 +853,7 @@ export const problems3: Problem[] = [
     ["Smallest number instead", "Prove the comparator is transitive"],
     ["Why is this ordering a valid total order?"],
     ["Compare the two possible concatenations."]),
-  P("sorting", 164, "Maximum Gap", "H", 3, "Maximum difference between successive elements in sorted order, in linear time.",
+  P("sorting", 164, "Maximum Gap", "M", 3, "Maximum difference between successive elements in sorted order, in linear time.",
     ["Bucket sort + pigeonhole|Bucket size ≥ (max−min)/(n−1); answer spans buckets|O(n)|O(n)", "Radix sort|Then scan|O(d·n)|O(n)"],
     ["Linear time required? Non-negative values?"],
     ["Top K frequent via buckets", "H-Index with counting"],

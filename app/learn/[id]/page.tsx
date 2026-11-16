@@ -11,6 +11,7 @@ import { XP } from "@/lib/gamify";
 import Viz from "@/components/viz";
 import { RatingBar } from "@/components/Work";
 import { Flashcards } from "@/components/Flashcards";
+import { References } from "@/components/References";
 import { AreaPill, Button, DIFF, Empty, Md, Pill, cn, fmtMin } from "@/components/ui";
 import type { Quiz, Topic } from "@/lib/types";
 
@@ -85,6 +86,8 @@ export default function TopicPage() {
         </section>
       )}
 
+      <References key={"r" + t.id} refs={t.refs} embed />
+
       <section className="card p-5">
         <div className="eyebrow flex items-center gap-1.5 text-warn"><AlertTriangle size={13} />Where candidates slip</div>
         <ul className="mt-3 grid gap-2 sm:grid-cols-2">{t.pitfalls.map((p) => <li key={p} className="rounded-xl border border-line bg-panel2 px-3.5 py-2.5 text-[13.5px] leading-relaxed">{p}</li>)}</ul>
@@ -117,8 +120,8 @@ export default function TopicPage() {
       <RatingBar done={done} suggested={quizScore === null ? undefined : quizScore >= 100 ? 2 : quizScore >= 50 ? 1 : 0} onRate={(r) => complete(item, r, quizScore === null ? {} : { score: quizScore })} />
 
       <nav className="flex justify-between gap-3 pt-2">
-        {prev ? <Link href={`/learn/${prev.id}`} className="card card-hover flex-1 p-4"><div className="text-[11.5px] text-faint">Previous</div><div className="truncate text-sm font-semibold">{prev.title}</div></Link> : <span className="flex-1" />}
-        {next ? <Link href={`/learn/${next.id}`} className="card card-hover flex-1 p-4 text-right"><div className="text-[11.5px] text-faint">Next</div><div className="truncate text-sm font-semibold">{next.title}</div></Link> : <span className="flex-1" />}
+        {prev ? <Link href={`/learn/${prev.id}`} className="card card-hover min-w-0 flex-1 p-4"><div className="text-[11.5px] text-faint">Previous</div><div className="truncate text-sm font-semibold">{prev.title}</div></Link> : <span className="flex-1" />}
+        {next ? <Link href={`/learn/${next.id}`} className="card card-hover min-w-0 flex-1 p-4 text-right"><div className="text-[11.5px] text-faint">Next</div><div className="truncate text-sm font-semibold">{next.title}</div></Link> : <span className="flex-1" />}
       </nav>
     </article>
   );

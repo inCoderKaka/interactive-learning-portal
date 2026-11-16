@@ -9,6 +9,7 @@ import { useStore } from "@/lib/store";
 import { useItems, useStopwatch, useTrackTime } from "@/lib/hooks";
 import { aiReady, gradeStage } from "@/lib/ai";
 import { areaOf, designById, topicById } from "@/content";
+import { References } from "@/components/References";
 import { ConfidencePick, FeedbackView, NeedAI, RatingBar, Spinner } from "@/components/Work";
 import { AreaPill, Button, Empty, Md, Pill, cn, fmtClock, fmtMin } from "@/components/ui";
 import type { Feedback } from "@/lib/types";
@@ -192,6 +193,8 @@ export default function DesignPage() {
             <div className="eyebrow flex items-center gap-1.5 text-warn"><AlertTriangle size={13} />Where candidates slip</div>
             <ul className="mt-3 space-y-2">{d.pitfalls.map((p) => <li key={p} className="flex gap-2.5 text-[13.5px] leading-relaxed"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-warn" />{p}</li>)}</ul>
           </section>
+
+          <References refs={d.refs} columns={1} />
         </aside>
       </div>
 
