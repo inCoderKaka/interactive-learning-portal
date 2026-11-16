@@ -53,6 +53,7 @@ export function parsePractice(md: string): ImportResult {
   let topic = "graph-traversal";
   let sections = 0, matched = 0;
   let cur: { id: string; body: string[] } | null = null;
+  let unsolved = false; // a "to be solved" section lists problems that were never practised
 
   const flush = () => {
     if (!cur) return;
@@ -72,6 +73,7 @@ export function parsePractice(md: string): ImportResult {
       flush();
       sections++;
       topic = topicFor(h1[1]) ?? topic;
+      unsolved = /to be solved|not solved|todo|to do\b/i.test(h1[1]);
       continue;
     }
     const prob = line.match(/^#{2,4}\s+\[(?:(\d+)\s*(?:\\?[.:])\s*)?([^\]]+)\]\((https?:[^)]+)\)(.*)$/);
@@ -93,7 +95,7 @@ export function parsePractice(md: string): ImportResult {
             approaches: [], clarify: [], twists: [], followUps: [], hints: [],
           });
       }
-      known.add(id);
+      if (!unsolved) known.add(id);
       cur = { id, body: [] };
       continue;
     }

@@ -52,7 +52,11 @@ Prefix sums work with negatives. Sliding window does not; that is the usual deci
 
 **Difference array.** To add \`v\` on \`[l, r]\`: \`d[l] += v; d[r+1] −= v\`. One prefix pass at the end materialises all updates in O(n + q).
 
-**Canonical keys.** Group things by a normal form: sorted string, 26-count tuple, slope as reduced fraction, value modulo k.`,
+**Canonical keys.** Group things by a normal form: sorted string, 26-count tuple, slope as reduced fraction, value modulo k.
+
+**The array as its own hash table.** When values lie in \`1..n\`, index \`v − 1\` is a free slot: swap each value to its home position (cyclic sort) or flip the sign at that index to mark "seen". This is how "find the missing / duplicate number" reaches O(1) extra space.
+
+**Boyer–Moore majority vote.** Keep one candidate and a counter; a matching element increments, a different one decrements, and at zero you adopt the current element. A value occurring more than n/2 times always survives. Verify with a second pass unless a majority is guaranteed. For "more than n/3" keep two candidates.`,
     template: `// count subarrays with sum == k (works with negatives)
 int subarraySum(vector<int>& a, int k) {
   unordered_map<long long,int> seen{{0, 1}};
@@ -286,6 +290,18 @@ export const problems1: Problem[] = [
     ["Division is allowed but there may be zeros", "Streaming: product of the last k numbers (LC 1352)"],
     ["How do zeros change a division-based approach?", "Generalise to 'sum of all except self within a window'"],
     ["Answer[i] = (product of everything left) × (product of everything right).", "You can reuse the output array for the left products."]),
+  P("arrays-hashing", 41, "First Missing Positive", "H", 2, "Find the smallest positive integer missing from an unsorted array in O(n) time and O(1) extra space.",
+    ["Cyclic sort in place|Swap each value v in 1..n to index v-1 until every slot holds its own value or junk; the first index i with a[i] != i+1 gives the answer|O(n)|O(1)", "Sign marking|Replace non-positives with n+1, then negate a[|v|-1] for every |v| <= n; the first positive index is the answer|O(n)|O(1)", "Hash set|Insert everything, then probe 1, 2, 3...|O(n)|O(n)"],
+    ["May I modify the input array?", "Are duplicates and negatives present?", "Is the answer bounded by n+1? (Yes: why?)"],
+    ["Input is read-only: what is the best you can do now?", "Values arrive as a stream too large for memory", "Find all missing numbers in 1..n (LC 448)", "Find the duplicate and the missing one (LC 645)"],
+    ["Why does the swap loop still run in O(n) overall?", "What breaks if you forget the a[a[i]-1] != a[i] check?", "Sharded across machines: how do you find the smallest missing id?"],
+    ["The answer is always in 1..n+1, so only values in that range matter.", "You have n slots and n interesting values: let each value live at its own index.", "Swap until the current slot is correct or holds something unplaceable; guard against swapping equal values."]),
+  P("arrays-hashing", 169, "Majority Element", "E", 2, "Return the element that appears more than n/2 times.",
+    ["Boyer-Moore vote|One candidate and a counter; pair off different elements, the majority survives|O(n)|O(1)", "Hash count|Count frequencies, return the one above n/2|O(n)|O(n)", "Sort|The middle element is the majority|O(n log n)|O(1)"],
+    ["Is a majority guaranteed to exist?", "Can I make two passes over the data?"],
+    ["No guarantee of a majority: detect and report 'none'", "Elements appearing more than n/3 times (LC 229)", "The data is a stream and you get one pass", "Answer 'is x the majority in subarray [l, r]?' many times (LC 1157)"],
+    ["Prove the vote algorithm is correct", "Generalise to more than n/k occurrences: how many candidates?", "How would you parallelise it across shards?"],
+    ["Imagine cancelling each majority element against a different one.", "What is left after all cancellations?"]),
   P("arrays-hashing", 49, "Group Anagrams", "M", 2, "Group strings that are anagrams of each other.",
     ["Canonical key: sorted string|Map sorted(s) → group|O(n·L log L)|O(n·L)", "Canonical key: 26 counts|Count letters, serialise counts as key|O(n·L)|O(n·L)"],
     ["Character set: lowercase ASCII or Unicode?", "Is output order important?"],

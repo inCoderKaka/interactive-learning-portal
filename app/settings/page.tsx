@@ -73,7 +73,7 @@ export default function SettingsPage() {
   const doImport = () => {
     if (!imp) return;
     s.importPractice(imp.res.notes, imp.res.custom, imp.res.known);
-    setImpDone(`Imported ${imp.res.known.length} problems. They are queued for review today, because having solved something once is not the same as being able to solve it now.`);
+    setImpDone(`Imported ${imp.res.known.length} practised problems. They are queued for review today, because having solved something once is not the same as being able to solve it now. Problems under a “to be solved” heading were added as new.`);
     setImp(null);
   };
   const exportData = () => {
@@ -157,9 +157,9 @@ export default function SettingsPage() {
         {imp && (
           <div className="mt-4 rounded-xl border border-accent/30 bg-accent/5 p-4">
             <div className="text-sm font-semibold">{imp.name}</div>
-            {imp.res.known.length ? (
+            {imp.res.known.length || imp.res.custom.length ? (
               <>
-                <div className="mt-2 flex flex-wrap gap-2"><Pill color="var(--color-accent)">{imp.res.known.length} problems found</Pill><Pill color="var(--color-dsa)">{imp.res.matched} match the curriculum</Pill><Pill color="var(--color-lld)">{imp.res.custom.length} new</Pill><Pill className="border-line text-mute">{Object.keys(imp.res.notes).length} with notes</Pill></div>
+                <div className="mt-2 flex flex-wrap gap-2"><Pill color="var(--color-accent)">{imp.res.known.length} practised problems</Pill><Pill color="var(--color-dsa)">{imp.res.matched} match the curriculum</Pill><Pill color="var(--color-lld)">{imp.res.custom.length} new</Pill><Pill className="border-line text-mute">{Object.keys(imp.res.notes).length} with notes</Pill></div>
                 <div className="mt-3 flex gap-2"><Button variant="primary" onClick={doImport}>Import</Button><Button variant="ghost" onClick={() => setImp(null)}>Cancel</Button></div>
               </>
             ) : <p className="mt-1 text-[13px] text-mute">No problem headings were found in this file. Each problem needs a heading that is a link, for example <code>## [200: Number of Islands](https://…)</code>.</p>}
