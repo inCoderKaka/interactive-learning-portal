@@ -1,0 +1,19 @@
+initiate a git repository. this repository should have a frontend of content to learn system design (HLD, LLD) and DSA in a very interactive, fun, objective and timeline oriented way. comprehensively check that nothing is missed in terms of things expected to be known for a software engineer of 5 yr experience applying for a google swe 2 or 3 role. save things like progress and completed items, pending revisions, for different user accounts etc.
+
+it should cover every question potential question or approach. what possibilities can the interview be steered towards. different scenarios specific to questions in the sense of how the question can different from the leetcode question.
+
+also, include features like code inputs to questions and verification should be done by AI. option to make api calls to the gemini or claude or the local-server project that I'm doing.
+
+The UI should be very interactive, fun and beautiful to work with at all costs such that any human brain would always want to come back to this UI and continue learning... add timers, breathers etc... add things that i cant think of right now. add visual elements wherever required for me to learn any concepts.
+
+this whole thing shouldn't have very complex design. just the basic whatever works to best fit the currently given requirements.
+
+use such tech stack that will allow very complex but beautiful looking websites. search the best learning technical UI examples yourself. the backend can be very basic
+
+All the questions, I've practised in the DSA are in the "inputs/Google Qs Practise.md" which you can refer to.
+
+It should remove any biases the learner might have.
+
+deploy things in vercel, supabase.
+
+we have to do this all in one/two sessions if possible so if you have any questions, ask me in the beginning.
