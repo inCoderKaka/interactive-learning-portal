@@ -170,7 +170,7 @@ const LASK = {
   ext: "Concurrency, edge cases, and how the design absorbs new requirements.",
 };
 
-function L(
+export function L(
   id: string, title: string, tier: Tier, prompt: string,
   s: { req: string; model: string; patterns: string; code: string; ext: string },
   steer: [string, string][], pitfalls: string[],

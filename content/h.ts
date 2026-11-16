@@ -50,3 +50,10 @@ export function T(
 ): Topic {
   return { id, area, title, tier, est, blurb, ...rest };
 }
+
+/** Second-pass additions merged onto a topic in content/index.ts. */
+export interface Extra {
+  deep?: string; // markdown bullets: variations, deeper analysis, bar-raiser angles
+  cards?: [string, string][];
+  pre?: string[]; // prerequisite topic ids (drawn as connections on the map)
+}

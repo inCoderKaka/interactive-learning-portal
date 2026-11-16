@@ -10,7 +10,7 @@ const ASK = {
 };
 
 /** nodes: "id|label|kind|x|y|note"; edges: "a>b|label" (sync) or "a~b|label" (async) */
-function arch(nodes: string[], edges: string[]): { nodes: ArchNode[]; edges: ArchEdge[] } {
+export function arch(nodes: string[], edges: string[]): { nodes: ArchNode[]; edges: ArchEdge[] } {
   return {
     nodes: nodes.map((n) => {
       const [id, label, kind, x, y, note] = n.split("|");
@@ -25,7 +25,7 @@ function arch(nodes: string[], edges: string[]): { nodes: ArchNode[]; edges: Arc
   };
 }
 
-function H(
+export function H(
   id: string, topic: string, title: string, tier: Tier, prompt: string,
   s: { req: string; est: string; api: string; hl: string; deep: string; wrap: string },
   steer: [string, string][], pitfalls: string[], level: string,
@@ -447,7 +447,7 @@ export const hldDesigns: Design[] = [
     "L4: geohash index with neighbours. L5: compares index structures quantitatively and designs caching by cell.",
     arch(
       ["client|Client|client|0|140|Sends location/viewport.",
-       "gw|API gateway|edge|180|140|",
+       "gw|API gateway|edge|180|140|Auth, rate limiting and routing to the search and place services.",
        "geo|Geo search service|service|380|140|Computes cell covering; filters and ranks.",
        "idx|Geo index|cache|620|40|cell → place ids. Built offline, replicated.",
        "det|Place details cache|cache|620|180|Hot place documents.",

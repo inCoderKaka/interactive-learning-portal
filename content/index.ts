@@ -6,6 +6,10 @@ import { hldTopics } from "./hld-concepts";
 import { hldDesigns } from "./hld-problems";
 import { lldTopics, lldDesigns } from "./lld";
 import { craftTopics, behavioralPrompts } from "./craft";
+import { dsaExtra, dsaNewTopics } from "./extra-dsa";
+import { designExtra, designNewTopics } from "./extra-design";
+import { extraDesigns, extraProblems } from "./extra-exercises";
+import type { Extra } from "./h";
 
 export const AREAS: { id: Area; name: string; short: string; tag: string; color: string }[] = [
   { id: "dsa", name: "Data Structures & Algorithms", short: "DSA", tag: "Coding rounds", color: "var(--color-dsa)" },
@@ -15,9 +19,33 @@ export const AREAS: { id: Area; name: string; short: string; tag: string; color:
 ];
 export const areaOf = (id: Area) => AREAS.find((a) => a.id === id)!;
 
-export const TOPICS: Topic[] = [...topics1, ...topics2, ...topics3, ...hldTopics, ...lldTopics, ...craftTopics];
-export const PROBLEMS: Problem[] = [...problems1, ...problems2, ...problems3];
-export const DESIGNS: Design[] = [...hldDesigns, ...lldDesigns, ...behavioralPrompts];
+const EXTRA: Record<string, Extra> = { ...dsaExtra, ...designExtra };
+
+function withExtra(t: Topic): Topic {
+  const x = EXTRA[t.id];
+  if (!x) return t;
+  const seen = new Set<string>();
+  const cards = [...(t.cards ?? []), ...(x.cards ?? [])].filter(([front]) => !seen.has(front) && !!seen.add(front));
+  return {
+    ...t,
+    lesson: x.deep ? `${t.lesson}\n\n## Variations, depth and bar raisers\n\n${x.deep}` : t.lesson,
+    cards,
+    prereq: [...new Set([...(t.prereq ?? []), ...(x.pre ?? [])])],
+  };
+}
+
+function assemble(): Topic[] {
+  const out = [...topics1, ...topics2, ...topics3, ...hldTopics, ...lldTopics, ...craftTopics];
+  for (const { after, topic } of [...dsaNewTopics, ...designNewTopics]) {
+    const i = out.findIndex((t) => t.id === after);
+    out.splice(i < 0 ? out.length : i + 1, 0, topic);
+  }
+  return out.map(withExtra);
+}
+
+export const TOPICS: Topic[] = assemble();
+export const PROBLEMS: Problem[] = [...problems1, ...problems2, ...problems3, ...extraProblems];
+export const DESIGNS: Design[] = [...hldDesigns, ...lldDesigns, ...behavioralPrompts, ...extraDesigns];
 
 export const topicById = new Map(TOPICS.map((t) => [t.id, t]));
 export const problemById = new Map(PROBLEMS.map((p) => [p.id, p]));

@@ -2,11 +2,12 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Check, List, Orbit } from "lucide-react";
+import { Check, Layers, List, Orbit } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useItems } from "@/lib/hooks";
 import { AREAS, TOPICS } from "@/content";
 import { PageHead, Pill, Ring, Tabs, cn, fmtMin } from "@/components/ui";
+import { FlashDeck } from "@/components/Flashcards";
 import type { StarInfo } from "@/components/Galaxy";
 
 const Galaxy = dynamic(() => import("@/components/Galaxy"), { ssr: false, loading: () => <div className="grid h-full place-items-center text-sm text-faint animate-pulse-soft">Charting the map…</div> });
@@ -15,23 +16,36 @@ const TIER = { 1: "Must know", 2: "Expected", 3: "Stretch" } as const;
 export default function Learn() {
   const progress = useStore((s) => s.progress);
   const items = useItems();
-  const [view, setView] = useState<"map" | "list">("map");
+  const [view, setView] = useState<"map" | "list" | "cards">("map");
   const stars = useMemo<StarInfo[]>(() => TOPICS.map((topic) => {
     const its = items.filter((i) => i.topic === topic.id);
     const done = its.filter((i) => progress[i.id]?.status === "done").length;
     return { topic, total: its.length, done, mastery: done / Math.max(1, its.length) };
   }), [items, progress]);
+  // a topic is "covered" once its lesson or any of its exercises has been started
+  const covered = useMemo(() => {
+    const ids = new Set(items.filter((i) => progress[i.id]).map((i) => i.topic));
+    return TOPICS.filter((t) => ids.has(t.id) && t.cards?.length);
+  }, [items, progress]);
+  const cardCount = covered.reduce((n, t) => n + (t.cards?.length ?? 0), 0);
 
   return (
     <div>
       <PageHead eyebrow="Curriculum" title="The whole mountain" sub={`${TOPICS.length} topics and ${items.length - TOPICS.length} exercises covering what a Google L4/L5 loop expects. Each star is a topic: it brightens as you master it.`}
-        right={<Tabs value={view} onChange={setView} tabs={[{ id: "map", label: <span className="flex items-center gap-1.5"><Orbit size={14} />Map</span> }, { id: "list", label: <span className="flex items-center gap-1.5"><List size={14} />List only</span> }]} />} />
+        right={<Tabs value={view} onChange={setView} tabs={[{ id: "map", label: <span className="flex items-center gap-1.5"><Orbit size={14} />Map</span> }, { id: "list", label: <span className="flex items-center gap-1.5"><List size={14} />List only</span> }, { id: "cards", label: <span className="flex items-center gap-1.5"><Layers size={14} />Flashcards{cardCount > 0 && <span className="num text-faint">{cardCount}</span>}</span> }]} />} />
 
       {view === "map" && (
         <div className="card relative mb-8 h-[460px] overflow-hidden bg-[#07080d]">
           <Galaxy stars={stars} />
-          <div className="pointer-events-none absolute bottom-3 left-4 text-[11.5px] text-faint">Drag to rotate · scroll to zoom · click a star</div>
+          <div className="pointer-events-none absolute bottom-3 left-4 text-[11.5px] text-faint">Drag to rotate · scroll to zoom · hover a star to see what it builds on and unlocks · click to open</div>
           <div className="pointer-events-none absolute right-4 top-3 flex gap-3 text-[11.5px]">{AREAS.map((a) => <span key={a.id} className="flex items-center gap-1.5" style={{ color: a.color }}><span className="h-2 w-2 rounded-full" style={{ background: a.color }} />{a.short}</span>)}</div>
+        </div>
+      )}
+
+      {view === "cards" && (
+        <div className="mb-10">
+          <p className="mb-3 text-[13px] text-mute">{covered.length ? `${cardCount} cards from the ${covered.length} topic${covered.length === 1 ? "" : "s"} you have covered so far.` : "Your personal deck, built from the topics you have covered."}</p>
+          <FlashDeck topics={covered} />
         </div>
       )}
 
