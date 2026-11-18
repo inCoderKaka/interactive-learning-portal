@@ -305,6 +305,7 @@ export class InterviewSession {
     const q = this.s.question, p = this.s.persona, ins = a.instruction;
     const nextFollowUp = () => q.followUps[this.followUp++ % Math.max(1, q.followUps.length)] ?? "What would you improve if you had more time?";
     if (a.origin === "phase") {
+      if (this.cfg.redo && /short drill/.test(ins)) return `Let's pick up where we were. ${this.cfg.redo.prompt}`;
       if (/Greet/.test(ins)) return `Hi, I'm ${p.name}, I work on ${p.team}. We have ${this.cfg.minutes} minutes. ${/introduce themselves/.test(ins) ? "Could you start by telling me a little about yourself?" : `Here's the question: ${q.statement}`}`;
       if (/introduce themselves/.test(ins)) return "Hi! Could you start by telling me a little about yourself?";
       if (/present the question/.test(ins)) return `Thanks. Here's the question: ${q.statement}`;

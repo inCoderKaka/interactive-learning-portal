@@ -33,7 +33,7 @@ import { privateSettings } from "@/lib/interview/privacy";
 
 type Stage = "setup" | "live" | "predict" | "review" | "drill-review" | "reverse" | "peer" | "loop-break" | "loop-debrief" | "lobby";
 
-interface LoopState { plan: LoopPlan; base: SessionConfig; seed: number; index: number; ids: string[]; cards: Record<string, SessionRecord>; breakUntil: number; committee?: Committee; deciding?: boolean }
+interface LoopState { plan: LoopPlan; base: SessionConfig; seed: number; index: number; ids: string[]; cards: Record<string, SessionRecord>; breakUntil: number; committee?: Committee | null; deciding?: boolean } // null: decided that there is nothing to decide (no scorecards)
 
 /** Coach mode: recurring gaps from the last few scorecards of this kind. */
 function coachNotes(kind: Kind, history: SessionRecord[]): string {
@@ -243,11 +243,11 @@ export default function Mock() {
     await start(roundConfig(l.base, l.plan, index, l.seed, voiceProvider), false);
   };
   useEffect(() => {
-    if (stage !== "loop-debrief" || !loop || loop.committee || loop.deciding) return;
+    if (stage !== "loop-debrief" || !loop || loop.committee !== undefined || loop.deciding) return;
     const outcomes = loop.plan.rounds.map((r, i) => ({ title: r.title, kind: r.kind, card: loop.cards[loop.ids[i]]?.scorecard }));
     if (scoring) return; // wait for the last scorecard
     const rule = committeeDecision(outcomes);
-    if (!providerReady(settings, settings.provider) || !rule) { setLoop({ ...loop, committee: rule ? { decision: rule, level: "", summary: "", concerns: [], next: [], rule } : undefined }); return; }
+    if (!providerReady(settings, settings.provider) || !rule) { setLoop({ ...loop, committee: rule ? { decision: rule, level: "", summary: "", concerns: [], next: [], rule } : null }); return; }
     setLoop({ ...loop, deciding: true });
     const p = committeePrompt(loop.plan, outcomes, loop.base.prompts);
     runTask(settings, "committee", p.system, [{ role: "user", content: p.user }])
@@ -392,8 +392,8 @@ export default function Mock() {
     const c = loop.committee;
     return (
       <div className="space-y-5">
-        <PageHead eyebrow="Loop day · hiring committee" title={c ? DECISION_LABEL[c.decision] : "The committee is reading your packet"} sub={c?.summary || `${doneRounds} round${doneRounds === 1 ? "" : "s"} at the ${loop.plan.level} bar.`} />
-        {(!c || scoring) && <div className="card p-5"><Spinner label={scoring ? "Waiting for the last scorecard" : "Deciding"} /></div>}
+        <PageHead eyebrow="Loop day · hiring committee" title={c ? DECISION_LABEL[c.decision] : c === null ? "No committee decision" : "The committee is reading your packet"} sub={c === null ? "None of the rounds has a scorecard (they need an AI provider and at least two of your replies). Open each round below to review it." : c?.summary || `${doneRounds} round${doneRounds === 1 ? "" : "s"} at the ${loop.plan.level} bar.`} />
+        {(c === undefined || scoring) && <div className="card p-5"><Spinner label={scoring ? "Waiting for the last scorecard" : "Deciding"} /></div>}
         {c && (c.concerns.length > 0 || c.next.length > 0) && (
           <div className="grid gap-4 md:grid-cols-2">
             {c.concerns.length > 0 && <div className="card p-4"><div className="eyebrow mb-2">Concerns</div><ul className="space-y-1 text-[13.5px]">{c.concerns.map((x, i) => <li key={i}>{x}</li>)}</ul></div>}
