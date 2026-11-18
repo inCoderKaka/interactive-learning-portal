@@ -160,9 +160,13 @@ This engine is kept as an adapter because the architecture makes it cheap, and s
 
 Server routes needed by both sub-modes: `POST /api/agora/token`, `POST /api/agora/start` and `POST /api/agora/stop`. They are stateless and receive the learner's Agora credentials per request without persisting them. Orphaned agents are prevented by the agent's own idle timeout and expiry, plus a stop on `pagehide`.
 
+**As built** ([ADR 0006](../../adr/0006-agora-engine-agora-managed-stateless-route.md)): only the Agora-managed sub-mode, through one route `POST /api/agora/[action]` (`start`, `stop`, `think`, `speak`, `update`) using Agora's `agora-agents` SDK with the learner's App ID and App Certificate. The browser uses `agora-rtc-sdk-ng`, loaded on demand; transcripts arrive as RTC stream messages.
+
 ### 4.5 Peer mode transport
 
 Two browsers connect directly over WebRTC. Signalling runs over Supabase Realtime channels, which Ascent already depends on. Public STUN servers handle most networks. A TURN relay covers the rest, and is the only new paid dependency (decided in Phase 3). The AI observer listens to both sides through the Ascent Voice engine's STT, in one browser, with consent shown to both peers.
+
+**As built** ([ADR 0005](../../adr/0005-peer-transport-direct-webrtc-byo-turn.md)): Ascent hosts no TURN relay; learners may add their own. Each browser transcribes its own microphone and shares finished lines over the data channel, the candidate's workspace is mirrored to the interviewer, and the AI observer scores in the candidate's browser with the candidate's key.
 
 ## 5. Data flow and storage
 
@@ -223,6 +227,7 @@ Rules that keep the core stable:
 | BYOK keys | Stay in `localStorage` as today, and are sent only to their own provider. Never sent to Ascent, never logged, never synced. |
 | Paid-plan keys | Server-only environment variables. Browsers receive short-lived, session-scoped ephemeral tokens. |
 | Agora credentials (optional engine) | Sent per request to stateless routes, held in memory for that request, and redacted from logs. |
+| Privacy mode | On-device Whisper (Transformers.js in a worker, loaded on demand) or Chrome on-device recognition, local voices only, the local model server for every task, and no cloud sync for the round ([ADR 0007](../../adr/0007-on-device-speech-for-privacy-mode.md)). Every round shows a computed "What leaves this device" list. |
 | Audio | Not stored unless the learner opts in. The *Privacy mode* label lists exactly which services receive audio for the chosen engine. With Chrome's Web Speech, audio goes to Google unless on-device recognition is used. That corrects an earlier assumption that browser STT is always local. |
 | Prompt injection | Candidate speech, code and whiteboard text are wrapped as quoted data in prompts and never placed in the instruction section. In peer mode, the other peer is untrusted input. |
 | Data isolation | Row-level security on every new table (`user_id = auth.uid()`). Storage policies match per-user paths. |

@@ -21,6 +21,8 @@
     "@uiw/codemirror-theme-tokyo-night": "^4.25.12",
     "@uiw/react-codemirror": "^4.25.12",
     "@xyflow/react": "^12.12.1",
+    "agora-agents": "2.13.0",
+    "agora-rtc-sdk-ng": "4.24.9",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

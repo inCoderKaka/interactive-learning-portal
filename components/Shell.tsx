@@ -7,6 +7,7 @@ import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "motion/react";
 import { BarChart3, CalendarRange, CloudOff, Flame, Home, Layers, LogIn, Mic, RefreshCw, Search, Settings as Cog, Sparkles, Mountain } from "lucide-react";
 import { useStore, selectXp } from "@/lib/store";
+import { BookingBanner } from "@/components/interview/BookingBanner";
 import { levelOf, streakOf } from "@/lib/gamify";
 import { useDue, useItems } from "@/lib/hooks";
 import { cloudEnabled } from "@/lib/supabase";
@@ -174,6 +175,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
             <button className="ml-3 underline" onClick={() => useStore.setState({ syncError: null })}>Dismiss</button>
           </div>
         )}
+        {ready && <BookingBanner />}
         <main className="mx-auto w-full max-w-[1240px] flex-1 px-4 pb-28 pt-8 sm:px-8 lg:pb-16">
           {ready ? children : <div className="grid h-[60vh] place-items-center text-sm text-faint animate-pulse-soft">Loading your trail…</div>}
         </main>

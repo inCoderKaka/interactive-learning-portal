@@ -30,6 +30,8 @@ export const REALTIME_USD_PER_MIN: Record<string, { low: number; high: number; m
   gemini: { low: 0.02, high: 0.08, mid: 0.04 },
 };
 export const OPENAI_SPEECH_USD_PER_MIN = 0.015;
+/** Agora-managed agent: engine minutes plus reseller STT, LLM and TTS, billed to the learner's Agora project. */
+export const AGORA_USD_PER_MIN = { low: 0.03, high: 0.1, mid: 0.06 };
 
 export const tokensOf = (chars: number) => Math.ceil(chars / 4);
 

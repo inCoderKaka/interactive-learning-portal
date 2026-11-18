@@ -12,8 +12,10 @@ export interface WhiteboardHandle {
   image(): Promise<Blob | null>;
 }
 
-export default function WhiteboardCanvas({ onDigest, readOnly, pauseMs = 2500, handle }: {
+export default function WhiteboardCanvas({ onDigest, onElements, readOnly, pauseMs = 2500, handle }: {
   onDigest: (d: Digest, snapshot: DiagramSnapshot, elements: unknown[]) => void;
+  /** Every real edit, throttled (peer mode mirrors the board to the other browser). */
+  onElements?: (elements: unknown[]) => void;
   readOnly?: boolean;
   pauseMs?: number;
   handle?: (h: WhiteboardHandle) => void;
@@ -24,8 +26,12 @@ export default function WhiteboardCanvas({ onDigest, readOnly, pauseMs = 2500, h
   const sceneVersion = useRef(-1);
   const onDigestRef = useRef(onDigest);
   onDigestRef.current = onDigest;
+  const onElementsRef = useRef(onElements);
+  onElementsRef.current = onElements;
+  const lastSent = useRef(0);
+  const trailing = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  useEffect(() => () => clearTimeout(timer.current), []);
+  useEffect(() => () => { clearTimeout(timer.current); clearTimeout(trailing.current); }, []);
 
   const image = async (): Promise<Blob | null> => {
     const a = api.current;
@@ -47,6 +53,11 @@ export default function WhiteboardCanvas({ onDigest, readOnly, pauseMs = 2500, h
           const version = elements.reduce((a, e) => a + e.version, elements.length);
           if (version === sceneVersion.current) return;
           sceneVersion.current = version;
+          if (onElementsRef.current) {
+            const sendNow = () => { lastSent.current = Date.now(); onElementsRef.current?.(JSON.parse(JSON.stringify(elements))); };
+            clearTimeout(trailing.current);
+            if (Date.now() - lastSent.current > 400) sendNow(); else trailing.current = setTimeout(sendNow, 400);
+          }
           clearTimeout(timer.current);
           timer.current = setTimeout(() => {
             const snap = snapshotScene(elements as unknown as readonly SceneElement[]);

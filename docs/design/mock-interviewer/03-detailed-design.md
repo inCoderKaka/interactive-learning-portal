@@ -6,25 +6,42 @@ Code layout (as built; the planned split into more files can happen as each area
 lib/interview/
   core/        pure, no I/O, runs under node --test
     types.ts       config, events, state, actions
-    brain.ts       the reducer
+    brain.ts       the reducer (including redo drills)
     policy.ts      pressure table, gates, stage budgets
     prompts.ts     system prompt, context note, realtime note, judge prompt
+    templates.ts   versioned prompt fragments, overrides, provenance (MI-DEV-4)
     curveballs.ts  strategies and scheduler
     digest.ts      whiteboard and text digests, semantic tags, red-flag rules
     persona.ts     seeded fictional interviewer, tone draw
     scoring.ts     rubric dimensions, scorecard prompt, parse, median aggregation
     analytics.ts   delivery stats
     recommender.ts suggested mocks, mock-day spacing
-    core.test.ts
-  providers/   llm.ts (Gemini, Claude, OpenAI, local; capabilities; streaming; vision), keys.ts (BYOK source)
-  engines/     types.ts (ports), text.ts, ascent-voice.ts (STT and TTS adapters inside), realtime-gemini.ts,
-               realtime-openai.ts, audio.ts (VAD, PCM capture and playback), registry.ts
-  tasks.ts     task catalogue, presets, AI settings, runTask and streamTask
+    usage.ts       prices, monthly spend, budget checks, affordable engine (MI-X-5)
+    replay.ts      timeline markers, workspace state at a time, redo context (MI-FB-2, MI-FB-4)
+    reverse.ts     planted mistakes, AI-candidate prompt, work/speech split, grading (MI-X-1)
+    loop.ts        loop plans, per-round configs, committee rule and prompt (MI-X-3)
+    booking.ts     scheduled mocks and .ics (MI-X-4)
+    peer.ts        room codes, data-channel protocol and chunking, board merge (MI-X-2)
+    dataflow.ts    "what leaves this device" (MI-X-6)
+    evaluation.ts  evaluation metrics; eval-cases.ts the labelled reference set (MI-DEV-7)
+    agora-transcript.ts  Agora stream-message reassembly and parsing
+    core.test.ts, phase2.test.ts, phase3.test.ts
+  providers/   llm.ts (Gemini, Claude, OpenAI, local; capabilities; streaming; vision), keys.ts (BYOK keys, Agora and TURN credentials)
+  engines/     types.ts (ports), text.ts, ascent-voice.ts (STT and TTS adapters inside), whisper.ts (on-device STT worker),
+               realtime-gemini.ts, realtime-openai.ts, agora.ts, audio.ts (VAD, PCM capture and playback, output taps), registry.ts
+  tasks.ts     task catalogue, presets, AI settings, runTask and streamTask (metered)
+  meter.ts     local spend ledger
   questions.ts question sources, pools, AI-generated questions, key terms
-  session.ts   session controller
+  session.ts   session controller (event sinks, budget guard, replay frames)
+  reverse-session.ts, peer-session.ts   controllers for reverse and peer mode
+  recorder.ts  opt-in recording; media.ts IndexedDB media store; sync.ts Supabase sync and media backup
+  privacy.ts   privacy-mode settings and disclosure
   results.ts   scoring runner, local history, mapping to Ascent's Feedback
-components/interview/  Setup, Room, WhiteboardCanvas (Excalidraw), Scorecard, AiSettingsPanel
-app/mock/page.tsx      setup → room → predict → debrief
+components/interview/  Setup, Room (desk and commute layouts), WhiteboardCanvas (Excalidraw), Scorecard, Replay, ReplayBoard,
+                       ReverseRoom, PeerRoom, PromptOverrides, EvalRunner, BookingBanner, AiSettingsPanel
+app/mock/page.tsx      setup → room → predict → debrief, plus lobby, loop day, reverse, peer and drills
+app/api/agora/[action]/route.ts   the optional Agora engine's stateless route
+supabase/migrations/20261119000000_interviews.sql
 ```
 
 `lib/ai.ts` keeps its public functions (`chat`, `reviewCode`, …) as thin wrappers over `providers/llm/*`, so existing pages keep working unchanged.
@@ -288,6 +305,8 @@ create table public.usage_ledger (
 );
 ```
 
+**As built** (`20261119000000_interviews.sql`): `interview_sessions` also has `format` (`standard`, `reverse`, `peer`), `has_media` and `updated_at`; `interview_scorecards` keeps the whole scorecard in `card` beside the queryable `decision` and `ratings`; `usage_ledger` is left for Phase 4. A `reap_my_interviews()` function (security invoker) marks the caller's own rounds `abandoned` when they are still `live` past `deadline_at`; the client calls it on sync. Media objects are `<user_id>/<session_id>/audio` and `<user_id>/<session_id>/frames.json`.
+
 Each table gets row-level security in the same style as `20261116000000_init.sql`: an `own …` policy on `(select auth.uid()) = user_id`, all access revoked from `anon`. `usage_ledger` is insert-only from server routes (service role). Users can only `select` their own rows. Storage bucket `interview-media` uses the path `<user_id>/<session_id>/…`, with a matching policy.
 
 Guest mode mirrors the same shapes in IndexedDB (`ascent-interviews`). On sign-in, local sessions are uploaded the same way progress is today.
@@ -319,8 +338,8 @@ The scorecard cites events by `seq`. Replay is a pure function of the event log 
 | --- | --- | --- | --- |
 | `POST /api/realtime/token` | 4 | Mint a provider ephemeral token on platform credentials | In: `{sessionId, provider, model, voice}`. Out: `{token, expiresAt}`. Checks entitlement, writes a ledger reservation, and accepts one live session per user. |
 | `POST /api/usage` | 4 | Commit metered usage at the end of a session | Idempotent on `idempotency_key` |
-| `POST /api/agora/token` · `start` · `stop` | 3 | Optional Agora engine | Per-request learner credentials, never persisted. `start` returns `agentId`. `stop` is idempotent. |
-| Scheduled `reap` | 3 | Close stale `live` sessions past `deadline_at` and stop leftover agents | Vercel cron |
+| `POST /api/agora/[action]` (`start`, `stop`, `think`, `speak`, `update`) | 3 | Optional Agora engine (ADR 0006) | Per-request learner App ID and certificate, never persisted. `start` returns `{agentId, token, appId}` (the RTC token for the learner's browser). `stop` is idempotent and accepts `sendBeacon`. Built. |
+| `reap_my_interviews()` RPC | 3 | Close the caller's stale `live` rounds | Called by the client on sync, under RLS. Built in place of a cron (delivery plan §0). |
 
 ## 9. Recommender
 

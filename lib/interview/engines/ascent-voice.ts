@@ -4,7 +4,8 @@
 
 import { getKeys } from "../providers/keys";
 import { getAi } from "../tasks";
-import { EnergyVad, OutputTap, openMic, sentences } from "./audio";
+import { EnergyVad, OutputTap, capturePcm16, openMic, sentences } from "./audio";
+import { UtteranceBuffer, loadWhisper, whisperSupported } from "./whisper";
 import type { Engine, EngineCallbacks, StartOptions } from "./types";
 
 // ---- speech-to-text adapters ----
@@ -27,10 +28,26 @@ function speechRecognition(): SpeechRecognitionCtor | undefined {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition;
 }
 
-function webSpeechStt(lang: string, onText: (finalText: string, interim: string) => void, onError: (e: Error) => void): Stt {
+type LocalRecognition = { available?: (o: { langs: string[]; processLocally: boolean }) => Promise<string>; install?: (o: { langs: string[]; processLocally: boolean }) => Promise<boolean> };
+
+/** Chrome's on-device recognition: check it is available, downloading the language pack if needed. */
+async function ensureLocalRecognition(lang: string, status: (s: string) => void) {
+  const C = speechRecognition() as unknown as LocalRecognition | undefined;
+  if (!C?.available) throw new Error("This browser cannot recognise speech on-device. Choose Whisper (on-device) in developer mode.");
+  const st = await C.available({ langs: [lang], processLocally: true });
+  if (st === "unavailable") throw new Error(`On-device recognition is not available for ${lang} in this browser. Choose Whisper (on-device) instead.`);
+  if (st !== "available") {
+    status("Downloading the on-device speech model…");
+    if (!(await C.install?.({ langs: [lang], processLocally: true }))) throw new Error("The on-device speech model could not be installed.");
+    status("");
+  }
+}
+
+function webSpeechStt(lang: string, onText: (finalText: string, interim: string) => void, onError: (e: Error) => void, local = false): Stt {
   const Ctor = speechRecognition();
   if (!Ctor) throw new Error("This browser has no built-in speech recognition. Use Chrome or Edge, or choose OpenAI speech-to-text in Settings → Developer mode.");
   const rec = new Ctor();
+  if (local) (rec as unknown as { processLocally: boolean }).processLocally = true;
   rec.continuous = true;
   rec.interimResults = true;
   rec.lang = lang;
@@ -97,12 +114,12 @@ function openAiStt(stream: MediaStream, keyterms: string[], onText: (finalText: 
 
 interface Tts { speak(chunks: AsyncIterable<string>, signal: AbortSignal, onSentence: (s: string) => void, onFirstAudio: () => void): Promise<string>; cancel(): void }
 
-function pickVoice(name: string, lang: string): SpeechSynthesisVoice | undefined {
-  const voices = speechSynthesis.getVoices();
+function pickVoice(name: string, lang: string, localOnly = false): SpeechSynthesisVoice | undefined {
+  const voices = speechSynthesis.getVoices().filter((v) => !localOnly || v.localService);
   return voices.find((v) => v.name === name) ?? voices.find((v) => v.lang === lang && /natural|neural|google|enhanced|premium/i.test(v.name)) ?? voices.find((v) => v.lang.startsWith(lang.slice(0, 2)));
 }
 
-function browserTts(voiceName: string, lang: string, rate: number): Tts {
+function browserTts(voiceName: string, lang: string, rate: number, localOnly = false): Tts {
   return {
     async speak(chunks, signal, onSentence, onFirstAudio) {
       let said = "", first = true;
@@ -110,7 +127,8 @@ function browserTts(voiceName: string, lang: string, rate: number): Tts {
         if (signal.aborted) break;
         await new Promise<void>((done) => {
           const u = new SpeechSynthesisUtterance(s);
-          const v = pickVoice(voiceName, lang);
+          const v = pickVoice(voiceName, lang, localOnly);
+          if (localOnly && !v) { done(); return; } // never fall back to a network voice in privacy mode
           if (v) u.voice = v;
           u.lang = lang;
           u.rate = rate;
@@ -181,6 +199,8 @@ export const ascentVoiceEngine: Engine = {
     if (typeof window === "undefined") return "Needs a browser.";
     const sp = getAi(settings).speech;
     if (sp.stt === "webspeech" && !speechRecognition()) return "This browser has no built-in speech recognition (use Chrome or Edge, or switch speech-to-text to OpenAI in developer mode).";
+    if (sp.stt === "webspeech-local" && !(speechRecognition() as unknown as LocalRecognition | undefined)?.available) return "This browser cannot recognise speech on-device. Choose Whisper (on-device) in developer mode.";
+    if (sp.stt === "whisper-local" && !whisperSupported()) return "This browser cannot run on-device Whisper (needs Web Workers and WebAssembly).";
     if ((sp.stt === "openai" || sp.tts === "openai") && !getKeys().openai) return "OpenAI speech is selected in developer mode but no OpenAI key is set.";
     return null;
   },
@@ -202,14 +222,41 @@ export const ascentVoiceEngine: Engine = {
       if (fin) finalText += ` ${fin}`;
       interim = inter;
       cb.candidatePartial(`${finalText} ${interim}`.trim());
-      // OpenAI STT returns one final per utterance: deliver it now
-      if (sp.stt === "openai" && fin) flush();
+      // utterance recognisers return one final per utterance: deliver it now
+      if ((sp.stt === "openai" || sp.stt === "whisper-local") && fin) flush();
     };
 
-    let oa: ReturnType<typeof openAiStt> | null = null;
-    const stt: Stt = sp.stt === "openai"
-      ? (oa = openAiStt(stream, opts.keyterms, onText, (e) => cb.error(e, false))).stt
-      : webSpeechStt(sp.lang, onText, (e) => cb.error(e, true));
+    // utterance-based recognisers (OpenAI, on-device Whisper) start and stop with the VAD
+    let oa: { begin(): void; end(): void } | null = null;
+    let stopPcm: (() => void) | null = null;
+    let whisper: ReturnType<typeof loadWhisper> | null = null;
+    let stt: Stt;
+    if (sp.stt === "openai") {
+      const o = openAiStt(stream, opts.keyterms, onText, (e) => cb.error(e, false));
+      oa = o; stt = o.stt;
+    } else if (sp.stt === "whisper-local") {
+      cb.status("Loading on-device speech recognition…");
+      whisper = loadWhisper(sp.whisperModel, (p) => cb.status(`Downloading the speech model (first time only): ${Math.round(p)}%`));
+      await whisper.ready;
+      cb.status("");
+      const buf = new UtteranceBuffer();
+      let paused = false;
+      stopPcm = await capturePcm16(stream, (pcm) => buf.push(pcm));
+      oa = {
+        begin: () => { if (!paused) buf.begin(); },
+        end: () => {
+          const audio = buf.end();
+          if (!audio || paused) return;
+          onText("", "…");
+          whisper!.transcribe(audio).then((t) => onText(t.trim(), "")).catch((e) => cb.error(e, false));
+        },
+      };
+      stt = { pause() { paused = true; buf.end(); }, resume() { paused = false; }, stop() { paused = true; } };
+    } else {
+      if (sp.stt === "webspeech-local") await ensureLocalRecognition(sp.lang, (s) => cb.status(s));
+      stt = webSpeechStt(sp.lang, onText, (e) => cb.error(e, true), sp.stt === "webspeech-local");
+    }
+    const utterances = sp.stt === "openai" || sp.stt === "whisper-local";
 
     const endMs = sp.endOfSpeechMs || opts.endOfSpeechMs;
     const vad = new EnergyVad(stream, {
@@ -239,14 +286,14 @@ export const ascentVoiceEngine: Engine = {
         cb.candidateSpeaking(false);
         oa?.end();
         // let the recogniser finalise the last words
-        flushTimer = setTimeout(flush, sp.stt === "openai" ? 0 : 350);
+        flushTimer = setTimeout(flush, utterances ? 0 : 350);
       },
     });
 
     // browser speech synthesis cannot be captured; OpenAI voices play through a tap so they can be recorded
     const tap = sp.tts === "openai" ? new OutputTap() : undefined;
-    const tts: Tts = sp.tts === "openai" ? openAiTts(opts.voice.voiceId || sp.ttsVoice, opts.voice.rate, tap) : browserTts(opts.voice.voiceId || sp.ttsVoice, sp.lang, opts.voice.rate);
-    if (sp.tts === "browser") speechSynthesis.getVoices(); // warm the voice list
+    const tts: Tts = sp.tts === "openai" ? openAiTts(opts.voice.voiceId || sp.ttsVoice, opts.voice.rate, tap) : browserTts(opts.voice.voiceId || sp.ttsVoice, sp.lang, opts.voice.rate, sp.tts === "browser-local");
+    if (sp.tts !== "openai") speechSynthesis.getVoices(); // warm the voice list
 
     return {
       id: "ascent-voice",
@@ -284,6 +331,8 @@ export const ascentVoiceEngine: Engine = {
         tts.cancel();
         stt.stop();
         vad.close();
+        stopPcm?.();
+        whisper?.close();
         tap?.close();
         stream.getTracks().forEach((t) => t.stop());
       },

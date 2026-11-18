@@ -8,7 +8,8 @@ An interactive, timeline-driven trail through **DSA, system design (HLD), object
 - **Visual learning**: step-through algorithm animations, interactive system-design widgets, draggable architecture diagrams with failure injection, class diagrams, and a 3D topic map.
 - **Roadmap**: set weeks, hours per day and study days; the plan re-flows around what you have done.
 - **AI verification**: write code (no compiler, as in the interview) and have it reviewed by Gemini, Claude, OpenAI or your own OpenAI-compatible `local-server`. Design answers are graded stage by stage. Keys stay in the browser.
-- **Voice mock interviewer**: talk to a fictional Google interviewer through realtime voice (Gemini Live or OpenAI Realtime, using the key you already have), free browser voice, or text. Draw on an Excalidraw whiteboard the interviewer can follow, code in a plain doc, and get curveballs, time calls, interruptions and an evidence-based hiring-committee packet. Choose a question pool or an exact question, a tone (or a surprise), a level and the pressure. The roadmap suggests mocks from your own progress. Developer mode exposes every model and parameter.
+- **Voice mock interviewer**: talk to a fictional Google interviewer through realtime voice (Gemini Live or OpenAI Realtime, using the key you already have), free browser voice, or text. Draw on an Excalidraw whiteboard the interviewer can follow, code in a plain doc, and get curveballs, time calls, interruptions and an evidence-based hiring-committee packet. Choose a question pool or an exact question, a tone (or a surprise), a level and the pressure. The roadmap suggests mocks from your own progress. Developer mode exposes every model, parameter and prompt, with an evaluation runner.
+- **More ways to practise**: a full loop day with different interviewers and a committee decision; reverse mode, where you interview an AI candidate and learn the rubric by catching its planted mistakes; peer mode, a direct call with a friend and an AI observer; scheduled mocks with a lobby; a phone-friendly commute mode; replay with "redo this moment" drills; privacy mode with on-device speech and your local model; budgets that switch to a cheaper engine; and an optional Agora engine for your own Agora project.
 - **Spaced review**: completed items return before you forget them, shuffled across topics and shown without the pattern label.
 - **Bias countermeasures**: confidence prediction and calibration chart, blind mode, hidden approaches until you try, random mock questions, balance and avoidance checks.
 - **Focus tools**: focus timer, breaks, guided breathers, streaks, XP, levels and badges.
@@ -50,10 +51,13 @@ The voice mock interviewer is inspired by:
 
 Ascent's interviewer is its own implementation, written against providers' published SDKs and APIs. If any file is ever adapted from these repositories, it keeps the original MIT notice at the top. The design is in [`docs/`](docs/README.md).
 
+Open-source building blocks: [Excalidraw](https://github.com/excalidraw/excalidraw) (MIT) for the whiteboard, [Transformers.js](https://github.com/huggingface/transformers.js) (Apache-2.0) for on-device Whisper in privacy mode, and Agora's published SDKs ([agora-agents](https://www.npmjs.com/package/agora-agents), [agora-rtc-sdk-ng](https://www.npmjs.com/package/agora-rtc-sdk-ng)) for the optional Agora engine.
+
 ## Layout
 
 ```
 app/         pages (today, roadmap, learn, problem, design, review, mock, progress, settings, login)
+  api/agora/ the optional Agora engine's stateless route
 components/  shell, editor and feedback, focus timer, diagrams, visualizers
 content/     the curriculum as typed data
 lib/         store and sync, scheduler, spaced repetition, AI providers, importer

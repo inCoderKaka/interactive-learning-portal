@@ -7,7 +7,7 @@ export type Kind = "coding" | "hld" | "lld" | "behavioral";
 export type Tone = "guide" | "neutral" | "tough" | "notetaker";
 export type Pressure = "relaxed" | "realistic" | "high";
 export type Level = "L3" | "L4" | "L5" | "L6";
-export type EngineId = "text" | "ascent-voice" | "realtime";
+export type EngineId = "text" | "ascent-voice" | "realtime" | "agora";
 export type CurveballId = "requirement-change" | "bad-idea" | "interviewer-slip" | "out-of-curriculum" | "explain-pm" | "time-crunch" | "ceiling-probe" | "incident";
 export type SurfaceId = "code" | "whiteboard" | "notes";
 

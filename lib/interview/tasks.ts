@@ -96,8 +96,9 @@ export const TIERS: Record<Exclude<ProviderId, "local">, { small: string; strong
 // ---- voice and session settings ----
 
 export interface SpeechSettings {
-  stt: "webspeech" | "openai";
-  tts: "browser" | "openai";
+  stt: "webspeech" | "webspeech-local" | "whisper-local" | "openai"; // *-local: on-device, privacy mode (MI-X-6)
+  tts: "browser" | "browser-local" | "openai";                       // browser-local: on-device voices only
+  whisperModel: string;
   ttsVoice: string;       // browser voice name or OpenAI voice
   rate: number;
   endOfSpeechMs: number;  // 0 = from the pressure setting
@@ -135,7 +136,7 @@ export const DEFAULT_AI: AiSettings = {
   devMode: false,
   preset: "recommended",
   tasks: {},
-  speech: { stt: "webspeech", tts: "browser", ttsVoice: "", rate: 1, endOfSpeechMs: 0, bargeIn: true, bargeInMs: 250, lang: "en-US", keyterms: true },
+  speech: { stt: "webspeech", tts: "browser", whisperModel: "Xenova/whisper-base.en", ttsVoice: "", rate: 1, endOfSpeechMs: 0, bargeIn: true, bargeInMs: 250, lang: "en-US", keyterms: true },
   realtime: { provider: "gemini", geminiModel: "gemini-2.5-flash-native-audio-preview-09-2025", openaiModel: "gpt-realtime", geminiVoice: "Charon", openaiVoice: "cedar", vad: "semantic" },
   budgetUsd: 0,
   budgets: NO_BUDGETS,

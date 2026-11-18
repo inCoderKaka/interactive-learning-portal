@@ -74,6 +74,30 @@ export function Room({ session, settings, onEnd }: { session: InterviewSession; 
   };
   const hasBoard = cfg.kind === "hld" || cfg.kind === "lld";
 
+  // Commute mode (MI-X-7): voice only, one column, large controls for a phone
+  if (cfg.layout === "commute") {
+    const lastLine = turns.filter((m) => !m.me).slice(-1)[0]?.text ?? "";
+    return (
+      <div className="mx-auto flex min-h-[70vh] max-w-md flex-col items-center gap-6 py-6 text-center">
+        <div className="flex items-center gap-2 text-[13px] text-mute"><Pill color={meta.color}>{meta.label}</Pill><span>with {v.state.persona.name}</span></div>
+        <div className={cn("num font-mono text-4xl font-semibold", low ? "text-warn" : "text-text")}>{fmtClock(left)}</div>
+        <div className={cn("grid h-44 w-44 place-items-center rounded-full border-4 transition", v.agentSpeaking ? "animate-pulse border-hld bg-hld/10" : v.candidateSpeaking ? "border-ok bg-ok/10" : "border-line bg-panel2")} aria-live="polite">
+          <span className="px-4 text-[15px] font-semibold">{ended ? "Finished" : v.agentSpeaking ? `${v.state.persona.name} is speaking` : v.candidateSpeaking ? "Listening" : v.generating ? "Thinking" : v.muted ? "Muted" : "Your turn"}</span>
+        </div>
+        {v.status && <p className="text-[13px] text-warn">{v.status}</p>}
+        {v.error && <p role="alert" className="text-[13px] text-bad">{v.error}</p>}
+        {cfg.voice.captions && (v.interviewerPartial || lastLine) && <p className="min-h-[3em] text-[15px] leading-relaxed text-mute">{v.interviewerPartial || lastLine}</p>}
+        {!ended && (
+          <div className="grid w-full grid-cols-2 gap-3">
+            <button onClick={() => session.mute(!v.muted)} className="flex h-16 items-center justify-center gap-2 rounded-2xl border border-line bg-panel2 text-[15px] font-semibold" aria-pressed={v.muted}>{v.muted ? <MicOff size={20} /> : <Mic size={20} />}{v.muted ? "Unmute" : "Mute"}</button>
+            <button onClick={() => session.thinking()} className="flex h-16 items-center justify-center gap-2 rounded-2xl border border-line bg-panel2 text-[15px] font-semibold"><Brain size={20} />Think</button>
+            <button onClick={() => void session.stop("candidate").then(onEnd)} className="col-span-2 flex h-16 items-center justify-center gap-2 rounded-2xl border border-bad/40 bg-bad/10 text-[15px] font-semibold text-bad"><Flag size={20} />End and get feedback</button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">

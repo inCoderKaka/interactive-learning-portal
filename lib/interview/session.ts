@@ -13,7 +13,7 @@ import { keyterms } from "./questions";
 import { activePrompts, getAi, providerReady, resolved, runTask, streamTask } from "./tasks";
 import { describeImage } from "./providers/llm";
 import { fragment } from "./core/templates";
-import { OPENAI_SPEECH_USD_PER_MIN, REALTIME_USD_PER_MIN, checkBudget, cheapRound, totalOf, type BudgetCheck } from "./core/usage";
+import { AGORA_USD_PER_MIN, OPENAI_SPEECH_USD_PER_MIN, REALTIME_USD_PER_MIN, checkBudget, cheapRound, totalOf, type BudgetCheck } from "./core/usage";
 import { addUsd, setMeterScope, spendThisMonth } from "./meter";
 
 /** A whiteboard scene at a moment of the round, for replay (MI-FB-2). */
@@ -141,7 +141,7 @@ export class InterviewSession {
       const next = fallbackFor(this.cfg.engine, this.settings);
       if (!next) throw e;
       this.record({ type: "engine.fallback", from: this.cfg.engine, to: next, error: String(e instanceof Error ? e.message : e) });
-      this.emit({ error: `${e instanceof Error ? e.message : e} Switched to ${next === "text" ? "text" : "Ascent Voice"}.` });
+      this.emit({ error: `${e instanceof Error ? e.message : e} Switched to ${ENGINE_LABEL[next]}.` });
       await this.startEngine(next);
     }
     this.t0 = Date.now();
@@ -159,6 +159,8 @@ export class InterviewSession {
     if (this.engineId === "realtime") {
       const rate = REALTIME_USD_PER_MIN[getAi(this.settings).realtime.provider] ?? REALTIME_USD_PER_MIN.gemini;
       addUsd("realtime", rate.mid * min);
+    } else if (this.engineId === "agora") {
+      addUsd("agora", AGORA_USD_PER_MIN.mid * min);
     } else if (this.engineId === "ascent-voice") {
       const sp = getAi(this.settings).speech;
       addUsd("ascent-voice", OPENAI_SPEECH_USD_PER_MIN * min * ((sp.tts === "openai" ? 1 : 0) + (sp.stt === "openai" ? 0.4 : 0)));
@@ -332,7 +334,7 @@ export class InterviewSession {
     this.engine = null;
     if (!next) { this.emit({ error: err.message }); return; }
     this.record({ type: "engine.fallback", from, to: next, error: err.message });
-    this.emit({ error: `${err.message} Continuing with ${next === "text" ? "text" : "Ascent Voice"}.` });
+    this.emit({ error: `${err.message} Continuing with ${ENGINE_LABEL[next]}.` });
     try {
       await this.startEngine(next);
       this.emit();

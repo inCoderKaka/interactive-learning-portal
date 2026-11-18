@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { Boxes, Code2, Compass, MessagesSquare, Network, Save, Shuffle, Sparkles, Target, Trash2 } from "lucide-react";
+import { Boxes, Code2, Compass, MessagesSquare, Network, Save, Shuffle, Sparkles, Target, Trash2, Users } from "lucide-react";
 import { TOPICS } from "@/content";
 import { Button, Pill, cn } from "@/components/ui";
 import { NeedAI } from "@/components/Work";
@@ -16,6 +16,18 @@ import { spendThisMonth } from "@/lib/interview/meter";
 import { RoundRecorder } from "@/lib/interview/recorder";
 import { useStore } from "@/lib/store";
 import { cloudEnabled } from "@/lib/supabase";
+import { defaultLoop } from "@/lib/interview/core/loop";
+import { flowsFor, privacyBlocker } from "@/lib/interview/privacy";
+import { CalendarPlus, ShieldCheck } from "lucide-react";
+
+export interface StartOpts { loopDay: boolean }
+
+const FORMATS: { id: "standard" | "loop" | "reverse" | "peer"; label: string; desc: string }[] = [
+  { id: "standard", label: "One round", desc: "A single interview with an AI interviewer." },
+  { id: "loop", label: "Loop day", desc: "4–5 rounds back to back with different interviewers, short breaks, then a committee decision." },
+  { id: "reverse", label: "Reverse", desc: "You interview an AI candidate who makes planted mistakes, then write the feedback." },
+  { id: "peer", label: "Peer", desc: "Interview a friend or be interviewed, with an AI observer drafting the feedback." },
+];
 
 export const KINDS: { id: Kind; label: string; desc: string; min: number; icon: typeof Code2; color: string }[] = [
   { id: "coding", label: "Coding", desc: "One problem, then a twist. Clarify, code on a plain doc, analyse.", min: 45, icon: Code2, color: "var(--color-dsa)" },
@@ -84,9 +96,10 @@ function Group({ label, children, hint }: { label: string; children: React.React
   );
 }
 
-export function Setup({ settings, progress, custom, attempts, items, initial, onStart, busy }: {
+export function Setup({ settings, progress, custom, attempts, items, initial, onStart, onBook, busy }: {
   settings: Settings; progress: Record<string, Progress>; custom: Problem[]; attempts: Attempt[]; items: Item[];
-  initial?: Partial<SessionConfig>; onStart: (cfg: SessionConfig, outOfCurriculum: boolean) => void; busy: boolean;
+  initial?: Partial<SessionConfig>; onStart: (cfg: SessionConfig, outOfCurriculum: boolean, opts: StartOpts) => void;
+  onBook?: (cfg: SessionConfig, outOfCurriculum: boolean, at: number, opts: StartOpts) => void; busy: boolean;
 }) {
   const [cfg, setCfg] = useState<SessionConfig>(() => ({ ...BASE(initial?.kind ?? "coding", recommendedEngine(settings)), ...initial }));
   const [saved, setSaved] = useState<Saved[]>([]);
@@ -101,6 +114,14 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
   useEffect(() => setSpent(spendThisMonth()), []);
   const budget = checkBudget(ai.budgets, spent, cfg.engine, 0);
   const canRecord = typeof window !== "undefined" && RoundRecorder.supported();
+  const [loopDay, setLoopDay] = useState(false);
+  const [bookAt, setBookAt] = useState("");
+  const [booking, setBooking] = useState(false);
+  const fmt = loopDay ? "loop" : cfg.format ?? "standard";
+  const isPeer = fmt === "peer", isLoop = fmt === "loop", isRev = fmt === "reverse";
+  const privacyWhy = privacyBlocker(settings);
+  const flows = useMemo(() => flowsFor(cfg, settings, !!user), [cfg, settings, user]);
+  const plan = isLoop ? defaultLoop(cfg.level, "preview") : null;
 
   const recs = useMemo(() => recommendMocks({ items, progress, attempts, areas: settings.areas }), [items, progress, attempts, settings.areas]);
   const questions = useMemo(() => allQuestions(cfg.kind, custom), [cfg.kind, custom]);
@@ -110,8 +131,8 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
   const setPool = (p: Partial<PoolFilter>) => set({ selection: { mode: "random-pool", pool: { ...pool, ...p } } });
   const toggle = <T,>(xs: T[] | undefined, x: T) => (xs?.includes(x) ? xs.filter((y) => y !== x) : [...(xs ?? []), x]);
 
-  const engines: EngineId[] = ["realtime", "ascent-voice", "text"];
-  const unavailable = (e: EngineId) => engineFor(e, settings).unavailable(settings);
+  const engines: EngineId[] = ["realtime", "ascent-voice", "text", "agora"];
+  const unavailable = (e: EngineId) => (cfg.privacy && (e === "realtime" || e === "agora") ? "Privacy mode keeps speech on this device." : engineFor(e, settings).unavailable(settings));
   const cost = estimateCostUsd(cfg.engine, cfg.minutes, settings);
   const exactMatches = search.trim() ? questions.filter((q) => q.title.toLowerCase().includes(search.toLowerCase())).slice(0, 8) : [];
   const exactQ = cfg.selection.mode === "exact" ? questions.find((q) => cfg.selection.mode === "exact" && q.id === cfg.selection.questionId) : undefined;
@@ -135,7 +156,7 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
         </section>
       )}
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      {!isLoop && <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {KINDS.map((k) => (
           <button key={k.id} onClick={() => setCfg((c) => ({ ...BASE(k.id, c.engine), tone: c.tone, level: c.level, pressure: c.pressure, mode: c.mode, voice: c.voice }))} aria-pressed={cfg.kind === k.id}
             className={cn("card card-hover flex flex-col items-start p-5 text-left", cfg.kind === k.id && "!border-accent/60")} style={cfg.kind === k.id ? { background: `color-mix(in srgb, ${k.color} 7%, var(--color-panel))` } : undefined}>
@@ -144,10 +165,21 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
             <p className="mt-1 text-[13px] leading-relaxed text-mute">{k.desc}</p>
           </button>
         ))}
-      </div>
+      </div>}
 
       <section className="card space-y-6 p-5">
-        <Group label="Presets">
+        <Group label="Format">
+          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">{FORMATS.map((f) => (
+            <button key={f.id} onClick={() => { setLoopDay(f.id === "loop"); set({ format: f.id === "loop" ? "standard" : f.id, ...(f.id === "reverse" || f.id === "peer" ? { layout: "desk" as const } : {}) }); }} aria-pressed={fmt === f.id}
+              className={cn("rounded-xl border px-3 py-2.5 text-left transition", fmt === f.id ? "border-accent/60 bg-accent/5" : "border-line bg-panel2 hover:border-[#3a4160]")}>
+              <div className="text-[13px] font-semibold">{f.label}</div><div className="text-[11.5px] leading-snug text-mute">{f.desc}</div>
+            </button>
+          ))}</div>
+          {plan && <p className="mt-3 text-[12.5px] leading-relaxed text-mute">Your {cfg.level} loop: {plan.rounds.map((r) => `${r.title} (${r.minutes} min)`).join(" → ")}, with {plan.breakMin}-minute breaks. Each round has a different interviewer, tone and voice. Scorecards stay sealed until the committee decides, as in a real loop.</p>}
+          {isRev && <p className="mt-3 text-[12.5px] leading-relaxed text-mute">You get the question and an interviewer packet; the AI candidate makes three mistakes on purpose. Afterwards you write the feedback and see which mistakes you caught. It is the quickest way to learn what interviewers look for.</p>}
+        </Group>
+
+        {!isPeer && !isRev && !isLoop && (<Group label="Presets">
           <div className="flex flex-wrap gap-2">
             {BUILTIN.map((p) => <Chip key={p.name} on={false} onClick={() => setCfg({ ...p.make(cfg.engine), engine: cfg.engine })}>{p.name}</Chip>)}
             {saved.map((p, i) => (
@@ -162,9 +194,9 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
               setSaved(n); storeSaved(n);
             }}><Save size={12} />Save current</button>
           </div>
-        </Group>
+        </Group>)}
 
-        <Group label="Question" hint={cfg.selection.mode === "exact" ? "practice pick: tracked separately" : `${poolSize} question${poolSize === 1 ? "" : "s"} in the draw`}>
+        {!isPeer && !isLoop && (<Group label="Question" hint={cfg.selection.mode === "exact" ? "practice pick: tracked separately" : `${poolSize} question${poolSize === 1 ? "" : "s"} in the draw`}>
           <div className="flex flex-wrap gap-2">
             <Chip on={cfg.selection.mode === "random-all" && !fresh} onClick={() => { setFresh(false); set({ selection: { mode: "random-all", preferUnseen: true } }); }}><Shuffle size={12} className="mr-1 inline" />Random from everything</Chip>
             <Chip on={cfg.selection.mode === "random-pool"} onClick={() => { setFresh(false); set({ selection: { mode: "random-pool", pool: {} } }); }}>Random from a pool I choose</Chip>
@@ -194,32 +226,32 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
             </div>
           )}
           {fresh && <p className="mt-3 text-[12.5px] leading-relaxed text-mute">Before the round starts, your AI writes a {kindMeta.label.toLowerCase()} question that is not in Ascent&apos;s content and avoids what you have studied. It tests transfer, not memory.</p>}
-        </Group>
+        </Group>)}
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <Group label="Interviewer tone">
+        {!isPeer && (<div className="grid gap-6 lg:grid-cols-2">
+          {!isRev && <Group label="Interviewer tone">
             <div className="grid gap-1.5 sm:grid-cols-2">{TONES.map((t) => (
               <button key={t.id} onClick={() => set({ tone: t.id })} aria-pressed={cfg.tone === t.id} className={cn("rounded-xl border px-3 py-2 text-left transition", cfg.tone === t.id ? "border-accent/60 bg-accent/5" : "border-line bg-panel2 hover:border-[#3a4160]")}>
                 <div className="text-[13px] font-semibold">{t.label}</div><div className="text-[11.5px] text-mute">{t.desc}</div>
               </button>
             ))}</div>
-          </Group>
+          </Group>}
           <div className="space-y-5">
             <Group label="Level bar"><div className="flex gap-1.5">{LEVELS.map((l) => <Chip key={l} on={cfg.level === l} onClick={() => set({ level: l })}>{l}{l === "L6" ? " probe" : ""}</Chip>)}</div></Group>
-            <Group label="Length">
+            {!isLoop && <Group label="Length">
               <label className="flex items-center gap-3 text-[13px] text-mute"><input type="range" min={15} max={60} step={5} value={cfg.minutes} onChange={(e) => set({ minutes: +e.target.value })} className="flex-1" /><span className="num w-14 font-semibold text-text">{cfg.minutes} min</span></label>
-            </Group>
-            <Group label="Pressure">
+            </Group>}
+            {!isRev && <Group label="Pressure">
               <div className="grid gap-1.5 sm:grid-cols-3">{PRESSURES.map((p) => (
                 <button key={p.id} onClick={() => set({ pressure: p.id })} aria-pressed={cfg.pressure === p.id} className={cn("rounded-xl border px-3 py-2 text-left transition", cfg.pressure === p.id ? "border-accent/60 bg-accent/5" : "border-line bg-panel2 hover:border-[#3a4160]")}>
                   <div className="text-[13px] font-semibold">{p.label}</div><div className="text-[11px] leading-snug text-mute">{p.desc}</div>
                 </button>
               ))}</div>
-            </Group>
+            </Group>}
           </div>
-        </div>
+        </div>)}
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        {!isPeer && !isRev && (<div className="grid gap-6 lg:grid-cols-2">
           <Group label="Round arc">
             <div className="flex flex-wrap gap-1.5">
               <Chip on={cfg.arc.intro} onClick={() => set({ arc: { ...cfg.arc, intro: !cfg.arc.intro } })}>Interviewer introduces themselves</Chip>
@@ -238,10 +270,10 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
               })}</div>
             </Group>
           )}
-        </div>
+        </div>)}
 
-        <Group label="Voice">
-          <div className="grid gap-2 md:grid-cols-3">{engines.map((e) => {
+        {!isPeer && (<Group label="Voice">
+          <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">{engines.map((e) => {
             const why = unavailable(e), info = ENGINE_INFO[e];
             return (
               <button key={e} disabled={!!why} onClick={() => set({ engine: e })} aria-pressed={cfg.engine === e}
@@ -257,18 +289,38 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
             {canRecord && cfg.record?.audio && cloudEnabled && user && <label className="flex cursor-pointer items-center gap-2" title="Uploads the recording to your private storage in Ascent so other devices can replay it"><input type="checkbox" checked={!!cfg.record?.cloud} onChange={(e) => set({ record: { audio: true, cloud: e.target.checked } })} className="accent-[var(--color-accent)]" />Back it up to my account</label>}
             {cfg.engine !== "text" && <label className="flex items-center gap-2">Speaking rate<input type="range" min={0.8} max={1.3} step={0.05} value={cfg.voice.rate} onChange={(e) => set({ voice: { ...cfg.voice, rate: +e.target.value } })} /><span className="num w-10 text-text">{cfg.voice.rate.toFixed(2)}×</span></label>}
             {cfg.engine !== "text" && <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={cfg.voice.captions} onChange={(e) => set({ voice: { ...cfg.voice, captions: e.target.checked } })} className="accent-[var(--color-accent)]" />Live captions</label>}
-            <span className="flex items-center gap-2">Mode
+            {!isRev && !isLoop && <span className="flex items-center gap-2">Mode
               <Chip on={cfg.mode === "real"} onClick={() => set({ mode: "real" })} title="The interviewer knows nothing about you">Real</Chip>
               <Chip on={cfg.mode === "coach"} onClick={() => set({ mode: "coach" })} title="The interviewer targets your recurring gaps">Coach</Chip>
-            </span>
+            </span>}
+            {cfg.kind === "behavioral" && !isRev && !isLoop && cfg.engine !== "text" && <label className="flex cursor-pointer items-center gap-2" title="Voice only, laid out for a phone: practise on a walk or a commute"><input type="checkbox" checked={cfg.layout === "commute"} onChange={(e) => set({ layout: e.target.checked ? "commute" : "desk" })} className="accent-[var(--color-accent)]" />Commute mode</label>}
+            <label className={cn("flex items-center gap-2", privacyWhy ? "cursor-not-allowed opacity-60" : "cursor-pointer")} title={privacyWhy ?? "On-device speech recognition and voices, and only your local model: nothing about the round leaves this machine."}>
+              <input type="checkbox" disabled={!!privacyWhy} checked={!!cfg.privacy} onChange={(e) => set({ privacy: e.target.checked, ...(e.target.checked ? { engine: unavailable("ascent-voice") ? "text" as const : "ascent-voice" as const, record: { audio: !!cfg.record?.audio, cloud: false } } : {}) })} className="accent-[var(--color-accent)]" />
+              <ShieldCheck size={14} />Privacy mode
+            </label>
           </div>
-        </Group>
+        </Group>)}
+
+        {isPeer && <p className="text-[13px] leading-relaxed text-mute">Pick the kind of round above, then open the lobby to create a room or join your partner&apos;s with a code. The interviewer chooses the question there.</p>}
+
+        <details className="rounded-xl border border-line bg-panel2 px-3.5 py-2.5 text-[12.5px]" open={!!cfg.privacy}>
+          <summary className="cursor-pointer font-medium text-mute">What leaves this device{cfg.privacy ? " (privacy mode)" : ""}</summary>
+          <ul className="mt-2 space-y-1">{flows.map((f) => <li key={f.data} className="flex gap-2"><span className="w-56 shrink-0 text-faint">{f.data}</span><span className={f.to.length ? "text-mute" : "text-ok"}>{f.to.length ? f.to.join("; ") : "stays on this device"}</span></li>)}</ul>
+          {cfg.privacy && settings.ai && <p className="mt-2 text-faint">The on-device speech model is downloaded once from Hugging Face; your audio is never sent.</p>}
+        </details>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
           <p className="text-[12.5px] text-faint">{!ready ? "Self-paced round: no AI calls, no cost." : `Estimated cost: ${cost.high === 0 ? "free (local model)" : `about $${cost.low.toFixed(2)}–$${cost.high.toFixed(2)} on your own ${cfg.engine === "realtime" ? `${ai.realtime.provider === "openai" ? "OpenAI" : "Gemini"} realtime` : settings.provider} account`}.`}{cfg.engine !== "text" && (cfg.record?.audio ? ` The round is recorded in this browser${cfg.record.cloud ? " and backed up to your account" : ""}, and kept for 30 days.` : " The microphone is used only during the round, and nothing is recorded.")}{budget.scope && ready && ` This month: $${budget.usedUsd.toFixed(2)} of your $${budget.limitUsd} ${budget.scope === "total" ? "AI" : ENGINE_INFO[cfg.engine].label} budget${budget.level === "over" ? (ai.costGuard.enforce ? ", used up: a cheaper engine will be used" : ", used up") : budget.level === "warn" ? ", nearly used: the round will run on a smaller model" : ""}.`}</p>
-          <Button variant="primary" disabled={busy || (!ready && (fresh || cfg.engine === "realtime")) || (cfg.selection.mode === "random-pool" && !poolSize) || (cfg.selection.mode === "exact" && !exactQ)} onClick={() => onStart({ ...cfg, seed: Math.floor(Math.random() * 2 ** 31) }, fresh)}>
-            {busy ? "Preparing…" : cfg.selection.mode === "exact" ? "Start the round" : <><Shuffle size={15} />Draw a question and start</>}
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            {onBook && !isPeer && (booking
+              ? <span className="flex items-center gap-2"><input type="datetime-local" value={bookAt} onChange={(e) => setBookAt(e.target.value)} aria-label="When" className="h-9 rounded-lg border border-line bg-bg px-2 text-[13px]" />
+                  <Button size="sm" disabled={!bookAt || new Date(bookAt).getTime() < Date.now()} onClick={() => { onBook({ ...cfg, seed: Math.floor(Math.random() * 2 ** 31) }, fresh, new Date(bookAt).getTime(), { loopDay }); setBooking(false); setBookAt(""); }}>Book</Button>
+                  <Button size="sm" variant="ghost" onClick={() => setBooking(false)}>Cancel</Button></span>
+              : <Button variant="ghost" onClick={() => setBooking(true)} title="Book a slot: the room opens at that time with a short lobby"><CalendarPlus size={15} />Book for later</Button>)}
+            <Button variant="primary" disabled={busy || (!ready && (fresh || cfg.engine === "realtime" || isRev)) || (!isPeer && !isLoop && cfg.selection.mode === "random-pool" && !poolSize) || (!isPeer && !isLoop && cfg.selection.mode === "exact" && !exactQ)} onClick={() => onStart({ ...cfg, seed: Math.floor(Math.random() * 2 ** 31) }, fresh && !isLoop && !isPeer, { loopDay })}>
+              {busy ? "Preparing…" : isPeer ? <><Users size={15} />Open the peer lobby</> : isLoop ? "Start the loop" : isRev ? "Meet the candidate" : cfg.selection.mode === "exact" ? "Start the round" : <><Shuffle size={15} />Draw a question and start</>}
+            </Button>
+          </div>
         </div>
       </section>
 

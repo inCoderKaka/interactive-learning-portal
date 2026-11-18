@@ -8,6 +8,40 @@ import { PRESETS, TASKS, getAi, profileFor, providerReady, resolved, type AiSett
 import { BUCKETS, totalOf, type Bucket, type Budgets } from "@/lib/interview/core/usage";
 import { onSpend, resetMonth, spendThisMonth } from "@/lib/interview/meter";
 import { PromptOverrides } from "./PromptOverrides";
+import { EvalRunner } from "./EvalRunner";
+import { WHISPER_MODELS } from "@/lib/interview/engines/whisper";
+import { agoraReady, getAgora, getTurn, setAgora, setTurn, type AgoraCreds, type TurnServer } from "@/lib/interview/providers/keys";
+
+/** Optional engine and transport credentials, kept in this browser like the AI keys. */
+function OptionalEngines() {
+  const [ag, setAg] = useState<AgoraCreds>({ appId: "", appCertificate: "", area: "US" });
+  const [turn, setT] = useState<TurnServer>({ urls: "", username: "", credential: "" });
+  useEffect(() => { setAg(getAgora()); setT(getTurn()); }, []);
+  const saveAg = (p: Partial<AgoraCreds>) => { const n = { ...ag, ...p }; setAg(n); setAgora(n); };
+  const saveTurn = (p: Partial<TurnServer>) => { const n = { ...turn, ...p }; setT(n); setTurn(n); };
+  return (
+    <div className="grid gap-5 lg:grid-cols-2">
+      <div className="space-y-3 rounded-xl border border-line bg-panel2 p-4">
+        <div className="flex items-center justify-between"><div className="text-[13px] font-semibold">Agora engine (optional)</div>{agoraReady(ag) && <span className="text-[11.5px] text-ok">ready</span>}</div>
+        <p className="text-[12px] leading-relaxed text-mute">Uses your own Agora project and Agora&apos;s managed speech and LLM pipeline. Your App ID and certificate stay in this browser and are sent, per request, to Ascent&apos;s server only to start and stop the agent; nothing is stored there. Billing is on your Agora project.</p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className={label}>App ID<input className={cn(field, "mt-1 font-mono")} value={ag.appId} onChange={(e) => saveAg({ appId: e.target.value.trim() })} placeholder="32 hex characters" /></label>
+          <label className={label}>App Certificate<input type="password" autoComplete="off" className={cn(field, "mt-1 font-mono")} value={ag.appCertificate} onChange={(e) => saveAg({ appCertificate: e.target.value.trim() })} placeholder="32 hex characters" /></label>
+          <label className={label}>Region<select className={cn(field, "mt-1")} value={ag.area} onChange={(e) => saveAg({ area: e.target.value as AgoraCreds["area"] })}><option value="US">North America</option><option value="EU">Europe</option><option value="AP">Asia-Pacific</option></select></label>
+        </div>
+      </div>
+      <div className="space-y-3 rounded-xl border border-line bg-panel2 p-4">
+        <div className="text-[13px] font-semibold">Peer mode relay (optional)</div>
+        <p className="text-[12px] leading-relaxed text-mute">Peer calls connect directly between browsers. On strict corporate or campus networks that fails; a TURN relay you run or rent (for example coturn, or a hosted TURN service) fixes it. Leave empty to use direct connections only.</p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className={cn(label, "sm:col-span-2")}>TURN URLs (comma separated)<input className={cn(field, "mt-1 font-mono")} value={turn.urls} onChange={(e) => saveTurn({ urls: e.target.value })} placeholder="turn:turn.example.com:3478" /></label>
+          <label className={label}>Username<input className={cn(field, "mt-1 font-mono")} value={turn.username} onChange={(e) => saveTurn({ username: e.target.value })} /></label>
+          <label className={label}>Credential<input type="password" autoComplete="off" className={cn(field, "mt-1 font-mono")} value={turn.credential} onChange={(e) => saveTurn({ credential: e.target.value })} /></label>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const BUCKET_LABEL: Record<Bucket, string> = { realtime: "Realtime voice", "ascent-voice": "Ascent Voice", text: "Text rounds", agora: "Agora", other: "Other AI (reviews, hints, scorecards outside a round)" };
 
@@ -128,15 +162,20 @@ export function AiSettingsPanel({ settings, setSettings }: { settings: Settings;
           <p className="text-[12px] leading-relaxed text-mute">Works with any provider, including Claude and local models. Chrome&apos;s built-in recognition sends audio to Google unless on-device recognition is available. OpenAI speech needs an OpenAI key and handles technical terms better.</p>
           <div className="grid gap-3 sm:grid-cols-2">
             <label className={label}>Speech-to-text
-              <select className={cn(field, "mt-1")} value={ai.speech.stt} onChange={(e) => save({ speech: { ...ai.speech, stt: e.target.value as "webspeech" | "openai" } })}>
-                <option value="webspeech">Browser (free)</option><option value="openai">OpenAI transcription</option>
+              <select className={cn(field, "mt-1")} value={ai.speech.stt} onChange={(e) => save({ speech: { ...ai.speech, stt: e.target.value as typeof ai.speech.stt } })}>
+                <option value="webspeech">Browser (free)</option><option value="webspeech-local">Browser, on-device only</option><option value="whisper-local">Whisper, on-device (private)</option><option value="openai">OpenAI transcription</option>
               </select>
             </label>
             <label className={label}>Text-to-speech
-              <select className={cn(field, "mt-1")} value={ai.speech.tts} onChange={(e) => save({ speech: { ...ai.speech, tts: e.target.value as "browser" | "openai" } })}>
-                <option value="browser">Browser voices (free)</option><option value="openai">OpenAI voices</option>
+              <select className={cn(field, "mt-1")} value={ai.speech.tts} onChange={(e) => save({ speech: { ...ai.speech, tts: e.target.value as typeof ai.speech.tts } })}>
+                <option value="browser">Browser voices (free)</option><option value="browser-local">On-device voices only</option><option value="openai">OpenAI voices</option>
               </select>
             </label>
+            {ai.speech.stt === "whisper-local" && (
+              <label className={cn(label, "sm:col-span-2")}>Whisper model (downloaded once, then cached)
+                <select className={cn(field, "mt-1")} value={ai.speech.whisperModel} onChange={(e) => save({ speech: { ...ai.speech, whisperModel: e.target.value } })}>{WHISPER_MODELS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select>
+              </label>
+            )}
             <label className={cn(label, "sm:col-span-2")}>Voice
               {ai.speech.tts === "browser"
                 ? <select className={cn(field, "mt-1")} value={ai.speech.ttsVoice} onChange={(e) => save({ speech: { ...ai.speech, ttsVoice: e.target.value } })}><option value="">Best available</option>{voices.map((v) => <option key={v}>{v}</option>)}</select>
@@ -155,6 +194,8 @@ export function AiSettingsPanel({ settings, setSettings }: { settings: Settings;
       </div>
 
       <BudgetPanel ai={ai} save={save} />
+
+      <OptionalEngines />
 
       {ai.devMode && (
         <div className="space-y-4">
@@ -225,6 +266,8 @@ export function AiSettingsPanel({ settings, setSettings }: { settings: Settings;
           <p className="text-[12px] leading-relaxed text-faint">Greyed-out fields are not supported by the selected provider or model (hover for why). &ldquo;tier:small&rdquo; and &ldquo;tier:strong&rdquo; pick a model class for the provider; leave the model empty to use the one chosen above.</p>
 
           <PromptOverrides ai={ai} save={save} />
+
+          <EvalRunner settings={settings} />
         </div>
       )}
     </div>

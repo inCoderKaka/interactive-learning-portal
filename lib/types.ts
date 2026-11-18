@@ -165,7 +165,11 @@ export interface Settings {
   blind: boolean; // hide topic tags while practising
   areas: Record<Area, boolean>;
   ai?: AiSettingsPatch; // developer mode and voice; merged with defaults by getAi()
+  mockBookings?: MockBooking[]; // scheduled mocks (MI-X-4); synced with the profile
 }
+
+/** A booked mock round; the full shape lives in lib/interview/core/booking.ts. */
+export interface MockBooking { id: string; at: number; title: string; cfg: unknown; outOfCurriculum?: boolean; createdAt: number; startedAt?: number }
 
 /** Stored shape of AI settings: anything missing falls back to the defaults in lib/interview/tasks.ts. */
 export interface AiSettingsPatch {
