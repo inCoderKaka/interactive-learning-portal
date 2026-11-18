@@ -1,5 +1,6 @@
 import type { BrainState, Kind, LoggedEvent, SessionConfig } from "./types.ts";
 import { curveballById } from "./curveballs.ts";
+import { fragment } from "./templates.ts";
 
 export type Decision = "strong_no_hire" | "no_hire" | "leaning_no_hire" | "leaning_hire" | "hire" | "strong_hire";
 export const DECISIONS: Decision[] = ["strong_no_hire", "no_hire", "leaning_no_hire", "leaning_hire", "hire", "strong_hire"];
@@ -70,7 +71,7 @@ export function scorecardPrompt(cfg: SessionConfig, s: BrainState, log: LoggedEv
   const fired = s.curveballs.filter((c) => c.fired).map((c) => curveballById.get(c.id)?.scoreNote).filter(Boolean);
   const final = Object.entries(s.digests).map(([k, v]) => `FINAL ${k.toUpperCase()}:\n${v}`).join("\n\n");
   return {
-    system: `You write Google hiring-committee interview feedback. Be evidence-based: every rating must cite transcript lines by their #number with a short exact quote. Judge only what happened; do not reward confidence or length. A correct approach that differs from the reference is fine. Rating scale per dimension: 1 poor, 2 borderline, 3 solid hire, 4 exceptional. Hold the ${cfg.level} bar. Hints cost signal in proportion to how much they gave away.`,
+    system: fragment("scorecard.system", cfg.prompts, { level: cfg.level }) + (cfg.format === "peer" ? `\n${fragment("peer.observer", cfg.prompts)}` : ""),
     user: `Interview: ${cfg.kind}, ${cfg.minutes} min, interviewer tone ${s.tone}.
 Question: ${s.question.statement}
 Reference notes (not the only valid answer): ${s.question.reference.slice(0, 2500)}

@@ -38,7 +38,8 @@ export const openAiRealtimeEngine: Engine = {
     const pc = new RTCPeerConnection();
     const audio = new Audio();
     audio.autoplay = true;
-    pc.ontrack = (e) => { audio.srcObject = e.streams[0]; };
+    let remote: MediaStream | undefined;
+    pc.ontrack = (e) => { remote = e.streams[0]; audio.srcObject = remote; };
     stream.getAudioTracks().forEach((t) => pc.addTrack(t, stream));
     const dc = pc.createDataChannel("oai-events");
     let outText = "", agentSpeaking = false, awaitingAt = 0, closed = false;
@@ -76,6 +77,7 @@ export const openAiRealtimeEngine: Engine = {
     return {
       id: "realtime",
       kind: "realtime",
+      get output() { return remote; },
       respond(note) {
         awaitingAt = performance.now();
         send({ type: "conversation.item.create", item: { type: "message", role: "user", content: [{ type: "input_text", text: note }] } });

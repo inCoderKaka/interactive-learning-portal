@@ -131,6 +131,7 @@ export const geminiLiveEngine: Engine = {
     return {
       id: "realtime",
       kind: "realtime",
+      output: player.stream,
       respond(note) {
         awaitingAt = performance.now();
         send({ clientContent: { turns: [{ role: "user", parts: [{ text: note }] }], turnComplete: true } });

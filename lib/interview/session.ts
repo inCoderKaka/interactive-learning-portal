@@ -7,13 +7,23 @@ import { constraintFlags, diagramRules, type ConstraintFlags } from "./core/dige
 import { END_OF_SPEECH_MS } from "./core/policy";
 import { SILENCE, buildTurn, contextNote, judgePrompt, realtimeNote, systemPrompt } from "./core/prompts";
 import type { Action, BrainState, DiagramSnapshot, Digest, EngineId, InterviewQuestion, LoggedEvent, SessionConfig, SessionEvent } from "./core/types";
-import { engineFor, fallbackFor } from "./engines/registry";
+import { ENGINE_INFO, engineFor, fallbackFor } from "./engines/registry";
 import type { EngineCallbacks, EngineHandle } from "./engines/types";
 import { keyterms } from "./questions";
-import { providerReady, resolved, runTask, streamTask } from "./tasks";
+import { activePrompts, getAi, providerReady, resolved, runTask, streamTask } from "./tasks";
 import { describeImage } from "./providers/llm";
+import { fragment } from "./core/templates";
+import { OPENAI_SPEECH_USD_PER_MIN, REALTIME_USD_PER_MIN, checkBudget, cheapRound, totalOf, type BudgetCheck } from "./core/usage";
+import { addUsd, setMeterScope, spendThisMonth } from "./meter";
+
+/** A whiteboard scene at a moment of the round, for replay (MI-FB-2). */
+export interface Frame { t: number; surface: "whiteboard"; elements: unknown[] }
+
+/** Receives every logged event as it happens (cloud sync, peers). */
+export interface EventSink { event(ev: LoggedEvent): void; ended?(log: LoggedEvent[]): void }
 
 const VERBATIM_TURNS = 40;
+const ENGINE_LABEL = Object.fromEntries(Object.entries(ENGINE_INFO).map(([k, v]) => [k, v.label])) as Record<EngineId, string>;
 
 export interface LiveView {
   state: BrainState;
@@ -28,10 +38,11 @@ export interface LiveView {
   error: string;
   ended: boolean;
   muted: boolean;
-  debug: { lastPrompt: string; lastNote: string; declined: number; latencies: { metric: string; ms: number }[] };
+  debug: { lastPrompt: string; lastNote: string; declined: number; latencies: { metric: string; ms: number }[]; costUsd: number; cheap: boolean; budget: BudgetCheck | null };
 }
 
 export class InterviewSession {
+  readonly id: string = crypto.randomUUID();
   readonly cfg: SessionConfig;
   private settings: Settings;
   private s: BrainState;
@@ -50,16 +61,24 @@ export class InterviewSession {
   private summary = "";
   private summarisedTurns = 0;
   private summarising = false;
+  private cheap = false;
+  private spentAtStart = 0;
+  private lastBudgetCheck = 0;
+  private budgetWarned = false;
+  private sinks = new Set<EventSink>();
+  readonly frames: Frame[] = [];
+  /** The engine's audio output (the interviewer's voice), when it exposes one; for recording. */
+  onOutput?: (stream: MediaStream) => void;
 
   constructor(cfg: SessionConfig, question: InterviewQuestion, settings: Settings) {
-    this.cfg = cfg;
+    this.cfg = { ...cfg, prompts: cfg.prompts ?? activePrompts(settings) };
     this.settings = settings;
     this.engineId = cfg.engine;
     this.s = initBrain(cfg, question, Date.now());
     this.flags = constraintFlags(question);
     this.view = {
       state: this.s, log: this.log, engine: this.engineId, candidatePartial: "", interviewerPartial: "", agentSpeaking: false, candidateSpeaking: false,
-      generating: false, status: "", error: "", ended: false, muted: false, debug: { lastPrompt: "", lastNote: "", declined: 0, latencies: [] },
+      generating: false, status: "", error: "", ended: false, muted: false, debug: { lastPrompt: "", lastNote: "", declined: 0, latencies: [], costUsd: 0, cheap: false, budget: null },
     };
   }
 
@@ -70,12 +89,17 @@ export class InterviewSession {
     for (const l of this.listeners) l(this.view);
   }
   get state() { return this.s; }
+  get engineNow() { return this.engineId; }
   now() { return this.t0 ? Date.now() - this.t0 : 0; }
 
   private record(e: SessionEvent) {
     if (e.type === "tick") return;
-    this.log.push({ seq: ++this.seq, t: this.now(), e });
+    const ev = { seq: ++this.seq, t: this.now(), e };
+    this.log.push(ev);
+    for (const k of this.sinks) { try { k.event(ev); } catch { /* a sink never breaks the round */ } }
   }
+
+  addSink(k: EventSink) { this.sinks.add(k); for (const ev of this.log) k.event(ev); return () => { this.sinks.delete(k); }; }
 
   private voice() { return this.engineId !== "text"; }
 
@@ -105,6 +129,8 @@ export class InterviewSession {
       voice: this.cfg.voice,
     }, this.callbacks());
     this.engineId = id;
+    setMeterScope(id);
+    if (this.engine.output) this.onOutput?.(this.engine.output);
   }
 
   async start() {
@@ -120,9 +146,45 @@ export class InterviewSession {
     }
     this.t0 = Date.now();
     this.s = { ...this.s, startedAt: this.t0 };
+    this.spentAtStart = totalOf(spendThisMonth());
+    this.checkBudget(true);
     this.emit({ status: "" });
     this.dispatch({ type: "session.started", question: this.s.question.id, tone: this.s.tone, engine: this.engineId });
-    this.tick = setInterval(() => this.dispatch({ type: "tick" }), 2000);
+    this.tick = setInterval(() => { this.meterTick(2000); this.dispatch({ type: "tick" }); }, 2000);
+  }
+
+  /** Per-minute costs the meter cannot see from token counts: realtime audio and provider speech. */
+  private meterTick(ms: number) {
+    const min = ms / 60000;
+    if (this.engineId === "realtime") {
+      const rate = REALTIME_USD_PER_MIN[getAi(this.settings).realtime.provider] ?? REALTIME_USD_PER_MIN.gemini;
+      addUsd("realtime", rate.mid * min);
+    } else if (this.engineId === "ascent-voice") {
+      const sp = getAi(this.settings).speech;
+      addUsd("ascent-voice", OPENAI_SPEECH_USD_PER_MIN * min * ((sp.tts === "openai" ? 1 : 0) + (sp.stt === "openai" ? 0.4 : 0)));
+    }
+    if (Date.now() - this.lastBudgetCheck > 10000) this.checkBudget(false);
+  }
+
+  /** Cost guard (MI-X-5): warn and go cheap near a budget; fall back to a cheaper engine when it is spent. */
+  private checkBudget(atStart: boolean) {
+    this.lastBudgetCheck = Date.now();
+    const ai = getAi(this.settings);
+    const spent = spendThisMonth();
+    const c = checkBudget(ai.budgets, spent, this.engineId);
+    const costUsd = Math.max(0, totalOf(spent) - this.spentAtStart);
+    const cheap = ai.costGuard.cheapNearLimit && cheapRound(c);
+    if (c.level !== "ok" && !this.budgetWarned) {
+      this.budgetWarned = true;
+      this.record({ type: "budget", level: c.level, scope: String(c.scope), usedUsd: +c.usedUsd.toFixed(4), limitUsd: c.limitUsd });
+      if (cheap) this.emit({ status: "Near your budget: the round now uses a smaller model." });
+    }
+    this.cheap = cheap;
+    this.emit({ debug: { ...this.view.debug, costUsd, cheap, budget: c.level === "ok" ? null : c } });
+    if (c.level === "over" && ai.costGuard.enforce && !atStart && fallbackFor(this.engineId, this.settings)) {
+      this.budgetWarned = false; // the next engine gets its own warning
+      void this.fallback(new Error(`This month's ${c.scope === "total" ? "AI" : ENGINE_LABEL[this.engineId]} budget ($${c.limitUsd}) is used up.`));
+    }
   }
 
   dispatch(e: SessionEvent) {
@@ -147,7 +209,7 @@ export class InterviewSession {
       if (a.allowSilence) {
         try {
           const j = judgePrompt(this.cfg, this.s, this.now(), a.instruction);
-          const out = await runTask(this.settings, "interviewer.judge", j.system, [{ role: "user", content: j.user }]);
+          const out = await runTask(this.settings, "interviewer.judge", j.system, [{ role: "user", content: j.user }], { cheap: this.cheap });
           const v = JSON.parse(out.slice(out.indexOf("{"), out.lastIndexOf("}") + 1)) as { speak?: boolean; say?: string };
           if (!v.speak) { this.record({ type: "intervention.declined", trigger: a.origin, reason: "judge" }); this.emit({ debug: { ...this.view.debug, declined: this.view.debug.declined + 1 } }); return; }
           instruction = `Say something close to this, in your own voice: "${v.say}"`;
@@ -193,7 +255,7 @@ export class InterviewSession {
     const t0 = performance.now();
     let firstToken = true;
     try {
-      const src = streamTask(this.settings, "interviewer.turn", system, msgs, ctl.signal);
+      const src = streamTask(this.settings, "interviewer.turn", system, msgs, ctl.signal, { cheap: this.cheap });
       // hold back output until we know it is not the silence token
       const gated = (async function* (self: InterviewSession) {
         let head = "";
@@ -229,7 +291,7 @@ export class InterviewSession {
     if (this.summarising || outside - this.summarisedTurns < 10 || !providerReady(this.settings, this.settings.provider)) return;
     this.summarising = true;
     const chunk = turns.slice(0, outside).map(({ e }) => (e.type === "turn.candidate" ? `CANDIDATE: ${e.text}` : e.type === "turn.interviewer" ? `INTERVIEWER: ${e.text}` : "")).join("\n");
-    runTask(this.settings, "summarise", "Summarise an interview transcript for the interviewer who is running it. Keep requirements agreed, numbers stated, design choices made, mistakes noticed and questions still open. Under 150 words, plain text.", [{ role: "user", content: `${this.summary ? `Earlier summary: ${this.summary}\n\n` : ""}${chunk}` }])
+    runTask(this.settings, "summarise", fragment("summarise.system", this.cfg.prompts), [{ role: "user", content: `${this.summary ? `Earlier summary: ${this.summary}\n\n` : ""}${chunk}` }])
       .then((t) => { this.summary = t.trim(); this.summarisedTurns = outside; })
       .catch(() => {})
       .finally(() => { this.summarising = false; });
@@ -294,8 +356,9 @@ export class InterviewSession {
   mute(on: boolean) { this.engine?.mute(on); this.emit({ muted: on }); }
 
   /** Whiteboard or doc changed meaningfully. */
-  workspace(d: Digest, snapshot?: DiagramSnapshot, image?: () => Promise<Blob | null>) {
+  workspace(d: Digest, snapshot?: DiagramSnapshot, image?: () => Promise<Blob | null>, elements?: unknown[]) {
     this.dispatch({ type: "digest", surface: d.surface, diff: d.diff, full: d.full });
+    if (elements) this.frames.push({ t: this.now(), surface: "whiteboard", elements });
     if (snapshot && this.cfg.kind === "hld") for (const h of diagramRules(snapshot, this.flags)) this.dispatch({ type: "rule.hit", rule: h.rule, detail: h.detail });
     this.engine?.addContext?.(`[Interviewer note, do not reply to this: the candidate's ${d.surface} changed: ${d.diff.slice(0, 1500)}]`);
     // realtime models can look at the board directly; throttle images
@@ -314,7 +377,7 @@ export class InterviewSession {
       return;
     }
     const vt = resolved(this.settings, "vision.describe");
-    const desc = await describeImage(this.settings, image, `Describe this system or class diagram precisely for an interviewer who cannot see it: components, connections and labels, then one line on anything that looks wrong at this scale: ${this.s.question.constraints || "n/a"}. Under 150 words.`, { provider: vt.provider, model: vt.model });
+    const desc = await describeImage(this.settings, image, fragment("vision.describe", this.cfg.prompts, { constraints: this.s.question.constraints || "n/a" }), { provider: vt.provider, model: vt.model });
     this.record({ type: "vision.look", surface: "whiteboard", description: desc });
     this.dispatch({ type: "digest", surface: "whiteboard", diff: "candidate asked you to look", full: `${this.s.digests.whiteboard ?? ""}\nWhat the image shows: ${desc}` });
     void this.run({ type: "say", origin: "reply", instruction: "The candidate asked you to look at their diagram; its description is in the note. Respond briefly with one pointed question about what matters most.", allowSilence: false });
@@ -330,6 +393,8 @@ export class InterviewSession {
     try { await this.engine?.stop(); } catch { /* gone */ }
     this.engine = null;
     this.emit({ ended: true, agentSpeaking: false, candidateSpeaking: false, generating: false });
+    setMeterScope("other");
+    for (const k of this.sinks) { try { k.ended?.(this.log); } catch { /* ignore */ } }
     this.onEnd?.();
   }
 

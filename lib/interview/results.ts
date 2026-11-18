@@ -4,8 +4,10 @@
 import type { Feedback, Settings } from "@/lib/types";
 import { deliveryStats, type DeliveryStats } from "./core/analytics";
 import { DECISIONS, aggregateScorecards, parseScorecard, scoreOf, scorecardPrompt, type Decision, type Scorecard } from "./core/scoring";
-import type { BrainState, InterviewQuestion, LoggedEvent, SessionConfig } from "./core/types";
-import { profileFor, runTask } from "./tasks";
+import type { BrainState, EngineId, InterviewQuestion, LoggedEvent, SessionConfig } from "./core/types";
+import { PROMPT_VERSION } from "./core/prompts";
+import { promptVersion } from "./core/templates";
+import { profileFor, resolved, runTask } from "./tasks";
 
 export async function scoreSession(settings: Settings, cfg: SessionConfig, s: BrainState, log: LoggedEvent[]): Promise<Scorecard> {
   const p = scorecardPrompt(cfg, s, log);
@@ -14,6 +16,12 @@ export async function scoreSession(settings: Settings, cfg: SessionConfig, s: Br
   const ok = runs.filter((r): r is PromiseFulfilledResult<Scorecard> => r.status === "fulfilled").map((r) => r.value);
   if (!ok.length) throw (runs[0] as PromiseRejectedResult).reason;
   return aggregateScorecards(ok);
+}
+
+/** Which task profile wrote a scorecard: stored with it for evaluation and audits. */
+export function scorecardProvenance(settings: Settings, cfg: SessionConfig) {
+  const r = resolved(settings, "scorecard");
+  return { provider: r.provider, model: r.model, params: r.params, samples: r.samples ?? 1, prompt: promptVersion(PROMPT_VERSION, cfg.prompts) };
 }
 
 /** Map onto Ascent's existing feedback shape so attempts, progress and history keep working. */
@@ -46,6 +54,12 @@ export interface SessionRecord {
   hints: number;
   scorecard?: Scorecard;
   predicted?: Decision;
+  engine?: EngineId;          // the engine the round ended on (after any fallback)
+  endedAt?: number;
+  hasMedia?: boolean;         // a recording or whiteboard frames exist on this device or in the cloud
+  remote?: boolean;           // loaded from the cloud; its log is fetched on demand
+  model?: ReturnType<typeof scorecardProvenance>;
+  extra?: Record<string, unknown>; // mode-specific results (reverse grading, peer roles, loop committee)
 }
 
 const KEY = "ascent:interviews:v1";
@@ -71,11 +85,18 @@ export function saveRecord(r: SessionRecord) {
   }
 }
 
-export function makeRecord(cfg: SessionConfig, s: BrainState, log: LoggedEvent[]): SessionRecord {
+export function makeRecord(cfg: SessionConfig, s: BrainState, log: LoggedEvent[], id: string = crypto.randomUUID(), engine?: EngineId): SessionRecord {
   return {
-    id: crypto.randomUUID(), at: Date.now(), cfg, question: s.question, tone: s.tone, persona: s.persona,
+    id, at: s.startedAt || Date.now(), cfg, question: s.question, tone: s.tone, persona: s.persona,
     picked: cfg.selection.mode === "exact", log, finalDigests: s.digests, stats: deliveryStats(log), hints: s.hints,
+    engine: engine ?? cfg.engine, endedAt: Date.now(),
   };
+}
+
+/** Merge local and cloud history: local wins (it has the full log), newest first. */
+export function mergeHistory(local: SessionRecord[], remote: SessionRecord[]): SessionRecord[] {
+  const ids = new Set(local.map((r) => r.id));
+  return [...local, ...remote.filter((r) => !ids.has(r.id))].sort((a, b) => b.at - a.at);
 }
 
 export function transcriptText(log: LoggedEvent[]): string {

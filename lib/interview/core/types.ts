@@ -1,6 +1,8 @@
 // Pure data types for the interview core. No imports with side effects: this folder runs in the
 // browser, on a server, and under `node --test`.
 
+import type { Overrides } from "./templates.ts";
+
 export type Kind = "coding" | "hld" | "lld" | "behavioral";
 export type Tone = "guide" | "neutral" | "tough" | "notetaker";
 export type Pressure = "relaxed" | "realistic" | "high";
@@ -45,6 +47,13 @@ export interface SessionConfig {
   plainDoc: boolean; // no syntax highlighting, like a Google Doc
   seed: number;
   coachNotes?: string; // coach mode only: recurring gaps from past rounds
+  format?: "standard" | "reverse" | "peer"; // reverse: you interview an AI candidate (MI-X-1); peer: two learners (MI-X-2)
+  layout?: "desk" | "commute"; // commute: voice-only, phone layout (MI-X-7)
+  record?: { audio: boolean; cloud: boolean }; // MI-FB-2: opt-in recording, kept on this device unless cloud
+  loop?: { id: string; index: number; total: number }; // MI-X-3: a round of a loop day
+  prompts?: Overrides; // developer-mode prompt overrides in force for this round (MI-DEV-4)
+  privacy?: boolean; // MI-X-6: only on-device speech and a local model
+  redo?: { atMs: number; context: string; prompt: string }; // MI-FB-4: a micro-drill from a replay moment
 }
 
 export interface InterviewQuestion {
@@ -105,6 +114,7 @@ export type SessionEvent =
   | { type: "thinking.pause"; on: boolean }
   | { type: "vision.look"; surface: SurfaceId; description: string }
   | { type: "engine.fallback"; from: EngineId; to: EngineId; error: string }
+  | { type: "budget"; level: "warn" | "over"; scope: string; usedUsd: number; limitUsd: number }
   | { type: "latency"; metric: "first_audio" | "first_token" | "turn"; ms: number }
   | { type: "tick" }; // periodic clock, drives silence and time checks
 

@@ -13,7 +13,7 @@ export interface WhiteboardHandle {
 }
 
 export default function WhiteboardCanvas({ onDigest, readOnly, pauseMs = 2500, handle }: {
-  onDigest: (d: Digest, snapshot: DiagramSnapshot) => void;
+  onDigest: (d: Digest, snapshot: DiagramSnapshot, elements: unknown[]) => void;
   readOnly?: boolean;
   pauseMs?: number;
   handle?: (h: WhiteboardHandle) => void;
@@ -52,7 +52,8 @@ export default function WhiteboardCanvas({ onDigest, readOnly, pauseMs = 2500, h
             const snap = snapshotScene(elements as unknown as readonly SceneElement[]);
             const d = digestScene(prev.current, snap);
             prev.current = snap;
-            if (d) onDigestRef.current(d, snap);
+            // a plain copy of the live elements, kept as a replay frame
+            if (d) onDigestRef.current(d, snap, JSON.parse(JSON.stringify(elements.filter((e) => !e.isDeleted))));
           }, pauseMs);
         }}
       />

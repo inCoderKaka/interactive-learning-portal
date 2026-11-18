@@ -91,12 +91,17 @@ export class PcmPlayer {
   private ctx: AudioContext;
   private at = 0;
   private sources = new Set<AudioBufferSourceNode>();
+  private tap: MediaStreamAudioDestinationNode;
   onIdle?: () => void;
   onStart?: () => void;
 
   constructor(private rate = 24000) {
     this.ctx = new AudioContext({ sampleRate: rate });
+    this.tap = this.ctx.createMediaStreamDestination();
   }
+
+  /** Everything played, as a stream (for recording). */
+  get stream() { return this.tap.stream; }
 
   get playing() { return this.sources.size > 0; }
 
@@ -109,6 +114,7 @@ export class PcmPlayer {
     const s = this.ctx.createBufferSource();
     s.buffer = b;
     s.connect(this.ctx.destination);
+    s.connect(this.tap);
     const now = this.ctx.currentTime;
     if (this.at < now) this.at = now + 0.03;
     if (!this.sources.size) this.onStart?.();
@@ -131,6 +137,22 @@ export class PcmPlayer {
     this.stop();
     this.ctx.close().catch(() => {});
   }
+}
+
+/** Routes media elements to the speakers and to a stream, so their audio can be recorded. */
+export class OutputTap {
+  private ctx = new AudioContext();
+  private dest = this.ctx.createMediaStreamDestination();
+  get stream() { return this.dest.stream; }
+  route(el: HTMLMediaElement) {
+    try {
+      const src = this.ctx.createMediaElementSource(el);
+      src.connect(this.ctx.destination);
+      src.connect(this.dest);
+      void this.ctx.resume();
+    } catch { /* already routed, or the browser refuses: it still plays normally */ }
+  }
+  close() { this.ctx.close().catch(() => {}); }
 }
 
 export function b64FromBuffer(buf: ArrayBuffer): string {

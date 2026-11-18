@@ -142,7 +142,7 @@ export function Room({ session, settings, onEnd }: { session: InterviewSession; 
                 : <div className="h-full overflow-y-auto"><CodeEditor value={code} onChange={setCode} lang={settings.lang} minHeight="580px" readOnly={ended} /></div>)
                 : (
                   <>
-                    <div className={cn("h-full", tab !== "board" && "hidden")}><Whiteboard readOnly={ended} handle={(h) => (board.current = h)} onDigest={(d, snap) => session.workspace(d, snap, () => board.current?.image() ?? Promise.resolve(null))} /></div>
+                    <div className={cn("h-full", tab !== "board" && "hidden")}><Whiteboard readOnly={ended} handle={(h) => (board.current = h)} onDigest={(d, snap, els) => session.workspace(d, snap, () => board.current?.image() ?? Promise.resolve(null), els)} /></div>
                     {tab === "notes" && <textarea value={notes} onChange={(e) => setNotes(e.target.value)} readOnly={ended} aria-label="Notes doc" placeholder={"Requirements:\n- \n\nEstimates:\n- \n\nAPI:\n- "} className="h-full w-full resize-none rounded-xl border border-line bg-bg p-3.5 font-mono text-[13px] leading-relaxed outline-none focus:border-accent/60" />}
                   </>
                 )}
@@ -162,6 +162,8 @@ export function Room({ session, settings, onEnd }: { session: InterviewSession; 
               <div>Curveballs: {v.state.curveballs.map((c) => `${curveballById.get(c.id)?.label} @${c.atMin}m${c.fired ? " ✓" : ""}`).join(", ") || "none"}</div>
               <div>Rule suspicions: {v.state.openRuleHits.map((h) => h.rule).join(", ") || "none"}</div>
               <div>Latency: {v.debug.latencies.slice(-6).map((l) => `${l.metric} ${l.ms}ms`).join(" · ") || "—"}</div>
+              <div>Round cost so far: ~${v.debug.costUsd.toFixed(3)}{v.debug.cheap && " · small model (near budget)"}{v.debug.budget && ` · ${v.debug.budget.scope} budget ${v.debug.budget.level}: $${v.debug.budget.usedUsd.toFixed(2)} of $${v.debug.budget.limitUsd}`}</div>
+              {session.cfg.prompts && <div>Prompt overrides: {Object.keys(session.cfg.prompts).join(", ")}</div>}
             </div>
             <pre className="code max-h-72 overflow-auto whitespace-pre-wrap text-[11.5px] lg:col-span-2">{v.debug.lastNote || v.debug.lastPrompt || session.contextPreview()}</pre>
           </div>

@@ -53,6 +53,10 @@ export function reduce(cfg: SessionConfig, s: BrainState, e: SessionEvent, now: 
 
   switch (e.type) {
     case "session.started": {
+      if (cfg.redo) {
+        const st = go(s, "problem", now);
+        return { state: { ...st, lastInterviewerAt: now }, actions: [say("phase", `This is a short drill that replays one moment of an earlier round. In one short sentence say you are picking up from where you were, then put this to them again in your own words: "${cfg.redo.prompt.slice(0, 600)}"`)] };
+      }
       const first: Phase = cfg.arc.intro ? "intro" : cfg.arc.aboutYou ? "about_you" : "problem";
       const st = go(s, first, now);
       const instruction = cfg.arc.intro

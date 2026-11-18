@@ -1,69 +1,42 @@
-import type { BrainState, Kind, Level, LoggedEvent, SessionConfig, Tone } from "./types.ts";
+import type { BrainState, Kind, LoggedEvent, SessionConfig } from "./types.ts";
 import { arcBudget, expectedStage } from "./policy.ts";
 import { curveballById } from "./curveballs.ts";
+import { fragment } from "./templates.ts";
 
 export const PROMPT_VERSION = "interviewer@1";
 export const SILENCE = "[silence]";
 
-const KIND_NAME: Record<Kind, string> = {
+export const KIND_NAME: Record<Kind, string> = {
   coding: "coding",
   hld: "system design",
   lld: "object-oriented design",
   behavioral: "behavioural (Googleyness and leadership)",
 };
 
-const TONE: Record<Tone, string> = {
-  guide: "Warm and encouraging, but still an interviewer: acknowledge good moves briefly, give a nudge a little earlier than usual, never solve it for them.",
-  neutral: "Neutral and professional, like most Google interviewers. Do not signal approval or disapproval (no 'great', 'perfect', 'hmm, not sure'); acknowledge with 'okay' or 'go on'. The candidate should not be able to tell how they are doing.",
-  tough: "Demanding and direct. Challenge vague statements immediately ('what number?', 'why that and not X?'), press on trade-offs, and interrupt if they drift. Stay respectful: tough, never rude.",
-  notetaker: "Quiet and reserved. Speak only when needed: answer questions briefly, ask the scheduled follow-ups, otherwise let them work. Long silences are fine.",
-};
-
-const LEVEL: Record<Level, string> = {
-  L3: "Hold an entry-level (L3) bar: correct, working solutions with guidance are acceptable.",
-  L4: "Hold a mid-level (L4) bar: the candidate should reach a sound solution with limited hints and explain trade-offs.",
-  L5: "Hold a senior (L5) bar: the candidate should drive the conversation, surface trade-offs unprompted and go deep on the hardest parts.",
-  L6: "Hold a staff (L6) bar: expect them to frame the problem, reason about failure domains and evolution, and push past standard answers.",
-};
-
-const VOICE_RULES = `This is a spoken conversation.
-- Reply in one to three short sentences. Never use lists, headings, code blocks or markdown: everything you write is read aloud.
-- Ask at most one question per turn.
-- Never narrate over their work: if they are drawing or typing, wait.`;
-
-const TEXT_RULES = `This is a chat on a shared doc.
-- Keep each message under 120 words. No lectures.
-- Ask at most one question per message.`;
-
 /** Instructions that do not change during a session (kept first, so provider prompt caching applies). */
 export function systemPrompt(cfg: SessionConfig, s: BrainState, voice: boolean): string {
   const q = s.question;
   const b = arcBudget(cfg);
   const p = s.persona;
-  return `You are ${p.name}, a ${p.role} at Google (${p.years} years, ${p.team} team), running a ${cfg.minutes}-minute ${KIND_NAME[cfg.kind]} interview. You are a fictional person: if asked whether you are real or an AI, say you are an AI practice interviewer playing a role, then carry on.
+  const o = cfg.prompts;
+  return `${fragment("interviewer.identity", o, { name: p.name, role: p.role, years: p.years, team: p.team, minutes: cfg.minutes, kind: KIND_NAME[cfg.kind] })}
 
 # Your manner
-${TONE[s.tone]}
-${LEVEL[cfg.level]}
+${fragment(`interviewer.tone.${s.tone}`, o)}
+${fragment(`interviewer.level.${cfg.level}`, o)}
 
-${cfg.mode === "coach" && cfg.coachNotes ? `# Coach mode\nThis candidate is practising. From their previous rounds: ${cfg.coachNotes}\nSteer the round so these gaps get tested, without telling them you know.\n\n` : ""}# How you run the interview
-- Present the question in your own words and leave details out on purpose, so the candidate has to ask clarifying questions. Answer clarifying questions consistently with the reference notes. If they skip clarification, let them.
-- Never solve the problem or write their code. Probe with questions. Push for complexity, edge cases and trade-offs.
-- Hints only when they ask or have been stuck for a long time, and make them minimal.
-- If they ask for a minute to think, say yes in a few words and stay silent.
-- When they make an error, ask a question that exposes it rather than stating the fix.
-- You receive bracketed interviewer notes (things like the current time, what is on their whiteboard or doc, or what to do next). They are for you only. Never read them out, never mention notes, digests, updates or events: refer to "your diagram" or "your code".
-- If a note says you may stay silent and nothing needs saying, reply with exactly ${SILENCE}.
-${voice ? VOICE_RULES : TEXT_RULES}
+${cfg.mode === "coach" && cfg.coachNotes ? `# Coach mode\n${fragment("interviewer.coach", o, { notes: cfg.coachNotes })}\n\n` : ""}# How you run the interview
+${fragment("interviewer.rules", o, { silence: SILENCE })}
+${fragment(voice ? "interviewer.voice" : "interviewer.text", o)}
 
 # The question
 Title (do not read the title out): ${q.title}
 Question: ${q.statement}
 ${q.constraints ? `Numbers to hold the design to (reveal only when asked): ${q.constraints}\n` : ""}Reference notes (for you only, one good answer among many): ${q.reference || "none"}
 ${q.followUps.length ? `Follow-ups you can use: ${q.followUps.join(" | ")}\n` : ""}${q.redFlags.length ? `Common mistakes worth probing: ${q.redFlags.join(" | ")}\n` : ""}
-# Round plan
+${cfg.redo ? `# This is a drill\nYou are replaying one moment of an earlier round so the candidate can retry their answer. The conversation up to that moment, for context only:\n<<<\n${cfg.redo.context}\n>>>\nListen to the new answer and follow up once or twice exactly as you would have in the real round. When they have answered, say in one sentence that the drill is done. No feedback.\n` : `# Round plan
 ${[b.intro && "1. Introductions (about 1 minute): say hello, your first name and team in one sentence, and how the round works.", b.aboutYou && `2. Ask them to introduce themselves briefly (about ${b.aboutYou} minutes). Listen; at most one follow-up.`, `3. The main question (about ${b.problem} minutes).`, b.questions && `4. Last ${b.questions} minutes: ask "Is there anything you'd like to ask me?" and answer as yourself: you like that ${p.likes}; a downside is that ${p.dislikes}; your advice to new joiners: ${p.advice}. Keep answers short and honest. Do not invent confidential details.`].filter(Boolean).join("\n")}
-Do not give feedback or a verdict at the end: say thank you and that the recruiter will be in touch.`;
+${fragment("interviewer.closing", o)}`}`;
 }
 
 export function minutesLeft(cfg: SessionConfig, s: BrainState, nowMs: number) {
@@ -120,7 +93,7 @@ export function realtimeNote(cfg: SessionConfig, s: BrainState, nowMs: number, i
 
 export function judgePrompt(cfg: SessionConfig, s: BrainState, nowMs: number, trigger: string): { system: string; user: string } {
   return {
-    system: `You decide whether a ${KIND_NAME[cfg.kind]} interviewer should interrupt the candidate right now. Interrupt only for a decision that is wrong or a real risk at the stated scale, not for parts that are merely not drawn yet. Reply with ONLY JSON: {"speak":true|false,"say":"one short spoken sentence if speak"}. The sentence should name what you see and ask a pointed question.`,
+    system: fragment("judge.system", cfg.prompts, { kind: KIND_NAME[cfg.kind] }),
     user: `Question: ${s.question.statement}\nNumbers: ${s.question.constraints || "n/a"}\n${contextNote(cfg, s, nowMs)}\nTrigger: ${trigger}\nTone: ${s.tone}.`,
   };
 }

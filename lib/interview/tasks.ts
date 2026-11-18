@@ -4,10 +4,14 @@
 import type { Settings } from "@/lib/types";
 import { complete, stream, type GenParams, type Msg, type ProviderId } from "./providers/llm";
 import { getKeys } from "./providers/keys";
+import { NO_BUDGETS, type Budgets } from "./core/usage";
+import type { Override, Overrides } from "./core/templates";
+import { meterLlm } from "./meter";
 
 export type TaskId =
   | "interviewer.turn" | "interviewer.judge" | "summarise" | "vision.describe" | "question.generate" | "scorecard"
-  | "code.review" | "stage.grade" | "recall.grade" | "twists" | "hint";
+  | "code.review" | "stage.grade" | "recall.grade" | "twists" | "hint"
+  | "candidate.turn" | "reverse.grade" | "committee";
 
 export const TASKS: { id: TaskId; label: string; what: string; latency: "high" | "medium" | "low" }[] = [
   { id: "interviewer.turn", label: "Interviewer reply", what: "Each interviewer turn in text and Ascent Voice rounds.", latency: "high" },
@@ -21,6 +25,9 @@ export const TASKS: { id: TaskId; label: string; what: string; latency: "high" |
   { id: "recall.grade", label: "Recall check", what: "Checks 3-minute recall drills in review.", latency: "medium" },
   { id: "twists", label: "Variations", what: "Generates new twists and follow-ups for a problem.", latency: "low" },
   { id: "hint", label: "Hints", what: "Smallest useful nudge on problem pages.", latency: "medium" },
+  { id: "candidate.turn", label: "AI candidate (reverse mode)", what: "Each reply of the AI candidate you interview in reverse mode.", latency: "high" },
+  { id: "reverse.grade", label: "Reverse-mode grading", what: "Compares your interviewer feedback with the planted mistakes.", latency: "low" },
+  { id: "committee", label: "Loop committee", what: "Reads every scorecard of a loop day and writes the final decision.", latency: "low" },
 ];
 
 /** "" = the model chosen in Settings → AI reviewer. Tiers resolve per provider. */
@@ -57,6 +64,9 @@ const RECOMMENDED: Record<TaskId, TaskProfile> = {
   "recall.grade": P("", "", { temperature: 0.4, maxOutputTokens: 1200 }),
   twists: P("", "", { temperature: 0.8, maxOutputTokens: 1200 }),
   hint: P("", "", { temperature: 0.4, maxOutputTokens: 300 }),
+  "candidate.turn": P("", "", { temperature: 0.8, topP: 0.95, maxOutputTokens: 400, reasoning: "off", promptCaching: true }, { timeoutMs: 20000, retries: 0 }),
+  "reverse.grade": P("", "tier:strong", { temperature: 0.2, maxOutputTokens: 1600, json: true }),
+  committee: P("", "tier:strong", { temperature: 0.2, maxOutputTokens: 1400, json: true, reasoning: "medium" }, { timeoutMs: 120000 }),
 };
 
 function presetProfiles(id: PresetId): Record<TaskId, TaskProfile> {
@@ -66,7 +76,7 @@ function presetProfiles(id: PresetId): Record<TaskId, TaskProfile> {
     r.scorecard.samples = 1;
     r.scorecard.params.reasoning = "off";
   } else if (id === "max") {
-    for (const t of Object.keys(r) as TaskId[]) if (t !== "interviewer.turn" && t !== "interviewer.judge") r[t].model = "tier:strong";
+    for (const t of Object.keys(r) as TaskId[]) if (t !== "interviewer.turn" && t !== "interviewer.judge" && t !== "candidate.turn") r[t].model = "tier:strong";
     r["interviewer.turn"].params.temperature = 0.5;
     r.scorecard.samples = 5;
     r.scorecard.params.reasoning = "high";
@@ -104,13 +114,21 @@ export interface RealtimeSettings {
   openaiVoice: string;
   vad: "semantic" | "server";
 }
+export interface CostGuard {
+  enforce: boolean;      // switch to a cheaper engine when a budget is spent (else only warn)
+  cheapNearLimit: boolean; // from 80 % of a budget, run the round on the small model
+}
 export interface AiSettings {
   devMode: boolean;
   preset: PresetId;
   tasks: Partial<Record<TaskId, Partial<TaskProfile> & { params?: GenParams }>>;
   speech: SpeechSettings;
   realtime: RealtimeSettings;
-  budgetUsd: number; // 0 = no budget
+  budgetUsd: number; // legacy single budget; read as budgets.total
+  budgets: Budgets;
+  costGuard: CostGuard;
+  prompts: Overrides;                       // developer-mode prompt overrides (MI-DEV-4)
+  promptHistory: Record<string, Override[]>; // earlier versions, newest first
 }
 
 export const DEFAULT_AI: AiSettings = {
@@ -120,6 +138,10 @@ export const DEFAULT_AI: AiSettings = {
   speech: { stt: "webspeech", tts: "browser", ttsVoice: "", rate: 1, endOfSpeechMs: 0, bargeIn: true, bargeInMs: 250, lang: "en-US", keyterms: true },
   realtime: { provider: "gemini", geminiModel: "gemini-2.5-flash-native-audio-preview-09-2025", openaiModel: "gpt-realtime", geminiVoice: "Charon", openaiVoice: "cedar", vad: "semantic" },
   budgetUsd: 0,
+  budgets: NO_BUDGETS,
+  costGuard: { enforce: true, cheapNearLimit: true },
+  prompts: {},
+  promptHistory: {},
 };
 
 export function getAi(s: Settings): AiSettings {
@@ -130,7 +152,17 @@ export function getAi(s: Settings): AiSettings {
     tasks: (a.tasks ?? {}) as AiSettings["tasks"],
     speech: { ...DEFAULT_AI.speech, ...(a.speech ?? {}) },
     realtime: { ...DEFAULT_AI.realtime, ...(a.realtime ?? {}) },
+    budgets: { ...NO_BUDGETS, total: a.budgetUsd ?? 0, ...(a.budgets ?? {}) },
+    costGuard: { ...DEFAULT_AI.costGuard, ...(a.costGuard ?? {}) },
+    prompts: (a.prompts ?? {}) as Overrides,
+    promptHistory: (a.promptHistory ?? {}) as Record<string, Override[]>,
   };
+}
+
+/** Prompt overrides in force: developer mode only, so turning it off restores every default. */
+export function activePrompts(s: Settings): Overrides | undefined {
+  const ai = getAi(s);
+  return ai.devMode && Object.keys(ai.prompts).length ? ai.prompts : undefined;
 }
 
 /** The effective profile for a task: preset, then developer-mode overrides. */
@@ -163,14 +195,22 @@ export function resolved(s: Settings, task: TaskId) {
   return { ...prof, provider, model: resolveModel(s, provider, prof.model) };
 }
 
+const charsOf = (system: string, messages: Msg[]) => system.length + messages.reduce((a, m) => a + m.content.length, 0);
+
+export interface TaskOpts { signal?: AbortSignal; params?: GenParams; cheap?: boolean }
+
 /** Run a task, retrying and then falling back to your default model if a tier model is unavailable. */
-export async function runTask(s: Settings, task: TaskId, system: string, messages: Msg[], opts: { signal?: AbortSignal; params?: GenParams } = {}): Promise<string> {
+export async function runTask(s: Settings, task: TaskId, system: string, messages: Msg[], opts: TaskOpts = {}): Promise<string> {
   const r = resolved(s, task);
-  const req = { provider: r.provider, model: r.model, system, messages, params: { ...r.params, ...opts.params }, timeoutMs: r.timeoutMs };
+  const model = opts.cheap ? resolveModel(s, r.provider, "tier:small") : r.model;
+  const req = { provider: r.provider, model, system, messages, params: { ...r.params, ...opts.params }, timeoutMs: r.timeoutMs };
+  const inChars = charsOf(system, messages);
   let lastErr: unknown;
   for (let i = 0; i <= r.retries; i++) {
     try {
-      return await complete(req, s, opts.signal);
+      const out = await complete(req, s, opts.signal);
+      meterLlm(r.provider, model, inChars, out.length);
+      return out;
     } catch (e) {
       lastErr = e;
       if (opts.signal?.aborted) throw e;
@@ -178,11 +218,24 @@ export async function runTask(s: Settings, task: TaskId, system: string, message
     }
   }
   const fallback = defaultModel(s, r.provider);
-  if (fallback && fallback !== r.model && /\b(?:404|400|not[_ ]found|model)\b/i.test(String(lastErr))) return complete({ ...req, model: fallback }, s, opts.signal);
+  if (fallback && fallback !== model && /\b(?:404|400|not[_ ]found|model)\b/i.test(String(lastErr))) {
+    const out = await complete({ ...req, model: fallback }, s, opts.signal);
+    meterLlm(r.provider, fallback, inChars, out.length);
+    return out;
+  }
   throw lastErr;
 }
 
-export function streamTask(s: Settings, task: TaskId, system: string, messages: Msg[], signal?: AbortSignal) {
+export async function* streamTask(s: Settings, task: TaskId, system: string, messages: Msg[], signal?: AbortSignal, opts: { cheap?: boolean } = {}): AsyncGenerator<string> {
   const r = resolved(s, task);
-  return stream({ provider: r.provider, model: r.model, system, messages, params: r.params, timeoutMs: r.timeoutMs }, s, signal);
+  const model = opts.cheap ? resolveModel(s, r.provider, "tier:small") : r.model;
+  let out = 0;
+  try {
+    for await (const c of stream({ provider: r.provider, model, system, messages, params: r.params, timeoutMs: r.timeoutMs }, s, signal)) {
+      out += c.length;
+      yield c;
+    }
+  } finally {
+    meterLlm(r.provider, model, charsOf(system, messages), out);
+  }
 }

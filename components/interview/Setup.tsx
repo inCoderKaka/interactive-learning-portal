@@ -11,6 +11,11 @@ import { recommendMocks, type MockRecommendation } from "@/lib/interview/core/re
 import { allQuestions, filterPool } from "@/lib/interview/questions";
 import { ENGINE_INFO, engineFor, estimateCostUsd, recommendedEngine } from "@/lib/interview/engines/registry";
 import { getAi, providerReady } from "@/lib/interview/tasks";
+import { affordableEngine, checkBudget } from "@/lib/interview/core/usage";
+import { spendThisMonth } from "@/lib/interview/meter";
+import { RoundRecorder } from "@/lib/interview/recorder";
+import { useStore } from "@/lib/store";
+import { cloudEnabled } from "@/lib/supabase";
 
 export const KINDS: { id: Kind; label: string; desc: string; min: number; icon: typeof Code2; color: string }[] = [
   { id: "coding", label: "Coding", desc: "One problem, then a twist. Clarify, code on a plain doc, analyse.", min: 45, icon: Code2, color: "var(--color-dsa)" },
@@ -37,7 +42,21 @@ const BASE = (kind: Kind, engine: EngineId): SessionConfig => ({
   kind, selection: { mode: "random-all", preferUnseen: true }, tone: "neutral", level: "L4", minutes: KINDS.find((k) => k.id === kind)!.min,
   arc: { intro: true, aboutYou: kind !== "behavioral", curveball: true, questionsForMe: true }, pressure: "realistic",
   curveballs: { frequency: "occasional", disabled: [] }, engine, voice: { rate: 1, captions: true }, mode: "real", plainDoc: true, seed: 0,
+  record: { audio: false, cloud: false }, format: "standard", layout: "desk",
 });
+
+export { BASE as baseConfig };
+
+/** Budget-aware engine choice at start (MI-X-5): the chosen engine, or the first cheaper one that fits. */
+export function engineWithinBudget(cfg: SessionConfig, settings: Settings): { engine: EngineId; note: string } {
+  const ai = getAi(settings);
+  const order: EngineId[] = cfg.engine === "realtime" ? ["realtime", "ascent-voice", "text"] : cfg.engine === "ascent-voice" ? ["ascent-voice", "text"] : [cfg.engine];
+  const usable = order.filter((e) => e === cfg.engine || !engineFor(e, settings).unavailable(settings));
+  const pick = affordableEngine(usable, ai.budgets, spendThisMonth(), (e) => estimateCostUsd(e, cfg.minutes, settings).high);
+  if (!ai.costGuard.enforce || !pick.skipped.length) return { engine: cfg.engine, note: "" };
+  const engine = pick.engine ?? usable[usable.length - 1];
+  return { engine, note: `Your ${pick.skipped[0].check.scope === "total" ? "monthly AI" : ENGINE_INFO[cfg.engine].label} budget would be exceeded, so this round uses ${ENGINE_INFO[engine].label}.` };
+}
 
 const BUILTIN: { name: string; make: (e: EngineId) => SessionConfig }[] = [
   { name: "Google L4 coding", make: (e) => BASE("coding", e) },
@@ -77,6 +96,11 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
   const set = (p: Partial<SessionConfig>) => setCfg((c) => ({ ...c, ...p }));
   const ready = providerReady(settings, settings.provider);
   const ai = getAi(settings);
+  const user = useStore((s) => s.user);
+  const [spent, setSpent] = useState<ReturnType<typeof spendThisMonth>>({});
+  useEffect(() => setSpent(spendThisMonth()), []);
+  const budget = checkBudget(ai.budgets, spent, cfg.engine, 0);
+  const canRecord = typeof window !== "undefined" && RoundRecorder.supported();
 
   const recs = useMemo(() => recommendMocks({ items, progress, attempts, areas: settings.areas }), [items, progress, attempts, settings.areas]);
   const questions = useMemo(() => allQuestions(cfg.kind, custom), [cfg.kind, custom]);
@@ -229,6 +253,8 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
             );
           })}</div>
           <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-mute">
+            {canRecord && <label className="flex cursor-pointer items-center gap-2" title="Your microphone (and the interviewer's voice where the engine allows it) is recorded in this browser for the replay. Nothing is uploaded unless you also back it up."><input type="checkbox" checked={!!cfg.record?.audio} onChange={(e) => set({ record: { audio: e.target.checked, cloud: e.target.checked && !!cfg.record?.cloud } })} className="accent-[var(--color-accent)]" />Record audio for replay</label>}
+            {canRecord && cfg.record?.audio && cloudEnabled && user && <label className="flex cursor-pointer items-center gap-2" title="Uploads the recording to your private storage in Ascent so other devices can replay it"><input type="checkbox" checked={!!cfg.record?.cloud} onChange={(e) => set({ record: { audio: true, cloud: e.target.checked } })} className="accent-[var(--color-accent)]" />Back it up to my account</label>}
             {cfg.engine !== "text" && <label className="flex items-center gap-2">Speaking rate<input type="range" min={0.8} max={1.3} step={0.05} value={cfg.voice.rate} onChange={(e) => set({ voice: { ...cfg.voice, rate: +e.target.value } })} /><span className="num w-10 text-text">{cfg.voice.rate.toFixed(2)}×</span></label>}
             {cfg.engine !== "text" && <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={cfg.voice.captions} onChange={(e) => set({ voice: { ...cfg.voice, captions: e.target.checked } })} className="accent-[var(--color-accent)]" />Live captions</label>}
             <span className="flex items-center gap-2">Mode
@@ -239,7 +265,7 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
         </Group>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
-          <p className="text-[12.5px] text-faint">{!ready ? "Self-paced round: no AI calls, no cost." : `Estimated cost: ${cost.high === 0 ? "free (local model)" : `about $${cost.low.toFixed(2)}–$${cost.high.toFixed(2)} on your own ${cfg.engine === "realtime" ? `${ai.realtime.provider === "openai" ? "OpenAI" : "Gemini"} realtime` : settings.provider} account`}.`}{cfg.engine !== "text" && " The microphone is used only during the round, and nothing is recorded."}{ai.budgetUsd > 0 && ready && ` Your monthly budget is $${ai.budgetUsd}.`}</p>
+          <p className="text-[12.5px] text-faint">{!ready ? "Self-paced round: no AI calls, no cost." : `Estimated cost: ${cost.high === 0 ? "free (local model)" : `about $${cost.low.toFixed(2)}–$${cost.high.toFixed(2)} on your own ${cfg.engine === "realtime" ? `${ai.realtime.provider === "openai" ? "OpenAI" : "Gemini"} realtime` : settings.provider} account`}.`}{cfg.engine !== "text" && (cfg.record?.audio ? ` The round is recorded in this browser${cfg.record.cloud ? " and backed up to your account" : ""}, and kept for 30 days.` : " The microphone is used only during the round, and nothing is recorded.")}{budget.scope && ready && ` This month: $${budget.usedUsd.toFixed(2)} of your $${budget.limitUsd} ${budget.scope === "total" ? "AI" : ENGINE_INFO[cfg.engine].label} budget${budget.level === "over" ? (ai.costGuard.enforce ? ", used up: a cheaper engine will be used" : ", used up") : budget.level === "warn" ? ", nearly used: the round will run on a smaller model" : ""}.`}</p>
           <Button variant="primary" disabled={busy || (!ready && (fresh || cfg.engine === "realtime")) || (cfg.selection.mode === "random-pool" && !poolSize) || (cfg.selection.mode === "exact" && !exactQ)} onClick={() => onStart({ ...cfg, seed: Math.floor(Math.random() * 2 ** 31) }, fresh)}>
             {busy ? "Preparing…" : cfg.selection.mode === "exact" ? "Start the round" : <><Shuffle size={15} />Draw a question and start</>}
           </Button>

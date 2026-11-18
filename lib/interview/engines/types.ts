@@ -37,6 +37,8 @@ export interface EngineHandle {
   addContext?(text: string): void;
   /** Realtime: let the model see an image (a whiteboard snapshot). */
   sendImage?(jpeg: Blob): Promise<void>;
+  /** The interviewer's audio as a stream, when the engine can expose it (used for opt-in recording). */
+  output?: MediaStream;
   /** Stop any speech in progress. */
   cancelSpeech(): void;
   mute(on: boolean): void;

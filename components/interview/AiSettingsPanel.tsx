@@ -5,6 +5,38 @@ import { Button, cn } from "@/components/ui";
 import type { Settings } from "@/lib/types";
 import { CAPABILITY_WHY, capabilities, listModels, type Capabilities, type GenParams } from "@/lib/interview/providers/llm";
 import { PRESETS, TASKS, getAi, profileFor, providerReady, resolved, type AiSettings, type PresetId, type TaskId, type TaskProfile } from "@/lib/interview/tasks";
+import { BUCKETS, totalOf, type Bucket, type Budgets } from "@/lib/interview/core/usage";
+import { onSpend, resetMonth, spendThisMonth } from "@/lib/interview/meter";
+import { PromptOverrides } from "./PromptOverrides";
+
+const BUCKET_LABEL: Record<Bucket, string> = { realtime: "Realtime voice", "ascent-voice": "Ascent Voice", text: "Text rounds", agora: "Agora", other: "Other AI (reviews, hints, scorecards outside a round)" };
+
+function BudgetPanel({ ai, save }: { ai: AiSettings; save: (p: Partial<AiSettings>) => void }) {
+  const [spent, setSpent] = useState<ReturnType<typeof spendThisMonth>>({});
+  useEffect(() => { setSpent(spendThisMonth()); return onSpend(() => setSpent(spendThisMonth())); }, []);
+  const setB = (k: keyof Budgets, v: number) => save({ budgets: { ...ai.budgets, [k]: v }, ...(k === "total" ? { budgetUsd: v } : {}) });
+  const rows: (keyof Budgets)[] = ["total", "realtime", "ascent-voice", "text", "agora"];
+  return (
+    <div className="space-y-3 rounded-xl border border-line bg-panel2 p-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <div className="text-[13px] font-semibold">Cost guard</div>
+        <span className="text-[12px] text-mute">This month, estimated: <b className="num text-text">${totalOf(spent).toFixed(2)}</b> <button className="ml-2 text-faint underline-offset-2 hover:underline" onClick={() => { resetMonth(); setSpent({}); }}>reset</button></span>
+      </div>
+      <p className="text-[12px] leading-relaxed text-mute">Estimates from token counts and minutes at approximate list prices, kept in this browser only. Your provider&apos;s bill is the source of truth.</p>
+      <div className="grid gap-2 sm:grid-cols-5">{rows.map((k) => (
+        <label key={k} className={label}>{k === "total" ? "All AI, per month" : BUCKET_LABEL[k as Bucket]} (USD)
+          <input type="number" min={0} step={1} className={cn(field, "mt-1 font-mono")} value={ai.budgets[k] || ""} placeholder="no limit" onChange={(e) => setB(k, Math.max(0, +e.target.value || 0))} />
+          <span className="mt-0.5 block text-[11px] text-faint">${(k === "total" ? totalOf(spent) : spent[k as Bucket] ?? 0).toFixed(2)} used</span>
+        </label>
+      ))}</div>
+      <div className="flex flex-wrap gap-x-6 gap-y-2 text-[12.5px] text-mute">
+        <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={ai.costGuard.enforce} onChange={(e) => save({ costGuard: { ...ai.costGuard, enforce: e.target.checked } })} className="accent-[var(--color-accent)]" />When a budget is used up, switch to a cheaper engine (realtime → Ascent Voice → text), even mid-round</label>
+        <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={ai.costGuard.cheapNearLimit} onChange={(e) => save({ costGuard: { ...ai.costGuard, cheapNearLimit: e.target.checked } })} className="accent-[var(--color-accent)]" />From 80% of a budget, run rounds on the small model (the scorecard keeps its strong model)</label>
+      </div>
+      {spent.other ? <p className="text-[11.5px] text-faint">{BUCKETS.filter((b) => spent[b]).map((b) => `${BUCKET_LABEL[b]} $${(spent[b] ?? 0).toFixed(2)}`).join(" · ")}</p> : null}
+    </div>
+  );
+}
 
 const field = "h-9 w-full rounded-lg border border-line bg-bg px-2.5 text-[13px] outline-none focus:border-accent/60 disabled:opacity-40";
 const label = "block text-[12px] text-mute";
@@ -120,10 +152,9 @@ export function AiSettingsPanel({ settings, setSettings }: { settings: Settings;
           <input type="checkbox" checked={ai.devMode} onChange={(e) => save({ devMode: e.target.checked })} className="mt-1 accent-[var(--color-accent)]" />
           <span><span className="block text-sm font-semibold">Developer mode</span><span className="block text-[12.5px] leading-relaxed text-mute">Tune the model and parameters of every AI task, adjust turn-taking, and show a live overlay during mock rounds (assembled prompt, latency, interruptions considered and declined).</span></span>
         </label>
-        <label className={cn(label, "w-48")}>Monthly budget (USD, informational)
-          <input type="number" min={0} className={cn(field, "mt-1 font-mono")} value={ai.budgetUsd || ""} placeholder="none" onChange={(e) => save({ budgetUsd: +e.target.value || 0 })} />
-        </label>
       </div>
+
+      <BudgetPanel ai={ai} save={save} />
 
       {ai.devMode && (
         <div className="space-y-4">
@@ -192,6 +223,8 @@ export function AiSettingsPanel({ settings, setSettings }: { settings: Settings;
             })}
           </div>
           <p className="text-[12px] leading-relaxed text-faint">Greyed-out fields are not supported by the selected provider or model (hover for why). &ldquo;tier:small&rdquo; and &ldquo;tier:strong&rdquo; pick a model class for the provider; leave the model empty to use the one chosen above.</p>
+
+          <PromptOverrides ai={ai} save={save} />
         </div>
       )}
     </div>

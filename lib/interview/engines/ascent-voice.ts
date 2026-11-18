@@ -4,7 +4,7 @@
 
 import { getKeys } from "../providers/keys";
 import { getAi } from "../tasks";
-import { EnergyVad, openMic, sentences } from "./audio";
+import { EnergyVad, OutputTap, openMic, sentences } from "./audio";
 import type { Engine, EngineCallbacks, StartOptions } from "./types";
 
 // ---- speech-to-text adapters ----
@@ -129,7 +129,7 @@ function browserTts(voiceName: string, lang: string, rate: number): Tts {
   };
 }
 
-function openAiTts(voice: string, rate: number): Tts {
+function openAiTts(voice: string, rate: number, tap?: OutputTap): Tts {
   const key = getKeys().openai;
   if (!key) throw new Error("Add an OpenAI key in Settings to use OpenAI voices.");
   let current: HTMLAudioElement | null = null;
@@ -153,6 +153,7 @@ function openAiTts(voice: string, rate: number): Tts {
         if (!url || signal.aborted) break;
         await new Promise<void>((ok) => {
           const a = new Audio(url);
+          tap?.route(a);
           current = a;
           a.onplay = () => { if (first) { first = false; onFirstAudio(); } };
           a.onended = a.onerror = () => ok();
@@ -242,12 +243,15 @@ export const ascentVoiceEngine: Engine = {
       },
     });
 
-    const tts: Tts = sp.tts === "openai" ? openAiTts(opts.voice.voiceId || sp.ttsVoice, opts.voice.rate) : browserTts(opts.voice.voiceId || sp.ttsVoice, sp.lang, opts.voice.rate);
+    // browser speech synthesis cannot be captured; OpenAI voices play through a tap so they can be recorded
+    const tap = sp.tts === "openai" ? new OutputTap() : undefined;
+    const tts: Tts = sp.tts === "openai" ? openAiTts(opts.voice.voiceId || sp.ttsVoice, opts.voice.rate, tap) : browserTts(opts.voice.voiceId || sp.ttsVoice, sp.lang, opts.voice.rate);
     if (sp.tts === "browser") speechSynthesis.getVoices(); // warm the voice list
 
     return {
       id: "ascent-voice",
       kind: "pipeline",
+      output: tap?.stream,
       async speak(chunks, signal) {
         const ctl = new AbortController();
         speechCtl = ctl;
@@ -280,6 +284,7 @@ export const ascentVoiceEngine: Engine = {
         tts.cancel();
         stt.stop();
         vad.close();
+        tap?.close();
         stream.getTracks().forEach((t) => t.stop());
       },
     };
