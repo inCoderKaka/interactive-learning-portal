@@ -1,5 +1,6 @@
 import type { Area, Item, Progress, Settings } from "./types";
 import { addDays, daysBetween, todayISO } from "./srs";
+import { mockDays } from "./interview/core/recommender";
 
 export interface PlanDay {
   date: string;
@@ -22,9 +23,14 @@ export interface Plan {
 const WEIGHTS: Record<Area, number> = { dsa: 0.55, hld: 0.22, lld: 0.15, craft: 0.08 };
 const REVIEW_SHARE = 0.2;
 
-export const MOCKS: Item[] = Array.from({ length: 6 }, (_, i) => ({
-  id: `mock-${i + 1}`, kind: "mock", area: "craft", topic: "coding-round", title: `Mock interview ${i + 1}`, tier: 1, est: 60, href: "/mock",
-}));
+/** Planned mock interviews: about 1.2 per week, at least 4, at most 16. */
+export function mockSlots(weeks: number): Item[] {
+  const n = Math.max(4, Math.min(16, Math.round(weeks * 1.2)));
+  return Array.from({ length: n }, (_, i) => ({
+    id: `mock-${i + 1}`, kind: "mock", area: "craft", topic: "coding-round", title: `Mock interview ${i + 1}`, tier: 1, est: 60, href: "/mock",
+  }));
+}
+
 
 function isRest(date: string, daysPerWeek: number) {
   const dow = new Date(date + "T12:00:00").getDay(); // 0 Sun
@@ -51,7 +57,11 @@ export function buildPlan(items: Item[], progress: Record<string, Progress>, s: 
     .sort((a, b) => a.t - b.t || a.i - b.i)
     .forEach(({ it }) => queues[it.area].push(it));
 
-  const mocks = MOCKS.filter((m) => progress[m.id]?.status !== "done");
+  const mocks = mockSlots(s.weeks).filter((m) => progress[m.id]?.status !== "done");
+  // denser toward the end of the plan, as candidates ramp up (spec MI-PER-4)
+  const workIdx: number[] = [];
+  for (let d = 0; d < nDays; d++) if (!isRest(addDays(first, d), s.daysPerWeek)) workIdx.push(d);
+  const mockOn = new Set(mockDays(workIdx.length, mocks.length).map((i) => workIdx[i]));
   const days: PlanDay[] = [];
   const spent: Record<Area, number> = { dsa: 0, hld: 0, lld: 0, craft: 0 };
   const totalMin = pending.reduce((a, b) => a + b.est, 0);
@@ -66,9 +76,7 @@ export function buildPlan(items: Item[], progress: Record<string, Progress>, s: 
     days.push(day);
     if (rest) continue;
 
-    // mock interviews on alternate working days of the final two weeks
-    const fromEnd = nDays - 1 - d;
-    if (fromEnd < 14 && fromEnd % 2 === 0 && mocks.length && budget >= 60) {
+    if (mockOn.has(d) && mocks.length && budget >= 45) {
       const m = mocks.shift()!;
       day.items.push(m);
       day.minutes += m.est;

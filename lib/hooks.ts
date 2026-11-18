@@ -2,7 +2,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "./store";
 import { buildItems, PROBLEMS } from "@/content";
-import { buildPlan } from "./schedule";
+import { buildPlan, mockSlots } from "./schedule";
+import { recommendMocks } from "./interview/core/recommender";
 import { isDue, todayISO } from "./srs";
 import type { Item, Problem } from "./types";
 
@@ -60,4 +61,23 @@ export function useTrackTime() {
     }, 5000);
     return () => clearInterval(t);
   }, [logMinutes]);
+}
+
+/** Upcoming mock slots labelled with what the recommender suggests for each, in order. */
+export function useMockLabels(): Map<string, { title: string; href: string; reason: string }> {
+  const items = useItems();
+  const progress = useStore((s) => s.progress);
+  const attempts = useStore((s) => s.attempts);
+  const settings = useStore((s) => s.settings);
+  return useMemo(() => {
+    const recs = recommendMocks({ items, progress, attempts, areas: settings.areas }, 4);
+    const out = new Map<string, { title: string; href: string; reason: string }>();
+    if (!recs.length) return out;
+    mockSlots(settings.weeks).filter((m) => progress[m.id]?.status !== "done").forEach((m, i) => {
+      const r = recs[i % recs.length];
+      const q = new URLSearchParams({ kind: r.kind, ...(r.pool.topics?.length ? { topics: r.pool.topics.join(",") } : {}) });
+      out.set(m.id, { title: i < recs.length ? r.title : `${r.title} (repeat)`, href: `/mock?${q}`, reason: r.reason });
+    });
+    return out;
+  }, [items, progress, attempts, settings.areas, settings.weeks]);
 }

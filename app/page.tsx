@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Brain, CalendarClock, Check, Compass, EyeOff, RefreshCw, Sparkles, Target } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { useDue, useItems, usePlan } from "@/lib/hooks";
+import { useDue, useItems, usePlan, useMockLabels } from "@/lib/hooks";
 import { addDays, daysBetween, todayISO } from "@/lib/srs";
 import { AREAS, TOPICS, areaOf } from "@/content";
 import { aiReady } from "@/lib/ai";
@@ -46,6 +46,7 @@ export default function Today() {
   const s = useStore();
   const items = useItems();
   const plan = usePlan();
+  const mockLabels = useMockLabels();
   const due = useDue();
   const today = todayISO();
   const day = plan.days.find((d) => d.date === today);
@@ -98,7 +99,7 @@ export default function Today() {
           <div className="mt-4 grid gap-3 md:grid-cols-3">
             {[
               { n: "1", t: "Set your timeline", d: `Currently ${s.settings.weeks} weeks at ${s.settings.hoursPerDay} h/day. The plan re-flows whenever you change it.`, href: "/roadmap", cta: "Tune the roadmap", ok: false },
-              { n: "2", t: "Connect an AI reviewer", d: "Gemini, Claude or your local-server grades code and designs. Keys stay in this browser.", href: "/settings#ai", cta: "Add a key", ok: aiReady(s.settings) },
+              { n: "2", t: "Connect an AI reviewer", d: "Gemini, Claude, OpenAI or your local-server grades code and designs and runs the voice interviewer. Keys stay in this browser.", href: "/settings#ai", cta: "Add a key", ok: aiReady(s.settings) },
               { n: "3", t: "Save across devices", d: "Sign in to keep progress, notes and reviews in your account. Guest mode works too.", href: "/login", cta: "Sign in", ok: !!s.user },
             ].map((x) => (
               <Link key={x.n} href={x.href} className="card card-hover block bg-panel2 p-4">
@@ -121,12 +122,13 @@ export default function Today() {
             {queue.map((it, i) => {
               const done = s.progress[it.id]?.status === "done";
               const a = areaOf(it.area);
+              const ml = it.kind === "mock" && !done ? mockLabels.get(it.id) : undefined;
               return (
                 <motion.li key={it.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.04 }}>
-                  <Link href={it.href} className="group flex items-center gap-4 px-5 py-3.5 transition hover:bg-white/[0.025]">
+                  <Link href={ml?.href ?? it.href} title={ml?.reason} className="group flex items-center gap-4 px-5 py-3.5 transition hover:bg-white/[0.025]">
                     <span className={cn("grid h-8 w-8 shrink-0 place-items-center rounded-full border text-[12px] font-semibold num", done ? "border-ok bg-ok text-ink" : it === next ? "border-accent text-accent" : "border-line text-faint")}>{done ? <Check size={15} /> : i + 1}</span>
                     <div className="min-w-0 flex-1">
-                      <div className={cn("truncate text-[15px] font-medium", done && "text-mute line-through decoration-faint")}>{it.title}</div>
+                      <div className={cn("truncate text-[15px] font-medium", done && "text-mute line-through decoration-faint")}>{ml?.title ?? it.title}</div>
                       <div className="mt-0.5 flex items-center gap-2 text-[12px] text-faint"><span className="h-1.5 w-1.5 rounded-full" style={{ background: a.color }} />{a.short} · {it.kind === "topic" ? "concept lesson" : it.kind === "mock" ? "mock interview" : it.kind === "design" ? "design exercise" : "problem"} · {fmtMin(it.est)}</div>
                     </div>
                     <ArrowRight size={16} className="shrink-0 text-faint transition group-hover:translate-x-1 group-hover:text-accent" />

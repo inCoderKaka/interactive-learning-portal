@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { AlertTriangle, Check, ChevronDown, Flag, Moon } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { usePlan } from "@/lib/hooks";
+import { useMockLabels, usePlan } from "@/lib/hooks";
 import { todayISO } from "@/lib/srs";
 import { AREAS, areaOf } from "@/content";
 import { Bar, PageHead, Pill, cn, fmtMin } from "@/components/ui";
@@ -15,6 +15,7 @@ export default function Roadmap() {
   const setSettings = useStore((s) => s.setSettings);
   const progress = useStore((s) => s.progress);
   const plan = usePlan();
+  const mockLabels = useMockLabels();
   const today = todayISO();
   const weeks = useMemo(() => {
     const m = new Map<number, typeof plan.days>();
@@ -98,8 +99,9 @@ export default function Roadmap() {
                           {d.rest && <span className="flex items-center gap-1.5 text-[13px] text-faint"><Moon size={13} />Rest day</span>}
                           {d.items.map((it) => {
                             const dn = progress[it.id]?.status === "done";
-                            return <Link key={it.id} href={it.href} className={cn("flex max-w-full items-center gap-1.5 rounded-lg border border-line bg-panel2 px-2.5 py-1 text-[12.5px] transition hover:border-[#3a4160]", dn && "opacity-55")}>
-                              {dn ? <Check size={12} className="text-ok" /> : <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: areaOf(it.area).color }} />}<span className="truncate">{it.title}</span></Link>;
+                            const ml = it.kind === "mock" && !dn ? mockLabels.get(it.id) : undefined;
+                            return <Link key={it.id} href={ml?.href ?? it.href} title={ml?.reason} className={cn("flex max-w-full items-center gap-1.5 rounded-lg border border-line bg-panel2 px-2.5 py-1 text-[12.5px] transition hover:border-[#3a4160]", dn && "opacity-55")}>
+                              {dn ? <Check size={12} className="text-ok" /> : <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: areaOf(it.area).color }} />}<span className="truncate">{ml?.title ?? it.title}</span></Link>;
                           })}
                           {!d.rest && !d.items.length && <span className="text-[13px] text-faint">Buffer: reviews and catch-up</span>}
                         </div>

@@ -1,18 +1,20 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { CalendarRange, Check, Cloud, Download, EyeOff, FileUp, KeyRound, LogOut, PlugZap, RefreshCw, Trash2, UserRound } from "lucide-react";
+import { AudioLines, CalendarRange, Check, Cloud, Download, EyeOff, FileUp, KeyRound, LogOut, PlugZap, RefreshCw, Trash2, UserRound } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { chat, getKeys, listModels, setKeys, type Keys, type Provider } from "@/lib/ai";
 import { parsePractice, type ImportResult } from "@/lib/importer";
 import { cloudEnabled } from "@/lib/supabase";
 import { LANGS, Spinner } from "@/components/Work";
+import { AiSettingsPanel } from "@/components/interview/AiSettingsPanel";
 import { Button, PageHead, Pill, cn } from "@/components/ui";
 import type { Settings } from "@/lib/types";
 
-const PROVIDERS: { id: Provider; name: string; note: string; keyLabel: string; keyHint: string; modelField: "geminiModel" | "claudeModel" | "localModel" }[] = [
+const PROVIDERS: { id: Provider; name: string; note: string; keyLabel: string; keyHint: string; modelField: "geminiModel" | "claudeModel" | "openaiModel" | "localModel" }[] = [
   { id: "gemini", name: "Gemini", note: "Google AI Studio key. A free tier is available.", keyLabel: "Gemini API key", keyHint: "aistudio.google.com → Get API key", modelField: "geminiModel" },
   { id: "claude", name: "Claude", note: "Anthropic API key, called directly from this browser.", keyLabel: "Claude API key", keyHint: "console.anthropic.com → API keys", modelField: "claudeModel" },
+  { id: "openai", name: "OpenAI", note: "OpenAI API key. Also enables OpenAI Realtime voice.", keyLabel: "OpenAI API key", keyHint: "platform.openai.com → API keys", modelField: "openaiModel" },
   { id: "local", name: "local-server", note: "Your own OpenAI-compatible server (/v1/chat/completions).", keyLabel: "Access key (optional)", keyHint: "Sent as a Bearer token", modelField: "localModel" },
 ];
 const input = "h-10 w-full rounded-xl border border-line bg-bg px-3 text-sm outline-none focus:border-accent/60";
@@ -30,7 +32,7 @@ function Section({ id, icon: Icon, title, sub, children }: { id?: string; icon: 
 export default function SettingsPage() {
   const s = useStore();
   const { settings, setSettings } = s;
-  const [keys, setK] = useState<Keys>({ gemini: "", claude: "", local: "" });
+  const [keys, setK] = useState<Keys>({ gemini: "", claude: "", openai: "", local: "" });
   const [models, setModels] = useState<string[]>([]);
   const [test, setTest] = useState<{ state: "idle" | "busy" | "ok" | "bad"; msg: string }>({ state: "idle", msg: "" });
   const [imp, setImp] = useState<{ res: ImportResult; name: string } | null>(null);
@@ -100,7 +102,7 @@ export default function SettingsPage() {
       </Section>
 
       <Section id="ai" icon={KeyRound} title="AI reviewer" sub="Used to verify your code, grade design answers, play the mock interviewer and generate new variations. Keys are stored only in this browser and sent only to the provider you pick; they are never saved to your account or to our server.">
-        <div className="grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label="AI provider">
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4" role="radiogroup" aria-label="AI provider">
           {PROVIDERS.map((p) => (
             <button key={p.id} role="radio" aria-checked={settings.provider === p.id} onClick={() => setSettings({ provider: p.id })}
               className={cn("rounded-xl border p-3.5 text-left transition", settings.provider === p.id ? "border-accent/60 bg-accent/5" : "border-line bg-panel2 hover:border-[#3a4160]")}>
@@ -131,6 +133,10 @@ export default function SettingsPage() {
           <Button disabled={test.state === "busy"} onClick={loadModels}><RefreshCw size={15} />Load available models</Button>
         </div>
         {test.msg && <p role="status" className={cn("mt-3 rounded-xl border p-3 text-[13px] leading-relaxed", test.state === "ok" ? "border-ok/30 bg-ok/10 text-ok" : "border-bad/30 bg-bad/10 text-bad")}>{test.msg}</p>}
+      </Section>
+
+      <Section id="voice" icon={AudioLines} title="Voice and AI quality" sub="How the mock interviewer speaks and listens, and which models each AI task uses. Everything runs on your own keys: no other account is needed.">
+        <AiSettingsPanel settings={settings} setSettings={setSettings} />
       </Section>
 
       <Section icon={EyeOff} title="Practice conditions" sub="Defaults that keep practice honest. You can still toggle blind mode on any problem.">

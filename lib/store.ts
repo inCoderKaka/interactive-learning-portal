@@ -15,6 +15,7 @@ export const defaultSettings = (): Settings => ({
   provider: "gemini",
   geminiModel: "gemini-2.5-flash",
   claudeModel: "claude-sonnet-5-5",
+  openaiModel: "gpt-5-mini",
   localModel: "",
   localUrl: "http://localhost:8080",
   focusMin: 25,

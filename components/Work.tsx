@@ -93,7 +93,7 @@ export function NeedAI() {
   return (
     <div className="flex flex-wrap items-center gap-3 rounded-xl border border-dashed border-line p-4 text-[13.5px] text-mute">
       <Sparkles size={16} className="text-accent" />
-      <span className="flex-1">Connect Gemini, Claude or your local-server to get your work reviewed.</span>
+      <span className="flex-1">Connect Gemini, Claude, OpenAI or your local-server to get your work reviewed.</span>
       <Link href="/settings#ai" className="font-medium text-accent underline underline-offset-4">Set up AI</Link>
     </div>
   );

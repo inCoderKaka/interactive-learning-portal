@@ -154,15 +154,27 @@ export interface Settings {
   startDate: string;
   daysPerWeek: number;
   lang: "cpp" | "java" | "python" | "javascript";
-  provider: "gemini" | "claude" | "local";
+  provider: "gemini" | "claude" | "openai" | "local";
   geminiModel: string;
   claudeModel: string;
+  openaiModel: string;
   localModel: string;
   localUrl: string;
   focusMin: number;
   breakMin: number;
   blind: boolean; // hide topic tags while practising
   areas: Record<Area, boolean>;
+  ai?: AiSettingsPatch; // developer mode and voice; merged with defaults by getAi()
+}
+
+/** Stored shape of AI settings: anything missing falls back to the defaults in lib/interview/tasks.ts. */
+export interface AiSettingsPatch {
+  devMode?: boolean;
+  preset?: string;
+  tasks?: object;
+  speech?: object;
+  realtime?: object;
+  budgetUsd?: number;
 }
 
 export interface Feedback {
