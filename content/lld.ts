@@ -31,7 +31,6 @@ export const lldTopics: Topic[] = [
       Q("Adding a new payment method requires editing a switch in `PaymentProcessor`. Remedy?", ["More comments", "*Strategy interface per method (open/closed)", "Singleton", "Inheritance from PaymentProcessor"], "New behaviour becomes a new class, not an edit."),
       Q("Business logic constructs its own database client. What does this hurt most?", ["Performance", "*Testability and flexibility (dependency inversion)", "Security", "Memory"], "Inject an interface so tests and alternative stores can plug in."),
     ],
-    cards: [["Composition over inheritance: why?", "Avoids tight coupling to parent internals and combinatorial subclass explosion; behaviours can change at runtime"]],
   }),
   T("lld", "patterns-creational-structural", "Design patterns I: creational & structural", 1, 35, "Factory, Builder, Singleton, Adapter, Decorator, Facade, Proxy, Composite.", {
     signals: ["Object creation is complex or varies", "You need to wrap, adapt or layer behaviour without changing a class"],
@@ -58,7 +57,6 @@ export const lldTopics: Topic[] = [
       Q("Add compression, then encryption, to any stream without subclassing each combination.", ["Factory", "*Decorator", "Singleton", "Observer"], "Stackable wrappers with the same interface."),
       Q("Main risk of the Singleton pattern?", ["Slow", "*Hidden global state, hard to test, concurrency pitfalls", "Too many objects", "None"], "It couples callers to a global."),
     ],
-    cards: [["Decorator vs Proxy", "Decorator adds behaviour; Proxy controls access to the same behaviour"]],
   }),
   T("lld", "patterns-behavioral", "Design patterns II: behavioural", 1, 35, "Strategy, Observer, State, Command, Chain of Responsibility, Template Method, Iterator.", {
     signals: ["Algorithms that vary, objects whose behaviour depends on state, events and undo"],
@@ -82,7 +80,6 @@ export const lldTopics: Topic[] = [
       Q("A vending machine behaves differently when idle, has-money, dispensing. Pattern?", ["Strategy", "*State", "Decorator", "Facade"], "Behaviour and transitions depend on the current state object."),
       Q("HTTP middleware (auth → rate limit → logging → handler) is an example of…", ["Composite", "*Chain of responsibility", "Builder", "Flyweight"], "Each handler processes or passes along."),
     ],
-    cards: [["State vs Strategy", "State objects drive their own transitions over time; Strategy is an algorithm chosen by the client"]],
   }),
   T("lld", "concurrency", "Concurrency & thread safety", 1, 40, "Races, locks, deadlocks, producer–consumer, thread pools and lock-free basics.", {
     signals: ["'Make it thread-safe'", "Shared mutable state, background workers, rate limiters, caches, booking systems"],
@@ -129,7 +126,6 @@ public:
       Q("Why must condition waits be in a loop?", ["Performance", "*Spurious wakeups and stolen conditions", "Compiler requirement", "To avoid deadlock"], "The predicate may be false again when the thread actually runs."),
       Q("`if (!map.containsKey(k)) map.put(k, v)` on a ConcurrentHashMap is…", ["Thread-safe", "*A check-then-act race; use putIfAbsent/computeIfAbsent", "A deadlock", "A compile error"], "Each call is atomic; the pair is not."),
     ],
-    cards: [["Four deadlock conditions", "Mutual exclusion · hold and wait · no preemption · circular wait"]],
   }),
   T("lld", "lld-framework", "The LLD interview framework & API design", 1, 30, "From vague prompt to classes, relationships and working core logic in 45 minutes.", {
     signals: ["'Design a parking lot / elevator / library…'", "'Design the classes for…'"],
@@ -158,7 +154,6 @@ public:
       Q("First step when asked to 'design an elevator system'?", ["Draw classes", "*Clarify actors, use cases and scope (one car or many? scheduling goals?)", "Pick patterns", "Write the scheduler"], "Scope drives the model."),
       Q("ParkingFloor and ParkingSpot: which relationship?", ["Inheritance", "*Composition", "Dependency", "None"], "Spots do not exist without their floor."),
     ],
-    cards: [["LLD flow", "Clarify → entities → class diagram → variation points/patterns → main flow → core code → extensions & concurrency"]],
   }),
 ];
 

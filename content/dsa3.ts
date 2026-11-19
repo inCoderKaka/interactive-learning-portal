@@ -37,7 +37,6 @@ return tails.size();`,
       Q("Max Profit in Job Scheduling: after sorting by end time, dp[i] =", ["dp[i−1] + profit", "*max(dp[i−1], profit[i] + dp[last job ending ≤ start[i]])", "max over all j < i always", "profit[i]"], "Skip the job or take it plus the best compatible prefix found via binary search."),
       Q("House Robber on a circle is solved by…", ["A 2D DP", "*Two linear runs: houses [0, n−2] and [1, n−1]", "Greedy", "Sorting"], "First and last cannot both be robbed."),
     ],
-    cards: [["The four DP questions", "State · Transition · Base cases · Order (and where the answer lives)"], ["Kadane transition", "cur = max(a[i], cur + a[i]); best = max(best, cur)"]],
   }),
   T("dsa", "dp-2d", "DP II: grids, strings & two sequences", 1, 45, "LCS, edit distance, palindromes and grid paths.", {
     viz: "dp-lcs",
@@ -69,7 +68,6 @@ for (int i = 1; i <= m; ++i)
       Q("Edit distance base case dp[i][0] is…", ["0", "*i (delete i characters)", "1", "∞"], "Transforming a length-i prefix to the empty string takes i deletions."),
       Q("Maximal Square transition when cell is 1:", ["max of three neighbours + 1", "*1 + min(top, left, top-left)", "top + left", "1"], "The square is limited by its weakest neighbour."),
     ],
-    cards: [["Edit distance transition (mismatch)", "1 + min(dp[i−1][j], dp[i][j−1], dp[i−1][j−1])"]],
   }),
   T("dsa", "dp-knapsack", "DP III: knapsack & subset sums", 1, 35, "0/1, unbounded and bounded knapsack; counting vs optimising.", {
     signals: ["Pick items under a capacity / reach a target sum", "Partition into groups with equal or closest sums", "'Number of ways to make amount'"],
@@ -102,7 +100,6 @@ for (int i = 0; i < n; ++i)
       Q("Coin Change II (number of combinations): correct loop order?", ["Amount outer, coins inner", "*Coins outer, amount inner", "Either", "Neither"], "Coins outer fixes an order of coin types, so each multiset is counted once."),
       Q("n = 40 items, weights up to 10⁹, capacity 10⁹.", ["Standard DP table", "Greedy by ratio", "*Meet in the middle", "Bitset"], "2²⁰ subsets per half, then sort + binary search / two pointers."),
     ],
-    cards: [["Target Sum reduction", "Count subsets with sum (total + target) / 2"]],
   }),
   T("dsa", "dp-advanced", "DP IV: interval, bitmask, tree, game & digit DP", 2, 50, "The hard-round toolkit: pick the right state shape.", {
     signals: ["Merge/burst/cut ranges, cost depends on the split (interval DP)", "n ≤ 20 with 'assign / visit all' (bitmask DP)", "Tree with choose/not-choose per node (tree DP)", "Two players play optimally (game DP / minimax)", "Count numbers ≤ N with a digit property (digit DP)"],
@@ -130,7 +127,6 @@ for (int mask = 1; mask < (1 << n); ++mask)
       Q("Stone-game DP usually stores…", ["Player 1's total", "*Score difference achievable by the player to move", "Number of stones left", "A boolean only"], "dp = max(gain − dp[next]) handles alternating turns uniformly."),
       Q("Assigning n tasks to n people with minimum cost, n ≤ 20.", ["O(n!) backtracking", "*dp[mask], person index = popcount(mask): O(2ⁿ·n)", "Greedy", "Dijkstra"], "The mask of used tasks determines whose turn it is."),
     ],
-    cards: [["Submask enumeration", "for (s = mask; s; s = (s − 1) & mask)"], ["Egg drop reformulation", "f(moves, eggs) = f(m−1, e−1) + f(m−1, e) + 1 floors"]],
   }),
   T("dsa", "greedy", "Greedy", 1, 35, "Local choices with a proof: exchange arguments and 'stays ahead'.", {
     signals: ["Sort by something and sweep", "Earliest deadline / smallest end / largest ratio", "A local choice can be proven never worse (exchange argument)"],
@@ -160,7 +156,6 @@ for (auto& v : iv) if (v[0] >= end) { ++cnt; end = v[1]; }`,
       Q("Gas Station: if total gas ≥ total cost, then…", ["There may be no solution", "*A unique valid start exists and one pass finds it", "Any start works", "You need O(n²)"], "When the tank goes negative at i, no start in the failed segment can work; restart at i + 1."),
       Q("Coins {1, 3, 4}, amount 6: greedy gives 4+1+1. What does this show?", ["Greedy is optimal", "*Greedy fails; DP gives 3+3", "No solution exists", "Sorting is wrong"], "A two-line counter-example beats any intuition."),
     ],
-    cards: [["Exchange argument", "Swap an optimal solution's choice for the greedy one and show the result is no worse"]],
   }),
   T("dsa", "intervals", "Intervals & sweep line", 1, 35, "Sort, merge, sweep events, and ordered maps for online booking.", {
     viz: "intervals",
@@ -193,7 +188,6 @@ for (auto& v : iv) {
       Q("Events at the same timestamp for half-open intervals [s, e): which first?", ["Starts", "*Ends", "Order does not matter", "Sort by id"], "An interval ending at t does not overlap one starting at t."),
       Q("My Calendar I (no double booking) with n bookings: best structure?", ["Array scan O(n) each", "*Ordered map: check neighbours in O(log n)", "Hash map", "Stack"], "Only the predecessor and successor can conflict."),
     ],
-    cards: [["Half-open overlap test", "a.start < b.end && b.start < a.end"]],
   }),
   T("dsa", "bits", "Bit manipulation", 2, 25, "XOR tricks, masks as sets, and per-bit counting.", {
     signals: ["'Every element appears twice except…'", "Subsets of a small set (masks)", "Constraints mention bitwise AND/OR/XOR", "O(1) space with integers"],
@@ -221,7 +215,6 @@ int pop = 0; for (unsigned y = x; y; y &= y - 1) ++pop; // popcount`,
       Q("x & (x − 1) == 0 (x > 0) tests whether x is…", ["Odd", "*A power of two", "Zero", "Negative"], "Clearing the lowest set bit leaves nothing only if exactly one bit is set."),
       Q("Every number appears three times except one. O(1)-space idea?", ["XOR everything", "*Count each bit modulo 3", "Sort", "Hash map"], "Bits of the unique number are the per-bit counts mod 3."),
     ],
-    cards: [["Clear lowest set bit / isolate lowest set bit", "x & (x − 1) / x & −x"]],
   }),
   T("dsa", "math", "Math, number theory & randomness", 2, 30, "GCD, modular arithmetic, fast power, sampling and geometry basics.", {
     signals: ["Answer 'modulo 1e9+7'", "Divisibility, primes, gcd/lcm", "Uniform random choice, shuffling, sampling from a stream", "Points, slopes, rectangles"],
@@ -251,7 +244,6 @@ Be ready to **prove uniformity** by induction.
       Q("Reservoir sampling (k = 1): the i-th element replaces the current pick with probability…", ["1/2", "*1/i", "1/n", "i/n"], "Then each of the first i items is the pick with probability 1/i by induction."),
       Q("Max Points on a Line: how should slopes be keyed?", ["double dy/dx", "*Reduced (dy/g, dx/g) with a sign convention", "atan2 value", "Strings of floats"], "Exact rational keys avoid precision errors."),
     ],
-    cards: [["Modular inverse for prime p", "a^(p − 2) mod p (Fermat)"], ["Fisher–Yates", "for i = n−1..1: swap(a[i], a[rand(0..i)])"]],
   }),
   T("dsa", "strings", "String algorithms", 2, 35, "KMP, rolling hash, Z-function, and palindromes: pattern matching beyond brute force.", {
     signals: ["Find a pattern in a text in linear time", "Longest prefix that is also a suffix / repeated substring", "Compare many substrings quickly (hashing)", "Longest duplicate / common substring (binary search + hash)"],
@@ -281,7 +273,6 @@ Uses: strStr, shortest palindrome (\`s + '#' + reverse(s)\`), repeated substring
       Q("Longest Duplicate Substring in O(n log n) uses…", ["KMP only", "*Binary search on length + rolling hash", "DP O(n²)", "Trie of all suffixes"], "If a duplicate of length L exists, one of length L−1 does too."),
       Q("Encode a list of strings so any characters are allowed. Robust scheme?", ["Join with commas", "*Length prefix: len + '#' + string", "Escape nothing", "Base 10"], "A length prefix makes delimiters in data irrelevant."),
     ],
-    cards: [["KMP fallback on mismatch", "k = pi[k − 1]"], ["Repeated substring test", "n % (n − pi[n−1]) == 0 and pi[n−1] > 0"]],
   }),
   T("dsa", "range-queries", "Range queries: Fenwick, segment tree, sparse table", 2, 40, "Point updates with range queries, and counting inversions-style problems.", {
     signals: ["Interleaved updates and range sum/min/max queries", "'Count of smaller elements after self', inversions", "Max overlapping bookings online with large coordinates"],
@@ -312,7 +303,6 @@ Interview strategy: state the simple structure first (prefix sums, ordered map),
       Q("Count of smaller numbers after self, n = 10⁵.", ["O(n²) scan", "*Traverse right-to-left with a Fenwick tree over compressed values (or merge sort)", "Monotonic stack", "Two pointers"], "Query prefix count of values < x, then insert x."),
       Q("Static array, 10⁶ range-minimum queries.", ["Segment tree", "*Sparse table: O(n log n) build, O(1) query", "Fenwick tree", "Prefix sums"], "Min is idempotent, so overlapping blocks are fine."),
     ],
-    cards: [["Fenwick moves", "update: i += i & −i · query: i −= i & −i"]],
   }),
   T("dsa", "design-ds", "Data structure design", 1, 40, "Compose hash maps, lists, heaps and trees to meet O(1)/O(log n) contracts.", {
     signals: ["'Design a class that supports … in O(1)'", "Eviction policies, counters over time, random access with deletion"],
@@ -350,7 +340,6 @@ public:
       Q("Why does an LRU cache need a doubly (not singly) linked list?", ["Faster iteration", "*To unlink an arbitrary node in O(1)", "Less memory", "Sorting"], "Removal needs the predecessor."),
       Q("O(1) delete in RandomizedSet works by…", ["Shifting the array", "*Swapping the element with the last one and popping", "Marking tombstones", "Rehashing"], "Order does not matter, so fill the hole with the tail."),
     ],
-    cards: [["LFU core structures", "key→(val,freq) · freq→LRU list of keys · minFreq"]],
   }),
   T("dsa", "matrix", "Matrix manipulation", 3, 20, "In-place transforms, layer traversal and staircase search.", {
     signals: ["Rotate / spiral / zero / diagonal traversal", "Rows and columns both sorted", "Update a grid 'simultaneously' in place"],
@@ -367,7 +356,6 @@ These problems test index discipline: name your boundaries, write the loop invar
     quiz: [
       Q("Search in a row- and column-sorted matrix: where do you start for O(m + n)?", ["Top-left", "*Top-right (or bottom-left)", "Centre", "Anywhere"], "From the top-right, smaller means move left, larger means move down."),
     ],
-    cards: [["Rotate 90° clockwise in place", "Transpose, then reverse each row"]],
   }),
   T("dsa", "sorting", "Sorting & selection", 2, 30, "Know the algorithms well enough to adapt them: merge-count, quickselect, buckets.", {
     signals: ["Custom ordering", "k-th element without full sort", "Count pairs (i < j) with a relation (merge sort)", "Bounded key range (counting / bucket / radix)"],
@@ -403,7 +391,6 @@ These problems test index discipline: name your boundaries, write the loop invar
       Q("Count pairs i < j with a[i] > 2·a[j], n = 5·10⁴.", ["Two loops", "*Modified merge sort (or BIT)", "Quickselect", "Counting sort"], "Count cross pairs during the merge step when both halves are sorted."),
       Q("Data is 100 GB, RAM is 8 GB. Sort it.", ["Quick sort in memory", "*External merge sort: sorted runs + k-way merge", "Heap sort", "Impossible"], "Classic external sorting."),
     ],
-    cards: [["Why randomise quickselect's pivot?", "To avoid adversarial O(n²); expected time O(n)"]],
   }),
 ];
 

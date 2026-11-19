@@ -33,7 +33,6 @@ export const hldTopics: Topic[] = [
       Q("What is the first thing to do after hearing 'Design YouTube'?", ["Draw a CDN", "*Clarify scope: which features, what scale, which non-functional goals", "Pick a database", "Estimate storage"], "Scoping decides everything that follows."),
       Q("Which statement best shows senior-level trade-off reasoning?", ["'I'll use Cassandra, it scales'", "*'Writes dominate and we can accept eventual consistency, so a leaderless wide-column store; cost: no multi-row transactions'", "'NoSQL is faster'", "'We'll add caching everywhere'"], "Choice, reason, and cost are all present."),
     ],
-    cards: [["Six phases of a design round", "Requirements → Estimation → API & data model → High-level design → Deep dives → Wrap-up"]],
   }),
   T("hld", "estimation", "Back-of-the-envelope estimation", 1, 25, "Powers of ten, latency numbers and capacity math you can do out loud.", {
     viz: "estimator",
@@ -65,7 +64,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("500 M daily active users, each reads 20 items/day. Approximate average read QPS?", ["~1 200", "~12 000", "*~120 000", "~1.2 M"], "10¹⁰ reads / 10⁵ s = 10⁵ ≈ 120 k QPS."),
       Q("Two components in series, each 99.9% available. Combined availability?", ["99.99%", "99.9%", "*≈ 99.8%", "99%"], "0.999 × 0.999 ≈ 0.998."),
     ],
-    cards: [["Seconds in a day (rounded)", "≈ 10⁵ (86 400)"], ["99.99% availability = downtime per year", "≈ 53 minutes"]],
   }),
   T("hld", "networking", "Networking, APIs & real-time protocols", 1, 35, "DNS to HTTP to WebSockets; REST vs gRPC; idempotency and pagination.", {
     signals: ["Client ↔ server communication choices", "Real-time updates", "Public API design"],
@@ -95,7 +93,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("A payment API must be safely retryable after a timeout. What do you add?", ["Longer timeouts", "*An idempotency key stored with the result", "Exponential backoff only", "A cache"], "The server deduplicates by key and returns the original result."),
       Q("Live comment stream to viewers (server → client only). Simplest fit?", ["WebSocket", "*Server-Sent Events", "gRPC unary", "Polling every 30 s"], "One-directional push over plain HTTP."),
     ],
-    cards: [["Why cursor over offset pagination?", "Stable under concurrent inserts/deletes and O(1) seek instead of scanning skipped rows"]],
   }),
   T("hld", "load-balancing", "Load balancing & API gateways", 1, 25, "Spreading traffic, health checks and why stateless services matter.", {
     viz: "load-balancer",
@@ -122,7 +119,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("Backends have widely varying request durations. Better algorithm than round robin?", ["Random", "*Least connections (or power of two choices)", "IP hash", "DNS round robin"], "It accounts for in-flight work."),
       Q("Why do retries need jitter?", ["Security", "*To avoid synchronised retry waves that re-overload the server", "To reduce latency", "TCP requires it"], "Synchronised clients create thundering herds."),
     ],
-    cards: [["Power of two choices", "Sample two backends at random, send to the less loaded one"]],
   }),
   T("hld", "caching", "Caching & CDNs", 1, 35, "Where to cache, how to write, how to invalidate, and how caches fail.", {
     signals: ["Read-heavy workloads", "Expensive computations or slow dependencies", "Static or semi-static content served globally"],
@@ -156,7 +152,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("A celebrity's profile key expires and 50 k requests miss simultaneously. Fix?", ["Bigger database", "*Request coalescing / lock so one request rebuilds, others wait or get stale", "Disable TTL", "Add more cache nodes"], "Classic stampede; single-flight plus stale-while-revalidate."),
       Q("On a write with cache-aside, the safest order is…", ["Update cache then DB", "*Update DB, then delete the cache key", "Delete cache then update DB", "Update both in parallel"], "Deleting after the DB write minimises stale windows; add a short TTL as a backstop."),
     ],
-    cards: [["Three cache failure modes", "Stampede (hot key miss), penetration (missing keys), avalanche (mass expiry/outage)"]],
   }),
   T("hld", "databases", "Databases: SQL, NoSQL, indexes & storage engines", 1, 40, "Choosing a store from access patterns, not fashion.", {
     signals: ["Any persistent state", "Query patterns, consistency needs and write volume differ per entity"],
@@ -189,7 +184,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("Write-heavy time-series events, queries by (deviceId, time range). Good fit?", ["Single Postgres table", "*Wide-column / LSM store keyed by (deviceId, timestamp)", "Graph DB", "Elasticsearch only"], "Partition by device, sort by time; LSM handles high write rates."),
       Q("Why do LSM-trees use Bloom filters?", ["To compress data", "*To skip SSTables that definitely lack a key", "To order writes", "For transactions"], "They cut read amplification for point lookups."),
     ],
-    cards: [["LSM write path", "WAL + memtable → flush to SSTable → background compaction"], ["Composite index rule", "Usable for queries on a leftmost prefix of its columns"]],
   }),
   T("hld", "replication", "Replication & consistency models", 1, 35, "Leader/follower, multi-leader, leaderless quorums and what clients can observe.", {
     viz: "quorum",
@@ -214,7 +208,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("A user updates their profile then sees the old one. Which guarantee is missing?", ["Linearizability for all", "*Read-your-writes", "Durability", "Atomicity"], "Their read hit a lagging replica."),
       Q("A Raft cluster of 5 nodes tolerates how many failures?", ["1", "*2", "3", "4"], "Majority of 5 is 3."),
     ],
-    cards: [["Quorum overlap rule", "R + W > N"], ["Fencing token", "Monotonic epoch number that storage checks to reject writes from a deposed leader"]],
   }),
   T("hld", "partitioning", "Partitioning, sharding & consistent hashing", 1, 35, "Splitting data so no node holds everything, without hot spots.", {
     viz: "consistent-hash",
@@ -240,7 +233,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("Why use virtual nodes in consistent hashing?", ["Encryption", "*Smoother load distribution and proportional capacity", "Faster hashing", "Stronger consistency"], "Many small arcs per physical node average out the variance."),
       Q("Messages table sharded by messageId; the app mostly lists a chat's recent messages. Problem?", ["None", "*Every chat read becomes a scatter-gather across shards", "Too few shards", "Hot keys"], "Shard by chatId so a conversation lives together."),
     ],
-    cards: [["Keys moved when a node joins a consistent-hash ring of N nodes", "About 1/N of the keys"]],
   }),
   T("hld", "transactions", "Transactions, isolation & distributed coordination", 2, 35, "ACID, isolation anomalies, 2PC, sagas, and idempotent exactly-once effects.", {
     signals: ["Money, inventory, bookings: anything that must not double-apply", "Operations spanning services or shards"],
@@ -272,7 +264,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("Two users book the last seat concurrently under snapshot isolation. What prevents double booking?", ["Nothing needed", "*A unique constraint / conditional update or row lock on the seat", "Read replicas", "A cache"], "Make the conflict materialise on one row: compare-and-set or FOR UPDATE."),
       Q("Service must update its DB and publish an event reliably. Pattern?", ["Publish then write", "Write then publish", "*Transactional outbox", "2PC with the broker"], "One local transaction, then a relay delivers at-least-once."),
     ],
-    cards: [["Exactly-once in practice", "At-least-once delivery + idempotent processing"]],
   }),
   T("hld", "messaging", "Message queues, streams & event-driven design", 1, 35, "Decoupling, backpressure, ordering and delivery semantics.", {
     signals: ["Async work, spikes to smooth, fan-out to many consumers", "Event sourcing, stream processing, CDC"],
@@ -298,7 +289,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("All events for one order must be processed in order while scaling consumers. How?", ["One partition for everything", "*Partition by orderId", "Random partitioning", "Global lock"], "Order is preserved within a partition; different orders proceed in parallel."),
       Q("At-least-once delivery implies consumers must be…", ["Stateless", "*Idempotent", "Single-threaded", "Synchronous"], "Duplicates will happen."),
     ],
-    cards: [["Queue vs log", "Queue: ack-and-delete, competing consumers. Log: retained, offset-based, replayable, ordered per partition"]],
   }),
   T("hld", "rate-limiting-concept", "Rate limiting & overload control", 2, 25, "Token bucket, sliding windows, and distributed counters.", {
     viz: "token-bucket",
@@ -331,7 +321,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("Which algorithm naturally allows short bursts while enforcing an average rate?", ["Leaky bucket", "*Token bucket", "Fixed window", "Sliding log"], "Accumulated tokens can be spent at once up to the bucket capacity."),
       Q("Limit: 100/min with fixed windows. Worst-case requests in a 60 s span?", ["100", "150", "*200", "Unlimited"], "100 at the end of one window plus 100 at the start of the next."),
     ],
-    cards: [["Token bucket state per key", "tokens, lastRefillTimestamp"]],
   }),
   T("hld", "storage-search", "Blob storage, search & probabilistic structures", 2, 30, "Object stores, inverted indexes, Bloom filters, HyperLogLog and Count-Min Sketch.", {
     viz: "bloom",
@@ -354,7 +343,6 @@ Round aggressively and say the assumptions. The number matters less than the dec
       Q("A Bloom filter says 'not present'. This is…", ["Probably true", "*Definitely true", "Probably false", "Unknown"], "No false negatives."),
       Q("Count unique visitors per day across 1 B events with tiny memory.", ["Hash set", "*HyperLogLog", "Bloom filter", "Sorted list"], "HLL estimates cardinality in kilobytes."),
     ],
-    cards: [["Erasure coding 6+3 overhead", "1.5× storage, tolerates any 3 fragment losses"]],
   }),
   T("hld", "reliability", "Reliability, observability & operations", 2, 30, "Failure is normal: design the blast radius, detect fast, recover automatically.", {
     signals: ["Any 'what if X dies?' question", "SLOs, rollouts, multi-region"],
@@ -383,7 +371,6 @@ In the wrap-up phase, proactively walk through: what fails, how you detect it, w
       Q("SLO is 99.9% monthly. The error budget is about…", ["4 minutes", "*43 minutes", "7 hours", "0"], "0.1% of ~30 days ≈ 43 min."),
       Q("A downstream service is failing slowly and threads pile up. Which pattern helps first?", ["More retries", "*Timeouts + circuit breaker", "Bigger thread pool", "Caching writes"], "Fail fast and stop calling the unhealthy dependency."),
     ],
-    cards: [["RPO vs RTO", "RPO: how much data may be lost. RTO: how long recovery may take"]],
   }),
   T("hld", "google-papers", "Google-scale building blocks", 3, 30, "GFS, MapReduce, Bigtable, Chubby, Spanner, Borg: ideas worth citing.", {
     signals: ["Google interviews reward understanding the ideas behind their own infrastructure"],
@@ -409,6 +396,5 @@ You are not expected to recite the papers, but naming the right primitive ("this
       Q("What does TrueTime give Spanner?", ["Faster disks", "*Bounded clock uncertainty enabling externally consistent timestamps", "Leader election", "Compression"], "Commit-wait over the uncertainty interval orders transactions globally."),
       Q("Bigtable row key for 'latest events per device first'?", ["timestamp#device", "*device#(MAX − timestamp)", "random UUID", "device only"], "Prefix by device for locality; reversed timestamp sorts newest first."),
     ],
-    cards: [["GFS architecture in one line", "One metadata master, many chunk servers, clients read/write chunks directly"]],
   }),
 ];

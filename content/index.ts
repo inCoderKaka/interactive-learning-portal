@@ -11,6 +11,7 @@ import { designExtra, designNewTopics } from "./extra-design";
 import { extraDesigns, extraProblems } from "./extra-exercises";
 import { DESIGN_REFS, LC, PROBLEM_VIDEO, TOPIC_REFS } from "./refs";
 import type { Extra } from "./h";
+import { CARDS } from "./cards";
 
 export const AREAS: { id: Area; name: string; short: string; tag: string; color: string }[] = [
   { id: "dsa", name: "Data Structures & Algorithms", short: "DSA", tag: "Coding rounds", color: "var(--color-dsa)" },
@@ -25,12 +26,9 @@ const EXTRA: Record<string, Extra> = { ...dsaExtra, ...designExtra };
 function withExtra(t: Topic): Topic {
   const x = EXTRA[t.id];
   if (!x) return t;
-  const seen = new Set<string>();
-  const cards = [...(t.cards ?? []), ...(x.cards ?? [])].filter(([front]) => !seen.has(front) && !!seen.add(front));
   return {
     ...t,
     lesson: x.deep ? `${t.lesson}\n\n## Variations, depth and bar raisers\n\n${x.deep}` : t.lesson,
-    cards,
     prereq: [...new Set([...(t.prereq ?? []), ...(x.pre ?? [])])],
   };
 }
@@ -41,7 +39,7 @@ function assemble(): Topic[] {
     const i = out.findIndex((t) => t.id === after);
     out.splice(i < 0 ? out.length : i + 1, 0, topic);
   }
-  return out.map(withExtra).map((t) => ({ ...t, refs: TOPIC_REFS[t.id] }));
+  return out.map(withExtra).map((t) => ({ ...t, cards: CARDS[t.id] ?? [], refs: TOPIC_REFS[t.id] }));
 }
 
 export const TOPICS: Topic[] = assemble();

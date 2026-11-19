@@ -17,6 +17,11 @@ export interface Ref {
   featured?: boolean; // embedded as the one lead video of a topic
 }
 
+/** What kind of memory a flashcard trains. Untagged cards are plain concept recall. */
+export type CardKind = "pattern" | "variation" | "pitfall";
+/** A flashcard: [front, back, kind?]. The front must make sense with no topic header next to it. */
+export type Card = [front: string, back: string, kind?: CardKind];
+
 export interface Topic {
   id: string;
   area: Area;
@@ -30,7 +35,7 @@ export interface Topic {
   pitfalls: string[];
   viz?: string; // visualizer id
   quiz: Quiz[];
-  cards?: [string, string][]; // flashcards [front, back]
+  cards?: Card[]; // flashcards, authored in content/cards/
   prereq?: string[];
   refs?: Ref[];
 }

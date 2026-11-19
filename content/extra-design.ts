@@ -12,16 +12,6 @@ export const designExtra: Record<string, Extra> = {
 - **Drive the failure discussion yourself:** for every box ask what happens when it dies, is slow, or is partitioned; for every arrow ask about retries, timeouts, duplicates and ordering.
 - **Evolution story:** state what you would build for 1× load, what breaks at 10×, and what changes at 100×. Avoid premature sharding and premature microservices.
 - **Bar raiser (L5):** identify the bottleneck with numbers, propose an operational plan (metrics, alerts, rollout, backfill, migration with dual writes), quantify cost, and handle the interviewer's curveball by re-deriving rather than defending the first design.`,
-    cards: [
-      ["Order of an HLD interview", "Requirements → estimates → API → data model → high-level design → deep dives → bottlenecks, failures, trade-offs"],
-      ["99.9% vs 99.99% availability in downtime", "≈ 8.8 hours/year vs ≈ 53 minutes/year"],
-      ["Trade-off sentence template", "I choose X over Y because of requirement R; the cost is C; I would revisit if Z changes"],
-      ["Three questions to ask of every component", "What if it dies? What if it is slow? What if it is partitioned from its neighbours?"],
-      ["What separates L5 from L4 in system design", "Driving the discussion, quantified trade-offs, depth on the hard parts, failure modes and operational concerns unprompted"],
-      ["What to cover for every arrow in the diagram", "Protocol, sync vs async, timeout, retry + idempotency, ordering, and what happens on failure"],
-      ["Zero-downtime schema or store migration", "Dual write → backfill → verify (shadow reads) → switch reads → stop old writes"],
-      ["A requirement question worth asking", "One whose answer would change the design: consistency per operation, read/write ratio, scale, latency target"],
-    ],
   },
   estimation: {
     pre: ["hld-framework"],
@@ -32,17 +22,6 @@ export const designExtra: Record<string, Extra> = {
 - **Bandwidth and memory:** QPS × payload = bytes/s; cache size = hot fraction (often 20%) × daily unique data.
 - **Why estimate at all:** each number must lead to a decision: single node or sharded? cache or not? fan-out on write or read? If a number changes nothing, skip it.
 - **Bar raiser:** sanity-check with a second method, state assumptions explicitly, round aggressively, and compute the *bottleneck* resource (IOPS, memory, connections, network) rather than every resource.`,
-    cards: [
-      ["Seconds in a day (for estimates)", "≈ 10⁵ (86 400)"],
-      ["1 million requests per day in QPS", "≈ 12 QPS; 1 billion/day ≈ 12 K QPS"],
-      ["Powers of two for sizes", "2¹⁰ ≈ 10³ (KB), 2²⁰ ≈ 10⁶ (MB), 2³⁰ ≈ 10⁹ (GB), 2⁴⁰ ≈ 10¹² (TB)"],
-      ["Memory reference vs SSD read vs disk seek", "~100 ns vs ~100 µs vs ~10 ms"],
-      ["Same-datacentre vs cross-continent round trip", "~0.5 ms vs ~100–150 ms"],
-      ["Storage estimate formula", "items/day × size × retention days × replication factor × index overhead"],
-      ["Typical single relational primary limits", "A few thousand writes/s and a few TB before you need replicas, partitioning or sharding"],
-      ["Rule for cache sizing", "Roughly 20% of daily unique data serves ~80% of reads; size = hot fraction × item size"],
-      ["What must every estimate lead to?", "A design decision: shard or not, cache or not, sync or async, number of machines"],
-    ],
   },
   networking: {
     pre: ["hld-framework"],
@@ -54,18 +33,6 @@ export const designExtra: Record<string, Extra> = {
 - **Timeouts, retries, backoff:** every call needs a deadline; retry only idempotent calls with exponential backoff + jitter and a retry budget; propagate deadlines downstream.
 - **Service-to-service:** service discovery (DNS, registry, or mesh sidecar), connection pooling, mTLS, client-side vs proxy load balancing.
 - **Bar raiser:** scaling WebSockets to millions (connection gateways, heartbeat, presence, fan-out via pub/sub by user → gateway mapping), mobile realities (flaky networks, battery, push notifications via APNs/FCM), and TCP tuning words: Nagle, slow start, keep-alive.`,
-    cards: [
-      ["Steps when a browser opens an HTTPS URL", "DNS lookup → TCP handshake → TLS handshake → HTTP request → response (via CDN / LB)"],
-      ["HTTP/2 vs HTTP/3", "HTTP/2 multiplexes streams on one TCP connection; HTTP/3 uses QUIC over UDP, removing TCP head-of-line blocking"],
-      ["WebSocket vs SSE vs long polling", "WebSocket: bidirectional, stateful; SSE: server → client only over HTTP; long polling: held request, simplest fallback"],
-      ["Why cursor pagination over offset?", "Stable under concurrent inserts/deletes and O(limit) instead of scanning the offset"],
-      ["What is an idempotency key?", "A client-generated unique id stored with the result so a retried request returns the same outcome without re-executing"],
-      ["Retry policy essentials", "Only idempotent operations, exponential backoff with jitter, a cap or retry budget, and deadlines"],
-      ["gRPC vs REST", "gRPC: binary protobuf, HTTP/2 streaming, strict contracts, internal; REST: text, cacheable, universal, public"],
-      ["TCP vs UDP", "TCP: reliable, ordered, congestion-controlled; UDP: no guarantees, low latency (media, DNS, QUIC)"],
-      ["How do you route a message to a user's WebSocket?", "Registry (user → gateway server) in a fast store; publish to that gateway via pub/sub"],
-      ["Anycast", "The same IP announced from many locations; routing delivers users to the nearest one (DNS, CDNs)"],
-    ],
   },
   "load-balancing": {
     pre: ["networking"],
@@ -77,18 +44,6 @@ export const designExtra: Record<string, Extra> = {
 - **Overload control:** admission control and load shedding (drop low-priority first), queue with bounded length and deadlines, concurrency limits, circuit breakers, backpressure. Autoscaling reacts in minutes; shedding reacts in milliseconds.
 - **Failure modes:** thundering herd after a restart, retry storms amplifying an outage, uneven load with long-lived HTTP/2 connections (balance per request, not per connection).
 - **Bar raiser:** the LB itself as a single point of failure (active–passive pair with a virtual IP, or anycast), zone-aware routing, and deploying with blue-green / canary through LB weights.`,
-    cards: [
-      ["L4 vs L7 load balancer", "L4 routes by IP/port (fast, protocol-agnostic); L7 understands HTTP: path/header routing, TLS termination, retries"],
-      ["Power of two choices", "Pick two backends at random and send to the less loaded one: near-optimal balance with almost no state"],
-      ["When to use least-connections", "Long-lived or variable-cost requests where round robin leaves some servers overloaded"],
-      ["Why avoid sticky sessions?", "They make instances stateful: uneven load and lost sessions on failure; store session state externally"],
-      ["Liveness vs readiness", "Liveness: restart me if failing; readiness: do not send me traffic yet"],
-      ["Load shedding", "Deliberately rejecting excess or low-priority requests early so the rest meet their latency targets"],
-      ["How is the load balancer made highly available?", "Redundant pair with a floating virtual IP, or many LBs behind anycast / ECMP / DNS"],
-      ["Connection draining", "Stop new requests to an instance but let in-flight ones finish before removing it"],
-      ["Retry storm", "Retries multiplying load on a struggling service; prevent with budgets, backoff + jitter and circuit breakers"],
-      ["API gateway responsibilities", "Auth, rate limiting, routing, TLS termination, request shaping and observability at the edge"],
-    ],
   },
   caching: {
     pre: ["load-balancing"],
@@ -100,19 +55,6 @@ export const designExtra: Record<string, Extra> = {
 - **Distributed cache topology:** client-side consistent hashing, replicas for availability, no cross-node consistency guarantees. Memcached (simple, multithreaded, LRU) vs Redis (data structures, persistence, replication, scripting).
 - **CDN:** cache key design (vary headers), immutable versioned asset URLs, TTL and purge, origin shield, signed URLs for private content, edge compute.
 - **Bar raiser:** quantify hit ratio → backend load (95% → 99% hit rate cuts origin traffic 5×), decide what staleness each read can tolerate, and say where *not* to cache (strongly consistent balances, per-request personalised data without a key).`,
-    cards: [
-      ["Cache-aside read and write paths", "Read: cache → miss → DB → populate. Write: update DB, then delete the cache key"],
-      ["Why delete rather than set the cache on write?", "Concurrent writers can set stale values out of order; delete lets the next read repopulate"],
-      ["Cache penetration and its fix", "Requests for non-existent keys always hit the DB; cache negative results or use a Bloom filter"],
-      ["Cache stampede (breakdown) and its fix", "A hot key expires and many requests recompute it; single-flight lock, stale-while-revalidate, early refresh"],
-      ["Cache avalanche and its fix", "Mass expiry or cache outage floods the DB; jittered TTLs, replicas, rate limiting, warm-up"],
-      ["Write-through vs write-behind", "Write-through: sync to cache + DB (consistent, slower); write-behind: async flush (fast, may lose data)"],
-      ["LRU vs LFU", "LRU evicts least recently used (good for recency); LFU evicts least frequently used (good for stable popularity, needs decay)"],
-      ["Hit rate 95% → 99% means…", "Origin load drops 5× (misses fall from 5% to 1%)"],
-      ["How to cache-bust static assets on a CDN", "Content-hashed, versioned URLs with long immutable TTLs; no purge needed"],
-      ["Redis vs Memcached", "Redis: rich data types, persistence, replication, single-threaded commands; Memcached: simple KV, multithreaded"],
-      ["Handling a hot key", "Local in-process cache, key replication with a random suffix across shards, or request coalescing"],
-    ],
   },
   databases: {
     pre: ["estimation"],
@@ -124,19 +66,6 @@ export const designExtra: Record<string, Extra> = {
 - **Modelling for NoSQL:** start from queries; denormalise; choose partition key (distribution) and sort key (range within a partition); avoid unbounded partitions; use write-time fan-out or materialised views instead of joins.
 - **Operational reality:** connection pooling, N+1 queries, online schema changes (expand → migrate → contract), hot rows, long transactions blocking vacuum, backups you have actually restored.
 - **Bar raiser:** NewSQL (Spanner, CockroachDB) gives SQL + horizontal scale with consensus per range; knowing when a single well-indexed Postgres is the right answer is itself a senior signal.`,
-    cards: [
-      ["B-tree vs LSM-tree", "B-tree: in-place updates, fast reads; LSM: append + compaction, fast writes, reads check several SSTables (Bloom filters help)"],
-      ["Leftmost-prefix rule", "A composite index (a, b, c) serves filters on a, (a, b), (a, b, c) but not on b or c alone"],
-      ["Covering index", "An index containing all columns a query needs, so the table itself is never read"],
-      ["What is a write-ahead log?", "Changes are appended and fsynced to a log before being applied, so a crash can be recovered by replay"],
-      ["Row store vs column store", "Row: OLTP point reads and writes; column: OLAP scans with compression over few columns"],
-      ["Partition key vs sort key (wide-column / Dynamo style)", "Partition key decides the node (distribution); sort key orders rows within the partition (range queries)"],
-      ["LSM write path", "WAL + memtable → flush to immutable SSTable → background compaction merges levels"],
-      ["When SQL over NoSQL?", "Relational data, ad-hoc queries, multi-row transactions, moderate scale; NoSQL for known access patterns at very large scale"],
-      ["Safe online schema change", "Expand (add nullable column / new table) → backfill and dual write → switch readers → contract (drop old)"],
-      ["Why can more indexes hurt?", "Every write must update each index and they consume memory; the planner may also choose badly"],
-      ["Scaling path for a relational DB", "Indexes and query tuning → vertical scale → read replicas + cache → partitioning → sharding"],
-    ],
   },
   replication: {
     pre: ["databases"],
@@ -150,20 +79,6 @@ export const designExtra: Record<string, Extra> = {
 - **Membership and failure detection:** heartbeats, gossip, phi-accrual detectors; a coordination service (ZooKeeper, etcd, Chubby) holds leader leases and configuration.
 - **Multi-leader / multi-region:** write conflicts are inevitable: avoid them (per-user home region), resolve them (LWW, CRDTs, application merge), or use consensus (Spanner) and pay latency.
 - **Bar raiser:** CAP is about behaviour *during a partition*; PACELC adds the everyday latency-versus-consistency trade-off. Classify your design: Dynamo/Cassandra are PA/EL, Spanner is PC/EC.`,
-    cards: [
-      ["Quorum condition for strong-ish reads", "R + W > N (e.g. N = 3, W = 2, R = 2)"],
-      ["Nodes needed to tolerate f crash failures with consensus", "2f + 1"],
-      ["CAP in one sentence", "During a network partition you must choose between consistency (reject) and availability (answer possibly stale)"],
-      ["PACELC", "If Partition: Availability vs Consistency; Else: Latency vs Consistency"],
-      ["Split brain and its prevention", "Two nodes both act as leader; prevent with majority quorums and fencing tokens / epochs"],
-      ["Read-your-writes fix", "Route a user's reads to the leader (or a replica caught up to their last write version) after they write"],
-      ["Raft commit rule", "An entry is committed when stored on a majority; a leader is elected by majority vote in a term"],
-      ["Hinted handoff", "A healthy node temporarily stores writes for a down replica and replays them when it returns"],
-      ["Merkle tree use in replication", "Compare hash trees between replicas to find and sync only the differing key ranges (anti-entropy)"],
-      ["Last-write-wins risk", "Clock skew can silently discard the truly later write; use vector clocks or CRDTs when loss is unacceptable"],
-      ["Linearizability vs eventual consistency", "Linearizable: behaves like a single copy with real-time order; eventual: replicas converge if writes stop"],
-      ["Sync vs async replication trade-off", "Sync: no data loss, higher latency, lower availability; async: fast, may lose recent writes on failover"],
-    ],
   },
   partitioning: {
     pre: ["databases", "replication"],
@@ -176,19 +91,6 @@ export const designExtra: Record<string, Extra> = {
 - **Unique ids without coordination:** Snowflake (timestamp | machine id | sequence: sortable, 64-bit), UUIDv4 (random, index-unfriendly), UUIDv7 / ULID (time-ordered), ticket servers with ranges, database sequences per shard with different offsets.
 - **Routing:** client library, a routing proxy, or a coordinator; metadata in a consistent store (ZooKeeper/etcd).
 - **Bar raiser:** resharding without downtime (dual write + backfill + verify + cutover), multi-tenant isolation, and proving a key choice with the two or three top queries.`,
-    cards: [
-      ["Consistent hashing benefit", "Adding or removing a node remaps only about 1/N of the keys instead of nearly all"],
-      ["Why virtual nodes?", "Many ring positions per physical node smooth the load, allow weights and spread a failed node's keys"],
-      ["Good shard key properties", "High cardinality, even distribution, present in the main queries, immutable, not monotonic"],
-      ["Range vs hash partitioning", "Range: efficient scans, hot-spot risk; hash: even load, no range queries"],
-      ["Snowflake id layout", "64 bits: timestamp (ms) | machine / datacentre id | per-ms sequence; roughly time-sortable"],
-      ["Why is an auto-increment or timestamp key a bad partition key?", "All new writes land on the last range: a hot partition; add a hash prefix or bucket"],
-      ["Local vs global secondary index", "Local: per shard, queries scatter; global: separately partitioned, single lookup but async / eventually consistent"],
-      ["Scatter-gather cost", "Latency is the slowest shard: tail latency worsens with fan-out; needs timeouts and partial results"],
-      ["Rebalance strategy that avoids rehashing rows", "Many fixed logical shards mapped to nodes; move whole logical shards"],
-      ["Rendezvous hashing", "Pick the node with the highest hash(key, node); minimal disruption without a ring"],
-      ["Handling a celebrity / heavy-hitter key", "Sub-partition with a bucket suffix, dedicated shard, caching, or a separate read-time path"],
-    ],
   },
   transactions: {
     pre: ["databases", "replication", "concurrency"],
@@ -202,20 +104,6 @@ export const designExtra: Record<string, Extra> = {
 - **Distributed locks:** leases with TTL, and *fencing tokens* checked by the resource, because a paused client may believe it still holds the lock.
 - **Time:** wall clocks drift; use logical clocks (Lamport, vector), hybrid logical clocks, or bounded uncertainty (Spanner TrueTime: commit wait).
 - **Bar raiser:** reservation patterns with expiry (ticketing, hotel), double-entry ledgers for money (append-only, reconciliation), and choosing where strong consistency is truly required versus where eventual is fine.`,
-    cards: [
-      ["Write skew", "Two transactions read the same snapshot and update different rows, together violating an invariant; needs serializable or explicit locks"],
-      ["Lost update and two fixes", "Concurrent read-modify-write overwrites one change; fix with atomic update / SELECT FOR UPDATE, or version check (CAS)"],
-      ["What does MVCC give you?", "Readers see a consistent snapshot and never block writers; old versions are garbage-collected"],
-      ["Two-phase commit weakness", "Participants block holding locks if the coordinator fails after prepare"],
-      ["Saga", "A chain of local transactions with compensating actions for rollback; eventual consistency, no isolation"],
-      ["Transactional outbox", "Write the state change and an outbox event in one DB transaction; a relay publishes the event, avoiding dual writes"],
-      ["Fencing token", "A monotonically increasing number issued with a lock; the resource rejects writes carrying an older token"],
-      ["Exactly-once in practice", "At-least-once delivery + idempotent processing (dedupe key or transactional write of result and offset)"],
-      ["Optimistic vs pessimistic locking", "Optimistic: version check at commit, retry on conflict (low contention); pessimistic: lock first (high contention)"],
-      ["Isolation levels in order", "Read uncommitted → read committed → repeatable read / snapshot → serializable"],
-      ["Prevent overselling inventory", "Atomic conditional decrement (WHERE stock > 0) or reserve with expiry, plus idempotent order creation"],
-      ["Spanner TrueTime idea", "Clock with bounded uncertainty; commit waits out the uncertainty to give externally consistent timestamps"],
-    ],
   },
   messaging: {
     pre: ["networking", "transactions"],
@@ -228,19 +116,6 @@ export const designExtra: Record<string, Extra> = {
 - **Sizing:** partitions ≥ peak throughput / per-partition throughput, and ≥ max consumer parallelism; retention × write rate × replication = disk.
 - **Schema evolution:** Avro/Protobuf with a registry; backward and forward compatibility; never reuse field numbers.
 - **Bar raiser:** when *not* to use a queue (synchronous user-facing reads, need for an immediate answer), hot partitions from skewed keys, replaying history safely (idempotent side effects), and end-to-end exactly-once with an external sink.`,
-    cards: [
-      ["Queue vs log", "Queue: message removed on ack, competing consumers; log: retained and replayable, consumers track offsets"],
-      ["How do you get ordering in Kafka?", "Ordering is per partition: use the entity id as the message key"],
-      ["At-least-once vs at-most-once", "Commit offset after processing (may duplicate) vs before processing (may lose)"],
-      ["Dead-letter queue", "Where messages go after exceeding retry attempts, so one poison message does not block the stream"],
-      ["Consumer lag", "Distance between the latest offset and the consumer's committed offset: the key health metric"],
-      ["Max useful consumers in a group", "The number of partitions; extra consumers sit idle"],
-      ["Log compaction", "Retain only the latest record per key: a changelog you can rebuild state from"],
-      ["Event sourcing and CQRS", "Store immutable events as the source of truth; build separate read-optimised projections"],
-      ["Durable Kafka producer settings", "acks=all with min.insync.replicas ≥ 2 and the idempotent producer enabled"],
-      ["Visibility timeout", "After a consumer receives a message it is hidden for a period; if not acked it reappears for redelivery"],
-      ["Claim-check pattern", "Put the large payload in object storage and send only a reference through the queue"],
-    ],
   },
   "rate-limiting-concept": {
     pre: ["caching", "load-balancing", "design-ds"],
@@ -252,18 +127,6 @@ export const designExtra: Record<string, Extra> = {
 - **Related controls:** concurrency limits (in-flight requests), quotas (billing period), adaptive throttling and load shedding (server-driven, based on latency / CPU), circuit breakers (client-side), priority classes.
 - **Race conditions:** read-then-write is not atomic; use atomic increments or scripts; clock skew across nodes matters for windowed schemes.
 - **Bar raiser:** hot key on the limiter store, multi-region limits (per-region quotas versus global consistency), abuse evasion (rotating IPs → fingerprinting, CAPTCHAs), and rate limiting async work via queue consumers rather than at the door.`,
-    cards: [
-      ["Token bucket parameters", "Refill rate r tokens/s and capacity b (burst); a request spends a token or is rejected"],
-      ["Fixed window weakness", "Up to 2× the limit can pass across a window boundary"],
-      ["Sliding window counter estimate", "current count + previous count × (overlap fraction of the previous window)"],
-      ["Sliding window log trade-off", "Exact, but stores a timestamp per request: memory heavy"],
-      ["Atomic distributed rate limiting with Redis", "A Lua script (or INCR + EXPIRE) so check-and-update is one atomic operation"],
-      ["HTTP response for a throttled request", "429 Too Many Requests with Retry-After and rate-limit headers"],
-      ["Fail open vs fail closed for a limiter", "Open keeps the API available if the limiter breaks; closed protects sensitive endpoints like login"],
-      ["Token bucket vs leaky bucket", "Token bucket permits bursts up to capacity; leaky bucket enforces a smooth constant output rate"],
-      ["Rate limit vs concurrency limit", "Requests per time vs requests in flight; long requests need the latter"],
-      ["Reducing limiter latency at scale", "Local buckets with periodically synced quotas: approximate but no network hop per request"],
-    ],
   },
   "storage-search": {
     pre: ["databases", "partitioning", "tries"],
@@ -276,19 +139,6 @@ export const designExtra: Record<string, Extra> = {
 - **Probabilistic structures:** Bloom filter (membership, no false negatives; ~10 bits/element for 1% false positives), count-min sketch (frequency, overestimates), HyperLogLog (cardinality, ~1.5 KB for ~2% error), t-digest (percentiles).
 - **Media pipeline:** upload → transcode into a bitrate ladder → segment → CDN with adaptive bitrate (HLS/DASH).
 - **Bar raiser:** durability maths (eleven nines via replication across failure domains + scrubbing with checksums), consistency of listing versus reading, vector search (embeddings + ANN index such as HNSW) as the modern follow-up.`,
-    cards: [
-      ["Inverted index", "Map from term to a postings list of document ids (with positions / frequencies) for fast text search"],
-      ["Bloom filter guarantee", "No false negatives; false positives possible; about 10 bits per element for ~1% error"],
-      ["HyperLogLog vs count-min sketch", "HLL estimates distinct count in ~KB; count-min estimates per-item frequency (never underestimates)"],
-      ["Erasure coding vs 3× replication", "e.g. 6 + 3 shards: ~1.5× storage and tolerates 3 losses, but costlier reads on failure and repairs"],
-      ["Why pre-signed URLs?", "Clients upload/download directly to object storage, keeping large payloads off the app servers"],
-      ["Geohash proximity query", "Search the user's cell and its 8 neighbours at a suitable precision, then filter by true distance"],
-      ["Quadtree vs geohash", "Quadtree adapts cell size to density; geohash is a fixed grid encoded as a sortable string"],
-      ["Content-defined chunking", "Chunk boundaries chosen by a rolling hash so an insertion changes only nearby chunks: better dedup and sync"],
-      ["How is a search index kept in sync with the database?", "As a derived view updated asynchronously via CDC / queue; eventually consistent"],
-      ["BM25 / TF-IDF intuition", "Score rises with term frequency in the document and rarity of the term across the corpus"],
-      ["Adaptive bitrate streaming", "Video transcoded into multiple bitrates and split into segments; the player picks per segment by bandwidth"],
-    ],
   },
   reliability: {
     pre: ["load-balancing", "replication", "messaging"],
@@ -302,19 +152,6 @@ export const designExtra: Record<string, Extra> = {
 - **Observability:** metrics (RED: rate, errors, duration; USE: utilisation, saturation, errors), structured logs, distributed traces with propagated ids; alert on symptoms (SLO burn rate), not causes.
 - **Operations culture:** blameless postmortems, runbooks, chaos / game days, load tests, capacity planning.
 - **Bar raiser:** cascading-failure anatomy (overload → slow → retries → more overload) and how to break the loop (shed load, cap retries, restart gradually); cold-start and cache-warm problems after a full outage; dependency cycles that block recovery.`,
-    cards: [
-      ["SLI vs SLO vs SLA", "Indicator you measure; objective you target; agreement with consequences"],
-      ["Error budget", "1 − SLO: the allowed unreliability, spent on change and risk"],
-      ["Availability of two serial dependencies at 99.9% each", "≈ 99.8% (multiply)"],
-      ["Availability of n redundant replicas", "1 − (1 − a)ⁿ, assuming independent failures"],
-      ["Circuit breaker states", "Closed (normal) → open (fail fast) → half-open (trial requests) → closed"],
-      ["RPO vs RTO", "RPO: maximum acceptable data loss (time); RTO: maximum acceptable time to restore service"],
-      ["Bulkhead pattern", "Isolate resources (pools, queues) per dependency so one failure cannot exhaust everything"],
-      ["Hedged request", "Send a second copy after a short delay and take the first response: trims tail latency"],
-      ["RED and USE", "RED: rate, errors, duration (services); USE: utilisation, saturation, errors (resources)"],
-      ["Anatomy of a cascading failure", "Overload → latency → timeouts and retries → more load → collapse; break it with shedding and retry budgets"],
-      ["Canary release", "Ship to a small slice, compare metrics with the baseline, then widen or roll back automatically"],
-    ],
   },
   "google-papers": {
     pre: ["replication", "partitioning", "storage-search"],
@@ -327,64 +164,15 @@ export const designExtra: Record<string, Extra> = {
 - **Borg → Kubernetes:** declarative desired state, bin-packing scheduler, priorities and preemption, health-driven restarts.
 - **Others worth one sentence:** Dremel (columnar, tree-shaped aggregation → BigQuery), Kafka (partitioned replicated log), Raft (understandable consensus), Megastore / F1 (SQL on Bigtable/Spanner), Monarch (in-memory time series), Zanzibar (relationship-based global authorisation with consistent snapshots, "zookies"), Dapper (distributed tracing by sampling), Maglev (consistent-hashing L4 load balancer), MillWheel (streaming with exactly-once and low watermarks), Tail at Scale (hedged requests).
 - **Bar raiser:** cite a paper only to justify a decision ("I would use a Bigtable-style store here because the access pattern is a key-range scan on a huge sparse table"), and know the trade each system made.`,
-    cards: [
-      ["Bigtable data model", "Sparse, sorted map: (row key, column family:qualifier, timestamp) → value, range-partitioned into tablets"],
-      ["How does Spanner achieve external consistency?", "TrueTime bounded-uncertainty clocks plus commit wait, over Paxos groups with 2PC across them"],
-      ["GFS design choices", "Single metadata master, large 64 MB chunks, 3× replication, optimised for appends and large sequential reads"],
-      ["MapReduce phases and fault tolerance", "Map → shuffle/sort by key → reduce; failed or slow tasks are simply re-executed (backup tasks)"],
-      ["Dynamo's key techniques", "Consistent hashing, sloppy quorum + hinted handoff, vector clocks, Merkle trees, gossip"],
-      ["What is Chubby used for?", "Coarse-grained distributed locks, leader election and small config storage via Paxos"],
-      ["Bigtable row-key rule", "Rows are sorted: put the query prefix first and avoid monotonically increasing keys (hot tablet)"],
-      ["Dremel / BigQuery idea", "Columnar storage plus a tree of servers that aggregate scans in parallel"],
-      ["Zanzibar", "Google's global authorisation system: relationship tuples with consistent snapshot checks"],
-      ["Borg / Kubernetes model", "Declare desired state; a scheduler bin-packs tasks and controllers reconcile reality to it"],
-      ["Tail at Scale lesson", "At high fan-out rare slowness becomes common: use hedged / tied requests and partial results"],
-    ],
   },
   "stream-processing": {
     pre: ["messaging", "storage-search"],
-    cards: [
-      ["Event time vs processing time", "When the event happened vs when the system handled it; correctness needs event time"],
-      ["Watermark", "The system's estimate that no events older than time T will still arrive; triggers window results"],
-      ["Tumbling vs sliding vs session windows", "Fixed non-overlapping / fixed overlapping / gap-based per key"],
-      ["Lambda vs Kappa architecture", "Lambda: batch layer + speed layer merged at read; Kappa: one stream pipeline, reprocess by replaying the log"],
-      ["Exactly-once in a stream processor", "Checkpointed state + replayable source + idempotent or transactional sink"],
-      ["Handling late events", "Allowed lateness with result updates (retractions), or a side output for a later correction job"],
-      ["Change data capture", "Tail the database log and publish row changes as events to feed caches, indexes and warehouses"],
-      ["Approximate top-k over a stream", "Count-min sketch + a heap of candidates, or Misra–Gries / Space-Saving"],
-      ["Stream-table join", "Enrich events by looking up a locally materialised, changelog-backed table keyed the same way"],
-      ["Reconciliation in a streaming billing pipeline", "A periodic batch job recomputes from raw logs and corrects the real-time numbers"],
-    ],
   },
   security: {
     pre: ["networking", "reliability"],
-    cards: [
-      ["Authentication vs authorisation", "Who you are vs what you may do"],
-      ["Session cookie vs JWT", "Server-side session: easy revocation, needs a store; JWT: stateless and self-contained, hard to revoke, keep short-lived"],
-      ["OAuth 2.0 authorisation code flow with PKCE", "User consents at the provider; the app exchanges a one-time code (bound by a verifier) for tokens"],
-      ["How to store passwords", "Slow salted hash (bcrypt, scrypt, Argon2); never reversible encryption or fast hashes"],
-      ["Encryption in transit vs at rest", "TLS between parties vs encrypting stored data with keys from a KMS (envelope encryption)"],
-      ["Envelope encryption", "Data encrypted with a data key; the data key encrypted with a master key held in a KMS"],
-      ["RBAC vs ABAC vs ReBAC", "Role-based / attribute-based / relationship-based (e.g. Zanzibar) access control"],
-      ["Defences against SQL injection, XSS, CSRF", "Parameterised queries; output encoding + CSP; same-site cookies + CSRF tokens"],
-      ["Principle of least privilege", "Each identity gets only the permissions it needs, scoped and time-bound"],
-      ["Multi-tenant isolation", "Tenant id on every row and query path, per-tenant limits and keys; noisy-neighbour protection"],
-    ],
   },
   "multi-region": {
     pre: ["replication", "reliability", "partitioning"],
-    cards: [
-      ["Active–passive vs active–active", "One region serves writes with a standby vs several regions serve writes and must reconcile conflicts"],
-      ["Why go multi-region?", "Lower latency near users, survival of a regional outage, and data-residency law"],
-      ["Conflict strategies for multi-leader writes", "Avoid (home region per user), last-write-wins, application merge, or CRDTs"],
-      ["CRDT", "A data type whose merges are commutative, associative and idempotent, so replicas converge without coordination"],
-      ["OT vs CRDT for collaborative editing", "OT transforms operations via a central server; CRDTs merge peer-to-peer with unique element ids, more metadata"],
-      ["Cost of synchronous cross-region replication", "Every write pays a cross-region round trip (~50–150 ms) but RPO is zero"],
-      ["Failing over a region", "Detect, fence the old primary, promote, redirect traffic (DNS / anycast), and have capacity headroom ready"],
-      ["Data residency approach", "Pin a user's data to a regional cell; replicate only non-personal or anonymised data globally"],
-      ["Cell-based architecture", "Independent full-stack shards (cells) limit the blast radius of failures and bad deploys"],
-      ["Global table vs regional table", "Rarely written reference data replicated everywhere for fast reads vs data homed with its user"],
-    ],
   },
 
   // ───────────────────────── LLD ─────────────────────────
@@ -399,19 +187,6 @@ export const designExtra: Record<string, Extra> = {
 - **Dependency injection:** pass collaborators in (constructor) so tests can fake them; inject Clock, Random, id generators.
 - **Other heuristics:** DRY (knowledge, not text), YAGNI, KISS, encapsulate what varies, program to an interface, fail fast, make illegal states unrepresentable.
 - **Bar raiser:** articulate the *cost* of each abstraction (indirection, more classes) and justify it with a concrete anticipated change; discuss generics / variance (PECS: producer extends, consumer super) and when an anemic model versus a rich domain model fits.`,
-    cards: [
-      ["SOLID expanded", "Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion"],
-      ["Liskov violation example", "Square extends Rectangle (setWidth breaks expectations), or a subclass that throws UnsupportedOperation"],
-      ["Open/closed in practice", "Add a new class implementing an interface instead of editing a switch in existing code"],
-      ["Dependency inversion", "High-level policy depends on abstractions; details (DB, clock, network) implement them and are injected"],
-      ["Composition over inheritance: why?", "Looser coupling, behaviour swappable at run time, no fragile base class or combinatorial subclasses"],
-      ["Abstract class vs interface", "Abstract class: shared state + partial implementation; interface: a capability contract across unrelated types"],
-      ["Entity vs value object", "Entity: identity that persists through change; value object: immutable, equality by value"],
-      ["equals / hashCode contract", "Equal objects must return equal hash codes; do not base them on mutable fields used as keys"],
-      ["Law of Demeter", "Only call methods on yourself, your fields, parameters and objects you create: no a.getB().getC().do()"],
-      ["Why inject a Clock?", "Time becomes controllable in tests: TTLs, schedulers and expiry become deterministic"],
-      ["Tell, don't ask", "Ask an object to do the work rather than pulling its data out and deciding for it"],
-    ],
   },
   "patterns-creational-structural": {
     pre: ["oop-solid"],
@@ -423,19 +198,6 @@ export const designExtra: Record<string, Extra> = {
 - **Related modern idioms:** dependency injection container, repository (collection-like persistence boundary), DTO / mapper, null object, registry, plugin loading, fluent interfaces.
 - **Where they appear in real code:** Java I/O streams (decorator), JDBC drivers (bridge / abstract factory), logging appenders, HTTP middleware (chain + decorator), ORM lazy loading (proxy), thread pools (object pool).
 - **Bar raiser:** name the pattern *after* describing the problem it solves, state the alternative you rejected, and avoid pattern stuffing: two classes and a map often beat an abstract factory.`,
-    cards: [
-      ["Adapter vs Facade", "Adapter converts one interface to another expected one; Facade offers a simpler front to a subsystem"],
-      ["Decorator vs Proxy", "Both wrap the same interface: Decorator adds behaviour (stackable); Proxy controls access (lazy, cache, auth, remote)"],
-      ["When to use Builder", "Many optional parameters, immutable result, or validation across fields at build time"],
-      ["Factory method vs abstract factory", "One product chosen by subclass / input vs a family of related products that must be used together"],
-      ["Why is Singleton criticised?", "Hidden global state, hard to test and to make thread-safe; prefer a single instance provided by DI"],
-      ["Thread-safe lazy singleton options", "Enum singleton, holder idiom, or double-checked locking with a volatile field"],
-      ["Composite pattern", "Leaf and container share an interface so clients treat single objects and trees uniformly"],
-      ["Flyweight", "Share immutable intrinsic state among many objects; pass extrinsic state in at call time"],
-      ["Bridge pattern", "Split abstraction and implementation into two hierarchies so they vary independently (shape × renderer)"],
-      ["Object pool: when?", "Objects that are expensive to create and reusable: connections, threads, buffers"],
-      ["Repository pattern", "A collection-like interface that hides persistence details from the domain"],
-    ],
   },
   "patterns-behavioral": {
     pre: ["oop-solid", "patterns-creational-structural"],
@@ -449,19 +211,6 @@ export const designExtra: Record<string, Extra> = {
 - **Mediator:** a hub that coordinates colleagues (chat room, air traffic control, UI dialog) so they do not reference each other.
 - **Iterator, Interpreter, Null Object, Specification** (composable predicates for filtering/search rules) round out the set.
 - **Bar raiser:** rules engines (specification + strategy), plug-in registration instead of if-chains, event-driven designs with idempotent handlers, and showing how a new requirement lands as one new class.`,
-    cards: [
-      ["State vs Strategy", "State: object switches its own behaviour through transitions; Strategy: client injects an interchangeable algorithm"],
-      ["Command pattern gives you…", "Undo/redo, queuing, logging and retry by turning requests into objects with execute / undo"],
-      ["Undo/redo with two stacks", "Execute pushes to undo and clears redo; undo pops to redo; redo pops back to undo"],
-      ["Observer pitfalls", "Listener leaks, re-entrancy, ordering assumptions, one failing listener breaking the rest, slow subscribers"],
-      ["Chain of responsibility examples", "HTTP middleware, validation pipelines, approval hierarchies, logger level handlers"],
-      ["Template method vs Strategy", "Fixed skeleton with overridable hooks via inheritance vs swappable steps via composition"],
-      ["When is Visitor appropriate?", "Stable type hierarchy, many new operations (e.g. AST passes); poor fit when types change often"],
-      ["Memento", "Capture and restore an object's internal state without exposing it (snapshots for undo)"],
-      ["Mediator", "A central object coordinates interactions so peers stay decoupled (chat room, dialog controller)"],
-      ["Specification pattern", "Composable predicate objects (and / or / not) for business rules and filters"],
-      ["Three ways to code a state machine", "Enum + switch / transition table; one class per state; (state, event) → (action, next) map"],
-    ],
   },
   concurrency: {
     pre: ["oop-solid"],
@@ -475,20 +224,6 @@ export const designExtra: Record<string, Extra> = {
 - **Classic problems:** dining philosophers (ordering or waiter), readers–writers, print in order / FizzBuzz multithreaded (semaphores), bounded buffer, sleeping barber, thread-safe singleton and lazy init, rate limiter, concurrent LRU.
 - **Async models:** event loop + non-blocking I/O, futures/promises, coroutines / virtual threads; cancellation and timeouts are part of the API.
 - **Bar raiser:** identify the invariant each lock protects, compound actions (putIfAbsent, computeIfAbsent), idempotent retry under CAS failure, false sharing, and testing with stress + deterministic schedulers or injected clocks.`,
-    cards: [
-      ["Four conditions for deadlock", "Mutual exclusion, hold and wait, no preemption, circular wait"],
-      ["Simplest deadlock prevention", "Acquire locks in one global order (or tryLock with timeout and back off)"],
-      ["Why wait() in a while loop?", "Spurious wakeups and competing threads: the condition must be re-checked after waking"],
-      ["Mutex vs semaphore", "Mutex: one owner, mutual exclusion; semaphore: N permits, can be released by another thread"],
-      ["Bounded blocking queue design", "One lock + two condition variables (notFull, notEmpty), or two counting semaphores + mutex"],
-      ["Thread pool sizing", "CPU-bound ≈ number of cores; I/O-bound ≈ cores × (1 + wait time / compute time)"],
-      ["What does volatile guarantee?", "Visibility and ordering of writes to that variable, not atomicity of compound actions"],
-      ["Compare-and-swap and the ABA problem", "Atomic update if the value is unchanged; ABA: value changed A→B→A unnoticed; fix with version stamps"],
-      ["Race condition vs data race", "Timing-dependent logic bug (check-then-act) vs unsynchronised concurrent access with a write"],
-      ["Read–write lock: when and risk", "Read-heavy workloads; risk of writer starvation and no benefit for short critical sections"],
-      ["Lock striping", "Partition data into buckets each with its own lock to reduce contention (ConcurrentHashMap)"],
-      ["Livelock vs starvation", "Livelock: threads keep reacting to each other without progress; starvation: one thread never gets the resource"],
-    ],
   },
   "lld-framework": {
     pre: ["patterns-behavioral", "concurrency"],
@@ -502,31 +237,9 @@ export const designExtra: Record<string, Extra> = {
 - **Testing narrative:** unit tests per strategy, state-transition tests, fake clock and repositories, concurrency stress tests.
 - **Machine-coding variant (90 min, runnable):** working core first, in-memory storage, a driver / tests proving the flows, clean naming; resist frameworks.
 - **Bar raiser:** persistence mapping (which entities are tables, what are the keys), scaling the design to a service (what becomes an API, what state moves to a database, which operations need idempotency), and trade-offs you consciously left out.`,
-    cards: [
-      ["From requirements to classes", "Nouns → entities, verbs → methods, 'types of' → enum or strategy, changing rules → policy interfaces"],
-      ["Most common negative signal in LLD", "A God manager class holding all logic while entities are bags of getters"],
-      ["Extensibility check", "A new variant should be one new class and no edits to existing logic"],
-      ["LLD layers", "Entities (state + invariants) → services (orchestration) → strategies (variation) → repositories (storage)"],
-      ["Has-a: aggregation vs composition", "Aggregation: parts outlive the whole; composition: parts are owned and die with the whole"],
-      ["How to handle double booking in an LLD answer", "Lock or atomic check-and-set on the resource, or optimistic version check with retry"],
-      ["What to code first in a machine-coding round", "The core flow end to end with in-memory storage and a demo / tests, then extensions"],
-      ["Information expert principle", "Put behaviour in the class that owns the data it needs"],
-    ],
   },
   "lld-quality": {
     pre: ["oop-solid", "lld-framework"],
-    cards: [
-      ["Checked exception vs result type vs unchecked", "Recoverable expected failures → explicit in the signature; programmer errors → unchecked, fail fast"],
-      ["Make illegal states unrepresentable", "Model with types (enums, sealed classes, non-null fields) so invalid combinations cannot be constructed"],
-      ["Fake vs mock vs stub", "Stub returns canned data; mock verifies interactions; fake is a working lightweight implementation"],
-      ["Backward-compatible API change", "Add optional fields / new methods; never repurpose or remove; deprecate then delete"],
-      ["Idempotent API design", "Same request repeated yields the same state: natural keys, upserts, or an idempotency token"],
-      ["Defensive copy", "Copy mutable inputs and outputs so callers cannot change your internals"],
-      ["What to unit test in an LLD answer", "Each strategy, each state transition (legal and illegal), boundary values, and concurrency invariants"],
-      ["Command–query separation", "A method either changes state or returns data, not both"],
-      ["Where should validation live?", "At the boundary (constructors / API entry) so the core can assume valid objects"],
-      ["Pagination and limits in an in-process API", "Return iterators or pages rather than unbounded collections"],
-    ],
   },
 
   // ───────────────────────── Craft ─────────────────────────
@@ -540,16 +253,6 @@ export const designExtra: Record<string, Extra> = {
 - **Follow-ups are the interview:** the first question is a warm-up; the constraints change (scale, streaming, memory, concurrency). Leave time and energy for them.
 - **Practical prep:** code in a plain document without autocomplete, practise speaking while typing, prepare a 60–90 second self-introduction, and have real questions for each interviewer.
 - **Bar raiser:** show the Googleyness signals naturally: curiosity, comfort with ambiguity, crediting others, changing your mind on evidence, and caring about the user.`,
-    cards: [
-      ["Who makes the Google hiring decision?", "A hiring committee reading written interviewer feedback: evidence on paper is what counts"],
-      ["The four attributes Google assesses", "General cognitive ability, role-related knowledge, leadership, Googleyness"],
-      ["Which round most decides L4 vs L5?", "System design, plus scope and influence shown in behavioural answers"],
-      ["Why narrate your thinking?", "Interviewers can only write down what they hear; silent correct reasoning leaves no evidence"],
-      ["Where is most signal in a Google coding round?", "In the follow-ups after the first solution: new constraints, scale, optimisation"],
-      ["Typical onsite loop", "3–4 coding / algorithm rounds (one may be design at L5), 1 system design for L5, 1 Googleyness & leadership"],
-      ["Googleyness signals", "Comfort with ambiguity, collaboration, humility, bias to action, doing the right thing for users"],
-      ["Practice environment that matches the real thing", "A plain shared doc: no autocomplete, no compiler, talking while typing"],
-    ],
   },
   "coding-round": {
     pre: ["google-loop", "complexity"],
@@ -563,17 +266,6 @@ export const designExtra: Record<string, Extra> = {
 - **If you find a bug:** say what you expected, what happened and the fix. Calm self-correction is a positive signal.
 - **Follow-up readiness:** scale (does not fit in memory, streaming), concurrency, API design for reuse, testing strategy, and the trade-off between your solution and an alternative.
 - **Bar raiser:** propose the follow-up yourself ("if this were called millions of times I would precompute…"), and discuss how you would test it in production code.`,
-    cards: [
-      ["Time budget for a 45-minute coding round", "Clarify 5 · approach 5–8 · code 15–20 · test 5 · follow-ups 5–10"],
-      ["First thing to say after understanding the problem", "The brute force and its complexity, then how you will improve it"],
-      ["Self-prompts when optimising", "Repeated work? Sort? Hash? Prefix data? Monotonic structure? Binary search the answer? Offline / reverse?"],
-      ["What to do when stuck", "Concrete example by hand, simplify the problem, enumerate patterns aloud, accept a hint and build on it"],
-      ["Edge-case checklist", "Empty, single element, duplicates, negatives / zero, overflow, max size, sorted / reverse sorted"],
-      ["How to dry-run", "Small non-trivial input, track variables line by line, compare with the expected output"],
-      ["If time is running out mid-solution", "Finish a correct simpler version and describe precisely the optimisation you would add"],
-      ["Clarifying questions worth asking", "Input size and ranges, duplicates, sortedness, empty input, output format, mutation allowed, ties"],
-      ["How to react to your own bug", "State expected vs actual, locate the cause, fix, re-run the case: calmly and aloud"],
-    ],
   },
   biases: {
     pre: ["coding-round"],
@@ -587,18 +279,6 @@ export const designExtra: Record<string, Extra> = {
 - **Interviewer-side biases you can manage:** halo / horn effect (a strong first five minutes colours the rest), recency (finish with a crisp summary and complexity), confirmation (visibly testing your code counters an early doubt).
 - **Deliberate practice loop:** attempt under time → compare with a strong solution → write the one-line lesson → schedule the re-attempt. The error log is the most valuable artefact you own.
 - **Bar raiser:** do full mock loops, because stamina and context switching across four rounds are skills of their own.`,
-    cards: [
-      ["Recognition vs recall", "Recognising a solution when you see it is not the ability to produce it; practise closed-book retrieval"],
-      ["Testing effect", "Actively retrieving information strengthens memory more than re-reading it"],
-      ["Why interleave topics?", "It trains choosing the pattern, which blocked practice hides, even though it feels harder"],
-      ["Einstellung effect", "A familiar solution blocks you from seeing a better one; deliberately generate a second approach"],
-      ["Calibration habit", "Predict your confidence before each attempt and compare with the result"],
-      ["Confirmation bias in testing", "Choosing tests that pass; instead try to break your code with adversarial cases"],
-      ["Sunk cost in an interview", "Persisting with a failing approach because of time spent; set a checkpoint and pivot"],
-      ["Desirable difficulties", "Spacing, interleaving, retrieval and generation: slower now, better retention later"],
-      ["Halo effect and how to use it", "First impressions colour later judgement: start with crisp clarifying questions and a clear plan"],
-      ["Counter to working-memory loss under stress", "Write down examples, invariants and the plan instead of holding them in your head"],
-    ],
   },
   behavioral: {
     pre: ["google-loop"],
@@ -612,17 +292,6 @@ export const designExtra: Record<string, Extra> = {
 - **Red flags:** taking sole credit, blaming others, no reflection, hypothetical answers to "tell me about a time", rambling context.
 - **Closing questions to ask:** how the team decides priorities, what a strong first six months looks like, the hardest technical problem ahead.
 - **Bar raiser:** show judgement about *what not to do* (scope you cut, a risk you escalated early) and how you made others better.`,
-    cards: [
-      ["STAR(L)", "Situation, Task, Action, Result, Learning: spend most of the time on your actions"],
-      ["Length of a behavioural answer", "About 2–3 minutes, then invite follow-ups"],
-      ["What makes a story L5 rather than L4?", "Ambiguity resolved, influence beyond your own tasks, cross-team scope, lasting improvement"],
-      ["Structure of a conflict story", "Understand their goal → bring data → explore options → decide or disagree-and-commit → relationship intact"],
-      ["Structure of a failure story", "Real stakes, your specific mistake, immediate fix, systemic change, what you do differently now"],
-      ["Answering a hypothetical question", "Clarify → principles → options and trade-offs → decision → how you would validate"],
-      ["Behavioural red flags", "Blaming others, taking sole credit, no numbers, no reflection, answering 'tell me about a time' hypothetically"],
-      ["How many stories to prepare?", "6–8 versatile stories, each mapped to 2–3 themes, with second-layer details ready"],
-      ["'I' vs 'we'", "Use 'I' for your own decisions and actions; credit the team explicitly for theirs"],
-    ],
   },
 };
 

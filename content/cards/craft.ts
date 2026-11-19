@@ -1,0 +1,72 @@
+import type { Card } from "@/lib/types";
+
+/**
+ * Interview readiness flashcards, keyed by topic id (curriculum order).
+ * Rules: every front must read as a complete question on its own (no topic header beside it),
+ * every back states the answer plus the one thing that makes it hold, and a concept appears once.
+ * Optional third item tags a card: "pattern" (recognise the technique), "variation" (a twist on a base problem), "pitfall" (a bug or edge case).
+ */
+export const craftCards: Record<string, Card[]> = {
+  "google-loop": [
+    ["What four attributes does Google assess?", "General cognitive ability · Role-related knowledge · Leadership · Googleyness"],
+    ["Who makes the Google hiring decision?", "A hiring committee reading written interviewer feedback: evidence on paper is what counts"],
+    ["Which round most decides L4 vs L5?", "System design, plus scope and influence shown in behavioural answers"],
+    ["Why should you narrate your thinking?", "Interviewers can only write down what they hear; silent correct reasoning leaves no evidence"],
+    ["Where is most of the signal in a Google coding round?", "In the follow-ups after the first solution: new constraints, scale, optimisation"],
+    ["What does a typical onsite loop look like?", "3–4 coding / algorithm rounds (one may be design at L5), 1 system design for L5, 1 Googleyness & leadership"],
+    ["What are the Googleyness signals?", "Comfort with ambiguity, collaboration, humility, bias to action, doing the right thing for users"],
+    ["Which practice environment matches the real interview?", "A plain shared doc: no autocomplete, no compiler, talking while typing"],
+    ["What homework should you do before each company's interview?", "Spend about 30 minutes reading recent interview experiences for that company: round formats, favourite topics, how deep system design goes and what they weight (for example optimal solutions at Google, leadership principles elsewhere)."],
+    ["What Gen-AI knowledge might an interviewer expect?", "What an LLM is and how it works at a high level (tokens, context window), embeddings and RAG, prompting basics, evaluation and hallucination limits, and one small project using an API. 'I have only used ChatGPT' is a weak answer."],
+    ["Do coding rounds mix in CS fundamentals?", "Often, yes: the HTTPS flow, deadlocks and how to prevent them, processes vs threads, indexes and ACID can be asked right after a coding problem. Be a well-rounded engineer, not only a problem grinder."],
+    ["Is system design only for senior candidates?", "No. Even junior loops can ask a small design (for example a URL shortener with rate limiting). You are not expected to design Netflix, but you should reason about APIs, storage, caching and scaling basics."],
+  ],
+  "coding-round": [
+    ["What is the clarifying-question checklist for a coding problem?", "Size · ranges · duplicates · sorted? · empty · negatives · output/ties · mutate input? · many queries? · memory"],
+    ["How should you budget a 45-minute coding round?", "Clarify 5 · approach 5–8 · code 15–20 · test 5 · follow-ups 5–10"],
+    ["What do you say first after understanding the problem?", "The brute force and its complexity, then how you will improve it"],
+    ["Which self-prompts help you optimise?", "Repeated work? Sort? Hash? Prefix data? Monotonic structure? Binary search the answer? Offline / reverse?"],
+    ["What do you do when you are stuck?", "Concrete example by hand, simplify the problem, enumerate patterns aloud, accept a hint and build on it"],
+    ["What is the edge-case checklist?", "Empty, single element, duplicates, negatives / zero, overflow, max size, sorted / reverse sorted"],
+    ["How do you dry-run your code?", "Small non-trivial input, track variables line by line, compare with the expected output"],
+    ["What if time is running out mid-solution?", "Finish a correct simpler version and describe precisely the optimisation you would add"],
+    ["How should you react to your own bug?", "State expected vs actual, locate the cause, fix, re-run the case: calmly and aloud"],
+    ["Which clarifying questions are specific to each input type?", "Strings: alphabet (lowercase, uppercase, special characters), empty, length. Arrays: duplicates, negatives, zeros, empty, sorted or not, whether it is a stream. Graphs and trees: disconnected nodes, cycles, directed or not, self-loops, duplicate edges."],
+    ["What should you check in your code before declaring it done?", "Division by zero, array bounds and negative indices, consistent variable names, const where nothing changes, no globals (pass by reference), early returns, brackets around ternaries, and one dry run on a normal case and a base case.", "pitfall"],
+    ["How should you communicate while coding?", "Explain the approach fully before coding; while coding use one-liners; state the complexity directly for trivial parts; keep it a discussion ('does this match what you expected?'); check the clock and leave time for follow-ups."],
+    ["How well should you know the standard library you code in?", "Know the cost of what you call: substring or slice O(n), insert in the middle of a vector O(n), ordered map O(log n), hash map amortised O(1). If you forget a method name, say what it does and its complexity, for example 'assuming a push_back equivalent that appends in O(1)'."],
+    ["Which data structure fits which requirement (a quick chooser)?", "Sorted input → binary search, two pointers, heap, map or set. Smallest or largest so far → heap or monotonic stack/deque. O(1) at both ends plus indexing → deque. O(1) removal from the middle → doubly linked list plus a hash map of nodes. Fixed-size queue → circular buffer.", "pattern"],
+    ["Which bugs recur most in practice and how do you guard against them?", "Off-by-one in binary-search bounds, mixed 0/1 indexing, forgetting to undo state in backtracking, int overflow (use 64-bit), a missing modulus, not resetting a memo between calls, and inconsistent variable names. Dry-run small inputs and re-read the loop bounds.", "pitfall"],
+    ["Which graph and tree edge cases should you always test?", "A single node, disconnected components, nodes with no edges, duplicate edges, self-loops, cycles, and in a directed 'tree' a node with two parents. Also an input where the first guess is already the answer.", "pitfall"],
+    ["Why prefer simple data structures in the interview?", "Arrays and vectors over pairs and lists, and indices over objects, give shorter code, fewer bugs and easier dry runs. Reach for fancy structures only when the complexity requires them."],
+  ],
+  biases: [
+    ["What is the difference between recognition and recall?", "Recognising a solution when you see it is not the same as producing it; only retrieval practice builds recall"],
+    ["What is the testing effect?", "Actively retrieving information strengthens memory more than re-reading it"],
+    ["Why interleave topics when practising?", "It trains choosing the pattern, which blocked practice hides, even though it feels harder"],
+    ["What is the Einstellung effect?", "A familiar solution blocks you from seeing a better one; deliberately generate a second approach"],
+    ["What is a good calibration habit?", "Predict your confidence before each attempt and compare with the result"],
+    ["What is confirmation bias in testing?", "Choosing tests that pass; instead try to break your code with adversarial cases"],
+    ["What is the sunk-cost trap in an interview?", "Persisting with a failing approach because of time spent; set a checkpoint and pivot"],
+    ["What are desirable difficulties?", "Spacing, interleaving, retrieval and generation: slower now, better retention later"],
+    ["What is the halo effect and how can you use it?", "First impressions colour later judgement: start with crisp clarifying questions and a clear plan"],
+    ["How do you counter working-memory loss under stress?", "Write down examples, invariants and the plan instead of holding them in your head"],
+    ["How should you schedule revision of solved problems?", "Solve it, re-solve it from scratch about a week later, and again before interviews. Solved-but-unrevised problems cost minutes of 'I know I've done this…' at the start of the interview."],
+    ["Why is skipping a topic risky even if you know related ones?", "One question from a skipped area (BSTs, backtracking, bit tricks) can shake your confidence for the rest of the loop. Cover every topic at least once before interviewing."],
+    ["How do you recover after a shaky first answer?", "Reset: restate the problem, start from the brute force and improve. The real damage is lost confidence, which compounds across rounds; don't let one wobble colour the next question."],
+    ["You remember solving the problem but can't recall the solution: what now?", "Stop trying to retrieve it after a minute and think fresh: brute force → bottleneck → pattern. Five minutes of silent recall burns time and signals hesitation."],
+  ],
+  behavioral: [
+    ["What does STAR(L) stand for?", "Situation · Task · Action (most of the time) · Result (quantified) · Learning"],
+    ["How long should a behavioural answer be?", "About 2–3 minutes, then invite follow-ups"],
+    ["What makes a story L5 rather than L4?", "Ambiguity resolved, influence beyond your own tasks, cross-team scope, lasting improvement"],
+    ["What is the structure of a conflict story?", "Understand their goal → bring data → explore options → decide or disagree-and-commit → relationship intact"],
+    ["What is the structure of a failure story?", "Real stakes, your specific mistake, immediate fix, systemic change, what you do differently now"],
+    ["How do you answer a hypothetical question?", "Clarify → principles → options and trade-offs → decision → how you would validate"],
+    ["What are behavioural red flags?", "Blaming others, taking sole credit, no numbers, no reflection, answering 'tell me about a time' hypothetically"],
+    ["How many stories should you prepare?", "6–8 versatile stories, each mapped to 2–3 themes, with second-layer details ready"],
+    ["When do you say 'I' vs 'we'?", "Use 'I' for your own decisions and actions; credit the team explicitly for theirs"],
+    ["How do you quantify results when you lack hard numbers?", "Use proxies with a baseline and a delta: latency, error rate, time saved, adoption, cost, incidents avoided; say how you measured it."],
+    ["How do you handle follow-up questions on a story?", "Have a second layer of detail ready (trade-offs considered, who disagreed, what you would change); answer the question asked, then stop."],
+  ],
+};

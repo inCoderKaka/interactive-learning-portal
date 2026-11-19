@@ -32,10 +32,6 @@ export const topics1: Topic[] = [
       Q("A loop pushes each element onto a stack once and may pop many times per iteration. Total cost?", ["O(n²)", "O(n log n)", "*O(n)", "O(1)"], "Each element is pushed once and popped at most once, so total work is bounded by 2n."),
       Q("Memoised recursion with states (i, j), i, j < n, and an inner loop over k < n. Time?", ["O(n²)", "*O(n³)", "O(2ⁿ)", "O(n² log n)"], "States × work per state = n² × n."),
     ],
-    cards: [
-      ["Formula for memoised recursion time", "number of distinct states × non-recursive work per state"],
-      ["n ≤ 10⁵ usually means…", "O(n log n) or O(n): sorting, heaps, binary search, two pointers, hashing"],
-    ],
   }),
   T("dsa", "arrays-hashing", "Arrays, hashing & prefix sums", 1, 35, "Trade memory for time: hash lookups, prefix sums and difference arrays.", {
     viz: "prefix-sum",
@@ -79,10 +75,6 @@ int subarraySum(vector<int>& a, int k) {
       Q("10⁵ range-add updates, then print the array once.", ["Segment tree with lazy propagation", "*Difference array", "Re-apply each update", "Fenwick tree"], "All reads come after all writes, so a difference array is O(n + q) and far simpler."),
       Q("Why seed the prefix map with {0: 1}?", ["To avoid overflow", "*So subarrays starting at index 0 are counted", "To handle negative numbers", "It is optional"], "A subarray from index 0 corresponds to subtracting the empty prefix."),
     ],
-    cards: [
-      ["Sum of a[l..r] with prefix sums", "pre[r+1] − pre[l]"],
-      ["Range add [l, r] += v in O(1)", "d[l] += v; d[r+1] −= v; prefix-sum at the end"],
-    ],
   }),
   T("dsa", "two-pointers", "Two pointers", 1, 30, "Shrink the search space from both ends using sortedness or monotonic structure.", {
     viz: "two-pointers",
@@ -117,7 +109,6 @@ for (int i = 0; i + 2 < n; ++i) {
       Q("Two-sum on an unsorted array where you must return indices. Best?", ["Sort + two pointers", "*Hash map", "Binary search", "Brute force"], "Sorting loses indices (unless you carry them) and costs O(n log n); hashing is O(n)."),
       Q("Counting triangles (a+b>c) in a sorted array: fix which element?", ["Smallest", "*Largest, then two pointers on the rest", "Median", "Any"], "With c fixed as the largest, if a[l]+a[r] > c then every index in [l, r) pairs with r: count r−l at once."),
     ],
-    cards: [["Dutch flag regions", "[0,lo) < p · [lo,mid) == p · [mid,hi] unknown · (hi,n) > p"]],
   }),
   T("dsa", "sliding-window", "Sliding window", 1, 35, "Maintain a window whose validity is monotonic in its size.", {
     viz: "sliding-window",
@@ -145,7 +136,6 @@ for (int r = 0; r < n; ++r) {
       Q("Count subarrays with exactly K distinct values.", ["One window with a while loop", "*atMost(K) − atMost(K−1)", "DP", "Sort then scan"], "'Exactly' is not monotonic; 'at most' is."),
       Q("Why is the variable-size window O(n)?", ["The inner loop runs once", "*l and r each only move forward, ≤ 2n moves total", "The map is O(1)", "It is O(n log n)"], "Amortised argument: both pointers are monotone."),
     ],
-    cards: [["exactly(K) for windows", "atMost(K) − atMost(K − 1)"], ["When does a sliding window NOT apply to sums?", "When values can be negative (validity is no longer monotonic)"]],
   }),
   T("dsa", "stack", "Stacks & monotonic stack", 1, 35, "Nearest greater/smaller in O(n), expression parsing and nested structure.", {
     viz: "mono-stack",
@@ -171,7 +161,6 @@ for (int i = 0; i < n; ++i) {
       Q("To find the previous smaller element, the stack should be…", ["Decreasing", "*Increasing (pop while top ≥ current)", "Unordered", "A queue"], "After popping everything ≥ current, the top is the nearest smaller to the left."),
       Q("Sum of subarray minimums with duplicates: how do you avoid double counting?", ["Use a set", "*Strict comparison on one side, non-strict on the other", "Sort first", "It cannot happen"], "Asymmetric comparisons assign each subarray's minimum to exactly one index."),
     ],
-    cards: [["What does popping an index from a monotonic stack mean?", "The current element is that index's next greater/smaller"]],
   }),
   T("dsa", "mono-deque", "Queues & monotonic deque", 2, 30, "Window max/min in O(1) amortised and DP transitions over a sliding range.", {
     signals: ["Maximum/minimum over every window of size k", "DP where dp[i] depends on best of dp[i−k..i−1]", "Shortest subarray with sum ≥ K with negatives"],
@@ -199,7 +188,6 @@ for (int i = 0; i < n; ++i) {
       Q("Why can smaller elements behind a new larger element be discarded?", ["They are duplicates", "*They leave the window no later and are never the max while it is present", "To save memory only", "They cannot"], "Dominance: older and smaller means useless."),
       Q("dp[i] = a[i] + max(dp[i−k..i−1]) for n = 10⁵, k = 10⁴. Best?", ["Plain loops", "Segment tree only", "*Monotonic deque, O(n)", "Binary search"], "Sliding-window maximum over dp values."),
     ],
-    cards: [["Deque front invariant (window max)", "Front index is inside the window and holds the largest value; values decrease toward the back"]],
   }),
   T("dsa", "binary-search", "Binary search (incl. on the answer)", 1, 45, "Any monotonic predicate can be binary searched, not just sorted arrays.", {
     viz: "binary-search",
@@ -232,7 +220,6 @@ return lo;`,
       Q("Rotated sorted array with duplicates: worst-case search time?", ["O(log n)", "*O(n)", "O(n log n)", "O(1)"], "When a[lo]==a[mid]==a[hi] you cannot tell which half is sorted and must shrink linearly."),
       Q("Which is NOT binary-searchable on the answer?", ["Minimum eating speed to finish in H hours", "Max min distance between placed items", "*Number of subarrays with sum exactly K", "Smallest capacity to ship in D days"], "'Exactly K' has no monotonic feasibility predicate."),
     ],
-    cards: [["First-true template update rules", "ok(mid) → hi = mid; else lo = mid + 1; loop while lo < hi"], ["'Minimise the maximum' usually means…", "Binary search on the answer with a greedy O(n) feasibility check"]],
   }),
   T("dsa", "linked-list", "Linked lists", 2, 30, "Pointer surgery: dummy heads, reversal, fast/slow and merging.", {
     viz: "linked-reverse",
@@ -260,7 +247,6 @@ Draw boxes and arrows before coding. Interviewers watch for null dereferences mo
       Q("After fast and slow meet inside a cycle, how do you find the cycle's entry?", ["Count nodes", "*Move one pointer to head; advance both by 1 until they meet", "Reverse the list", "Use a stack"], "a = kc − b, so both arrive at the entry together."),
       Q("Merging k sorted lists of total N nodes with a heap costs…", ["O(Nk)", "*O(N log k)", "O(N log N)", "O(k log N)"], "Each node passes through a heap of size ≤ k."),
     ],
-    cards: [["Reverse a list: loop body", "nxt = cur.next; cur.next = prev; prev = cur; cur = nxt"]],
   }),
 ];
 

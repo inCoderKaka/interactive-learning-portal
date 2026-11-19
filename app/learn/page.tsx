@@ -22,12 +22,11 @@ export default function Learn() {
     const done = its.filter((i) => progress[i.id]?.status === "done").length;
     return { topic, total: its.length, done, mastery: done / Math.max(1, its.length) };
   }), [items, progress]);
-  // a topic is "covered" once its lesson or any of its exercises has been started
-  const covered = useMemo(() => {
-    const ids = new Set(items.filter((i) => progress[i.id]).map((i) => i.topic));
-    return TOPICS.filter((t) => ids.has(t.id) && t.cards?.length);
-  }, [items, progress]);
-  const cardCount = covered.reduce((n, t) => n + (t.cards?.length ?? 0), 0);
+  // a topic is "started" once its lesson or any of its exercises has been opened; used to offer a "started only" deck
+  const started = useMemo(() => new Set(items.filter((i) => progress[i.id]).map((i) => i.topic)), [items, progress]);
+  const cardTopics = useMemo(() => TOPICS.filter((t) => t.cards?.length), []);
+  const cardCount = cardTopics.reduce((n, t) => n + (t.cards?.length ?? 0), 0);
+  const startedCards = cardTopics.filter((t) => started.has(t.id)).reduce((n, t) => n + (t.cards?.length ?? 0), 0);
 
   return (
     <div>
@@ -44,8 +43,8 @@ export default function Learn() {
 
       {view === "cards" && (
         <div className="mb-10">
-          <p className="mb-3 text-[13px] text-mute">{covered.length ? `${cardCount} cards from the ${covered.length} topic${covered.length === 1 ? "" : "s"} you have covered so far.` : "Your personal deck, built from the topics you have covered."}</p>
-          <FlashDeck topics={covered} />
+          <p className="mb-3 text-[13px] text-mute">{`${cardCount} cards across ${cardTopics.length} topics. Pick DSA, HLD, LLD or Interview readiness, then narrow to a topic.${startedCards ? ` ${startedCards} come from topics you have started.` : ""}`}</p>
+          <FlashDeck topics={cardTopics} started={started} />
         </div>
       )}
 

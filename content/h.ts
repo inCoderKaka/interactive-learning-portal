@@ -51,9 +51,8 @@ export function T(
   return { id, area, title, tier, est, blurb, ...rest };
 }
 
-/** Second-pass additions merged onto a topic in content/index.ts. */
+/** Second-pass additions merged onto a topic in content/index.ts. Flashcards live in content/cards/, not here. */
 export interface Extra {
   deep?: string; // markdown bullets: variations, deeper analysis, bar-raiser angles
-  cards?: [string, string][];
   pre?: string[]; // prerequisite topic ids (drawn as connections on the map)
 }

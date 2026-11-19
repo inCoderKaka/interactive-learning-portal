@@ -31,7 +31,6 @@ export const craftTopics: Topic[] = [
       Q("In a Google coding round, where does most of the hiring signal come from?", ["Finishing the first question fast", "*How you handle follow-ups and changed constraints", "Knowing the LeetCode number", "Typing speed"], "Follow-ups distinguish understanding from recall."),
       Q("You are not allowed to run code. What replaces the compiler?", ["Nothing", "*A deliberate dry run on a small input plus edge cases", "Asking the interviewer", "Rewriting twice"], "Manual verification is an explicitly scored behaviour."),
     ],
-    cards: [["Google's four attributes", "General cognitive ability · Role-related knowledge · Leadership · Googleyness"]],
   }),
   T("craft", "coding-round", "Running a coding round out loud", 1, 25, "A script for the 45 minutes, including what to say when stuck.", {
     signals: ["Every coding interview and every practice session here"],
@@ -62,7 +61,6 @@ export const craftTopics: Topic[] = [
       Q("You see the optimal solution immediately. What do you still do first?", ["Start coding", "*State brute force briefly, then the optimal idea with complexity, and get agreement", "Ask for a harder problem", "Write tests"], "It demonstrates structured reasoning and avoids solving the wrong problem."),
       Q("Best response when completely stuck?", ["Stay silent and think", "*Work a concrete example aloud and look for structure", "Guess a pattern", "Ask for the answer"], "The interviewer can only credit reasoning they hear."),
     ],
-    cards: [["Clarifying checklist", "Size · ranges · duplicates · sorted? · empty · negatives · output/ties · mutate input? · many queries? · memory"]],
   }),
   T("craft", "biases", "Bias traps in learning & interviewing", 1, 25, "The predictable ways a smart brain fools itself, and the countermeasure built into this portal.", {
     signals: ["When practice feels productive but mock performance does not improve"],
@@ -89,7 +87,6 @@ export const craftTopics: Topic[] = [
       Q("Why does interleaving topics feel worse but work better?", ["It is not better", "*It forces you to identify the pattern, which is the actual interview skill", "It saves time", "It avoids hard problems"], "Blocked practice hands you the pattern for free."),
       Q("You rate yourself 5/5 confident, and the review finds two bugs. The useful reaction is…", ["Ignore it", "*Log the calibration gap and schedule an earlier review", "Lower all future ratings", "Stop rating"], "Calibration data corrects over- and under-confidence over time."),
     ],
-    cards: [["Recognition vs recall", "Recognising a solution when you see it is not the same as producing it; only retrieval practice builds recall"]],
   }),
   T("craft", "behavioral", "Googleyness & leadership (behavioural)", 1, 30, "STAR stories, what interviewers probe, and a story bank that covers every prompt.", {
     signals: ["The G&L round, plus the first five minutes of every other round"],
@@ -118,7 +115,6 @@ export const craftTopics: Topic[] = [
       Q("Which part of a STAR answer deserves the most time?", ["Situation", "Task", "*Action", "Result"], "Actions reveal your judgement; context is only setup."),
       Q("'Tell me about a time you disagreed with your manager.' Strong answers show…", ["That you were right", "*Data-driven disagreement, openness to their view, and commitment after the decision", "That you escalated", "That you avoided conflict"], "Disagree-and-commit with the relationship intact."),
     ],
-    cards: [["STAR(L)", "Situation · Task · Action (most of the time) · Result (quantified) · Learning"]],
   }),
 ];
 

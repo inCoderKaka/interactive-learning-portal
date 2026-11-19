@@ -5,21 +5,41 @@ import { motion } from "motion/react";
 import { ArrowLeft, ArrowRight, RotateCw, Shuffle } from "lucide-react";
 import { AREAS, areaOf } from "@/content";
 import { Button, Empty, cn } from "./ui";
-import type { Area, Topic } from "@/lib/types";
+import type { Area, Card, CardKind, Topic } from "@/lib/types";
 
-type Card = [string, string];
+const KIND: Record<CardKind, { label: string; color: string }> = {
+  pattern: { label: "Pattern", color: "var(--color-accent)" },
+  variation: { label: "Variation", color: "var(--color-hld)" },
+  pitfall: { label: "Pitfall", color: "var(--color-warn)" },
+};
+
+/** Deck-picker names. The curriculum calls the last area "Interview Craft"; learners think of it as interview readiness. */
+const DECK_LABEL: Record<Area, string> = { dsa: "DSA", hld: "HLD", lld: "LLD", craft: "Interview readiness" };
 
 function FlipCard({ card, flip, onFlip }: { card: Card; flip: boolean; onFlip: () => void }) {
+  const [front, back, kind] = card;
+  const long = back.length > 130;
+  // Both faces share one grid cell so the card grows to fit whichever side is taller.
+  const face = "col-start-1 row-start-1 grid place-items-center p-5";
   return (
-    <button onClick={onFlip} aria-label="Flip card" className="mt-3 block w-full" style={{ perspective: 1000 }}>
-      <motion.div animate={{ rotateX: flip ? 180 : 0 }} transition={{ type: "spring", stiffness: 180, damping: 20 }} className="relative grid min-h-[150px] place-items-center rounded-2xl border border-line bg-panel2 p-5" style={{ transformStyle: "preserve-3d" }}>
-        <div className="text-center text-[15px] font-medium" style={{ backfaceVisibility: "hidden" }}>{card[0]}<div className="mt-3 text-[11.5px] font-normal text-faint">say the answer out loud, then tap</div></div>
-        <div className="absolute inset-0 grid place-items-center overflow-y-auto p-5 text-center font-mono text-[13.5px] leading-relaxed text-accent" style={{ backfaceVisibility: "hidden", transform: "rotateX(180deg)" }}>{card[1]}</div>
+    <button onClick={onFlip} aria-label="Flip card" aria-pressed={flip} className="mt-3 block w-full" style={{ perspective: 1000 }}>
+      <motion.div animate={{ rotateX: flip ? 180 : 0 }} transition={{ type: "spring", stiffness: 180, damping: 20 }} className="grid min-h-[170px] rounded-2xl border border-line bg-panel2" style={{ transformStyle: "preserve-3d" }}>
+        <div className={face} style={{ backfaceVisibility: "hidden" }}>
+          <div className="text-center text-[15px] font-medium leading-snug">
+            {kind && <span className="mb-2 block text-[10.5px] font-semibold uppercase tracking-wider" style={{ color: KIND[kind].color }}>{KIND[kind].label}</span>}
+            {front}
+            <div className="mt-3 text-[11.5px] font-normal text-faint">say the answer out loud, then tap</div>
+          </div>
+        </div>
+        <div className={cn(face, "font-mono text-[13px] leading-relaxed text-accent", long ? "text-left" : "text-center")} style={{ backfaceVisibility: "hidden", transform: "rotateX(180deg)" }}>
+          <div>{back}</div>
+        </div>
       </motion.div>
     </button>
   );
 }
 
+/** Cards of a single topic, shown on its lesson page. */
 export function Flashcards({ cards }: { cards: Card[] }) {
   const [i, setI] = useState(0);
   const [flip, setFlip] = useState(false);
@@ -28,7 +48,7 @@ export function Flashcards({ cards }: { cards: Card[] }) {
   return (
     <section className="card p-5">
       <div className="flex items-center justify-between"><div className="eyebrow">Flashcards</div><span className="num text-[12px] text-faint">{i + 1} / {cards.length}</span></div>
-      <FlipCard card={cards[i]} flip={flip} onFlip={() => setFlip((f) => !f)} />
+      <FlipCard key={cards[i][0]} card={cards[i]} flip={flip} onFlip={() => setFlip((f) => !f)} />
       {cards.length > 1 && (
         <div className="mt-3 flex justify-end gap-1">
           <Button size="sm" variant="ghost" onClick={() => go(-1)}><ArrowLeft size={14} />Back</Button>
@@ -39,16 +59,22 @@ export function Flashcards({ cards }: { cards: Card[] }) {
   );
 }
 
-/** One deck built from every topic the learner has covered, filterable by area and topic. */
-export function FlashDeck({ topics }: { topics: Topic[] }) {
+/**
+ * The whole deck. Pick a main area (DSA / HLD / LLD / Interview readiness), optionally narrow to one topic,
+ * and optionally restrict to topics the learner has started.
+ */
+export function FlashDeck({ topics, started }: { topics: Topic[]; started?: ReadonlySet<string> }) {
   const [area, setArea] = useState<Area | "all">("all");
   const [topic, setTopic] = useState("all");
+  const [mine, setMine] = useState(false); // only topics the learner has started
   const [seed, setSeed] = useState(0); // 0 = curriculum order, otherwise a shuffle seed
   const [i, setI] = useState(0);
   const [flip, setFlip] = useState(false);
 
-  const areas = useMemo(() => AREAS.filter((a) => topics.some((t) => t.area === a.id)), [topics]);
-  const inArea = useMemo(() => topics.filter((t) => area === "all" || t.area === area), [topics, area]);
+  const withCards = useMemo(() => topics.filter((t) => t.cards?.length), [topics]);
+  const pool = useMemo(() => (mine && started ? withCards.filter((t) => started.has(t.id)) : withCards), [withCards, mine, started]);
+  const count = (list: Topic[]) => list.reduce((n, t) => n + (t.cards?.length ?? 0), 0);
+  const inArea = useMemo(() => pool.filter((t) => area === "all" || t.area === area), [pool, area]);
   const deck = useMemo(() => {
     const out = inArea.filter((t) => topic === "all" || t.id === topic).flatMap((t) => (t.cards ?? []).map((card) => ({ card, t })));
     if (!seed) return out;
@@ -74,25 +100,41 @@ export function FlashDeck({ topics }: { topics: Topic[] }) {
     return () => window.removeEventListener("keydown", onKey);
   });
 
-  if (!topics.length) return <Empty title="No flashcards yet">Cards unlock as you cover topics. Open any topic and start its lesson, quiz or an exercise, and its cards join this deck.</Empty>;
+  if (!withCards.length) return <Empty title="No flashcards yet">Flashcards appear here as topics gain them.</Empty>;
 
   const cur = deck[Math.min(i, deck.length - 1)];
-  const chip = (on: boolean) => cn("rounded-full border px-3 py-1 text-[12.5px] font-medium transition", on ? "border-accent/60 bg-accent/10 text-accent" : "border-line text-mute hover:text-text");
+  const chip = (on: boolean) => cn("flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12.5px] font-medium transition", on ? "border-accent/60 bg-accent/10 text-accent" : "border-line text-mute hover:text-text");
   return (
     <section className="card p-5">
-      <div className="flex flex-wrap items-center gap-2">
-        <button className={chip(area === "all")} onClick={() => { setArea("all"); setTopic("all"); reset(); }}>All areas</button>
-        {areas.map((a) => <button key={a.id} className={chip(area === a.id)} style={area === a.id ? { color: a.color, borderColor: a.color } : undefined} onClick={() => { setArea(a.id); setTopic("all"); reset(); }}>{a.short}</button>)}
-        <select aria-label="Topic" value={topic} onChange={(e) => { setTopic(e.target.value); reset(); }} className="ml-auto h-8 max-w-[16rem] rounded-xl border border-line bg-panel2 px-2.5 text-[13px] text-text">
-          <option value="all">All covered topics ({inArea.length})</option>
+      <div role="tablist" aria-label="Flashcard area" className="flex flex-wrap items-center gap-2">
+        <button role="tab" aria-selected={area === "all"} className={chip(area === "all")} onClick={() => { setArea("all"); setTopic("all"); reset(); }}>All<span className="num text-faint">{count(pool)}</span></button>
+        {AREAS.map((a) => {
+          const n = count(pool.filter((t) => t.area === a.id));
+          return (
+            <button key={a.id} role="tab" aria-selected={area === a.id} className={chip(area === a.id)} style={area === a.id ? { color: a.color, borderColor: a.color } : undefined} onClick={() => { setArea(a.id); setTopic("all"); reset(); }}>
+              {DECK_LABEL[a.id]}<span className="num text-faint">{n}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <select aria-label="Topic" value={topic} onChange={(e) => { setTopic(e.target.value); reset(); }} className="h-8 min-w-0 max-w-full flex-1 rounded-xl border border-line bg-panel2 px-2.5 text-[13px] text-text sm:max-w-[22rem] sm:flex-none">
+          <option value="all">{area === "all" ? "All topics" : `All ${DECK_LABEL[area]} topics`} ({count(inArea)})</option>
           {inArea.map((t) => <option key={t.id} value={t.id}>{t.title} ({t.cards?.length ?? 0})</option>)}
         </select>
+        {started && (
+          <label className="ml-auto flex cursor-pointer select-none items-center gap-2 text-[12.5px] text-mute">
+            <input type="checkbox" checked={mine} onChange={(e) => { setMine(e.target.checked); setTopic("all"); reset(); }} className="accent-[var(--color-accent)]" />
+            Started topics only
+          </label>
+        )}
       </div>
 
       {cur ? (
         <>
           <div className="mt-4 flex items-center justify-between gap-3 text-[12px]">
-            <Link href={`/learn/${cur.t.id}`} className="truncate font-medium hover:underline" style={{ color: areaOf(cur.t.area).color }}>{cur.t.title}</Link>
+            <Link href={`/learn/${cur.t.id}`} className="truncate font-medium hover:underline" style={{ color: areaOf(cur.t.area).color }}>{DECK_LABEL[cur.t.area]} · {cur.t.title}</Link>
             <span className="num shrink-0 text-faint">{Math.min(i, deck.length - 1) + 1} / {deck.length}</span>
           </div>
           <FlipCard key={cur.t.id + cur.card[0]} card={cur.card} flip={flip} onFlip={() => setFlip((f) => !f)} />
@@ -105,7 +147,9 @@ export function FlashDeck({ topics }: { topics: Topic[] }) {
             </div>
           </div>
         </>
-      ) : <p className="mt-4 text-sm text-mute">No cards in this selection.</p>}
+      ) : (
+        <p className="mt-4 text-sm text-mute">{mine ? "You have not started any topic in this selection yet. Untick “Started topics only” to browse every card." : "No cards in this selection."}</p>
+      )}
     </section>
   );
 }

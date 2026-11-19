@@ -31,7 +31,6 @@ int gain(TreeNode* n) {               // best downward path starting at n
       Q("Find all nodes at distance K from a target node.", ["In-order traversal", "*Parent map + BFS from target", "Binary lifting", "Sort by depth"], "Treat the tree as an undirected graph once parents are known."),
       Q("Many LCA queries on a static tree of 10⁵ nodes.", ["Recursive LCA per query", "*Binary lifting or Euler tour + sparse table", "BFS per query", "Union-Find only"], "O(n log n) preprocess, O(log n) or O(1) per query."),
     ],
-    cards: [["Rerooting formula for sum of distances", "ans[child] = ans[parent] − size[child] + (n − size[child])"]],
   }),
   T("dsa", "bst", "Binary search trees", 2, 30, "In-order is sorted; bounds flow down; successor/predecessor logic.", {
     signals: ["'Sorted' behaviour from a tree", "k-th smallest, successor, range queries", "Need an ordered map: floor/ceil/rank"],
@@ -58,7 +57,6 @@ Counting BSTs → Catalan numbers.`,
       Q("Two nodes of a BST were swapped. How do you find them in O(n)?", ["Sort the values", "*In-order traversal; record the first and last inversion", "BFS", "Compare each node with its children"], "A swap creates one or two descents in the sorted order."),
       Q("BST iterator with O(h) memory uses…", ["A queue of all nodes", "*A stack of the left spine", "Morris traversal only", "Parent pointers only"], "Push lefts; on next() pop and push the left spine of the right child."),
     ],
-    cards: [["In-order successor when no right child", "Lowest ancestor whose left subtree contains the node"]],
   }),
   T("dsa", "tries", "Tries", 2, 30, "Prefix trees for dictionary search, autocomplete and XOR maximisation.", {
     signals: ["Many prefix queries against a dictionary", "Word search on a board with many words", "Maximum XOR pair (binary trie)", "Autocomplete / typeahead"],
@@ -85,7 +83,6 @@ void insert(Trie* t, const string& w) {
       Q("Word Search II with 3×10⁴ words: why a trie instead of running Word Search per word?", ["Tries use less memory", "*One DFS explores all words sharing prefixes simultaneously and prunes dead prefixes", "Tries avoid recursion", "It is not better"], "Shared prefixes are searched once."),
       Q("Max XOR of two numbers in an array in O(n·32) uses…", ["Sorting", "*Binary trie, choosing the opposite bit greedily", "DP", "Segment tree"], "Higher bits dominate, so greedy from MSB is optimal."),
     ],
-    cards: [["Trie operation cost", "O(L) per insert/search, independent of dictionary size"]],
   }),
   T("dsa", "heap", "Heaps & priority queues", 1, 35, "Top-k, k-way merge, two heaps, scheduling and lazy deletion.", {
     viz: "heap",
@@ -112,7 +109,6 @@ return pq.top();                                       // k-th largest`,
       Q("Cost of building a heap from n elements (heapify)?", ["O(n log n)", "*O(n)", "O(log n)", "O(n²)"], "Most nodes are near the leaves and sift down a short distance."),
       Q("You need to delete arbitrary elements from a priority queue in Python.", ["Not possible", "*Lazy deletion: mark and skip when popped", "Rebuild the heap each time", "Sort every time"], "Mark deletions and clean the top lazily."),
     ],
-    cards: [["Two-heaps invariant for running median", "max-heap(lower) and min-heap(upper), sizes differ by ≤ 1, every lower ≤ every upper"]],
   }),
   T("dsa", "backtracking", "Backtracking", 1, 35, "Systematic search: choose, explore, un-choose, and prune early.", {
     viz: "subsets",
@@ -148,7 +144,6 @@ If sub-states repeat, add memoisation and you have top-down DP (Word Break, Pali
       Q("Subsets II (with duplicates): which skip rule is correct after sorting?", ["Skip if a[i] == a[i−1]", "*Skip if i > start and a[i] == a[i−1]", "Use a set of results only", "No skip needed"], "Only skip equal values among siblings, not along a path."),
       Q("Time complexity of generating all permutations of n distinct items?", ["O(2ⁿ)", "O(n²)", "*O(n · n!)", "O(n!)"], "n! leaves, each copied in O(n)."),
     ],
-    cards: [["Backtracking skeleton", "choose → recurse → un-choose, with a pruning check before recursing"]],
   }),
   T("dsa", "graph-traversal", "Graph traversal: BFS & DFS", 1, 45, "Grids, implicit graphs, multi-source BFS and BFS over augmented state.", {
     viz: "bfs-grid",
@@ -183,7 +178,6 @@ while (!q.empty()) {
       Q("Pacific Atlantic Water Flow: the efficient approach starts DFS/BFS from…", ["Every cell", "*The ocean borders, moving uphill", "The highest cell", "Random cells"], "Reverse the flow: two traversals instead of one per cell."),
       Q("When should a node be marked visited in BFS?", ["When popped", "*When pushed", "At the end", "Never"], "Marking on push prevents the same node being enqueued many times."),
     ],
-    cards: [["Multi-source BFS", "Push all sources with distance 0 before the loop"], ["Complexity of state-augmented BFS", "O(number of states × out-degree)"]],
   }),
   T("dsa", "topo-sort", "Topological sort", 1, 30, "Order tasks under dependencies; detect cycles; DP on DAGs.", {
     viz: "topo",
@@ -213,7 +207,6 @@ bool hasCycle = (int)order.size() < n;`,
       Q("Lexicographically smallest topological order?", ["DFS with sorting", "*Kahn with a min-heap", "Reverse the order", "Impossible"], "Always pick the smallest available node."),
       Q("How do you know the topological order is unique?", ["Graph is connected", "*The queue size is exactly 1 at every step", "No node has in-degree 0", "It always is"], "Two available nodes can be ordered either way."),
     ],
-    cards: [["Minimum semesters with unlimited parallel courses", "Number of BFS levels in Kahn's algorithm (longest path in the DAG)"]],
   }),
   T("dsa", "union-find", "Union-Find (DSU)", 1, 30, "Dynamic connectivity in near-constant time; components that only merge.", {
     viz: "union-find",
@@ -247,7 +240,6 @@ DSU cannot split components. If edges are deleted online, think offline reversal
       Q("Edges are removed over time and you must report connectivity after each removal.", ["DSU directly", "*Process removals in reverse as additions with DSU", "BFS per query only", "Topological sort"], "DSU only merges; reversing time turns deletions into unions."),
       Q("unite(a, b) returns false in Kruskal / Redundant Connection. Meaning?", ["Error", "*a and b were already connected: this edge closes a cycle", "The graph is directed", "Sizes are equal"], "Same root ⇒ adding the edge creates a cycle."),
     ],
-    cards: [["DSU complexity with both optimisations", "O(α(n)) amortised per operation, effectively constant"]],
   }),
   T("dsa", "shortest-paths", "Shortest paths", 1, 40, "Dijkstra, 0-1 BFS, Bellman-Ford, Floyd–Warshall, and choosing between them.", {
     viz: "dijkstra",
@@ -287,7 +279,6 @@ while (!pq.empty()) {
       Q("Edges cost 0 or 1 on a 10⁶-cell grid. Best algorithm?", ["Dijkstra with heap", "*0-1 BFS with a deque", "Bellman-Ford", "Floyd–Warshall"], "Deque gives O(V + E) without the log factor."),
       Q("Why does Dijkstra fail with negative edges?", ["Heap cannot store negatives", "*A popped node's distance may later be improved", "It loops forever", "It does not fail"], "Finality on pop relies on non-negative extensions."),
     ],
-    cards: [["Dijkstra stale check", "if (d > dist[u]) continue;"], ["Minimax path (minimise the largest edge)", "Dijkstra with cost = max(pathCost, edge), or binary search + BFS, or sort edges + DSU"]],
   }),
   T("dsa", "advanced-graphs", "MST, bridges, SCC & Eulerian paths", 2, 40, "The graph algorithms that separate a strong L4/L5 from a pattern matcher.", {
     signals: ["Connect everything at minimum cost (MST)", "'Critical' edges or nodes whose removal disconnects the graph", "Use every edge exactly once (Eulerian path)", "Two-colouring / conflicts (bipartite)"],
@@ -317,7 +308,6 @@ void dfs(int u, int parentEdge) {
       Q("Reconstruct Itinerary is an instance of…", ["Topological sort", "Shortest path", "*Eulerian path (Hierholzer)", "MST"], "Every ticket (edge) must be used exactly once."),
       Q("MST of n points with Manhattan distances, n = 1000 (complete graph).", ["Kruskal with all edges sorted", "*Prim with an O(n²) array", "Dijkstra", "BFS"], "E = n² edges; array Prim avoids the log factor and the edge list."),
     ],
-    cards: [["Bridge condition", "low[child] > disc[parent]"], ["Hierholzer in one line", "DFS consuming edges; push node after all its edges are used; reverse at the end"]],
   }),
 ];
 

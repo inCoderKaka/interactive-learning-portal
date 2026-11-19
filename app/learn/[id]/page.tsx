@@ -94,7 +94,7 @@ export default function TopicPage() {
       </section>
 
       {t.quiz.length > 0 && <QuizBlock key={t.id} quiz={t.quiz} onDone={(sc) => { setQuizScore(sc); patch(item.id, { score: sc, status: progress[item.id]?.status ?? "doing" }); }} />}
-      {t.cards && <Flashcards key={"c" + t.id} cards={t.cards} />}
+      {!!t.cards?.length && <Flashcards key={"c" + t.id} cards={t.cards!} />}
 
       {children.length > 0 && (
         <section>
