@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { ArrowLeft, ArrowRight, RotateCw, Shuffle } from "lucide-react";
 import { AREAS, areaOf } from "@/content";
 import { Button, Empty, cn } from "./ui";
+import { useReadable, type ReadStep } from "@/lib/reader/registry";
 import type { Area, Card, CardKind, Topic } from "@/lib/types";
 
 const KIND: Record<CardKind, { label: string; color: string }> = {
@@ -14,7 +15,7 @@ const KIND: Record<CardKind, { label: string; color: string }> = {
 };
 
 /** Deck-picker names. The curriculum calls the last area "Interview Craft"; learners think of it as interview readiness. */
-const DECK_LABEL: Record<Area, string> = { dsa: "DSA", hld: "HLD", lld: "LLD", craft: "Interview readiness" };
+const DECK_LABEL: Record<Area, string> = { dsa: "DSA", hld: "HLD", lld: "LLD", craft: "Interview readiness", ai: "AI" };
 
 function FlipCard({ card, flip, onFlip }: { card: Card; flip: boolean; onFlip: () => void }) {
   const [front, back, kind] = card;
@@ -43,10 +44,24 @@ function FlipCard({ card, flip, onFlip }: { card: Card; flip: boolean; onFlip: (
 export function Flashcards({ cards }: { cards: Card[] }) {
   const [i, setI] = useState(0);
   const [flip, setFlip] = useState(false);
+  // the reader quizzes you: reads a front, gives you a moment, flips the card and reads the back
+  const readRef = useReadable<HTMLElement>((ctx) => {
+    const n = Math.min(cards.length, 6);
+    const card = () => document.querySelector("[data-flashcards] button[aria-label='Flip card']");
+    const steps: ReadStep[] = [{ say: `Flashcards: ${cards.length} of them. ${ctx.interact ? `Let's do ${n === cards.length ? "them" : `the first ${n}`}. Answer out loud before I flip.` : "Try them after the lesson."}`, focus: () => document.querySelector("[data-flashcards]") }];
+    if (!ctx.interact) return steps;
+    for (let k = 0; k < n; k++) {
+      const [front, back] = cards[k];
+      steps.push({ say: front, act: () => { setFlip(false); setI(k); }, settle: 300, focus: card, pause: 2400 });
+      steps.push({ say: back, act: () => setFlip(true), settle: 500, focus: card, pause: 500 });
+    }
+    if (cards.length > n) steps.push({ say: `${cards.length - n} more cards are waiting in the deck.`, act: () => { setFlip(false); setI(n % cards.length); } });
+    return steps;
+  });
   if (!cards.length) return null;
   const go = (d: number) => { setFlip(false); setI((x) => (x + d + cards.length) % cards.length); };
   return (
-    <section className="card p-5">
+    <section ref={readRef} data-read-block data-flashcards className="card p-5">
       <div className="flex items-center justify-between"><div className="eyebrow">Flashcards</div><span className="num text-[12px] text-faint">{i + 1} / {cards.length}</span></div>
       <FlipCard key={cards[i][0]} card={cards[i]} flip={flip} onFlip={() => setFlip((f) => !f)} />
       {cards.length > 1 && (

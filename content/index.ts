@@ -12,12 +12,14 @@ import { extraDesigns, extraProblems } from "./extra-exercises";
 import { DESIGN_REFS, LC, PROBLEM_VIDEO, TOPIC_REFS } from "./refs";
 import type { Extra } from "./h";
 import { CARDS } from "./cards";
+import { AI_REFS, aiDesigns, aiTopics } from "./ai";
 
 export const AREAS: { id: Area; name: string; short: string; tag: string; color: string }[] = [
   { id: "dsa", name: "Data Structures & Algorithms", short: "DSA", tag: "Coding rounds", color: "var(--color-dsa)" },
   { id: "hld", name: "System Design (HLD)", short: "HLD", tag: "Design round", color: "var(--color-hld)" },
   { id: "lld", name: "Object-Oriented Design (LLD)", short: "LLD", tag: "Design & code quality", color: "var(--color-lld)" },
   { id: "craft", name: "Interview Craft", short: "Craft", tag: "Loop, bias, behavioural", color: "var(--color-craft)" },
+  { id: "ai", name: "AI & Large Language Models", short: "AI", tag: "LLMs, RAG, agents, MCP", color: "var(--color-ai)" },
 ];
 export const areaOf = (id: Area) => AREAS.find((a) => a.id === id)!;
 
@@ -34,12 +36,12 @@ function withExtra(t: Topic): Topic {
 }
 
 function assemble(): Topic[] {
-  const out = [...topics1, ...topics2, ...topics3, ...hldTopics, ...lldTopics, ...craftTopics];
+  const out = [...topics1, ...topics2, ...topics3, ...hldTopics, ...lldTopics, ...craftTopics, ...aiTopics];
   for (const { after, topic } of [...dsaNewTopics, ...designNewTopics]) {
     const i = out.findIndex((t) => t.id === after);
     out.splice(i < 0 ? out.length : i + 1, 0, topic);
   }
-  return out.map(withExtra).map((t) => ({ ...t, cards: CARDS[t.id] ?? [], refs: TOPIC_REFS[t.id] }));
+  return out.map(withExtra).map((t) => ({ ...t, cards: CARDS[t.id] ?? [], refs: TOPIC_REFS[t.id] ?? AI_REFS[t.id] }));
 }
 
 export const TOPICS: Topic[] = assemble();
@@ -56,7 +58,7 @@ function withLinks(p: Problem): Problem {
 }
 
 export const PROBLEMS: Problem[] = [...problems1, ...problems2, ...problems3, ...extraProblems].map(withLinks);
-export const DESIGNS: Design[] = [...hldDesigns, ...lldDesigns, ...behavioralPrompts, ...extraDesigns].map((d) => ({ ...d, refs: DESIGN_REFS[d.id] }));
+export const DESIGNS: Design[] = [...hldDesigns, ...lldDesigns, ...behavioralPrompts, ...extraDesigns, ...aiDesigns].map((d) => ({ ...d, refs: DESIGN_REFS[d.id] }));
 
 export const topicById = new Map(TOPICS.map((t) => [t.id, t]));
 export const problemById = new Map(PROBLEMS.map((p) => [p.id, p]));

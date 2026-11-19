@@ -24,7 +24,7 @@ function fromProblem(p: Problem): InterviewQuestion {
 }
 
 function fromDesign(d: Design): InterviewQuestion {
-  const kind: Kind = d.area === "hld" ? "hld" : d.area === "lld" ? "lld" : "behavioral";
+  const kind: Kind = d.area === "hld" || d.area === "ai" ? "hld" : d.area === "lld" ? "lld" : "behavioral";
   const est = d.stages.find((s) => s.key === "est")?.model ?? "";
   return {
     id: d.id, kind, title: d.title, topic: d.topic,
@@ -39,7 +39,8 @@ function fromDesign(d: Design): InterviewQuestion {
 
 export function allQuestions(kind: Kind, custom: Problem[]): InterviewQuestion[] {
   if (kind === "coding") return [...PROBLEMS, ...custom.filter((p) => p.approaches.length)].filter((p) => p.diff !== "E").map(fromProblem);
-  return DESIGNS.filter((d) => d.area === AREA[kind]).map(fromDesign);
+  // AI system design questions are asked in the system design round
+  return DESIGNS.filter((d) => d.area === AREA[kind] || (kind === "hld" && d.area === "ai")).map(fromDesign);
 }
 
 export function questionById(id: string, custom: Problem[]): InterviewQuestion | undefined {

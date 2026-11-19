@@ -6,8 +6,8 @@ import { Line, OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
 import type { Area, Topic } from "@/lib/types";
 
-const COLORS: Record<Area, string> = { dsa: "#4fd1c5", hld: "#7aa7ff", lld: "#ffb454", craft: "#ff8fb3" };
-const CENTERS: Record<Area, [number, number, number]> = { dsa: [-5.2, 0.4, 0], hld: [4.6, 1.6, -1], lld: [4.2, -2.6, 1.5], craft: [-0.4, -3.6, 2] };
+const COLORS: Record<Area, string> = { dsa: "#4fd1c5", hld: "#7aa7ff", lld: "#ffb454", craft: "#ff8fb3", ai: "#b794f4" };
+const CENTERS: Record<Area, [number, number, number]> = { dsa: [-5.2, 0.4, 0], hld: [4.6, 1.6, -1], lld: [4.2, -2.6, 1.5], craft: [-0.4, -3.6, 2], ai: [10, -0.6, 0.4] };
 const AREA_IDS = Object.keys(CENTERS) as Area[];
 
 export interface StarInfo { topic: Topic; mastery: number; total: number; done: number }
@@ -25,7 +25,7 @@ function layout(stars: StarInfo[]): Pt[] {
   const out: Pt[] = [];
   byArea.forEach((list, area) => {
     const [cx, cy, cz] = CENTERS[area];
-    const spread = area === "dsa" ? 1 : 0.72;
+    const spread = area === "dsa" ? 1 : area === "ai" ? 0.6 : 0.72;
     list.forEach((s, i) => {
       // golden-angle spiral gives an even, organic constellation
       const r = (0.75 + 0.62 * Math.sqrt(i)) * spread, a = i * 2.39996;
@@ -125,7 +125,7 @@ export default function Galaxy({ stars }: { stars: StarInfo[] }) {
       </Canvas>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {areaPos.map(({ a, pos }) => (
-          <div key={a} ref={bind("area:" + a, pos, 0)} style={{ ...base, color: COLORS[a], fontSize: 11, letterSpacing: "0.18em", fontWeight: 700, textTransform: "uppercase", opacity: hover ? 0.4 : 0.85 }}>{a === "craft" ? "Craft" : a.toUpperCase()}</div>
+          <div key={a} ref={bind("area:" + a, pos, 0)} style={{ ...base, color: COLORS[a], fontSize: 11, letterSpacing: "0.18em", fontWeight: 700, textTransform: "uppercase", opacity: hover ? 0.4 : 0.85 }}>{a === "craft" ? "Craft" : a === "ai" ? "AI" : a.toUpperCase()}</div>
         ))}
         {pts.filter((x) => rel.has(x.s.topic.id)).map(({ s, p }) => {
           const link = rel.get(s.topic.id), color = COLORS[s.topic.area];

@@ -11,7 +11,7 @@ import { meterLlm } from "./meter";
 export type TaskId =
   | "interviewer.turn" | "interviewer.judge" | "summarise" | "vision.describe" | "question.generate" | "scorecard"
   | "code.review" | "stage.grade" | "recall.grade" | "twists" | "hint"
-  | "candidate.turn" | "reverse.grade" | "committee";
+  | "candidate.turn" | "reverse.grade" | "committee" | "reader.explain";
 
 export const TASKS: { id: TaskId; label: string; what: string; latency: "high" | "medium" | "low" }[] = [
   { id: "interviewer.turn", label: "Interviewer reply", what: "Each interviewer turn in text and Ascent Voice rounds.", latency: "high" },
@@ -28,6 +28,7 @@ export const TASKS: { id: TaskId; label: string; what: string; latency: "high" |
   { id: "candidate.turn", label: "AI candidate (reverse mode)", what: "Each reply of the AI candidate you interview in reverse mode.", latency: "high" },
   { id: "reverse.grade", label: "Reverse-mode grading", what: "Compares your interviewer feedback with the planted mistakes.", latency: "low" },
   { id: "committee", label: "Loop committee", what: "Reads every scorecard of a loop day and writes the final decision.", latency: "low" },
+  { id: "reader.explain", label: "Article reader", what: "Explains code, tables and formulas aloud when the reader reaches them.", latency: "medium" },
 ];
 
 /** "" = the model chosen in Settings → AI reviewer. Tiers resolve per provider. */
@@ -67,6 +68,7 @@ const RECOMMENDED: Record<TaskId, TaskProfile> = {
   "candidate.turn": P("", "", { temperature: 0.8, topP: 0.95, maxOutputTokens: 400, reasoning: "off", promptCaching: true }, { timeoutMs: 20000, retries: 0 }),
   "reverse.grade": P("", "tier:strong", { temperature: 0.2, maxOutputTokens: 1600, json: true }),
   committee: P("", "tier:strong", { temperature: 0.2, maxOutputTokens: 1400, json: true, reasoning: "medium" }, { timeoutMs: 120000 }),
+  "reader.explain": P("", "tier:small", { temperature: 0.3, maxOutputTokens: 900, json: true, reasoning: "off" }, { timeoutMs: 25000, retries: 0 }),
 };
 
 function presetProfiles(id: PresetId): Record<TaskId, TaskProfile> {

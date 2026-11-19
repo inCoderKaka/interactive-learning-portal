@@ -51,12 +51,13 @@ export function badges(progress: Record<string, Progress>, activity: Record<stri
     { id: "arch", name: "Architect", desc: "Finish 5 system designs", got: cnt((i) => i.kind === "design" && i.area === "hld") >= 5 },
     { id: "oop", name: "Class act", desc: "Finish 5 object-oriented designs", got: cnt((i) => i.kind === "design" && i.area === "lld") >= 5 },
     { id: "story", name: "Storyteller", desc: "Write 4 behavioural answers", got: cnt((i) => i.kind === "design" && i.area === "craft") >= 4 },
+    { id: "ai", name: "Prompt whisperer", desc: "Complete 8 AI topics or designs", got: cnt((i) => i.area === "ai") >= 8 },
     { id: "s3", name: "Warm", desc: "3-day streak", got: s.best >= 3 },
     { id: "s7", name: "On fire", desc: "7-day streak", got: s.best >= 7 },
     { id: "s21", name: "Habit formed", desc: "21-day streak", got: s.best >= 21 },
     { id: "rev", name: "Memory keeper", desc: "Complete 25 spaced reviews", got: reviews >= 25 },
     { id: "cal", name: "Know thyself", desc: "Log 15 confidence predictions", got: calibrated >= 15 },
     { id: "mock", name: "Dress rehearsal", desc: "Finish a mock interview", got: Object.keys(progress).some((k) => k.startsWith("mock-") && progress[k].status === "done") },
-    { id: "all", name: "Full spectrum", desc: "Complete items in all four areas", got: (["dsa", "hld", "lld", "craft"] as const).every((a) => cnt((i) => i.area === a) > 0) },
+    { id: "all", name: "Full spectrum", desc: "Complete items in all five areas", got: (["dsa", "hld", "lld", "craft", "ai"] as const).every((a) => cnt((i) => i.area === a) > 0) },
   ];
 }

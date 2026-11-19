@@ -14,6 +14,7 @@
   --color-hld: #7aa7ff;
   --color-lld: #ffb454;
   --color-craft: #ff8fb3;
+  --color-ai: #b794f4;
   --color-ok: #5be49b;
   --color-bad: #ff6b6b;
   --color-warn: #ffc857;
@@ -22,6 +23,11 @@
   --font-mono: var(--font-code), ui-monospace, monospace;
   --animate-rise: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-eq: eq 0.9s ease-in-out infinite;
+  @keyframes eq {
+    0%, 100% { height: 3px; }
+    50% { height: 13px; }
+  }
   @keyframes rise {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: none; }
@@ -103,6 +109,22 @@ pre.code { font-family: var(--font-mono); background: #0c0e15; border: 1px solid
 .react-flow__controls-button:hover { background: #20243a; }
 
 input[type="range"] { accent-color: var(--color-accent); }
+
+/* article reader: the spotlight follows what is being read; highlights never touch React's DOM */
+.reader-spotlight {
+  border-radius: 14px;
+  border: 1px solid rgb(200 245 71 / 0.38);
+  background: rgb(200 245 71 / 0.025);
+  box-shadow: 0 0 0 4px rgb(200 245 71 / 0.05), 0 0 42px -12px rgb(200 245 71 / 0.45);
+  transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+  will-change: transform, width, height;
+}
+/* word and sentence highlights (::highlight) are injected by components/reader/Reader.tsx: the CSS minifier doesn't know the pseudo-element yet */
+
+/* maths (KaTeX) */
+.md .katex { font-size: 1.06em; color: #eef0f8; }
+.md .katex-display { overflow-x: auto; overflow-y: hidden; padding: 6px 2px; margin: 0.4em 0; }
+.md .katex-display > .katex { font-size: 1.14em; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }

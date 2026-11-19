@@ -21,7 +21,7 @@ export const defaultSettings = (): Settings => ({
   focusMin: 25,
   breakMin: 5,
   blind: false,
-  areas: { dsa: true, hld: true, lld: true, craft: true },
+  areas: { dsa: true, hld: true, lld: true, craft: true, ai: true },
 });
 
 interface Core {

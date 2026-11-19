@@ -1,0 +1,202 @@
+import type { Ref } from "@/lib/types";
+
+const yt = (id: string, title: string, by: string, featured = false): Ref => ({ kind: "video", title, by, url: `https://www.youtube.com/watch?v=${id}`, yt: id, ...(featured ? { featured: true } : {}) });
+const a = (title: string, by: string, url: string): Ref => ({ kind: "article", title, by, url });
+const p = (title: string, by: string, url: string): Ref => ({ kind: "paper", title, by, url });
+const tool = (title: string, by: string, url: string): Ref => ({ kind: "tool", title, by, url });
+const book = (title: string, by: string, url: string): Ref => ({ kind: "book", title, by, url });
+const course = (title: string, by: string, url: string): Ref => ({ kind: "course", title, by, url });
+
+/** Further reading for the AI topics, keyed by topic id. */
+export const AI_REFS: Record<string, Ref[]> = {
+  "ai-history": [
+    yt("WXuK6gekU1Y", "AlphaGo: the full documentary", "Google DeepMind", true),
+    a("The Bitter Lesson", "Rich Sutton", "http://www.incompleteideas.net/IncIdeas/BitterLesson.html"),
+    a("Transformer: a novel neural network architecture for language understanding", "Google Research blog (2017)", "https://research.google/blog/transformer-a-novel-neural-network-architecture-for-language-understanding/"),
+    book("Genius Makers: the mavericks who brought AI to Google, Facebook and the world", "Cade Metz", "https://www.penguinrandomhouse.com/books/603436/genius-makers-by-cade-metz/"),
+    a("The Nobel Prize in Chemistry 2024", "nobelprize.org", "https://www.nobelprize.org/prizes/chemistry/2024/summary/"),
+  ],
+  "ai-ml-basics": [
+    yt("EuBBz3bI-aA", "Machine learning fundamentals: bias and variance", "StatQuest", true),
+    a("Rules of Machine Learning", "Google for Developers", "https://developers.google.com/machine-learning/guides/rules-of-ml"),
+    course("Machine Learning Crash Course", "Google for Developers", "https://developers.google.com/machine-learning/crash-course"),
+    p("Early detection of pipeline natural gas leakage from hyperspectral imaging by vegetation indicators and deep neural networks", "Ma et al., Environmental Science & Technology", "https://pubmed.ncbi.nlm.nih.gov/38875010/"),
+  ],
+  "ai-classic-models": [
+    yt("J4Wdy0Wc_xQ", "Random forests, part 1", "StatQuest", true),
+    yt("efR1C6CvhmE", "Support vector machines, part 1", "StatQuest"),
+    yt("FgakZw6K1QQ", "Principal component analysis, step by step", "StatQuest"),
+    a("XGBoost documentation: introduction to boosted trees", "xgboost.readthedocs.io", "https://xgboost.readthedocs.io/en/stable/tutorials/model.html"),
+  ],
+  "ai-metrics": [
+    yt("4jRBRDbJemM", "ROC and AUC, clearly explained", "StatQuest", true),
+    a("Classification: accuracy, precision, recall", "Google Machine Learning Crash Course", "https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall"),
+  ],
+  "ai-neural-nets": [
+    yt("aircAruvnKk", "But what is a neural network?", "3Blue1Brown", true),
+    yt("IHZwWFHWa-w", "Gradient descent, how neural networks learn", "3Blue1Brown"),
+    yt("Ilg3gGewQ5U", "Backpropagation, intuitively", "3Blue1Brown"),
+    yt("VMj-3S1tku0", "The spelled-out intro to neural networks and backpropagation: building micrograd", "Andrej Karpathy"),
+    tool("TensorFlow Playground", "Google", "https://playground.tensorflow.org/"),
+    p("Adam: a method for stochastic optimization", "Kingma & Ba, 2014", "https://arxiv.org/abs/1412.6980"),
+  ],
+  "ai-pytorch": [
+    a("Learn the basics", "PyTorch tutorials", "https://docs.pytorch.org/tutorials/beginner/basics/intro.html"),
+    book("Dive into Deep Learning", "Zhang, Lipton, Li & Smola", "https://d2l.ai/"),
+    course("Practical Deep Learning for Coders", "fast.ai", "https://course.fast.ai/"),
+  ],
+  "ai-cnn": [
+    yt("KuXjwB4LzSA", "But what is a convolution?", "3Blue1Brown", true),
+    a("CS231n: convolutional neural networks for visual recognition", "Stanford", "https://cs231n.github.io/convolutional-networks/"),
+    tool("CNN Explainer", "Georgia Tech Polo Club", "https://poloclub.github.io/cnn-explainer/"),
+    p("Deep residual learning for image recognition (ResNet)", "He et al., 2015", "https://arxiv.org/abs/1512.03385"),
+    p("An image is worth 16×16 words (ViT)", "Dosovitskiy et al., Google, 2020", "https://arxiv.org/abs/2010.11929"),
+  ],
+  "ai-rnn": [
+    yt("YCzL96nL7j0", "Long short-term memory (LSTM), clearly explained", "StatQuest", true),
+    a("Understanding LSTM networks", "Christopher Olah", "https://colah.github.io/posts/2015-08-Understanding-LSTMs/"),
+    p("Sequence to sequence learning with neural networks", "Sutskever, Vinyals & Le, Google, 2014", "https://arxiv.org/abs/1409.3215"),
+    p("Neural machine translation by jointly learning to align and translate", "Bahdanau, Cho & Bengio, 2014", "https://arxiv.org/abs/1409.0473"),
+  ],
+  "ai-embeddings": [
+    yt("viZrOnJclY0", "Word embedding and word2vec, clearly explained", "StatQuest", true),
+    a("The illustrated word2vec", "Jay Alammar", "https://jalammar.github.io/illustrated-word2vec/"),
+    p("Efficient estimation of word representations in vector space (word2vec)", "Mikolov et al., Google, 2013", "https://arxiv.org/abs/1301.3781"),
+    a("GloVe: global vectors for word representation", "Stanford NLP", "https://nlp.stanford.edu/projects/glove/"),
+  ],
+  "ai-tokenization": [
+    yt("zduSFxRajkE", "Let's build the GPT tokenizer", "Andrej Karpathy", true),
+    tool("Tiktokenizer: see how text becomes tokens", "tiktokenizer.vercel.app", "https://tiktokenizer.vercel.app/"),
+  ],
+  "ai-transformers": [
+    yt("wjZofJX0v4M", "Transformers, the tech behind LLMs", "3Blue1Brown", true),
+    yt("eMlx5fFNoYc", "Attention in transformers, step by step", "3Blue1Brown"),
+    yt("kCc8FmEb1nY", "Let's build GPT: from scratch, in code, spelled out", "Andrej Karpathy"),
+    p("Attention is all you need", "Vaswani et al., Google, 2017", "https://arxiv.org/abs/1706.03762"),
+    a("The illustrated Transformer", "Jay Alammar", "https://jalammar.github.io/illustrated-transformer/"),
+    tool("Transformer Explainer", "Georgia Tech Polo Club", "https://poloclub.github.io/transformer-explainer/"),
+    tool("LLM visualization in 3D", "Brendan Bycroft", "https://bbycroft.net/llm"),
+  ],
+  "ai-llm-training": [
+    yt("7xTGNNLPyMI", "Deep dive into LLMs like ChatGPT", "Andrej Karpathy", true),
+    yt("zjkBMFhNj_g", "Intro to large language models", "Andrej Karpathy"),
+    p("Training compute-optimal large language models (Chinchilla)", "Hoffmann et al., DeepMind, 2022", "https://arxiv.org/abs/2203.15556"),
+    p("Scaling laws for neural language models", "Kaplan et al., 2020", "https://arxiv.org/abs/2001.08361"),
+    p("Language models are few-shot learners (GPT-3)", "Brown et al., 2020", "https://arxiv.org/abs/2005.14165"),
+  ],
+  "ai-alignment": [
+    yt("bZQun8Y4L2A", "State of GPT", "Andrej Karpathy (Microsoft Build 2023)", true),
+    p("Training language models to follow instructions with human feedback (InstructGPT)", "Ouyang et al., 2022", "https://arxiv.org/abs/2203.02155"),
+    p("Direct preference optimization", "Rafailov et al., 2023", "https://arxiv.org/abs/2305.18290"),
+    p("Constitutional AI: harmlessness from AI feedback", "Bai et al., Anthropic, 2022", "https://arxiv.org/abs/2212.08073"),
+    book("The Alignment Problem", "Brian Christian", "https://brianchristian.org/the-alignment-problem/"),
+  ],
+  "ai-reasoning": [
+    p("Chain-of-thought prompting elicits reasoning in large language models", "Wei et al., Google, 2022", "https://arxiv.org/abs/2201.11903"),
+    p("Self-consistency improves chain of thought reasoning", "Wang et al., Google, 2022", "https://arxiv.org/abs/2203.11171"),
+    p("DeepSeek-R1: incentivizing reasoning capability in LLMs via reinforcement learning", "DeepSeek-AI, 2025", "https://arxiv.org/abs/2501.12948"),
+    p("Tree of thoughts", "Yao et al., 2023", "https://arxiv.org/abs/2305.10601"),
+  ],
+  "ai-fine-tuning": [
+    p("LoRA: low-rank adaptation of large language models", "Hu et al., Microsoft, 2021", "https://arxiv.org/abs/2106.09685"),
+    p("QLoRA: efficient finetuning of quantized LLMs", "Dettmers et al., 2023", "https://arxiv.org/abs/2305.14314"),
+    p("Distilling the knowledge in a neural network", "Hinton, Vinyals & Dean, Google, 2015", "https://arxiv.org/abs/1503.02531"),
+    a("PEFT documentation", "Hugging Face", "https://huggingface.co/docs/peft/index"),
+  ],
+  "ai-decoding": [
+    a("How to generate text: using different decoding methods", "Hugging Face blog", "https://huggingface.co/blog/how-to-generate"),
+    p("The curious case of neural text degeneration (nucleus sampling)", "Holtzman et al., 2019", "https://arxiv.org/abs/1904.09751"),
+  ],
+  "ai-prompting": [
+    yt("EWvNQjAaOHw", "How I use LLMs", "Andrej Karpathy", true),
+    a("Prompt design strategies", "Google AI for Developers (Gemini API)", "https://ai.google.dev/gemini-api/docs/prompting-strategies"),
+    a("Prompt engineering whitepaper", "Lee Boonstra, Google (Kaggle)", "https://www.kaggle.com/whitepaper-prompt-engineering"),
+    a("Prompt engineering", "Lilian Weng", "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/"),
+  ],
+  "ai-context-engineering": [
+    yt("LCEmiRjPEtQ", "Software is changing (again)", "Andrej Karpathy (YC AI Startup School)", true),
+    a("Effective context engineering for AI agents", "Anthropic engineering", "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"),
+    p("Lost in the middle: how language models use long contexts", "Liu et al., 2023", "https://arxiv.org/abs/2307.03172"),
+    a("Needle in a haystack: pressure-testing LLMs", "Greg Kamradt (GitHub)", "https://github.com/gkamradt/LLMTest_NeedleInAHaystack"),
+    a("Long context", "Google AI for Developers (Gemini API)", "https://ai.google.dev/gemini-api/docs/long-context"),
+  ],
+  "ai-rag": [
+    p("Retrieval-augmented generation for knowledge-intensive NLP tasks", "Lewis et al., 2020", "https://arxiv.org/abs/2005.11401"),
+    a("Chunking strategies for LLM applications", "Pinecone", "https://www.pinecone.io/learn/chunking-strategies/"),
+    a("Introducing contextual retrieval", "Anthropic", "https://www.anthropic.com/news/contextual-retrieval"),
+    a("Understanding TF-IDF", "GeeksforGeeks", "https://www.geeksforgeeks.org/machine-learning/understanding-tf-idf-term-frequency-inverse-document-frequency/"),
+    p("Precise zero-shot dense retrieval without relevance labels (HyDE)", "Gao et al., 2022", "https://arxiv.org/abs/2212.10496"),
+    a("Patterns for building LLM-based systems and products", "Eugene Yan", "https://eugeneyan.com/writing/llm-patterns/"),
+  ],
+  "ai-vector-search": [
+    p("Efficient and robust approximate nearest neighbor search using HNSW graphs", "Malkov & Yashunin, 2016", "https://arxiv.org/abs/1603.09320"),
+    p("Accelerating large-scale inference with anisotropic vector quantization (ScaNN)", "Guo et al., Google, 2019", "https://arxiv.org/abs/1908.10396"),
+    a("Faiss documentation", "Meta AI", "https://faiss.ai/"),
+    a("pgvector: open-source vector similarity search for Postgres", "GitHub", "https://github.com/pgvector/pgvector"),
+  ],
+  "ai-kg-rag-case": [
+    p("ContractNLI: a dataset for document-level natural language inference for contracts", "Koreeda & Manning, Findings of EMNLP 2021", "https://aclanthology.org/2021.findings-emnlp.164/"),
+    p("A compliance checking framework based on retrieval augmented generation", "Sun, Luo & Li, COLING 2025", "https://aclanthology.org/2025.coling-main.178/"),
+    p("LegalBench-RAG: a benchmark for retrieval-augmented generation in the legal domain", "Pipitone & Houir Alami, 2024", "https://arxiv.org/abs/2408.10343"),
+    p("From local to global: a graph RAG approach to query-focused summarization", "Edge et al., Microsoft, 2024", "https://arxiv.org/abs/2404.16130"),
+    a("IL-TUR: Indian legal text understanding and reasoning", "Exploration Lab, Hugging Face", "https://huggingface.co/datasets/Exploration-Lab/IL-TUR"),
+  ],
+  "ai-agents": [
+    a("Building effective agents", "Anthropic", "https://www.anthropic.com/research/building-effective-agents"),
+    a("LLM powered autonomous agents", "Lilian Weng", "https://lilianweng.github.io/posts/2023-06-23-agent/"),
+    p("ReAct: synergizing reasoning and acting in language models", "Yao et al., 2022", "https://arxiv.org/abs/2210.03629"),
+    p("Reflexion: language agents with verbal reinforcement learning", "Shinn et al., 2023", "https://arxiv.org/abs/2303.11366"),
+    a("Agents whitepaper", "Google (Kaggle)", "https://www.kaggle.com/whitepaper-agents"),
+    a("LangGraph documentation", "LangChain", "https://langchain-ai.github.io/langgraph/"),
+    a("LangChain overview", "LangChain docs", "https://docs.langchain.com/oss/python/langchain/overview"),
+  ],
+  "ai-mcp": [
+    a("Introducing the Model Context Protocol", "Anthropic (Nov 2024)", "https://www.anthropic.com/news/model-context-protocol"),
+    a("Model Context Protocol specification", "modelcontextprotocol.io", "https://modelcontextprotocol.io/specification"),
+    a("Announcing the Agent2Agent protocol (A2A)", "Google Developers blog", "https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/"),
+    a("Writing effective tools for agents", "Anthropic engineering", "https://www.anthropic.com/engineering/writing-tools-for-agents"),
+  ],
+  "ai-multimodal": [
+    p("Learning transferable visual models from natural language supervision (CLIP)", "Radford et al., 2021", "https://arxiv.org/abs/2103.00020"),
+    p("Gemini 1.5: unlocking multimodal understanding across millions of tokens of context", "Gemini Team, Google, 2024", "https://arxiv.org/abs/2403.05530"),
+    p("Robust speech recognition via large-scale weak supervision (Whisper)", "Radford et al., 2022", "https://arxiv.org/abs/2212.04356"),
+  ],
+  "ai-generative-images": [
+    yt("fbLgFrlTnGU", "What are diffusion models?", "Ari Seff", true),
+    a("What are diffusion models?", "Lilian Weng", "https://lilianweng.github.io/posts/2021-07-11-diffusion-models/"),
+    p("Generative adversarial networks", "Goodfellow et al., 2014", "https://arxiv.org/abs/1406.2661"),
+    p("Denoising diffusion probabilistic models (DDPM)", "Ho, Jain & Abbeel, 2020", "https://arxiv.org/abs/2006.11239"),
+    p("High-resolution image synthesis with latent diffusion models", "Rombach et al., 2021", "https://arxiv.org/abs/2112.10752"),
+    a("SynthID", "Google DeepMind", "https://deepmind.google/technologies/synthid/"),
+  ],
+  "ai-inference": [
+    p("Efficient memory management for LLM serving with PagedAttention (vLLM)", "Kwon et al., 2023", "https://arxiv.org/abs/2309.06180"),
+    p("FlashAttention: fast and memory-efficient exact attention", "Dao et al., 2022", "https://arxiv.org/abs/2205.14135"),
+    p("Fast inference from transformers via speculative decoding", "Leviathan, Kalman & Matias, Google, 2022", "https://arxiv.org/abs/2211.17192"),
+    p("GQA: training generalized multi-query transformer models", "Ainslie et al., Google, 2023", "https://arxiv.org/abs/2305.13245"),
+    a("vLLM documentation", "vLLM project", "https://docs.vllm.ai/"),
+  ],
+  "ai-evals": [
+    p("Judging LLM-as-a-judge with MT-Bench and Chatbot Arena", "Zheng et al., 2023", "https://arxiv.org/abs/2306.05685"),
+    p("SWE-bench: can language models resolve real-world GitHub issues?", "Jimenez et al., 2023", "https://arxiv.org/abs/2310.06770"),
+    p("Measuring massive multitask language understanding (MMLU)", "Hendrycks et al., 2020", "https://arxiv.org/abs/2009.03300"),
+    book("AI Engineering", "Chip Huyen (O'Reilly, 2025)", "https://www.oreilly.com/library/view/ai-engineering/9781098166298/"),
+  ],
+  "ai-safety": [
+    p("Not what you've signed up for: compromising real-world LLM-integrated applications with indirect prompt injection", "Greshake et al., 2023", "https://arxiv.org/abs/2302.12173"),
+    p("Universal and transferable adversarial attacks on aligned language models", "Zou et al., 2023", "https://arxiv.org/abs/2307.15043"),
+    a("Extrinsic hallucinations in LLMs", "Lilian Weng", "https://lilianweng.github.io/posts/2024-07-07-hallucination/"),
+    a("Google AI Principles", "Google", "https://ai.google/responsibility/principles/"),
+  ],
+  "ai-system-design": [
+    a("Building LLM applications for production", "Chip Huyen", "https://huyenchip.com/2023/04/11/llm-engineering.html"),
+    a("Patterns for building LLM-based systems and products", "Eugene Yan", "https://eugeneyan.com/writing/llm-patterns/"),
+    a("Smart Compose: using neural networks to help write emails", "Google Research blog (2018)", "https://research.google/blog/smart-compose-using-neural-networks-to-help-write-emails/"),
+    book("Designing Machine Learning Systems", "Chip Huyen (O'Reilly)", "https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/"),
+  ],
+  "ai-at-google": [
+    a("AlphaFold", "Google DeepMind", "https://deepmind.google/science/alphafold/"),
+    a("AlphaEvolve: a Gemini-powered coding agent for designing advanced algorithms", "Google DeepMind blog", "https://deepmind.google/discover/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/"),
+    a("An in-depth look at Google's first Tensor Processing Unit", "Google Cloud blog", "https://cloud.google.com/blog/products/ai-machine-learning/an-in-depth-look-at-googles-first-tensor-processing-unit-tpu"),
+  ],
+};

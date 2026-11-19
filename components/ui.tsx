@@ -2,16 +2,21 @@
 import clsx from "clsx";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import type { Area } from "@/lib/types";
 import { areaOf } from "@/content";
 
 export const cn = clsx;
 
-export function Md({ children, className }: { children: string; className?: string }) {
+/** Markdown. `math` turns on $inline$ and $$display$$ TeX (off by default so prices like "$5" stay text). */
+export function Md({ children, className, math }: { children: string; className?: string; math?: boolean }) {
   return (
     <div className={cn("md", className)}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>
+      {math
+        ? <ReactMarkdown remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: true }]]} rehypePlugins={[[rehypeKatex, { throwOnError: false, strict: "ignore" }]]}>{children}</ReactMarkdown>
+        : <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from "lucide-react";
 import { ALGOS, type GEdge, type GNode, type Row, type S, type Step } from "./algos";
 import { cn } from "../ui";
+import { sleep, useReadable } from "@/lib/reader/registry";
 
 const COLOR: Record<S, { bg: string; bd: string; fg: string }> = {
   cur: { bg: "rgb(200 245 71 / .18)", bd: "#c8f547", fg: "#eaffb0" },
@@ -132,10 +133,23 @@ export default function Player({ id }: { id: string }) {
     return () => clearTimeout(t);
   }, [playing, i, steps.length, speed]);
 
+  // the reader steps through the animation, reading each step's caption
+  const readRef = useReadable<HTMLElement>((ctx) => {
+    if (!algo) return [];
+    const intro = { say: `Let's run the visualiser: ${algo.title}. ${algo.about}`, focus: () => document.querySelector(`[data-viz="${id}"]`), act: () => { setPlaying(false); setI(0); } };
+    if (!ctx.interact) return [intro, { say: "Step through it yourself with the arrows when you're ready." }];
+    const max = Math.min(steps.length, 14);
+    return [
+      intro,
+      ...steps.slice(0, max).map((s, k) => ({ say: s.note, act: () => setI(k), settle: 260, focus: () => document.querySelector(`[data-viz="${id}"]`), pause: 350 })),
+      ...(steps.length > max ? [{ say: `And so on for ${steps.length - max} more steps; the slider lets you scrub through them.`, act: async () => { setI(steps.length - 1); await sleep(10); } }] : []),
+    ];
+  });
+
   if (!algo) return null;
   const st = steps[i];
   return (
-    <section className="card overflow-hidden" aria-label={`Visualiser: ${algo.title}`}
+    <section ref={readRef} data-read-block data-viz={id} className="card overflow-hidden" aria-label={`Visualiser: ${algo.title}`}
       onKeyDown={(e) => { if (e.key === "ArrowRight") setI((x) => Math.min(steps.length - 1, x + 1)); if (e.key === "ArrowLeft") setI((x) => Math.max(0, x - 1)); if (e.key === " ") { e.preventDefault(); setPlaying((p) => !p); } }} tabIndex={0}>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3.5">
         <div className="min-w-0">

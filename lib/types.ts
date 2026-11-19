@@ -1,4 +1,4 @@
-export type Area = "dsa" | "hld" | "lld" | "craft";
+export type Area = "dsa" | "hld" | "lld" | "craft" | "ai";
 export type Tier = 1 | 2 | 3;
 
 export interface Quiz {

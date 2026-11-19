@@ -13,6 +13,7 @@ import { useDue, useItems } from "@/lib/hooks";
 import { cloudEnabled } from "@/lib/supabase";
 import { areaOf } from "@/content";
 import { Breather, FocusChip } from "./Focus";
+import { ReaderRoot } from "./reader/Reader";
 import { Ring, cn } from "./ui";
 
 const NAV = [
@@ -193,6 +194,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
       <Palette open={palette} setOpen={setPalette} />
       <Celebration />
       <Breather />
+      <ReaderRoot />
     </div>
   );
 }

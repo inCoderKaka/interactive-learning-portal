@@ -6,7 +6,7 @@ import { Button, cn } from "../ui";
 
 function Frame({ title, about, children }: { title: string; about: string; children: ReactNode }) {
   return (
-    <section className="card overflow-hidden">
+    <section className="card overflow-hidden" data-read-block data-read-intro="An interactive demo." data-read-text={`${title}. ${about} Try it yourself when I'm done.`}>
       <div className="border-b border-line px-5 py-3.5">
         <div className="eyebrow">Play with it</div>
         <div className="display text-[17px] font-semibold">{title}</div>

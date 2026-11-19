@@ -20,7 +20,9 @@ export interface Plan {
   neededHoursPerDay: number; // to fit everything in the remaining days
 }
 
-const WEIGHTS: Record<Area, number> = { dsa: 0.55, hld: 0.22, lld: 0.15, craft: 0.08 };
+/** How the loop weighs each area; also drives the balance check on the progress page. */
+export const AREA_WEIGHTS: Record<Area, number> = { dsa: 0.5, hld: 0.2, lld: 0.13, craft: 0.08, ai: 0.09 };
+const WEIGHTS = AREA_WEIGHTS;
 const REVIEW_SHARE = 0.2;
 
 /** Planned mock interviews: about 1.2 per week, at least 4, at most 16. */
@@ -51,7 +53,7 @@ export function buildPlan(items: Item[], progress: Record<string, Progress>, s: 
   const eff = (it: Item) => (it.kind === "topic" ? Math.min(it.tier, minChildTier.get(it.topic) ?? it.tier) : it.tier);
 
   const pending = items.filter((it) => s.areas[it.area] && progress[it.id]?.status !== "done");
-  const queues: Record<Area, Item[]> = { dsa: [], hld: [], lld: [], craft: [] };
+  const queues: Record<Area, Item[]> = { dsa: [], hld: [], lld: [], craft: [], ai: [] };
   pending
     .map((it, i) => ({ it, i, t: eff(it) }))
     .sort((a, b) => a.t - b.t || a.i - b.i)
@@ -63,7 +65,7 @@ export function buildPlan(items: Item[], progress: Record<string, Progress>, s: 
   for (let d = 0; d < nDays; d++) if (!isRest(addDays(first, d), s.daysPerWeek)) workIdx.push(d);
   const mockOn = new Set(mockDays(workIdx.length, mocks.length).map((i) => workIdx[i]));
   const days: PlanDay[] = [];
-  const spent: Record<Area, number> = { dsa: 0, hld: 0, lld: 0, craft: 0 };
+  const spent: Record<Area, number> = { dsa: 0, hld: 0, lld: 0, craft: 0, ai: 0 };
   const totalMin = pending.reduce((a, b) => a + b.est, 0);
   let capacityMin = 0;
 

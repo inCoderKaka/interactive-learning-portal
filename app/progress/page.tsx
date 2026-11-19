@@ -7,6 +7,8 @@ import { useStore, selectXp } from "@/lib/store";
 import { useItems } from "@/lib/hooks";
 import { badges, levelOf, streakOf } from "@/lib/gamify";
 import { addDays, todayISO } from "@/lib/srs";
+import { AREA_WEIGHTS } from "@/lib/schedule";
+import type { Area } from "@/lib/types";
 import { AREAS, TOPICS, areaOf } from "@/content";
 import { Bar, PageHead, Pill, Ring, cn, fmtMin } from "@/components/ui";
 
@@ -61,8 +63,8 @@ export default function ProgressPage() {
 
   // balance: where the time actually went versus what the loop weighs
   const balance = useMemo(() => {
-    const WEIGHT = { dsa: 0.55, hld: 0.22, lld: 0.15, craft: 0.08 };
-    const spent = { dsa: 0, hld: 0, lld: 0, craft: 0 };
+    const WEIGHT = AREA_WEIGHTS;
+    const spent: Record<Area, number> = { dsa: 0, hld: 0, lld: 0, craft: 0, ai: 0 };
     for (const i of done) spent[i.area] += i.est;
     const sum = Object.values(spent).reduce((a, b) => a + b, 0);
     const on = AREAS.filter((a) => settings.areas[a.id]);

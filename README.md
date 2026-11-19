@@ -1,10 +1,12 @@
 # Ascent
 
-An interactive, timeline-driven trail through **DSA, system design (HLD), object-oriented design (LLD) and interview craft** for a Google SWE L4/L5 loop.
+An interactive, timeline-driven trail through **DSA, system design (HLD), object-oriented design (LLD), interview craft and AI** for a Google SWE L4/L5 loop.
 
 ## What is inside
 
 - **Curriculum**: 50+ topics and 260+ exercises, tiered as must-know / expected / stretch. Every problem carries clarifying questions, staged hints, multiple approaches, *how the interviewer departs from the LeetCode version*, and follow-ups. Every design question carries staged model answers, interviewer steering paths and an L4-vs-L5 bar.
+- **AI & LLMs**: 30 topics on what a SWE III candidate is expected to know about AI, from ML basics, neural networks and Transformers to tokens, decoding, prompting, context engineering, RAG, vector search, agents, MCP, multimodal models, diffusion, serving, evals, safety and AI system design, plus a legal KG-RAG case study. Lessons are written to be fun: stories, news, "Did you know?" callouts, KaTeX maths and 21 inline interactive demos (attention arcs, temperature/top-p sampling, BPE merges, hybrid retrieval, HNSW search, a ReAct agent trace, an MCP handshake, diffusion denoising, GPU sizing and more), with flashcards, quizzes, references and three AI design exercises.
+- **Read the article aloud**: press *Listen* on any lesson, or *Read from here* beside any paragraph (or on selected text). The reader follows along with a spotlight and word highlighting, reads tables row by row, formulas as maths and code line by line, and *operates the page*: it steps through visualisers, moves widget sliders, reveals code, flips flashcards and waits for your quiz answers. With an AI key it explains code, tables and formulas like a person would (cached on the device). Choose a browser voice or OpenAI's natural voices (your key), speed, pitch and what it does; Alt+P plays or pauses.
 - **Visual learning**: step-through algorithm animations, interactive system-design widgets, draggable architecture diagrams with failure injection, class diagrams, and a 3D topic map.
 - **Roadmap**: set weeks, hours per day and study days; the plan re-flows around what you have done.
 - **AI verification**: write code (no compiler, as in the interview) and have it reviewed by Gemini, Claude, OpenAI or your own OpenAI-compatible `local-server`. Design answers are graded stage by stage. Keys stay in the browser.
@@ -59,8 +61,11 @@ Open-source building blocks: [Excalidraw](https://github.com/excalidraw/excalidr
 app/         pages (today, roadmap, learn, problem, design, review, mock, progress, settings, login)
   api/agora/ the optional Agora engine's stateless route
 components/  shell, editor and feedback, focus timer, diagrams, visualizers
-content/     the curriculum as typed data
+  reader/    the article reader's player, spotlight and "read from here"
+  viz/Ai*.tsx  the AI section's interactive demos
+content/     the curriculum as typed data (content/ai/ holds the AI section)
 lib/         store and sync, scheduler, spaced repetition, AI providers, importer
+  reader/    reading order, speech shaping (tested), voices, AI explanations, the narrator
   interview/ the mock interviewer: pure core, providers, voice engines, session controller
 docs/        design docs and architecture decision records
 supabase/    migrations

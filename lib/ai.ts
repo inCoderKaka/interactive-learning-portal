@@ -69,7 +69,7 @@ ${FEEDBACK_SHAPE}`;
 }
 
 export async function gradeStage(s: Settings, d: Design, st: Stage, answer: string): Promise<Feedback> {
-  const kind = d.area === "hld" ? "system design" : d.area === "lld" ? "object-oriented design" : "behavioural (Googleyness & leadership)";
+  const kind = d.area === "hld" ? "system design" : d.area === "ai" ? "AI / LLM system design" : d.area === "lld" ? "object-oriented design" : "behavioural (Googleyness & leadership)";
   const prompt = `INTERVIEW TYPE: ${kind}
 QUESTION: ${d.prompt}
 CURRENT STAGE: ${st.title}: ${st.ask}
