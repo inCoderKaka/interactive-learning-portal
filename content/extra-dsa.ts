@@ -423,7 +423,7 @@ export const dsaNewTopics: { after: string; topic: Topic }[] = [
         "Meet in the middle without deduplicating or sorting one side, losing the speed-up",
       ],
       quiz: [
-        Q("Subset sum closest to a target with n = 40 and values up to 10⁹. Best approach?", ["Knapsack DP over the sum", "*Meet in the middle", "Greedy by value", "Bitmask DP over 2⁴⁰"], "The sum is too large for DP and 2⁴⁰ is too slow; two halves of 2²⁰ combined with sort + binary search is ~2·10⁷ log."),
+        Q("Subset sum closest to a target with n = 40 and values up to 10⁹. Best approach?", ["Knapsack DP over the sum", "*Meet in the middle", "Greedy by value", "Bitmask DP over 2⁴⁰"], "The sum is too large for DP and 2⁴⁰ is too slow; enumerate 2²⁰ ≈ 10⁶ sums per half, sort one half and binary-search it for each sum of the other: about 2·10⁷ operations."),
         Q("You need the node reached after k ≤ 10¹⁸ steps in a graph where every node has one outgoing edge.", ["Simulate", "Dijkstra", "*Binary lifting (or cycle detection)", "Topological sort"], "Jump tables up[j][v] answer any k in O(log k); alternatively find the cycle and reduce k modulo its length."),
         Q("Queries ask whether u and v are connected using only edges lighter than a per-query limit. Queries can be answered in any order.", ["BFS per query", "*Sort edges and queries, union-find incrementally", "Floyd–Warshall", "Segment tree"], "Offline processing by increasing limit lets a DSU absorb edges once: O((E + Q) log)."),
       ],

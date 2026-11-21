@@ -324,7 +324,7 @@ Before launch, have people (and automated attackers) try to break it: jailbreaks
     quiz: [
       Q("What makes indirect prompt injection especially dangerous for agents?", ["It is always visible to the user", "*Malicious instructions arrive inside content the agent reads (web pages, emails, docs)", "It only affects image models", "It requires model weights"], "The user never typed it, and the agent may act on it."),
       Q("Which control limits the damage of a successful injection most directly?", ["A longer system prompt", "*Least-privilege tools plus human approval for side effects", "Higher temperature", "A bigger model"], "Assume compromise; constrain what a compromised agent can do."),
-      Q("What did the Air Canada chatbot case establish?", ["Chatbots are separate legal entities", "*A company is responsible for what its chatbot tells customers", "Chatbots can't give refunds", "AI output can't be used in court"], "The tribunal ordered the airline to honour the chatbot's promise."),
+      Q("What did the Air Canada chatbot case establish?", ["Chatbots are separate legal entities", "*A company is responsible for what its chatbot tells customers", "Chatbots can't give refunds", "AI output can't be used in court"], "In Moffatt v. Air Canada (2024) the tribunal rejected the claim that the chatbot was responsible for its own actions and ordered the airline to pay the fare difference the bot had promised."),
       Q("Where should you put API secrets for an LLM app?", ["In the system prompt, hidden", "*In server-side code or tool configuration the model never sees", "In few-shot examples", "In the user message"], "Assume prompts can be extracted."),
     ],
   }),
@@ -464,7 +464,7 @@ Andrej Karpathy coined **vibe coding** in February 2025: "fully give in to the v
 
 ## AI in Google interviews
 
-- **Coding rounds** are still you, a shared doc and an interviewer: no AI assistance. Practise without autocomplete.
+- **Coding rounds** are still you, a shared doc and an interviewer: plan for no AI assistance (confirm the format with your recruiter, since policies change). Practise without autocomplete.
 - **System design** increasingly includes AI components ("add semantic search", "summarise these", "design an assistant"). Use the playbook from the AI system-design topic.
 - **Behavioural / Googleyness:** "tell me about a time you adopted a new technology" or "a time you made a call with incomplete data" are natural places for a story about introducing an AI tool responsibly, with evaluation and guardrails.
 - **"What do you know about Gemini?":** natively multimodal, long context, a family of sizes (Flash for speed, Pro for capability, plus on-device Nano), thinking models, integrated across Search, Workspace, Android and Cloud (Vertex AI), with open Gemma models for developers.
@@ -480,7 +480,7 @@ Connect a specific Google AI capability to the kind of work you want to do: "Goo
     quiz: [
       Q("Which Google paper introduced the Transformer?", ["BERT", "*Attention Is All You Need (2017)", "word2vec", "MapReduce"], "Eight Google researchers, 2017."),
       Q("What did AlphaFold's creators receive in 2024?", ["The Turing Award", "*The Nobel Prize in Chemistry", "A Fields Medal", "An Oscar"], "Hassabis and Jumper shared it with David Baker."),
-      Q("In a Google coding interview, can you use an AI assistant?", ["Yes, always", "*No: practise in a plain document without autocomplete", "Only for syntax", "Only for tests"], "The round assesses your own problem solving and communication."),
+      Q("Unless your recruiter says otherwise, how should you prepare for AI assistance in a Google coding round?", ["Assume you can use it freely", "*Assume none: practise in a plain document without autocomplete", "Assume it is allowed for syntax only", "Assume it is allowed for tests only"], "The coding rounds assess your own problem solving and communication. Policies change, so confirm the format with your recruiter, but prepare for no assistance."),
     ],
   }),
 ];

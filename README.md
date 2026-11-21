@@ -7,6 +7,8 @@ An interactive, timeline-driven trail through **DSA, system design (HLD), object
 - **Curriculum**: 50+ topics and 260+ exercises, tiered as must-know / expected / stretch. Every problem carries clarifying questions, staged hints, multiple approaches, *how the interviewer departs from the LeetCode version*, and follow-ups. Every design question carries staged model answers, interviewer steering paths and an L4-vs-L5 bar.
 - **AI & LLMs**: 30 topics on what a SWE III candidate is expected to know about AI, from ML basics, neural networks and Transformers to tokens, decoding, prompting, context engineering, RAG, vector search, agents, MCP, multimodal models, diffusion, serving, evals, safety and AI system design, plus a legal KG-RAG case study. Lessons are written to be fun: stories, news, "Did you know?" callouts, KaTeX maths and 21 inline interactive demos (attention arcs, temperature/top-p sampling, BPE merges, hybrid retrieval, HNSW search, a ReAct agent trace, an MCP handshake, diffusion denoising, GPU sizing and more), with flashcards, quizzes, references and three AI design exercises.
 - **Read the article aloud**: press *Listen* on any lesson, or *Read from here* beside any paragraph (or on selected text). The reader follows along with a spotlight and word highlighting, reads tables row by row, formulas as maths and code line by line, and *operates the page*: it steps through visualisers, moves widget sliders, reveals code, flips flashcards and waits for your quiz answers. With an AI key it explains code, tables and formulas like a person would (cached on the device). Choose a browser voice or OpenAI's natural voices (your key), speed, pitch and what it does; Alt+P plays or pauses.
+- **Quick play**: 440+ ten-second challenges, about five per topic in every area, in eight formats: true or false (tap, key or swipe), quick pick, put the steps in order, match up, odd one out, fill the gap, spot the bug in a snippet, and estimate on a slider. Every topic page has its own round; the *Play* arcade adds a daily round of seven (the same mix for everyone that day, with a streak), a 60-second lightning round and three-lives survival. Combos, XP, sound effects (mutable) and personal bests make it worth coming back.
+- **Videos everywhere**: every topic plays all its videos in place (a player plus a strip to switch between them), problem walkthroughs play beside the approaches once you have tried, design exercises embed theirs, and lessons can drop a video inline with `[[yt:ID|Title|Channel]]`.
 - **Visual learning**: step-through algorithm animations, interactive system-design widgets, draggable architecture diagrams with failure injection, class diagrams, and a 3D topic map.
 - **Roadmap**: set weeks, hours per day and study days; the plan re-flows around what you have done.
 - **AI verification**: write code (no compiler, as in the interview) and have it reviewed by Gemini, Claude, OpenAI or your own OpenAI-compatible `local-server`. Design answers are graded stage by stage. Keys stay in the browser.
@@ -27,7 +29,8 @@ Next.js 16 (App Router) · React 19 · Tailwind 4 · Motion · React Flow · rea
 npm install
 cp .env.example .env.local   # fill in the Supabase URL and publishable key (optional: guest mode works without)
 npm run dev
-npm test        # unit tests for the interview core (node --test)
+npm test        # unit tests: interview core, reader, drills (node --test)
+npm run audit   # content audit: quiz answers, card duplicates, drills, widgets, links (add -- --net to check every YouTube id online)
 ```
 
 ## Database

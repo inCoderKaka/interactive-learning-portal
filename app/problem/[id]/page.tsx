@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, Check, ExternalLink, Eye, EyeOff, HelpCircle, Lightbulb, MessageSquareText, NotebookPen, Shuffle, Sparkles, TimerReset } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { RefLink } from "@/components/References";
+import { VideoEmbed } from "@/components/References";
 import { useItems, useProblem, useStopwatch, useTrackTime } from "@/lib/hooks";
 import { aiReady, generateTwists, hint as aiHint, reviewCode } from "@/lib/ai";
 import { areaOf, lcLink, topicById } from "@/content";
@@ -171,7 +171,7 @@ export default function ProblemPage() {
                         <p className="mt-1.5 text-[13.5px] leading-relaxed text-[#cfd3e3]">{a.idea}</p>
                       </motion.div>
                     ))}
-                    {p.video && <RefLink r={p.video} />}
+                    {p.video && <div className="pt-1"><div className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-faint">Walkthrough</div><VideoEmbed r={p.video} compact /></div>}
                     {p.approaches.length > 1 && <p className="text-[12.5px] text-mute">Bias check: can you say when each alternative is the <i>better</i> choice? Interviewers ask “why not the other one?”</p>}
                   </div>
                 )

@@ -61,7 +61,7 @@ export const hldTopics: Topic[] = [
 Round aggressively and say the assumptions. The number matters less than the decision it supports ("120 TB/year → we must shard; one node will not hold it").`,
     pitfalls: ["Precise arithmetic instead of powers of ten", "Forgetting peak vs average", "Ignoring replication factor in storage", "Estimating for five minutes without tying to a decision"],
     quiz: [
-      Q("500 M daily active users, each reads 20 items/day. Approximate average read QPS?", ["~1 200", "~12 000", "*~120 000", "~1.2 M"], "10¹⁰ reads / 10⁵ s = 10⁵ ≈ 120 k QPS."),
+      Q("500 M daily active users, each reads 20 items/day. Approximate average read QPS?", ["~1 200", "~12 000", "*~120 000", "~1.2 M"], "5·10⁸ × 20 = 10¹⁰ reads a day; 10¹⁰ / 86 400 s ≈ 116 k, so about 120 k QPS on average (peak is higher)."),
       Q("Two components in series, each 99.9% available. Combined availability?", ["99.99%", "99.9%", "*≈ 99.8%", "99%"], "0.999 × 0.999 ≈ 0.998."),
     ],
   }),

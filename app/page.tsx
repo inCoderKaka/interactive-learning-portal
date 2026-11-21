@@ -2,7 +2,8 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, Brain, CalendarClock, Check, Compass, EyeOff, RefreshCw, Sparkles, Target } from "lucide-react";
+import { ArrowRight, Brain, CalendarClock, Check, Compass, EyeOff, Flame, Gamepad2, Play, RefreshCw, Sparkles, Target } from "lucide-react";
+import { dailyStreak, usePlay } from "@/lib/play";
 import { useStore } from "@/lib/store";
 import { useDue, useItems, usePlan, useMockLabels } from "@/lib/hooks";
 import { addDays, daysBetween, todayISO } from "@/lib/srs";
@@ -39,6 +40,26 @@ function WarmUp() {
       </div>
       {pick !== null && <motion.p initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="mt-3 text-[13px] leading-relaxed text-mute">{q.quiz.why}</motion.p>}
     </div>
+  );
+}
+
+/** The daily quick-play round: a pull back every day, with its streak. */
+function DailyPlay() {
+  const play = usePlay();
+  const today = todayISO();
+  const done = play.daily[today];
+  const streak = dailyStreak(play.daily, today);
+  return (
+    <Link href="/play" className={cn("card card-hover group relative block overflow-clip p-5", !done && "border-accent/40")}>
+      <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-accent/10 blur-3xl transition group-hover:bg-accent/20" />
+      <div className="relative flex items-center justify-between">
+        <div className="eyebrow flex items-center gap-1.5 text-accent"><Gamepad2 size={13} />Daily round</div>
+        {streak > 0 && <span className="num inline-flex items-center gap-1 rounded-full bg-lld/10 px-2 py-0.5 text-[11.5px] font-semibold text-lld"><Flame size={12} />{streak} day{streak > 1 ? "s" : ""}</span>}
+      </div>
+      <div className="display relative mt-2 text-xl font-semibold">{done ? `${done.score}/${done.total} today. Nice.` : "7 quick challenges, 2 minutes"}</div>
+      <p className="relative mt-1 text-[13px] leading-relaxed text-mute">{done ? "New round at midnight. Fancy a 60-second lightning round meanwhile?" : "True or false, spot the bug, put it in order, estimate. Keep your streak alive."}</p>
+      <div className="relative mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent">{done ? <>Open the arcade<ArrowRight size={14} className="transition group-hover:translate-x-1" /></> : <><Play size={13} fill="currentColor" />Play now</>}</div>
+    </Link>
   );
 }
 
@@ -149,6 +170,7 @@ export default function Today() {
             <div className="display mt-2 text-xl font-semibold">{due.length ? `${due.length} item${due.length > 1 ? "s" : ""} about to fade` : "Memory is fresh"}</div>
             <p className="mt-1 text-[13px] leading-relaxed text-mute">{due.length ? `About ${fmtMin(due.length * 4)}. Reviews are shown blind and mixed across topics, so you practise recognising the pattern, not just executing it.` : "Completed items come back here right before you would forget them."}</p>
           </Link>
+          <DailyPlay />
           <WarmUp />
         </div>
       </div>

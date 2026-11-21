@@ -15,8 +15,8 @@ const KIND: Record<Ref["kind"], { label: string; icon: LucideIcon }> = {
 };
 
 /** Thumbnail first; the YouTube player (and its scripts) only loads after a click. */
-function VideoEmbed({ r }: { r: Ref }) {
-  const [play, setPlay] = useState(false);
+export function VideoEmbed({ r, autoplay = false, compact = false }: { r: Ref; autoplay?: boolean; compact?: boolean }) {
+  const [play, setPlay] = useState(autoplay);
   return (
     <div className="relative aspect-video overflow-hidden rounded-2xl border border-line bg-black">
       {play ? (
@@ -26,12 +26,37 @@ function VideoEmbed({ r }: { r: Ref }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={`https://i.ytimg.com/vi/${r.yt}/hqdefault.jpg`} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-90" />
           <span className="absolute inset-0 bg-gradient-to-t from-[#07080d] via-[#07080d]/30 to-transparent" />
-          <span className="absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-accent text-ink shadow-[0_0_40px_-6px_var(--color-accent)] transition group-hover:scale-110"><Play size={22} className="translate-x-0.5" fill="currentColor" /></span>
+          <span className={cn("absolute left-1/2 top-1/2 grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-accent text-ink shadow-[0_0_40px_-6px_var(--color-accent)] transition group-hover:scale-110", compact ? "h-11 w-11" : "h-14 w-14")}><Play size={compact ? 18 : 22} className="translate-x-0.5" fill="currentColor" /></span>
           <span className="absolute inset-x-0 bottom-0 p-4">
-            <span className="block text-[15px] font-semibold leading-snug text-text">{r.title}</span>
+            <span className={cn("block font-semibold leading-snug text-text", compact ? "text-[13.5px]" : "text-[15px]")}>{r.title}</span>
             <span className="mt-0.5 block text-[12px] text-mute">{r.by} · plays here</span>
           </span>
         </button>
+      )}
+    </div>
+  );
+}
+
+/** A player plus a strip of the topic's other videos; picking one swaps it into the player and starts it. */
+function VideoGallery({ videos }: { videos: Ref[] }) {
+  const [cur, setCur] = useState(0);
+  const [picked, setPicked] = useState(false);
+  return (
+    <div className="space-y-2.5">
+      <VideoEmbed key={videos[cur].yt} r={videos[cur]} autoplay={picked} />
+      {videos.length > 1 && (
+        <div className="flex snap-x gap-2 overflow-x-auto pb-1" role="tablist" aria-label="More videos">
+          {videos.map((v, i) => (
+            <button key={v.yt} role="tab" aria-selected={i === cur} onClick={() => { setCur(i); setPicked(true); }} title={`${v.title} · ${v.by}`}
+              className={cn("group relative w-40 shrink-0 snap-start overflow-hidden rounded-xl border text-left transition", i === cur ? "border-accent/70 shadow-[0_0_20px_-8px_var(--color-accent)]" : "border-line opacity-75 hover:opacity-100")}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`https://i.ytimg.com/vi/${v.yt}/mqdefault.jpg`} alt="" loading="lazy" className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105" />
+              <span className="absolute inset-0 bg-gradient-to-t from-[#07080d] via-[#07080d]/40 to-transparent" />
+              {i === cur && <span className="absolute left-2 top-2 rounded-md bg-accent px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-wider text-ink">Now</span>}
+              <span className="absolute inset-x-0 bottom-0 p-2"><span className="line-clamp-2 text-[11.5px] font-medium leading-tight text-text">{v.title}</span><span className="block truncate text-[10px] text-mute">{v.by}</span></span>
+            </button>
+          ))}
+        </div>
       )}
     </div>
   );
@@ -51,23 +76,23 @@ export function RefLink({ r, className }: { r: Ref; className?: string }) {
   );
 }
 
-/** "Go deeper" block. `embed` shows the one featured video inline (topic pages); everything else is a link. */
+/** "Go deeper" block. `embed` plays every video of the topic in place (a player plus a strip); everything else is a link. */
 export function References({ refs, embed = false, columns = 2 }: { refs?: Ref[]; embed?: boolean; columns?: 1 | 2 }) {
   if (!refs?.length) return null;
-  const lead = embed ? refs.find((r) => r.featured && r.yt) : undefined;
-  const rest = refs.filter((r) => r !== lead);
+  const videos = embed ? [...refs.filter((r) => r.featured && r.yt), ...refs.filter((r) => !r.featured && r.yt)] : [];
+  const rest = refs.filter((r) => !videos.includes(r));
+  const wide = columns === 2;
   return (
     <section className="card p-5">
-      <div className="eyebrow">Go deeper</div>
-      <p className="mt-1 text-[13px] text-mute">{lead ? "One video worth your time, then further reading and watching." : "Hand-picked references. Attempt it yourself first."}</p>
-      {lead ? (
-        // lead video beside the list on wide screens, stacked on narrow ones
-        <div className="mt-4 grid items-start gap-3 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-          <VideoEmbed r={lead} />
-          {rest.length > 0 && <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">{rest.map((r) => <RefLink key={r.url} r={r} />)}</div>}
+      <div className="eyebrow">{videos.length ? "Watch and go deeper" : "Go deeper"}</div>
+      <p className="mt-1 text-[13px] text-mute">{videos.length > 1 ? `${videos.length} videos that play right here, then further reading.` : videos.length ? "A video worth your time, then further reading and watching." : "Hand-picked references. Attempt it yourself first."}</p>
+      {videos.length ? (
+        <div className={cn("mt-4 grid items-start gap-3", wide && rest.length > 0 && "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]")}>
+          <VideoGallery videos={videos} />
+          {rest.length > 0 && <div className={cn("grid gap-2", wide && "sm:grid-cols-2 lg:grid-cols-1")}>{rest.map((r) => <RefLink key={r.url} r={r} />)}</div>}
         </div>
       ) : (
-        <div className={cn("mt-4 grid gap-2", columns === 2 && "sm:grid-cols-2")}>{rest.map((r) => <RefLink key={r.url} r={r} />)}</div>
+        <div className={cn("mt-4 grid gap-2", wide && "sm:grid-cols-2")}>{rest.map((r) => <RefLink key={r.url} r={r} />)}</div>
       )}
     </section>
   );

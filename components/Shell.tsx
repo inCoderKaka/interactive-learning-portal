@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Command } from "cmdk";
 import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "motion/react";
-import { BarChart3, CalendarRange, CloudOff, Flame, Home, Layers, LogIn, Mic, RefreshCw, Search, Settings as Cog, Sparkles, Mountain } from "lucide-react";
+import { BarChart3, CalendarRange, CloudOff, Flame, Gamepad2, Home, Layers, LogIn, Mic, RefreshCw, Search, Settings as Cog, Sparkles, Mountain } from "lucide-react";
 import { useStore, selectXp } from "@/lib/store";
 import { BookingBanner } from "@/components/interview/BookingBanner";
 import { levelOf, streakOf } from "@/lib/gamify";
@@ -14,6 +14,7 @@ import { cloudEnabled } from "@/lib/supabase";
 import { areaOf } from "@/content";
 import { Breather, FocusChip } from "./Focus";
 import { ReaderRoot } from "./reader/Reader";
+import { LevelUp } from "./Juice";
 import { Ring, cn } from "./ui";
 
 const NAV = [
@@ -21,6 +22,7 @@ const NAV = [
   { href: "/roadmap", label: "Roadmap", icon: CalendarRange },
   { href: "/learn", label: "Learn", icon: Layers },
   { href: "/review", label: "Review", icon: RefreshCw },
+  { href: "/play", label: "Play", icon: Gamepad2 },
   { href: "/mock", label: "Mock", icon: Mic },
   { href: "/progress", label: "Progress", icon: BarChart3 },
   { href: "/settings", label: "Settings", icon: Cog },
@@ -193,6 +195,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
 
       <Palette open={palette} setOpen={setPalette} />
       <Celebration />
+      <LevelUp />
       <Breather />
       <ReaderRoot />
     </div>

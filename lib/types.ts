@@ -207,3 +207,25 @@ export interface Attempt {
   score: number | null;
   at: number;
 }
+
+/**
+ * A quick-play drill: a 10–30 second micro-challenge. Authored in content/drills/, keyed by topic id.
+ *   tf     true or false
+ *   pick   fast multiple choice (chips)
+ *   order  put the steps in order (authored in the correct order, shuffled at play time)
+ *   match  tap-to-pair terms with their partners
+ *   odd    odd one out
+ *   blank  fill the ___ in a sentence
+ *   bug    tap the buggy line of a snippet
+ *   guess  estimate a number on a slider; within the tolerance counts
+ */
+export type Drill =
+  | { kind: "tf"; s: string; t: boolean; why: string }
+  | { kind: "pick"; q: string; options: string[]; answer: number; why: string }
+  | { kind: "order"; q: string; steps: string[]; why?: string }
+  | { kind: "match"; q: string; pairs: [string, string][]; why?: string }
+  | { kind: "odd"; q: string; items: string[]; odd: number; why: string }
+  | { kind: "blank"; text: string; options: string[]; answer: number; why: string }
+  | { kind: "bug"; q: string; code: string[]; line: number; why: string }
+  | { kind: "guess"; q: string; min: number; max: number; answer: number; tol: number; unit?: string; log?: boolean; why: string };
+export type DrillKind = Drill["kind"];
