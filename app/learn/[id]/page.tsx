@@ -15,6 +15,7 @@ import { References } from "@/components/References";
 import { AreaPill, Button, DIFF, Empty, Pill, cn, fmtMin } from "@/components/ui";
 import { Lesson } from "@/components/Lesson";
 import { TopicPlay } from "@/components/play/TopicPlay";
+import { ImportedNotes } from "@/components/notes/ImportedNotes";
 import { ReadingProgress, popFrom } from "@/components/Juice";
 import { ListenButton, ReadScope } from "@/components/reader/Reader";
 import { sleep, until, useReadable, type ReadStep } from "@/lib/reader/registry";
@@ -130,6 +131,8 @@ export default function TopicPage() {
           <AnimatePresence>{showCode && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden"><pre ref={preRef} className="code !rounded-none !border-x-0 !border-b-0">{t.template}</pre></motion.div>}</AnimatePresence>
         </section>
       )}
+
+      <ImportedNotes key={"n" + t.id} topicId={t.id} color={a.color} />
 
       <TopicPlay key={"p" + t.id} topicId={t.id} color={a.color} />
 

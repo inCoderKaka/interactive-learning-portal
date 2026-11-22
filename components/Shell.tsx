@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { Command } from "cmdk";
 import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "motion/react";
-import { BarChart3, CalendarRange, CloudOff, Flame, Gamepad2, Home, Layers, LogIn, Mic, RefreshCw, Search, Settings as Cog, Sparkles, Mountain } from "lucide-react";
+import { BarChart3, CalendarRange, CloudOff, Flame, Gamepad2, Home, Layers, LogIn, Mic, NotebookPen, RefreshCw, Search, Settings as Cog, Sparkles, Mountain } from "lucide-react";
 import { useStore, selectXp } from "@/lib/store";
 import { BookingBanner } from "@/components/interview/BookingBanner";
 import { levelOf, streakOf } from "@/lib/gamify";
@@ -15,6 +15,8 @@ import { areaOf } from "@/content";
 import { Breather, FocusChip } from "./Focus";
 import { ReaderRoot } from "./reader/Reader";
 import { LevelUp } from "./Juice";
+import { StickyLayer } from "./notes/StickyLayer";
+import { ImportPill } from "./notes/ImportPill";
 import { Ring, cn } from "./ui";
 
 const NAV = [
@@ -24,6 +26,7 @@ const NAV = [
   { href: "/review", label: "Review", icon: RefreshCw },
   { href: "/play", label: "Play", icon: Gamepad2 },
   { href: "/mock", label: "Mock", icon: Mic },
+  { href: "/notes", label: "Notes", icon: NotebookPen },
   { href: "/progress", label: "Progress", icon: BarChart3 },
   { href: "/settings", label: "Settings", icon: Cog },
 ];
@@ -179,7 +182,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           </div>
         )}
         {ready && <BookingBanner />}
-        <main className="mx-auto w-full max-w-[1240px] flex-1 px-4 pb-28 pt-8 sm:px-8 lg:pb-16">
+        <main className="relative mx-auto w-full max-w-[1240px] flex-1 px-4 pb-28 pt-8 sm:px-8 lg:pb-16">
           {ready ? children : <div className="grid h-[60vh] place-items-center text-sm text-faint animate-pulse-soft">Loading your trail…</div>}
         </main>
       </div>
@@ -196,6 +199,8 @@ export default function Shell({ children }: { children: React.ReactNode }) {
       <Palette open={palette} setOpen={setPalette} />
       <Celebration />
       <LevelUp />
+      {ready && <StickyLayer />}
+      {ready && <Suspense><ImportPill /></Suspense>}
       <Breather />
       <ReaderRoot />
     </div>

@@ -11,7 +11,8 @@ import { meterLlm } from "./meter";
 export type TaskId =
   | "interviewer.turn" | "interviewer.judge" | "summarise" | "vision.describe" | "question.generate" | "scorecard"
   | "code.review" | "stage.grade" | "recall.grade" | "twists" | "hint"
-  | "candidate.turn" | "reverse.grade" | "committee" | "reader.explain";
+  | "candidate.turn" | "reverse.grade" | "committee" | "reader.explain"
+  | "notes.map" | "notes.extract" | "notes.dedup" | "notes.verify" | "notes.enrich" | "notes.coverage";
 
 export const TASKS: { id: TaskId; label: string; what: string; latency: "high" | "medium" | "low" }[] = [
   { id: "interviewer.turn", label: "Interviewer reply", what: "Each interviewer turn in text and Ascent Voice rounds.", latency: "high" },
@@ -29,6 +30,12 @@ export const TASKS: { id: TaskId; label: string; what: string; latency: "high" |
   { id: "reverse.grade", label: "Reverse-mode grading", what: "Compares your interviewer feedback with the planted mistakes.", latency: "low" },
   { id: "committee", label: "Loop committee", what: "Reads every scorecard of a loop day and writes the final decision.", latency: "low" },
   { id: "reader.explain", label: "Article reader", what: "Explains code, tables and formulas aloud when the reader reaches them.", latency: "medium" },
+  { id: "notes.map", label: "Import: map sections", what: "Files each section of an imported document under a topic page and suggests what to skip.", latency: "low" },
+  { id: "notes.extract", label: "Import: write notes", what: "Turns each section into faithful, self-contained notes.", latency: "low" },
+  { id: "notes.dedup", label: "Import: duplicate judge", what: "Decides whether two similar notes say the same thing.", latency: "low" },
+  { id: "notes.verify", label: "Import: verify", what: "Checks every imported note reads well and matches its source.", latency: "low" },
+  { id: "notes.enrich", label: "Import: enrich from the web", what: "Adds cited, up-to-date facts and flags claims sources contradict.", latency: "low" },
+  { id: "notes.coverage", label: "Import: missing-content check", what: "Compares each section with its notes and recovers anything left out.", latency: "low" },
 ];
 
 /** "" = the model chosen in Settings → AI reviewer. Tiers resolve per provider. */
@@ -69,6 +76,12 @@ const RECOMMENDED: Record<TaskId, TaskProfile> = {
   "reverse.grade": P("", "tier:strong", { temperature: 0.2, maxOutputTokens: 1600, json: true }),
   committee: P("", "tier:strong", { temperature: 0.2, maxOutputTokens: 1400, json: true, reasoning: "medium" }, { timeoutMs: 120000 }),
   "reader.explain": P("", "tier:small", { temperature: 0.3, maxOutputTokens: 900, json: true, reasoning: "off" }, { timeoutMs: 25000, retries: 0 }),
+  "notes.map": P("", "tier:small", { temperature: 0.1, maxOutputTokens: 4000, json: true, reasoning: "off" }, { timeoutMs: 90000 }),
+  "notes.extract": P("", "", { temperature: 0.2, maxOutputTokens: 8000, json: true, reasoning: "off" }, { timeoutMs: 180000, retries: 2 }),
+  "notes.dedup": P("", "tier:small", { temperature: 0, maxOutputTokens: 1500, json: true, reasoning: "off" }, { timeoutMs: 60000 }),
+  "notes.verify": P("", "", { temperature: 0, maxOutputTokens: 6000, json: true, reasoning: "off" }, { timeoutMs: 180000, retries: 2 }),
+  "notes.enrich": P("", "", { temperature: 0.3, maxOutputTokens: 3000, reasoning: "off" }, { timeoutMs: 180000 }),
+  "notes.coverage": P("", "tier:small", { temperature: 0, maxOutputTokens: 4000, json: true, reasoning: "off" }, { timeoutMs: 120000 }),
 };
 
 function presetProfiles(id: PresetId): Record<TaskId, TaskProfile> {

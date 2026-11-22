@@ -44,13 +44,17 @@ export interface Capabilities {
 }
 
 const isOpenAiReasoning = (m: string) => /^(?:gpt-5|o\d)/i.test(m);
-const isClaudeThinking = (m: string) => /claude-(?:opus|sonnet|haiku)-(?:[4-9])|claude-3-7/i.test(m);
+const isClaudeThinking = (m: string) => /claude-(?:opus|sonnet|haiku)-(?:[4-9])|claude-3-7|claude-(?:fable|mythos)/i.test(m);
+/** Claude 4.6+ and the 5 family: adaptive thinking with effort; budget_tokens and sampling parameters are rejected. */
+export const isClaudeModern = (m: string) => /claude-(?:fable|mythos)|claude-(?:opus|sonnet)-(?:4-[6-9]|[5-9])|claude-haiku-[5-9]/i.test(m);
 
 /** What a provider and model accept. Unsupported settings are shown greyed out in developer mode. */
 export function capabilities(provider: ProviderId, model: string): Capabilities {
   switch (provider) {
-    case "claude":
-      return { temperature: true, topP: true, topK: true, seed: false, stop: true, penalties: false, reasoning: isClaudeThinking(model), json: false, promptCaching: true };
+    case "claude": {
+      const modern = isClaudeModern(model);
+      return { temperature: !modern, topP: !modern, topK: !modern, seed: false, stop: true, penalties: false, reasoning: isClaudeThinking(model), json: false, promptCaching: true };
+    }
     case "gemini":
       return { temperature: true, topP: true, topK: true, seed: true, stop: true, penalties: false, reasoning: /2\.5|[3-9]\.\d/.test(model), json: true, promptCaching: false };
     case "openai": {
@@ -96,6 +100,23 @@ function prepare(req: LlmRequest, settings: Settings, stream: boolean): Prepared
 
   if (req.provider === "claude") {
     if (!k.claude) throw new Error("Add your Claude API key in Settings.");
+    if (isClaudeModern(req.model)) {
+      // adaptive thinking is on by default here; effort is the only depth control, and thinking counts toward max_tokens
+      const effort = !p.reasoning || p.reasoning === "off" ? "low" : p.reasoning;
+      return {
+        url: "https://api.anthropic.com/v1/messages",
+        headers: { "content-type": "application/json", "x-api-key": k.claude, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+        body: {
+          model: req.model,
+          max_tokens: max + (effort === "low" ? 2048 : BUDGET[effort]),
+          system: p.promptCaching ? [{ type: "text", text: req.system, cache_control: { type: "ephemeral" } }] : req.system,
+          messages: req.messages,
+          output_config: { effort },
+          ...(p.stop?.length && { stop_sequences: p.stop }),
+          ...(stream && { stream: true }),
+        },
+      };
+    }
     const thinking = cap.reasoning && p.reasoning && p.reasoning !== "off" ? { type: "enabled", budget_tokens: BUDGET[p.reasoning] } : undefined;
     return {
       url: "https://api.anthropic.com/v1/messages",
