@@ -2,14 +2,16 @@
 import "katex/dist/katex.min.css";
 import { AlertTriangle, BookOpen, Lightbulb, MousePointerClick, Newspaper, Quote, Sparkles, Target, type LucideIcon } from "lucide-react";
 import Viz from "@/components/viz";
+import { VideoEmbed } from "./References";
 import { Md, cn } from "./ui";
 
 /**
  * A lesson body: markdown with optional maths, plus two extensions used by the AI lessons.
  *   :::dyk Optional title        a callout (dyk, story, news, tip, warn, quote, eli5, try), closed by a line ":::"
  *   [[widget:attention]]          an interactive widget, inline in the reading flow
+ *   [[yt:VIDEOID|Title|Channel]]  a YouTube video that plays in place
  */
-type Part = { kind: "md"; body: string } | { kind: "callout"; type: string; title: string; body: string } | { kind: "widget"; id: string };
+type Part = { kind: "md"; body: string } | { kind: "callout"; type: string; title: string; body: string } | { kind: "widget"; id: string } | { kind: "yt"; id: string; title: string; by: string };
 
 export function parseLesson(text: string): Part[] {
   const out: Part[] = [];
@@ -20,6 +22,8 @@ export function parseLesson(text: string): Part[] {
     const line = lines[i];
     const w = /^\s*\[\[widget:([\w-]+)\]\]\s*$/.exec(line);
     if (w) { flush(); out.push({ kind: "widget", id: w[1] }); continue; }
+    const y = /^\s*\[\[yt:([\w-]{11})(?:\|([^|\]]*))?(?:\|([^\]]*))?\]\]\s*$/.exec(line);
+    if (y) { flush(); out.push({ kind: "yt", id: y[1], title: y[2]?.trim() || "Video", by: y[3]?.trim() || "YouTube" }); continue; }
     const c = /^:::(\w+)\s*(.*)$/.exec(line.trim());
     if (c && c[1] !== "") {
       flush();
@@ -69,6 +73,7 @@ export function Lesson({ text, math, className }: { text: string; math?: boolean
       {parts.map((p, i) =>
         p.kind === "md" ? <Md key={i} math={math} className={className}>{p.body}</Md>
           : p.kind === "widget" ? <div key={i} className="-mx-1 sm:-mx-3"><Viz id={p.id} /></div>
+          : p.kind === "yt" ? <figure key={i} data-read-block data-read-text={`There's a video here: ${p.title}, by ${p.by}.`} className="mx-auto max-w-2xl"><VideoEmbed r={{ kind: "video", title: p.title, by: p.by, url: `https://www.youtube.com/watch?v=${p.id}`, yt: p.id }} /></figure>
             : <Callout key={i} type={p.type} title={p.title} body={p.body} math={math} />)}
     </div>
   );

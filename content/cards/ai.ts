@@ -294,7 +294,7 @@ export const aiCards: Record<string, Card[]> = {
     ["How do the prefill and decode phases differ?", "Prefill processes the prompt in parallel (compute-bound, sets TTFT); decode generates token by token (memory-bandwidth-bound)"],
     ["What is the VRAM sizing formula for serving?", "(weights + KV GB per 1K tokens × context in K × concurrent sessions + activations) × 1.10"],
     ["How much memory do weights need per billion parameters in FP16?", "About 2 GB (INT8 1 GB, INT4 0.5 GB)"],
-    ["What is the KV-cache size per token?", "2 × layers × hidden size × bytes per value (keys and values)"],
+    ["What is the KV-cache size per token?", "2 (K and V) × layers × KV heads × head dim × bytes per value; with full multi-head attention KV heads × head dim = hidden size"],
     ["What usually dominates memory in long-context serving?", "The KV cache, which scales with context × concurrent users", "pitfall"],
     ["What is continuous batching?", "Adding and removing requests at every decoding step instead of waiting for a whole batch to finish"],
     ["What does PagedAttention do?", "Stores the KV cache in fixed-size pages to remove fragmentation and share prefixes (vLLM)"],
@@ -337,6 +337,6 @@ export const aiCards: Record<string, Card[]> = {
     ["What did AlphaEvolve find in 2025?", "A 4×4 complex matrix multiplication with 48 multiplications and a scheduling heuristic recovering ~0.7% of Google's compute"],
     ["Why did Google build TPUs?", "A 2013 estimate that 3 minutes a day of voice search per Android user would require doubling datacentres"],
     ["How much of Google's new code was AI-generated in late 2024?", "More than a quarter, reviewed and accepted by engineers"],
-    ["Can you use AI assistance in a Google coding interview?", "No: practise in a plain document without autocomplete", "pitfall"],
+    ["Should you expect AI assistance in a Google coding interview?", "Plan for none unless your recruiter says otherwise: practise in a plain document without autocomplete", "pitfall"],
   ],
 };

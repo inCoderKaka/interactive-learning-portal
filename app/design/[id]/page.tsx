@@ -194,7 +194,7 @@ export default function DesignPage() {
             <ul className="mt-3 space-y-2">{d.pitfalls.map((p) => <li key={p} className="flex gap-2.5 text-[13.5px] leading-relaxed"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-warn" />{p}</li>)}</ul>
           </section>
 
-          <References refs={d.refs} columns={1} />
+          <References refs={d.refs} columns={1} embed />
         </aside>
       </div>
 

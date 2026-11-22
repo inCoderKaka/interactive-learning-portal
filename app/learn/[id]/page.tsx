@@ -14,6 +14,9 @@ import { Flashcards } from "@/components/Flashcards";
 import { References } from "@/components/References";
 import { AreaPill, Button, DIFF, Empty, Pill, cn, fmtMin } from "@/components/ui";
 import { Lesson } from "@/components/Lesson";
+import { TopicPlay } from "@/components/play/TopicPlay";
+import { ImportedNotes } from "@/components/notes/ImportedNotes";
+import { ReadingProgress, popFrom } from "@/components/Juice";
 import { ListenButton, ReadScope } from "@/components/reader/Reader";
 import { sleep, until, useReadable, type ReadStep } from "@/lib/reader/registry";
 import type { Quiz, Topic } from "@/lib/types";
@@ -63,8 +66,8 @@ function QuizBlock({ quiz, onDone }: { quiz: Quiz[]; onDone: (score: number) => 
               {q.options.map((o, i) => {
                 const pick = answers[qi];
                 const st = pick === null ? "idle" : i === q.answer ? "right" : i === pick ? "wrong" : "off";
-                return <button key={i} data-opt={i} disabled={pick !== null} onClick={() => { const next = answers.map((a, k) => (k === qi ? i : a)); setAnswers(next); if (i === q.answer) addXp(XP.quiz); if (next.every((a) => a !== null)) onDone(Math.round((next.filter((a, k) => a === quiz[k].answer).length / quiz.length) * 100)); }}
-                  className={cn("rounded-xl border px-3.5 py-2.5 text-left text-[13.5px] transition", st === "idle" && "border-line bg-panel2 hover:border-[#3a4160]", st === "right" && "border-ok/60 bg-ok/10 text-ok", st === "wrong" && "border-bad/60 bg-bad/10 text-bad", st === "off" && "border-line opacity-45")}>{o}</button>;
+                return <button key={i} data-opt={i} disabled={pick !== null} onClick={(e) => { if (i === q.answer) popFrom(e.currentTarget); const next = answers.map((a, k) => (k === qi ? i : a)); setAnswers(next); if (i === q.answer) addXp(XP.quiz); if (next.every((a) => a !== null)) onDone(Math.round((next.filter((a, k) => a === quiz[k].answer).length / quiz.length) * 100)); }}
+                  className={cn("rounded-xl border px-3.5 py-2.5 text-left text-[13.5px] transition", st === "idle" && "border-line bg-panel2 hover:border-[#3a4160]", st === "right" && "border-ok/60 bg-ok/10 text-ok", st === "wrong" && "animate-shake border-bad/60 bg-bad/10 text-bad", st === "off" && "border-line opacity-45")}>{o}</button>;
               })}
             </div>
             {answers[qi] !== null && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-2 text-[13px] leading-relaxed text-mute">{q.why}</motion.p>}
@@ -104,6 +107,7 @@ export default function TopicPage() {
 
   return (
     <article className="mx-auto max-w-4xl">
+     <ReadingProgress color={a.color} />
      <ReadScope className="space-y-6">
       <Link data-read-skip href={`/learn#${t.area}`} className="inline-flex items-center gap-1.5 text-[13px] text-mute hover:text-text"><ArrowLeft size={14} />{a.name}</Link>
       <header className="animate-rise">
@@ -127,6 +131,10 @@ export default function TopicPage() {
           <AnimatePresence>{showCode && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden"><pre ref={preRef} className="code !rounded-none !border-x-0 !border-b-0">{t.template}</pre></motion.div>}</AnimatePresence>
         </section>
       )}
+
+      <ImportedNotes key={"n" + t.id} topicId={t.id} color={a.color} />
+
+      <TopicPlay key={"p" + t.id} topicId={t.id} color={a.color} />
 
       {!!t.refs?.length && (
         <div data-read-block data-read-text={`To go deeper, there ${t.refs.length === 1 ? "is one reference" : `are ${t.refs.length} references`} below, starting with ${t.refs[0].title} by ${t.refs[0].by}.`}>

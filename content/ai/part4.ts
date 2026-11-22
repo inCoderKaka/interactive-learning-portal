@@ -120,7 +120,7 @@ Ingestion and parsing → chunking strategy → embedding model choice → hybri
       Q("Why use a cross-encoder reranker after vector search?", ["It is faster than vector search", "*It reads the query and document together for more precise relevance, on a small candidate set", "It replaces the LLM", "It compresses embeddings"], "Bi-encoders are fast; cross-encoders are accurate; combine them."),
       Q("A query for “invoice INV-20931” returns unrelated invoices. Best fix?", ["Larger chunks", "*Hybrid search with BM25 for exact identifiers", "Higher temperature", "A bigger LLM"], "Lexical search excels at exact tokens."),
       Q("MRR for two queries whose first relevant results are at ranks 1 and 4?", ["0.5", "*0.625", "0.25", "2.5"], "(1/1 + 1/4) / 2 = 0.625."),
-      Q("What does faithfulness measure?", ["Answer length", "*Whether the answer's claims are supported by the retrieved context", "Retrieval speed", "Whether the user was satisfied"], "It is distinct from whether the answer addresses the question."),
+      Q("A query has 4 relevant chunks in the corpus; 2 of them appear in your top 5. What are precision@5 and recall@5?", ["2/5 and 2/5", "*2/5 and 2/4", "2/4 and 2/5", "4/5 and 2/4"], "Precision@5 = relevant in the top 5 / 5 = 0.4; recall@5 = relevant in the top 5 / all relevant = 0.5."),
     ],
   }),
 
