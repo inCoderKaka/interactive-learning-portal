@@ -58,7 +58,7 @@ export const SUBTOPICS: Topic[] = TOPICS.flatMap((ch) =>
     const t: Topic = {
       id, area: ch.area, title, tier, est, chapter: ch.id,
       blurb: d.blurb, signals: d.signals, lesson: d.lesson, revise: d.revise, doubts: d.doubts, pitfalls: d.pitfalls,
-      quiz: d.quiz, template: d.template, sources: d.sources, widgets: d.widgets, prereq: d.prereq, cards: [],
+      quiz: d.quiz, template: d.template, sources: d.sources, widgets: d.widgets, prereq: d.prereq, featured: d.problems, cards: [],
     };
     return [t];
   }),
@@ -81,16 +81,20 @@ function withLinks(p: Problem): Problem {
 }
 
 /** Which subtopic a LeetCode problem is featured on: written bodies first, then the video pipeline's placement. */
-const FEATURED = new Map<number, string>();
-for (const [id, d] of Object.entries(DEEP)) for (const n of d.problems ?? []) if (!FEATURED.has(n)) FEATURED.set(n, id);
 const PLACED = new Map((LC_EXTRA as [number, string, string, string, number, string][]).map((r) => [r[0], r[5]]));
+const RAW_PROBLEMS = [...problems1, ...problems2, ...problems3, ...extraProblems];
+const CURATED_CHAPTER = new Map(RAW_PROBLEMS.filter((p) => p.lc).map((p) => [p.lc!, p.topic]));
+const homeChapter = (lc: number) => { const pl = PLACED.get(lc); return CURATED_CHAPTER.get(lc) ?? (pl ? CHAPTER_OF[pl] ?? pl : undefined); };
+// a page claims a problem only within the problem's own chapter; mentions elsewhere do not move it
+const FEATURED = new Map<number, string>();
+for (const [id, d] of Object.entries(DEEP)) for (const n of d.problems ?? []) if (!FEATURED.has(n) && homeChapter(n) === CHAPTER_OF[id]) FEATURED.set(n, id);
 function subOf(p: Problem): string | undefined {
   if (!p.lc) return undefined;
   const s = FEATURED.get(p.lc) ?? PLACED.get(p.lc);
   return s && CHAPTER_OF[s] === p.topic ? s : undefined;
 }
 
-export const PROBLEMS: Problem[] = [...problems1, ...problems2, ...problems3, ...extraProblems].map(withLinks).map((p) => ({ ...p, sub: subOf(p) }));
+export const PROBLEMS: Problem[] = RAW_PROBLEMS.map(withLinks).map((p) => ({ ...p, sub: subOf(p) }));
 
 /**
  * Video-backed LeetCode pages for every problem a tracked channel has solved that the curated set lacks.
