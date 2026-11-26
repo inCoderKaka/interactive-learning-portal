@@ -1,0 +1,252 @@
+FZQpsLfr4xY	Quantization Fundamentals - How LLMs are Served Efficiently with Low Memory - Inference Engineering	NA
+iRhDCIzhm4A	How Kafka Actually Achieves Exactly-Once Semantics	NA
+Jvimt56KPnk	Consistent Hashing and Its Implementation From the First Principles	NA
+l6oPw2prTXE	How Google Manages 2 Billion Lines of Code in a Single Repository	NA
+0WI_tJRUMqM	Bitcask Explained - A Log-Structured fast KV Store Used By Uber	NA
+HcBZMQNQsxk	Deckrun - Presentation Utility for Markdown and Self-contained HTML	NA
+tOsb-tFoPCg	Hyperloglog and Cardinality Estimation	NA
+Bx7ykrizjCY	How Redis Implements Strings | Redis Internals	NA
+rAi1h7dltCk	How Redis powers Geospatial Queries using GeoHash Algorithm | Redis Internals	NA
+q6Q2ou0hCws	How Redis implements LFU using Morris Counter	NA
+OPxs_D47yCI	How Redis Internally Implements Memory Efficient Sets - Intset | Redis Internals	NA
+2EknAibFgu8	How Redis Internally Implements Memory Efficient Lists - Ziplist and Quicklist | Redis Internals	NA
+USZAZeuP8Iw	How Redis Implements Transactions and How We Implement It | Redis Internals	NA
+l-Bf0Ssf2GE	How Databases Implement Graceful Shutdown using Signal Handling | Redis Internals	NA
+RCNMYljRmY4	How and Why Redis Overrides Malloc | Redis Internals	NA
+xNfoeZuK3Mc	How Redis Caps Its Memory Usage | Redis Internals	NA
+FvGGkzcKKFA	Implementing the Approximated LRU Algorithm | Redis Internals	NA
+0kOCyjFKKL4	The Approximated LRU Algorithm | Redis Internals	NA
+jmN3VRsUmRs	Implementing INFO and allkeys-random Eviction | Redis Internals	NA
+Dl9h6sQAFfk	Object, Encodings, and Implementing INCR | Redis Internals	NA
+5SnkVoatBpA	Implementing AOF Persistence | Redis Internals	NA
+2q7RuEb9z-M	Implementing Command Pipelining | Redis Internals	NA
+EkaTFT9ox-I	Key Eviction Strategies in Redis and Implementing Simple First Eviction | Redis Internals	NA
+yGdk0hmvkgo	Implementing DEL, EXPIRE, and Cleanup in Redis | Redis Internals	NA
+1rnEpo56LFk	Implementing GET, SET, and TTL Commands in Redis | Redis Internals	NA
+SMmLVHgE4pM	Implementing Event Loops | Redis Internals	NA
+U2IFZ_hw91o	Event Loops Internals And How Redis Handles Multiple Connects on a Single Thread | Redis Internals	NA
+70UJ1QTQj5Y	Implementing Redis' PING Command | Redis Internals	NA
+wnHZHGc8tW8	Implementing Redis' Wire Protocol - RESP | Redis Internals	NA
+PtJl3jtmqgE	Wire Protocols, Why Are They Needed, and Redis' Wire Protocol - RESP | Redis Internals	NA
+GeXJ0GxzVZM	Low Level Design and Data Schema Modeling of API Clients Like Requestly	NA
+FtJPvgMsn-Q	How Stripe Migrates Millions of Records and Schema with Zero Downtime and No Data Inconsistency	NA
+9XJtEzmzG3g	Stripe's Smarter Approach to Structured Logging - Canonical Log Lines	NA
+i6WAAWclARU	How Stripe Scales MongoDB to 5 million Queries Per Second	NA
+ubpUjovBMAM	How OpenAI Handles 800 Million ChatGPT Users on a Single PostgreSQL Primary	NA
+9TkOg-J2Dnc	When DB consumes more memory than it should, malloc might be the problem	NA
+DMfr9jMLnz0	How MySQL's Midpoint Insertion Strategy Prevents Cache Pollution	NA
+pFBCgFzS2W8	How PayPal Beat the Thundering Herd Problem and Fixed Their Architecture	NA
+iHHqnyThrqE	Inverted Index - The Data Structure Behind Search Engines	NA
+Tq1fif3rcnQ	How GitHub Sharded Their Databases Without Downtime and Broke Their Monolith	NA
+Oxy-6MAiYPw	Inside Stripe's Rate Limiter Architecture	NA
+RcarDmgWezY	What are L4 Load Balancers and how do they work?	NA
+EaWlpn24eAs	How Amazon Aurora Achieves Durability with Quorum Writes | Aurora Paper Deep Dive - Section 2	NA
+DA5W8tO_7Nw	What the heck is Storage-Compute Separation? | Aurora Paper Deep Dive - Section 1	NA
+V6hi86woFl8	What are Reactive Databases and why DiceDB exists?	NA
+gZIVHSFgkvk	Synonymic Query Expansion to handle Prashant in Search - Lexical vs Phonetic vs Semantic Search	NA
+1hGwZ-IeN6M	Announcing DiceDB 1.0	NA
+IsM4bnJ-8Gw	How Atlassian reduced latency by 70% by using Sidecar pattern and when should you use it	NA
+sbDVs71wIVk	How BitBucket reduced master database load by 50% and also solved Read your Write consistency	NA
+roNgG4QVjTU	Saved 55% cost, 75% CPU, at 33x speed - Why and how Jira moved from JSON to Protobuf	NA
+LJzS6dUV-GE	Why and how Trello moved away from RabbitMQ to Kafka for their WebSocket-based real-time updates	NA
+fJNyTNP71MM	Cache Invalidation using SNS + SQS at Atlassian and then they moved away!	NA
+KwGyA6B7qrI	Load Balancers are not Magic - Dissecting Atlassian Outage	NA
+LnqKfLcszEg	Amazon DynamoDB - Paper Explained	NA
+wrURmYwqYb4	Everything about HTTP Streaming and how Airbnb leverages it in production	NA
+LAdUhenKDJ8	A bug in the GitHub's Rate Limiter	NA
+MOLG4-IovOQ	DragonflyDB does not use HashTables but DashTables to hold the data - a deep dive	NA
+z-yC2o4GZvg	Why DragonflyDB uses B+ Trees to implement Sorted Set instead of Skiplist like Redis?	NA
+GsuxpMTnDRM	How DragonflyDB implements "distributed" transactions in a shared-nothing setup	NA
+XbV1LoVsbME	DragonflyDB Architecture Overview, Internals, and Trade-offs - hitting 6.43 million ops/sec	NA
+q_2nkMBuLQQ	Internals, architecture, and interesting trade-offs of Blacksmith that runs GitHub Actions 2x faster	NA
+DgNncAnhkIY	How LinkedIn improved their latency by 60%	NA
+UerkzwZ_zSY	Designing a Realtime Gaming Leaderboard - Horizontally Scalable and Highly Available	NA
+DF8BbwtEa7k	How Rockset achieves zero data latency and workload isolation at scale	NA
+HWeTVy5i9vE	How Rockset executes query and scales the query compute horizontally on demand | Rockset Internals	NA
+xGaUJTHuehQ	How Converged Indexes makes Rockset super-efficient in all kinds of queries | Rockset Internals	NA
+I4eEEAgoCig	Architecture deep-dive of a Real-time Analytics Database | Rockset Internals	NA
+36N1Bz7qW0A	How JioCinema live streams IPL to 20 million concurrent devices w/ Prachi Sharma | Ep 7	NA
+b9zh0SFbkqM	How Reddit designed their metadata store to serve 100k req/sec at p99 of 17ms	NA
+pj7Fxr8cUJI	How PostgreSQL generates all possible query execution plans before choosing the best one.	NA
+-htbah3eCYg	How nested loop, hash, and merge joins work.	NA
+m8PtOY3aWL0	How PostgreSQL parses the query and constructs the Parse Tree?	NA
+o7qLKfILuD8	PostgreSQL connection management and per-client process model explained	NA
+g_gKI2HCElk	How DNS really works and how it scales infinitely?	NA
+HrG0MHkSsCA	Understanding Proxy, Forward Proxy, and Reverse Proxy	NA
+4lb3dAtKcJo	What happens when you type a URL into your browser?	NA
+yhqW82Ka-gw	Everything you need to know about CockroachDB w/ Ben Darnell | Ep 6	NA
+SzwjnoPI--M	What exactly is the HTTP protocol and how to write a new one from scratch?	NA
+eQ3eNd5WbH8	How indexes work in Distributed Databases, their trade-offs, and challenges	NA
+ZxvulmKXIto	Understanding Database Trade-offs - The RUM Conjecture - Paper Explained	NA
+LXhgFAZroG8	The Google File System - Paper Explained	NA
+NgYS6mIUYmA	Why thread pools even exist? and how to implement them?	NA
+wOAfvwDxsTo	Picking the right string column datatype - CHAR vs VARCHAR vs TEXT	NA
+J7VJtuRCkuI	The compression algorithm that powers all Time-series Databases	NA
+9b2e_iRVJ0k	How databases store and transmit integers efficiently using varint encoding	NA
+-dVuyTMByBA	How Pass by Value and Pass By Pointer work internally? Peeking into the assembly code to find out	NA
+SZmPgTozvcI	How to start your writing journey as a software engineer	NA
+AiPGbVjl3JY	Everything you need to know about Read Uncommitted Isolation Level	NA
+Zqw4KjhWxEc	Disabling Garbage Collection helped Instagram save money and get better performance	NA
+WjT253DBlXk	How Google designed their Highly Available Load Balancers using Anycast	NA
+--YbYCfMnxc	CAP Theorem - From the First Principles	NA
+vFxQyZX84Ro	How Dukaan moved out of Cloud and on to Bare Metal w/ Subhash | Ep 5	NA
+xtpmWyMYd5w	Navigating Massive Codebases - From the First Principles	NA
+mItewjU-YG8	Bloom Filters - From the First Principles	NA
+vQB1YW7YW7g	If I were to learn a new programming language	NA
+eMotoFvgdUo	Optimistic Locking - What, When, Why, and How?	NA
+z8m_iKCPTaQ	How to decide which technology to learn and invest time in?	NA
+Vk2BEiYGeQc	How to write deadlock free code?	NA
+oYoVx8ZuvTw	How to write a Concurrent Thread-safe Queue from scratch?	NA
+mLNNKl0oGiQ	I changed python language and added a new NUKE statement	NA
+4F-WiPFrPsA	Understanding Pessimistic Locking with Mutex	NA
+rBUVdZRkd0A	What should a software developer not do?	NA
+vuZO4qzjCdQ	I changed the Python print statement to understand how it works internally	NA
+kBHd7kn_1EU	Peeking into assembly code to understand why count++ is not atomic	NA
+-YxWRxOFgRY	How JunoDB is designed to be a highly secure database	NA
+2V_oP5xCbO4	How JunoDB is designed to achieve six 9's of availability	NA
+6ljQaZAm8Rk	How JunoDB is designed to scale horizontally	NA
+2Bwzh-881PU	High level architecture and System Design of JunoDB	NA
+Jddce8sPFsc	Overview of JunoDB - an open source KV store by PayPal	NA
+V5-KxHdmbDo	My process of reading, understanding, and remembering research papers	NA
+UmF57P7TerI	My first change in a massive open source CPython codebase	NA
+ejMrCESahz8	Will AI replace programmers?	NA
+Je5WBk91Wlc	How to learn better and faster as a software engineer?	NA
+f9gUFy-9uCM	Why most TCP servers are multi threaded and how to build one from scratch	NA
+_ZgM21T48WA	Understanding Endianness: Little vs Big-Endian and its Impact on data storage and transmission	NA
+zrl_odkY5tI	Datetime vs Timestamp datatype in databases - Which one is better and when?	NA
+2PjlaUnrAMQ	How to write efficient and fair multi-threaded programs?	NA
+n_t0IO0mq5Q	Understanding Phantom Reads Problem with hands on examples	NA
+09E-tVAUqQw	Why do databases store data in B+ trees?	NA
+jU-4FKh0NXI	The right mindset to craft a great career w/ Shashank Kansal | Ep 4	NA
+NJjJctW-K0g	How to get a promotion and become a Staff Engineer at FAANG	NA
+Zz1pBnGmBYQ	The engineering behind LLMs w/ Ramsri | Ep 3	NA
+47ARX-6srGk	Building my second brain and becoming 10x productive as a software engineer	NA
+8sTuCPh3s0s	Thundering Herd Problem and How not to do API retries	NA
+J2IcD9FZvZU	Designing Idempotent API Endpoints for Payments at Stripe	NA
+BwxU9EnCFXA	How Slack efficiently classifies emails at scale with an eventually consistent system	NA
+Paau_t0aZKw	Everything you need to know about CRDTs w/ Vipul Vaibhaw | Ep 2	NA
+7v-wrJjcg4k	How @Shopify Engineering avoids hot shards by moving data across databases without any downtime	NA
+KeV4erIm47o	How Grab configured their data layer to handle multi-million database transactions a day!	NA
+dOyCq_mMtdI	How Twitter keeps its Search systems up and stable at scale	NA
+JL9x9N6YSUc	How @Zomato improved its search by identifying intent using NLP	NA
+yqkyq8TPWbg	Razorpay's Journey to Microservices w/ Arjun | Ep 1	NA
+gpzGpPiRoCo	Designing Uber's highly available Emergency SOS Service	NA
+BFyWl9MNDjY	How Booking com designed and scaled their highly available and performant User Review System	NA
+yGpEzO32lU4	Overview of Discord's data platform that daily processes petabytes of data and trillion points	NA
+5FIPtC3xJSQ	How Airbnb designed and scaled its central authorization system - Himeji	NA
+nEEaSZZ8R4I	How Gojek masks and keeps users' phone numbers secure at scale?	NA
+i8MweKYoG1U	The architecture of Yelp's in-house Search Engine - nrtSearch	NA
+-bo7oVejgRM	How Giphy uses CDN to serve 10 billion GIFs every day	NA
+zlxdX9f4l50	Writing a Simple TCP Echo Server - Step 0 to Build Your Own Redis | Redis Internals	NA
+h30k7YixrMo	Why and How Is Single-Threaded Redis Fast and Can Handle Multiple Connections? | Redis Internals	NA
+NXbOVLpage0	Series Introduction and Announcement | Redis Internals	NA
+FczWm6kx0Kg	How Dropbox efficiently serves and renders a large number of thumbnails	NA
+VNvTEin2liY	Aggregating DynamoDB data in realtime to list restaurants at Deliveroo	NA
+DQwlmTvs6xA	How Razorpay Designed and Scaled their Notification System	NA
+NcNCty7_3kc	How Flipkart made their type ahead search hyper personalized	NA
+tZPTpa3JcKA	The Architecture of Pinterest's Time Series Database - Goku	NA
+7xKgQmqkfD0	The Architecture of Airbnb's Knowledge Graph	NA
+W8LDyEOPaPY	How Swiggy designed and scaled its chatbot	NA
+CA2_0ZhVW2g	How Instagram efficiently serves HashTags ordered by count	NA
+sZVCpjuVUL8	Two Phase Commit to power Distributed Transactions in a Distributed System	NA
+pi3YA3m1ffw	Exponential Information Gathering (EIG) Algorithm for Byzantine Agreement	NA
+1g0L6ISxQPE	Exponential Information Gathering (EIG) Algorithm - Distributed Consensus even when processes crash	NA
+uS19mAa_tFA	FloodSet Algorithm - Distributed Consensus even when processes crash	NA
+DnOlqghKJMY	Unsolvable Distributed Consensus and The Two Generals' Problem	NA
+c5t1rP6CvNs	Minimum Spanning Tree in Distributed Systems - GHS Algorithm - and its Applications	NA
+tV3EQNgpZKI	Distributed Shortest-Path Bellman Ford Algorithm in Distributed Systems	NA
+PTlYBBqAYXA	Synchronous Breadth First Search Algorithm to power broadcast in Distributed Systems	NA
+4aeFQpuww4E	FloodMax algorithm for Leader Election in Distributed Systems	NA
+mcKLQVmCsG4	TimeSlice algorithm for Leader Election in Distributed Systems	NA
+inzQQm-kXCo	HS algorithm for Leader Election in Distributed Systems	NA
+NDBJr37dBzc	LCR algorithm for Leader Election in Distributed Systems	NA
+nYtAzzH-twM	Exploiting and stealing from the BitTorrent network	NA
+_kCHOpINA5g	Kademlia - a Distributed Hash Table implementation | Paper Dissection and Deep-dive	NA
+QSeex0YxReY	The Piece Selection algorithm that makes BitTorrent fault tolerant	NA
+iognYJRzCE8	The Choke Algorithm that powers BitTorrent	NA
+shVvFVFiZcs	Overview of the BitTorrent architecture	NA
+tHT94dSMwKw	Understanding the Torrent File Format and Bencoding	NA
+v7cR0ZolaUA	Introduction to BitTorrent and the problem it beautifully solves	NA
+VCMO2X6EoK0	Implementing Hash Maps with Hash Tables	NA
+CcoMvgIdrD8	Implementing Hash Sets with Hash Tables	NA
+mmPwVBm-8n0	Implementing Resize of a Hash Table	NA
+zt1E0akArqQ	When full, why are Hash tables, ArrayList, and Vectors always doubled? ⚡	NA
+oD2yaTtu69w	Understanding the performance of a Hash Table	NA
+wV4K6fo0T58	Double Hashing for Conflict Resolution in Hash Tables	NA
+F-8pWiJv8ik	Quadratic Probing for Conflict Resolution in Hash Tables	NA
+5QKAXG25hig	Linear Probing for Conflict Resolution in Hash Tables	NA
+6_yFb7icd_c	Conflict Resolution in Hash Tables with Open Addressing	NA
+9rb8oILi4lU	Conflict Resolution in Hash Tables with Chaining	NA
+jjW8w8ED3Ns	Internal Structure of a Hash Table	NA
+LeT_s-UFw-U	Dissecting GitHub Outage and things to do after that	NA
+Of3FS2qDM28	Dissecting GitHub Outage - Why should we localize failures?	NA
+GCx0aouuEkU	Backend for Frontend Pattern in Microservices	NA
+bycFzB6yrK0	Dissecting GitHub Outage - Multiple Leaders in Zookeeper Cluster	NA
+4mVJQJbw6Vw	GitHub Outage  - How databases are managed in production	NA
+Wby0d9Li5Hw	Best practices that make microservices integration easy	NA
+VPZo8cO1HbI	Dissecting GitHub Outage - Downtime due to Rate Limiter	NA
+ZirBDq1JwpY	Dissecting GitHub Outage - Master failover failed	NA
+xbtE9IF4yRc	Things to remember while building Microservices	NA
+0q61wIUmVDY	Why should we have a standard way of building Microservices?	NA
+yTSq6hJFmUg	10 Challenges in Adopting and Implementing Microservices	NA
+qoAox0FGzRQ	What are Microservices?	NA
+9GHh_U-ud9U	Dissecting GitHub Outage - Downtime they thought was avoided	NA
+5pYLlYsy6fQ	API Composition Pattern in Microservices	NA
+df2QgLW0QC4	How a Single MySQL Index Broke GitHub	NA
+48YZzGi7QMk	Scanning Bug That Took Down GitHub	NA
+la2q1vFA5q0	Database per Service Pattern in Microservices	NA
+uFGJVQvR59A	Everything you need to know about REST	NA
+9kjUG_yvVqM	An in-depth introduction to Rolling Deployments	NA
+9iAJjtvBwyI	How to Implement Vertical Sharding	NA
+iqapVyfoFqc	How an Edge Case Caused the GitHub Downtime	NA
+LkympMbgmCo	Why caching would not speed up Mark-and-Sweep GC?	NA
+W6HANd8c9t4	An in-depth introduction to Blue Green Deployments	NA
+nnseeKxovaM	An in-depth introduction to Canary Deployments	NA
+eRndYq8iTio	Introduction to RPC - Remote Procedure Calls	NA
+HiwOx-W1TIA	Designing Workflows in Microservices - Orchestration vs Choreography	NA
+82Xywy74kfE	How an ALTER TABLE Caused a Massive GitHub Outage	NA
+lhrRwjVPXPo	Tricolor Abstraction to build concurrent Garbage Collectors	NA
+ewUw0sUxHI4	Synchronous and Asynchronous Communication between Microservices	NA
+oiZH5U_a0pg	Serverless Computing Explained - Introduction and Architecture	NA
+4qLf0FJMyf0	Mark and Sweep Garbage Collection Algorithm	NA
+tV11trlimLk	Sharing Databases in Microservices: Anti-Pattern or Practical?	NA
+wXvljefXyEo	Database Sharding and Partitioning	NA
+IojMqbegejk	How to pick a garbage collector?	NA
+nfkdKHcKxbE	How to Scope Microservices Right with Loose Coupling & High Cohesion	NA
+CW4gVlU0xtU	How to Protect Your Systems with Throttling & Rate Limiting - 5 Real-World Use Cases	NA
+xa-hMF8gku0	An Engineering Deep-dive Into Atlassian's Mega Outage of April 2022	NA
+1r9bPisYaOQ	How to approach System Design?	NA
+jcMxuLZCcqU	Why Do Programming Languages Need Garbage Collection?	NA
+JPj6mhVLQN0	Should You Adopt Microservices? Here’s What You Need to Know	NA
+m6DtqSb1BDM	Build a robust Payments service using Idempotency Keys	NA
+8S4k7k_f9Sk	Yes! You can send a payload in your HTTP GET requests	NA
+6oJaZbQKnJE	Dissecting Google Maps Outage: Bad Rollout and Cascading Failures	NA
+oMhESvU87jM	Implementing Distributed Transactions using Two Phase Commit Protocol	NA
+7FgU1D4EnpQ	Distributed Transactions: Two-Phase Commit Protocol	NA
+xELqRiovEcI	What are Embedded Databases and why do they exist?	NA
+ZFRAFTn0cQ0	What happens when ID column reaches its max value - Dissecting GitHub Outage	NA
+wI4hKwl1Cn4	How does the database guarantee reliability using write-ahead logging?	NA
+Hxja4crycBg	How to safely and gracefully handle timeouts in a microservices	NA
+3G293is403I	How do indexes make databases read faster?	NA
+UT_TVldzA64	How to handle database outages?	NA
+h5hXivWws7k	Dissecting Spotify's Global Outage - March 8, 2022	NA
+TzxLYTC8HL8	The Worst Sorting Algorithm Ever!	NA
+Q8luYnxiFFE	How "is" operator is implemented in python?	NA
+IGLnxdmJu2c	How id() function is implemented in python?	NA
+u4tfIy--4GM	How python compares a float and an int objects?	NA
+6mhXGEXRXG0	How python optimizes integers?	NA
+e3Ll0_oxChU	Live Coding Sierpinski Triangle in p5.js	NA
+Rnp81O-6Lmo	Flood fill Algorithm with Visualization in Python	NA
+9O3hBiCMAfM	Sum of digits of a number using recursion in Python	NA
+qES2lKTzkcg	Summation of a list of numbers using Divide and Conquer in Python	NA
+gEiowafkkhM	Summation of a list of numbers using recursion in Python	NA
+dTPh3KcKPYo	Scaling Taxonomy Service and Database	NA
+zz2Lu5ht_jA	How python implements chained comparison operators?	NA
+4_jlmX_oB94	How to design Udemy like taxonomy/hierarchy?	NA
+QpGK69LzfpY	How python optimizes strings using String Interning?	NA
+x1XmcuosZNk	5 million + random rows in less than 100 seconds using SQL	NA
+rWb7VYz1q1U	Changing python grammar to support standalone walrus assignments	NA
+m_7xSIhxZL8	End-to-end Message Encryption	NA
+k5isLG6vqss	Setting up cpython locally and making your first change	NA
+E-3J8X5DulY	Series Introduction: The Honest Python	NA
+kIP8L-CSl2Y	Designing Notifications Service for Instagram	NA

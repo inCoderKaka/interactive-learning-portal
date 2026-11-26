@@ -1,20 +1,29 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "./store";
-import { buildItems, PROBLEMS } from "@/content";
+import { buildItems, problemById } from "@/content";
 import { buildPlan, mockSlots } from "./schedule";
 import { recommendMocks } from "./interview/core/recommender";
 import { isDue, todayISO } from "./srs";
 import type { Item, Problem } from "./types";
 
+/** Extra (video-backed) problems the learner has opened or rated: from then on they count like any other. */
+function useStartedExtras(): Problem[] {
+  const progress = useStore((s) => s.progress);
+  const key = Object.keys(progress).filter((k) => problemById.get(k)?.extra).sort().join(",");
+  return useMemo(() => (key ? key.split(",").map((k) => problemById.get(k)!) : []), [key]);
+}
+
 export function useItems(): Item[] {
   const custom = useStore((s) => s.custom);
-  return useMemo(() => buildItems(custom), [custom]);
+  const started = useStartedExtras();
+  return useMemo(() => buildItems(custom, started), [custom, started]);
 }
 
 export function useProblem(id: string): Problem | undefined {
   const custom = useStore((s) => s.custom);
-  return useMemo(() => PROBLEMS.find((p) => p.id === id) ?? custom.find((p) => p.id === id), [id, custom]);
+  // curated first, then the learner's own imported problems, then the video-backed extra page
+  return useMemo(() => { const p = problemById.get(id); return p && !p.extra ? p : custom.find((c) => c.id === id) ?? p; }, [id, custom]);
 }
 
 export function usePlan() {

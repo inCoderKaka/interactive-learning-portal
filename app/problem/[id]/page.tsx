@@ -6,9 +6,11 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, Check, ExternalLink, Eye, EyeOff, HelpCircle, Lightbulb, MessageSquareText, NotebookPen, Shuffle, Sparkles, TimerReset } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { VideoEmbed } from "@/components/References";
+import { ProblemVideos } from "@/components/VideoLibrary";
+import { TreeLayout } from "@/components/tree/TreeRail";
 import { useItems, useProblem, useStopwatch, useTrackTime } from "@/lib/hooks";
 import { aiReady, generateTwists, hint as aiHint, reviewCode } from "@/lib/ai";
-import { areaOf, lcLink, topicById } from "@/content";
+import { areaOf, lcLink, problemItem, topicById } from "@/content";
 import { CodeEditor, ConfidencePick, FeedbackView, LANGS, NeedAI, RatingBar, Spinner } from "@/components/Work";
 import { Button, DIFF, Empty, Pill, Tabs, cn, fmtClock } from "@/components/ui";
 import type { Feedback, Settings } from "@/lib/types";
@@ -41,8 +43,9 @@ function Reveal({ items, label, icon: Icon, color, oneByOne }: { items: string[]
   );
 }
 
-function LcLink({ lc }: { lc: number }) {
-  const { url, premium } = lcLink(lc);
+function LcLink({ lc, href, prem }: { lc: number; href?: string; prem?: boolean }) {
+  const link = lcLink(lc);
+  const url = href ?? link.url, premium = prem ?? link.premium;
   return (
     <a href={url} target="_blank" rel="noopener noreferrer" title={premium ? "Needs a LeetCode Premium subscription" : undefined} className="ml-auto flex items-center gap-1.5 text-[12px] text-faint hover:text-mute">
       LeetCode {lc}{premium && <span className="rounded border border-warn/40 px-1 text-[10px] text-warn">Premium</span>}<ExternalLink size={11} />
@@ -54,7 +57,8 @@ export default function ProblemPage() {
   const { id } = useParams<{ id: string }>();
   const p = useProblem(id);
   const items = useItems();
-  const item = useMemo(() => items.find((i) => i.id === id), [items, id]);
+  // extra problems are outside the plan until started, so they may not be in the item list yet
+  const item = useMemo(() => items.find((i) => i.id === id) ?? (p ? problemItem(p) : undefined), [items, id, p]);
   const settings = useStore((s) => s.settings);
   const setSettings = useStore((s) => s.setSettings);
   const prog = useStore((s) => s.progress[id]);
@@ -112,10 +116,13 @@ export default function ProblemPage() {
     }
   };
 
+  const sub = p.sub ? topicById.get(p.sub) : undefined;
+  const hasVideos = !!p.lc || !!p.video;
   return (
+    <TreeLayout current={p.id} wide>
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link href={settings.blind ? "/learn" : `/learn/${p.topic}`} className="inline-flex items-center gap-1.5 text-[13px] text-mute hover:text-text"><ArrowLeft size={14} />{settings.blind ? "Curriculum" : topic?.title}</Link>
+        <Link href={settings.blind ? "/learn" : `/learn/${p.topic}`} className="inline-flex items-center gap-1.5 text-[13px] text-mute hover:text-text"><ArrowLeft size={14} />{settings.blind ? "Curriculum" : sub ? `${topic?.title} / ${sub.title}` : topic?.title}</Link>
         <div className="flex items-center gap-2">
           <button onClick={() => setSettings({ blind: !settings.blind })} aria-pressed={settings.blind} title="Blind mode hides the topic so you must recognise the pattern yourself" className={cn("flex h-9 items-center gap-1.5 rounded-xl border px-3 text-[13px] font-medium", settings.blind ? "border-craft/50 bg-craft/10 text-craft" : "border-line text-mute hover:text-text")}>{settings.blind ? <EyeOff size={14} /> : <Eye size={14} />}Blind mode</button>
           <div className={cn("num flex h-9 items-center gap-2 rounded-xl border px-3 font-mono text-[13px]", over ? "border-bad/50 bg-bad/10 text-bad" : sec > LIMIT * 0.75 ? "border-warn/50 text-warn" : "border-line text-mute")} title="A real round is 45 minutes">
@@ -134,12 +141,23 @@ export default function ProblemPage() {
               {!settings.blind && topic && <Pill color={areaOf("dsa").color}>{topic.title}</Pill>}
               {p.tier === 1 && <Pill className="border-line text-mute">Core</Pill>}
               {p.custom && <Pill className="border-line text-mute">From your notes</Pill>}
+              {p.extra && <Pill className="border-line text-mute">Extra practice</Pill>}
               {prog?.status === "done" && <Pill color="var(--color-ok)"><Check size={12} />Done</Pill>}
-              {p.lc && <LcLink lc={p.lc} />}
+              {p.lc && <LcLink lc={p.lc} href={p.extra ? p.url : undefined} prem={p.extra ? p.premium : undefined} />}
             </div>
             <h1 className="display text-2xl font-semibold sm:text-3xl">{p.title}</h1>
-            <p className="mt-3 text-[15.5px] leading-relaxed text-[#d5d8e6]">{p.statement}</p>
-            <p className="mt-4 rounded-xl border border-line bg-bg/60 p-3 text-[12.5px] leading-relaxed text-mute">This statement is underspecified on purpose, as it would be in the room. Start by asking the clarifying questions <i>you</i> think matter, then compare with the list below.</p>
+            {p.extra ? (
+              <>
+                <p className="mt-3 text-[14.5px] leading-relaxed text-mute">Extra practice: this page exists because one of your channels has a walkthrough of it. Read the statement on LeetCode, solve it here, then unlock the walkthroughs under Approaches.</p>
+                <a href={p.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-line px-3.5 py-2 text-[13.5px] font-medium hover:border-accent/50 hover:text-accent">Open the statement on LeetCode<ExternalLink size={13} /></a>
+                <p className="mt-3 text-[12.5px] text-faint">It joins your review schedule once you rate it; until then it stays outside the plan.</p>
+              </>
+            ) : (
+              <>
+                <p className="mt-3 text-[15.5px] leading-relaxed text-[#d5d8e6]">{p.statement}</p>
+                <p className="mt-4 rounded-xl border border-line bg-bg/60 p-3 text-[12.5px] leading-relaxed text-mute">This statement is underspecified on purpose, as it would be in the room. Start by asking the clarifying questions <i>you</i> think matter, then compare with the list below.</p>
+              </>
+            )}
           </section>
 
           <section className="card p-5">
@@ -157,11 +175,11 @@ export default function ProblemPage() {
                 </>
               )}
               {tab === "approaches" && (
-                p.approaches.length === 0 ? <p className="text-[13.5px] text-faint">No reference approaches for imported problems. Your own notes are under Notes; the AI reviewer can still check your code.</p> :
+                p.approaches.length === 0 && !hasVideos ? <p className="text-[13.5px] text-faint">No reference approaches for imported problems. Your own notes are under Notes; the AI reviewer can still check your code.</p> :
                 !showApproaches ? (
                   <div className="rounded-xl border border-dashed border-line p-5 text-center">
-                    <p className="text-[13.5px] text-mute">{p.approaches.length} approach{p.approaches.length > 1 ? "es" : ""} hidden. Seeing them before you try turns recall into recognition, and recognition does not survive an interview.</p>
-                    <Button size="sm" className="mt-3" onClick={() => setShowApproaches(true)}><Eye size={14} />I have tried: show approaches</Button>
+                    <p className="text-[13.5px] text-mute">{p.approaches.length ? `${p.approaches.length} approach${p.approaches.length > 1 ? "es" : ""}${hasVideos && !settings.blind ? " and the video walkthroughs" : ""} hidden.` : "The video walkthroughs are hidden."} Seeing them before you try turns recall into recognition, and recognition does not survive an interview.</p>
+                    <Button size="sm" className="mt-3" onClick={() => setShowApproaches(true)}><Eye size={14} />I have tried: show {p.approaches.length ? "approaches" : "walkthroughs"}</Button>
                   </div>
                 ) : (
                   <div className="space-y-2.5">
@@ -171,7 +189,9 @@ export default function ProblemPage() {
                         <p className="mt-1.5 text-[13.5px] leading-relaxed text-[#cfd3e3]">{a.idea}</p>
                       </motion.div>
                     ))}
-                    {p.video && <div className="pt-1"><div className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-faint">Walkthrough</div><VideoEmbed r={p.video} compact /></div>}
+                    {settings.blind ? (hasVideos && <p className="rounded-xl border border-line bg-bg/60 p-3 text-[12.5px] text-mute">Walkthrough videos are hidden in blind mode: their titles name the pattern. Turn blind mode off to watch them.</p>)
+                      : p.lc ? <div className="pt-1"><ProblemVideos lc={p.lc} /></div>
+                      : p.video && <div className="pt-1"><div className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-faint">Walkthrough</div><VideoEmbed r={p.video} compact /></div>}
                     {p.approaches.length > 1 && <p className="text-[12.5px] text-mute">Bias check: can you say when each alternative is the <i>better</i> choice? Interviewers ask “why not the other one?”</p>}
                   </div>
                 )
@@ -226,5 +246,6 @@ export default function ProblemPage() {
         </div>
       </div>
     </div>
+    </TreeLayout>
   );
 }

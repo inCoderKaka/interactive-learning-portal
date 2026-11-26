@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { AudioLines, CalendarRange, Check, Cloud, Download, EyeOff, FileUp, KeyRound, LogOut, PlugZap, RefreshCw, Trash2, UserRound } from "lucide-react";
+import { AudioLines, CalendarRange, Check, Cloud, Download, EyeOff, FileUp, KeyRound, LogOut, PlugZap, RefreshCw, Shapes, Trash2, UserRound } from "lucide-react";
+import { DEFAULT_VISUALS } from "@/components/viz/Frame";
+import { vizTitle } from "@/components/viz";
 import { useStore } from "@/lib/store";
 import { chat, getKeys, listModels, setKeys, type Keys, type Provider } from "@/lib/ai";
 import { parsePractice, type ImportResult } from "@/lib/importer";
@@ -18,6 +20,36 @@ const PROVIDERS: { id: Provider; name: string; note: string; keyLabel: string; k
   { id: "local", name: "local-server", note: "Your own OpenAI-compatible server (/v1/chat/completions).", keyLabel: "Access key (optional)", keyHint: "Sent as a Bearer token", modelField: "localModel" },
 ];
 const input = "h-10 w-full rounded-xl border border-line bg-bg px-3 text-sm outline-none focus:border-accent/60";
+
+/** Which visuals, animations and interactions appear, and the per-visual hide list. */
+function VisualSettings() {
+  const v = useStore((s) => s.settings.visuals ?? DEFAULT_VISUALS);
+  const setSettings = useStore((s) => s.setSettings);
+  const set = (p: Partial<typeof v>) => setSettings({ visuals: { ...v, ...p } });
+  const opt = (on: boolean) => cn("rounded-xl border px-3.5 py-2.5 text-left text-[13px] transition", on ? "border-accent/60 bg-accent/10" : "border-line bg-panel2 hover:border-[#3a4160]");
+  return (
+    <Section id="visuals" icon={Shapes} title="Visuals and animations" sub="Step-through animations, simulations and interactive diagrams. Hide one from its own Hide button, or set a level for all of them here.">
+      <div className="grid gap-2 sm:grid-cols-3">
+        {([["all", "Show all", "Every visual open in the page"], ["collapsed", "Folded", "One line each; open the ones you want"], ["off", "Off", "No visuals at all; text only"]] as const).map(([id, t, d]) => (
+          <button key={id} onClick={() => set({ mode: id })} aria-pressed={v.mode === id} className={opt(v.mode === id)}><span className="block font-semibold">{t}</span><span className="block text-mute">{d}</span></button>
+        ))}
+      </div>
+      <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-panel2 p-4">
+        <input type="checkbox" checked={v.motion === "reduced"} onChange={(e) => set({ motion: e.target.checked ? "reduced" : "auto" })} className="mt-1 accent-[var(--color-accent)]" />
+        <span><span className="block text-sm font-semibold">Reduce motion</span><span className="block text-[13px] leading-relaxed text-mute">Transitions jump instead of animating. Off follows your device setting.</span></span>
+      </label>
+      {v.hidden.length > 0 && (
+        <div className="mt-4">
+          <div className="mb-2 text-[13px] text-mute">Hidden one by one ({v.hidden.length})</div>
+          <div className="flex flex-wrap gap-1.5">
+            {v.hidden.map((id) => <button key={id} onClick={() => set({ hidden: v.hidden.filter((x) => x !== id) })} className="rounded-lg border border-line px-2.5 py-1 text-[12.5px] text-mute hover:border-accent/50 hover:text-text">{vizTitle(id)} · restore</button>)}
+            <button onClick={() => set({ hidden: [] })} className="px-1 text-[12.5px] text-faint underline hover:text-mute">restore all</button>
+          </div>
+        </div>
+      )}
+    </Section>
+  );
+}
 
 function Section({ id, icon: Icon, title, sub, children }: { id?: string; icon: typeof Cloud; title: string; sub?: string; children: React.ReactNode }) {
   return (
@@ -138,6 +170,8 @@ export default function SettingsPage() {
       <Section id="voice" icon={AudioLines} title="Voice and AI quality" sub="How the mock interviewer speaks and listens, and which models each AI task uses. Everything runs on your own keys: no other account is needed.">
         <AiSettingsPanel settings={settings} setSettings={setSettings} />
       </Section>
+
+      <VisualSettings />
 
       <Section icon={EyeOff} title="Practice conditions" sub="Defaults that keep practice honest. You can still toggle blind mode on any problem.">
         <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-panel2 p-4">

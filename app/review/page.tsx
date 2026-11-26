@@ -7,7 +7,7 @@ import { useStore } from "@/lib/store";
 import { useDue, useItems } from "@/lib/hooks";
 import { RATINGS, addDays, todayISO } from "@/lib/srs";
 import { aiReady, gradeRecall } from "@/lib/ai";
-import { PROBLEMS, areaOf, designById, topicById } from "@/content";
+import { problemById, areaOf, designById, topicById } from "@/content";
 import { FeedbackView, Spinner } from "@/components/Work";
 import { Button, Empty, Md, PageHead, Pill, cn } from "@/components/ui";
 import type { Feedback, Item, Rating } from "@/lib/types";
@@ -18,7 +18,7 @@ function useCard(item: Item | undefined) {
   return useMemo(() => {
     if (!item) return null;
     if (item.kind === "problem") {
-      const p = PROBLEMS.find((x) => x.id === item.id) ?? custom.find((x) => x.id === item.id);
+      const p = custom.find((x) => x.id === item.id) ?? problemById.get(item.id);
       if (!p) return null;
       return {
         ask: "Without code: state the approach, why it works, and the time and space complexity.", prompt: p.statement, problem: p,
