@@ -24,6 +24,12 @@ Vertical order: BFS with column index; sort by (column, row, value) for LC 987.
 Diagonal, boundary (left edge + leaves + reversed right edge) and zigzag (alternate the direction per level).
 ## Complexity
 Every traversal is O(n) time; space is O(h) for DFS (h = height: log n balanced, n skewed) and O(width) for BFS.
+## Extras
+Dry run tree 1(2(4,5),3): pre 12453, in 42513, post 45231, level 12345.
+Iterative post-order: reverse of (node, right, left) pre-order, or stack + prev.
+Reverse in-order (right, node, left) = descending BST order.
+Zigzag: reverse alternate levels.
+Top/bottom view: first/last node per column in BFS.
 `,
   "tree-dfs-returns": `
 ## Recipe
@@ -46,6 +52,12 @@ Top-down parameters (depth, bounds, running sum) go down; bottom-up returns come
 Post-order with an explicit stack and a map node → result when depth may hit 10⁵.
 ## Complexity
 O(n) time, O(h) space. A global or nonlocal variable holds the "bent path" answer.
+## Extras
+Parameters carry information down; return values carry it up.
+LC 124: global answer starts at −∞.
+Tilt: return sums, add |l − r|.
+Calling height() inside every node → O(n²) on skewed trees.
+Iterative post-order: process a parents-first list in reverse with a results map.
 `,
   "tree-bfs": `
 ## Per-level BFS
@@ -65,6 +77,12 @@ Perfect tree: link node.left.next = node.right and node.right.next = node.next.l
 General tree: walk the current level via next pointers while building the next level with a dummy head.
 ## Complexity
 O(n) time; O(width) space, up to n/2 on the last level of a complete tree.
+## Extras
+Snapshot len(q) separates levels.
+Width: heap indices, re-base per level against overflow.
+Vertical (LC 987): sort by (column, row, value).
+LC 117 in O(1) space: dummy head + tail for the next level.
+Cousins: same depth, different parents.
 `,
   "tree-construct": `
 ## Pre-order + in-order (LC 105)
@@ -83,6 +101,12 @@ BST from pre-order (LC 1008): bound-based recursion, O(n).
 Maximum binary tree (LC 654): a decreasing monotonic stack gives O(n).
 Cartesian tree: heap-ordered by value, in-order by index; built with a stack.
 Clone a tree with random pointers: hash map old → new.
+## Extras
+Dry run pre [3,9,20,15,7], in [9,3,15,20,7] → 3(9, 20(15, 7)).
+Serialisation: 2n + 1 tokens (n + 1 nulls).
+Maximum Binary Tree O(n): decreasing stack.
+LC 606: keep "()" for a missing left child when a right child exists.
+Duplicate subtrees: serialise each subtree into a counter.
 `,
   lca: `
 ## Recursive LCA (LC 236)
@@ -102,6 +126,12 @@ Alternatives: Euler tour + RMQ (sparse table, O(1) query), Tarjan's offline LCA 
 ## Using the LCA
 dist(u, v) = depth[u] + depth[v] − 2·depth[lca].
 Path sums or maxima via prefix-from-root values; LCA of deepest leaves (LC 1123).
+## Extras
+Parent-pointer LCA: switch starts like linked-list intersection.
+Path maximum: store max along each 2^k jump.
+Tarjan offline LCA with DSU: O((n + Q)·α).
+Forest: check same tree first.
+On-path test: dist(a,u) + dist(u,b) == dist(a,b).
 `,
   "bst-ops": `
 ## BST property
@@ -122,6 +152,11 @@ Self-balancing trees (AVL, red-black) guarantee O(log n).
 ## Library ordered sets
 Java TreeMap/TreeSet: floorKey, ceilingKey, headMap, tailMap. C++ std::map/set: lower_bound, upper_bound.
 Python has no built-in: sortedcontainers.SortedList, or bisect on a list (O(n) inserts).
+## Extras
+Duplicate conventions: forbid, count field, or one consistent side.
+Delete case 3: copy the successor's key, delete the successor (it has no left child).
+Closest value: track the best while walking down.
+Python insort is O(n); SortedList is O(log n)-ish.
 `,
   "bst-inorder": `
 ## Validate (LC 98)
@@ -142,6 +177,11 @@ Amortised O(1) per call, O(h) memory.
 Hash set during traversal (O(n)), or two iterators (ascending and descending) as two pointers in O(h) memory.
 ## Other in-order uses
 Minimum absolute difference (adjacent in-order values), mode in a BST, convert a BST to a greater-sum tree (reverse in-order with a running sum), BST to a sorted doubly linked list.
+## Extras
+Local child check counterexample: 5 (1, 6 (3, ·)).
+Iterator: amortised O(1), O(h) memory; reverse iterator for descending.
+Merge two BSTs: two iterators.
+Greater Sum Tree: reverse in-order running sum.
 `,
   "balanced-bst": `
 ## Rotations
@@ -164,6 +204,12 @@ Order-statistic trees add subtree sizes for rank and select.
 ## Ordered maps in interviews
 Reach for one when you need sorted order plus updates: floor/ceiling, range counts, "closest value", calendar booking (LC 729/731), sliding windows with order statistics.
 State O(log n) per operation; in Python say SortedList.
+## Extras
+Right rotation: y(x(A,B),C) → x(A,y(B,C)).
+AVL sparsest tree: N(h) = N(h−1) + N(h−2) + 1.
+Red-black: ≤ 2 rotations per insert, ≤ 3 per delete.
+500-way B-tree, 4 levels ≈ 62 billion keys.
+Scapegoat trees rebuild; splay trees move accessed keys to the root.
 `,
   "trie-basics": `
 ## Structure
@@ -184,6 +230,11 @@ Map sum pairs (LC 677): store sums per prefix node.
 ## Trie vs hash set
 A hash set answers whole-word membership in O(L) too, but cannot do prefix queries or ordered enumeration.
 A trie avoids rehashing shared prefixes and supports early termination in backtracking.
+## Extras
+Delete: clear end flag; prune childless non-end nodes on the way back (or when count hits 0).
+Children: array (fast) vs map (sparse, Unicode).
+Replace Words: stop at the first end flag on the path.
+Sorted listing: DFS children in order with append/pop.
 `,
   "trie-search": `
 ## Word search II (LC 212)
@@ -203,6 +254,11 @@ Or a trie storing the top 3 words at each node.
 Sort by length; word-break DP for each word against a trie or set of shorter words.
 ## Complexity
 State cost in terms of board cells × 4^L (pruned) or total characters; the trie's value is the pruning.
+## Extras
+Aho–Corasick: trie + failure links, O(n + patterns + matches).
+Search suggestions: sort + binary search per prefix, or top-3 per trie node.
+Palindrome Pairs: hash map of words, O(n·L²).
+Prune childless, word-less trie nodes after finding words.
 `,
   "bit-trie": `
 ## Maximum XOR of two numbers (LC 421)
@@ -219,6 +275,11 @@ Prefix XORs: max over j of P[j] XOR P[i] with i < j, so insert prefixes as you g
 ## Why greedy from the top bit works
 A higher bit is worth more than all lower bits together (2^k > 2^k − 1), so fixing the top bit first is always optimal.
 Linear XOR basis (Gaussian elimination over GF(2)) answers "max XOR of any subset".
+## Extras
+Insert before query: self-pair gives 0, harmless.
+Hash-set alternative: prefix sets per bit, O(n·B).
+Max subarray XOR: prefix XORs, insert P[0] = 0 first.
+Negative numbers: fixed width or offset.
 `,
   "heap-internals": `
 ## Array layout
@@ -240,6 +301,12 @@ C++ priority_queue is a max-heap; greater<> makes a min-heap.
 Not supported by the standard heaps: push a new entry and skip stale ones on pop (lazy deletion), or use an indexed heap.
 ## d-ary heaps
 Each node has d children: shallower (faster decrease-key), but sift-down compares d children. 4-ary heaps are often faster in practice.
+## Extras
+Pop: last element to the root, sift down with the smaller child.
+Bottom-up heapify starts at n//2 − 1.
+Introsort falls back to heap sort for O(n log n) worst case.
+heappushpop / heapreplace for size-k heaps.
+Changing a key in place without re-sifting breaks the heap.
 `,
   "top-k": `
 ## Size-k heap trick
@@ -257,6 +324,11 @@ Reorganise string (LC 767): max-heap by count; place the top two alternately.
 ## K-way merge
 Heap of (value, list id, index) holding each list's head: pop the smallest, push its successor. O(N log k).
 Merge k sorted lists, smallest range covering k lists (LC 632, track the max), k-th smallest in a sorted matrix, k pairs with smallest sums (LC 373, push (i, 0) and then (i, j + 1)).
+## Extras
+heapreplace when x > h[0] keeps the heap at size k.
+Bucket sort top-k frequent: bucket[f] lists, scan high to low, O(n).
+Ugly numbers: merge multiplied sequences, skip duplicates.
+Heavy hitters at scale: count-min sketch / space-saving + heap.
 `,
   "two-heaps": `
 ## Median of a data stream (LC 295)
@@ -273,6 +345,11 @@ Each round, move everything affordable into the profit heap, then take the best 
 Same idea: maximum performance of a team (LC 1383), minimum cost to hire k workers (LC 857).
 ## Why two heaps
 They give O(1) access to the boundary between two halves; a sorted structure gives arbitrary order statistics at O(log n) each but costs more code and memory.
+## Extras
+Dry run: add 5, 2, 8 → medians 5, 3.5, 5.
+Lazy deletion needs logical sizes per heap.
+Maximum Subsequence Score: sort by multiplier, heap of the k largest others.
+Prefer SortedList when elements leave or arbitrary ranks are needed.
 `,
   "heap-scheduling": `
 ## Meeting rooms II (LC 253)
@@ -289,6 +366,11 @@ Heap simulation: each cycle of cooldown + 1 slots takes the most frequent tasks.
 Course schedule III (LC 630): sort by deadline; add each course's duration to a max-heap; when the total exceeds the deadline, drop the longest course.
 Minimum number of refuelling stops (LC 871): pass stations, keep their fuel in a max-heap, and refuel from the largest only when stuck.
 Exchange argument: dropping the longest kept item leaves the most room for the future.
+## Extras
+Single-Threaded CPU: available heap by (time, index); jump time when idle.
+Refuelling stops: max-heap of passed stations, refuel retroactively.
+Rearrange String k Distance: heap + cooldown queue.
+Sweep: starts and ends sorted separately with two pointers.
 `,
   "indexed-pq": `
 ## Lazy deletion
@@ -306,5 +388,10 @@ Lazy deletion: simplest, usually fine in interviews.
 Indexed heap: the textbook answer for decrease-key; more code.
 Ordered set: when you need min and max, or deletions of arbitrary items, with clean code.
 Fibonacci heaps give O(1) amortised decrease-key (Dijkstra O(E + V log V)) but are slow in practice.
+## Extras
+Logical size ≠ len(heap) with lazy deletion.
+Version numbers: (priority, version, key) vs current_version[key].
+Food Rating / Number Container: per-group lazy heaps against a current-value map.
+Ordered set: erase + insert to change a priority.
 `,
 };
