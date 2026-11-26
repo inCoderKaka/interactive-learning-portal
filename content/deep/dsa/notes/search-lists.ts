@@ -21,6 +21,11 @@ Python bisect_left / bisect_right; C++ lower_bound / upper_bound; Java Arrays.bi
 Java Collections.binarySearch needs a sorted list; on duplicates the returned index is arbitrary.
 ## Complexity and beyond arrays
 O(log n) probes. Works on any monotone function: answers, time, real numbers, implicit arrays.
+## Extras
+Java's binarySearch overflow bug lasted ~9 years.
+Python bisect key= (3.10+).
+Linked lists: binary search is O(n log n): worse than scanning.
+Descending arrays: flip the predicate or negate values.
 `,
   "bs-rotated": `
 ## Search in rotated sorted array (LC 33)
@@ -41,6 +46,11 @@ Mountain array search (LC 1095): find the peak, then binary search each side (th
 Double hi (1, 2, 4, …) until a[hi] ≥ target or out of range, then binary search in [hi/2, hi]: O(log n).
 ## Rotated variants
 Check whether an array is a rotation of a sorted one: at most one descent, counting the wrap-around.
+## Extras
+Duplicates: shrink both ends (search) or hi −= 1 (minimum): O(n) worst.
+Exponential search: double hi until get(hi) ≥ target.
+Rotations = index of the minimum.
+≤ in a[lo] ≤ a[mid] handles the two-element case.
 `,
   "bs-answer": `
 ## Pattern
@@ -66,6 +76,11 @@ Loop a fixed number of times (about 60–100) or until hi − lo < ε; do not te
 Feasibility checks are greedy; argue that greedy packing is optimal for a fixed limit (an exchange argument).
 ## Alternatives to name
 Sometimes a heap, parametric search or a direct formula is faster; mention it when the range is huge.
+## Extras
+Hints: "minimise the maximum", "maximise the minimum", "at least k by day/time".
+LC 2187: Σ floor(t / time_i) ≥ total trips.
+LC 2226: Σ floor(c / x) ≥ k, maximise x.
+Greedy check proof: exchange (moving a cut later never hurts).
 `,
   "bs-2d-median": `
 ## Fully sorted matrix (LC 74)
@@ -82,6 +97,11 @@ Too far right (A[i−1] > B[j]) → hi = i − 1; else lo = i + 1. O(log min(m, 
 Compare A[k/2 − 1] and B[k/2 − 1]; discard the smaller side's first k/2 elements; recurse with k − k/2. O(log k).
 ## Linear alternative
 Merge with two pointers until the middle: O(m + n). Say it first, then improve.
+## Extras
+Sentinels ±∞ for i = 0, i = m, j = 0, j = n.
+Fully sorted matrix: virtual index (k // C, k % C).
+Linear baseline: merge until the middle.
+Odd total → max(aL, bL).
 `,
   "bs-real-ternary": `
 ## Bisection
@@ -99,6 +119,11 @@ Places probes at the golden ratio so one evaluation is reused per step: fewer fu
 Convex cost (e.g. Σ|x − aᵢ|, sum of distances): the minimum is at the median (1D) — no search needed.
 Minimising a sum of squared distances → the mean.
 Convex functions of an integer: binary search on the discrete derivative.
+## Extras
+Tolerance loops can stall with large magnitudes: use fixed iterations.
+Sqrt(x): last m with m ≤ x // m.
+Newton for roots: x = (x + n/x)/2.
+Plateaus break ternary search.
 `,
   "ll-basics": `
 ## Structure
@@ -119,6 +144,11 @@ Sentinels at both ends (head and tail dummies) remove all null checks.
 ## Practical note
 Draw boxes and arrows; update pointers in a safe order (save next before overwriting).
 Most bugs: losing the rest of the list, or not handling the 0- and 1-node lists.
+## Extras
+Intersect iff same tail node.
+Remove elements: dummy + prev loop.
+Test lengths 0, 1, 2 and head/tail cases.
+Arrays usually beat lists in practice (cache).
 `,
   "ll-reversal": `
 ## Iterative reversal
@@ -138,6 +168,11 @@ Find the middle, reverse the second half, compare, then reverse it back to resto
 Get length L and the tail; k mod L; make it circular; break after L − k steps.
 ## Habits
 Always say what prev, cur and nxt point to after each step; test with lengths 0, 1, 2 and k = length.
+## Extras
+Invariant: prev = reversed prefix head, cur = remaining suffix head.
+k-groups: check k nodes remain first; connect prevTail → newHead, oldHead → next start.
+Swap Nodes in Pairs = k = 2 by rewiring.
+Restore the list after a palindrome check.
 `,
   "fast-slow": `
 ## Middle
@@ -157,6 +192,11 @@ Any f: S → S on a finite set eventually cycles (rho shape).
 Teleport slow to fast at powers of two; finds the cycle length directly with fewer function evaluations.
 ## Other uses
 k-th from the end: lead by k. Split a list in half for merge sort. Detecting circular array loops (LC 457).
+## Extras
+Gap shrinks by 1 per step ⇒ meet within one lap.
+Happy Number: Floyd on the digit-square map.
+Pollard's rho uses Floyd/Brent.
+Break a cycle: walk from the entrance to its predecessor.
 `,
   "ll-merge-sort": `
 ## Merge two sorted lists (LC 21)
@@ -175,6 +215,11 @@ Two dummy lists (< x and ≥ x); append nodes in order; join; terminate the seco
 Dummy-headed sorted list; insert each node at its spot. O(n²). Skip the scan when the node belongs at the end.
 ## Odd even linked list (LC 328)
 Two chains (odd and even positions), then link odd's tail to even's head. O(n), O(1).
+## Extras
+Bottom-up merge sort: runs of 1, 2, 4… with a tail pointer.
+Insertion sort list: extend the tail when already in order.
+Odd Even List: alternate odd/even pointer advances.
+Merging one by one: O(N·k).
 `,
   "ll-copy-design": `
 ## Copy list with random pointer (LC 138)
@@ -191,5 +236,10 @@ Design browser history: a doubly linked list or an array with a cursor.
 Skip lists: layered linked lists with expected O(log n) search (Redis sorted sets).
 ## Intrusive lists
 The next/prev pointers live inside the object itself (Linux kernel list_head): no extra allocation, and O(1) removal given the object.
+## Extras
+Recursive memoised copy works like Clone Graph.
+LC 430 iterative: stack of saved next pointers.
+Browser History visit truncates forward history.
+container_of recovers the object from its link field.
 `,
 };
