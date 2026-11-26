@@ -269,6 +269,12 @@ SWAR popcount: masks 0x5555…, 0x3333…, 0x0F0F…, multiply 0x01010101.
 Sum of subarray ORs: total − subarrays without the bit (runs).
 LC 2411: nearest index to the right per bit.
 Majority by bits: majority holder of each bit.
+popcount: built-ins, Kernighan (x &= x − 1), SWAR, byte lookup tables.
+Counting Bits: bits[i] = bits[i >> 1] + (i & 1), or bits[i & (i − 1)] + 1.
+Total Hamming distance: per bit c·(n − c).
+Sum of XOR over all pairs: Σ_b c_b·(n − c_b)·2^b.
+Single Number II: bit counts mod 3 (or the ones/twos machine).
+Minimum flips a → b: popcount(a ^ b).
 `,
   "gcd-primes": `
 ## GCD

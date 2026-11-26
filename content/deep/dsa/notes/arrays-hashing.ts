@@ -25,6 +25,11 @@ Merge sorted arrays in place: fill from the back.
 ## Shapes
 Product except self: prefix products × suffix products, no division.
 First missing positive: cyclic placement, then the first slot i with a[i] ≠ i+1.
+## Extras
+Growth < 1.618 allows reusing freed blocks.
+Shrink at 1/4 full, not 1/2.
+Find All Duplicates / Disappeared: negate a[v − 1].
+Structure of arrays beats array of structures for single-field scans.
 `,
   "hash-tables": `
 ## Idea
@@ -54,6 +59,12 @@ Use tuples (Python), a string join with a separator, or r·cols + c for grid cel
 ## Probabilistic cousins
 Bloom filter: k hashes into a bit array; false positives possible, never false negatives; no deletion (counting Bloom adds it).
 Count-min sketch estimates frequencies; HyperLogLog estimates distinct counts.
+## Extras
+SwissTable: 16-slot groups + metadata bytes probed with SIMD.
+Power-of-two sizes need high-bit mixing (Java XORs high into low bits).
+Hash flooding (2011) → randomised seeds (SipHash).
+Cuckoo filters support deletion.
+Consistent hashing moves ~1/n keys when a server joins.
 `,
   "counting-patterns": `
 ## Complement lookup
@@ -77,6 +88,11 @@ Isomorphic strings / word pattern: two maps, one in each direction (a bijection)
 Count of subarrays with a property = map of prefix state → occurrences (see the prefix-sum + hash page).
 ## Memory
 A hash map uses O(distinct keys) space; with a small fixed alphabet, prefer an array of 26 or 128.
+## Extras
+Pairs with difference k (LC 532): k = 0 counts duplicates.
+Contains Duplicate II: last-index map or window set.
+Group Shifted Strings: consecutive differences mod 26.
+Java: int[] beats HashMap<Integer,Integer> for small keys (boxing).
 `,
   "prefix-sums": `
 ## 1D
@@ -99,6 +115,12 @@ Strings: rolling hash prefixes give O(1) substring hashes.
 Updates plus queries: use a Fenwick or segment tree instead.
 ## Checklist
 Watch off-by-one (inclusive r), overflow (use long), and negative numbers (fine for prefix sums, but they break sliding windows).
+## Extras
+Pivot index: left = P[i], right = total − P[i+1].
+Min start value: 1 − min prefix.
+Shifting Letters II: difference array of shifts mod 26.
+Prefix sums of prefix sums for all-subarray sums.
+Static → prefix; offline updates → difference; online → Fenwick/segment tree.
 `,
   "prefix-hash": `
 ## Pattern
@@ -122,6 +144,11 @@ Submatrices summing to target: fix a pair of rows, compress columns, run the 1D 
 Every subarray ending at j corresponds to exactly one earlier prefix i, so counting matching prefixes counts subarrays exactly once.
 ## Complexity
 O(n) time, O(n) space. Insert after the lookup, or k = 0 would count empty subarrays.
+## Extras
+Path Sum III: decrement on backtrack.
+Submatrices to Target: fix row pairs, 1D on column sums: O(R²·C).
+Store index lists to enumerate all subarrays.
+Non-negative numbers: sliding window alternative.
 `,
   kadane: `
 ## Recurrence
@@ -141,5 +168,10 @@ Kadane is a 1D DP with an O(1) rolling state; it is also the greedy "drop a nega
 ## Why it works
 The best subarray ending at i either is a[i] alone or extends the best ending at i−1; any other extension is worse.
 Divide and conquer gives O(n log n) (best left, best right, best crossing the middle); it shows up when segment trees answer range max-subarray queries.
+## Extras
+Dry run [−2,1,−3,4,−1,2,1,−5,4] → 6.
+Empty allowed: cur = max(0, cur + x).
+Turbulent / ascending subarrays: extend-or-restart.
+Segment tree node: (total, prefix, suffix, best).
 `,
 };

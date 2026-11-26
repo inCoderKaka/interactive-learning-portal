@@ -330,6 +330,10 @@ Shuffle (Fisher–Yates).
 Order in remove: overwrite slot i and pos[last] first, then pop and delete pos[x] (handles x == last).
 Random Pick Index: reservoir sampling.
 Remove a random element: random index + normal remove.
+Array alone: O(n) to find and remove; hash set alone: no O(1) uniform pick.
+insert: append + pos[x] = len − 1; reject duplicates.
+getRandom: uniform index into the dense array.
+Random Pick Index (LC 398): reservoir over matching positions.
 `,
   "stream-counters": `
 ## Hit counter (LC 362)
@@ -481,6 +485,10 @@ Counting sort keys-only: write each value cnt[v] times.
 32-bit ints base 256: 4 passes.
 Relative Sort Array: counting over small values.
 Suffix arrays use radix sort on rank pairs.
+Counting sort: count, prefix-sum to positions, place stably; O(n + k).
+LSD radix: stable pass per digit from least significant; O(d·(n + b)).
+Bucket sort: n buckets for uniform data, sort each, concatenate.
+Top K Frequent: bucket[f] lists, scan from high f.
 `,
   quickselect: `
 ## Algorithm

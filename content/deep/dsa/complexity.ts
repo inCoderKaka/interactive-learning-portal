@@ -91,6 +91,9 @@ Count extra memory beyond the input: arrays you allocate, hash maps, recursion s
       ["Is hash map lookup really O(1)?", "Expected O(1) under a good hash function and bounded load factor. Worst case is O(n) (everything collides), and adversarial inputs can force it (hash flooding), which is why Java 8 switches long buckets to balanced trees (O(log n) worst case) and languages randomise their hash seeds."],
       ["Is n log n much slower than n in practice?", "log₂ of a billion is about 30. So n log n is at most ~30× linear for any realistic n, and constants often matter more. That is why O(n log n) sorting is usually fine even when an O(n) method exists."],
       ["What is pseudo-polynomial time?", "Polynomial in the numeric value of the input but exponential in its length in bits. Knapsack DP is O(n·W): with W given in log₂ W bits, the running time is exponential in the input size. It is fast when W is small, which is why the DP works in interviews."],
+      ["How do I state complexity when the input has several sizes?", "Use every size that matters: O(V + E) for graphs, O(n·m) for two strings, O(R·C) for grids, O(n + q log n) for n elements and q queries. Collapsing them into one n hides real costs (a dense graph has E ≈ V²)."],
+      ["What is the difference between O(n + m) and O(max(n, m))?", "Nothing asymptotically: n + m ≤ 2·max(n, m) and max(n, m) ≤ n + m. Either form is fine; O(n + m) is the conventional way to write it."],
+      ["Should I count the output in time complexity?", "Yes for time: producing k results costs at least O(k), so algorithms that list all subsets are Ω(2ⁿ) regardless of cleverness (\"output-sensitive\" bounds like O(n log n + k)). For space, say whether you count the output buffer; many interviewers exclude it."],
     ],
     revise: md`
 ### Definitions
@@ -109,6 +112,9 @@ Count extra memory beyond the input: arrays you allocate, hash maps, recursion s
 ? Order: n log n, n√n, n², log² n, 2ⁿ? :: log² n < n log n < n√n < n² < 2ⁿ.
 ? Does the log base matter? :: Not inside O; it is a constant factor.
 ? Expected vs amortised? :: Expected averages over random choices; amortised averages the worst-case total over a sequence.
+? Θ vs O in interview speech? :: People say O but usually mean the tight (Θ) worst-case bound.
+? Cost of sorting n strings of length L? :: O(n log n · L) comparisons of up to L characters.
+? Harmonic loop cost? :: Σ n/i = Θ(n log n).
 `,
     pitfalls: ["Ignoring hidden costs of library calls (slicing, string concatenation, list.insert(0, ·))", "Calling a two-pointer loop O(n²) because it looks nested", "Saying a hash map is O(1) worst case", "Forgetting the recursion stack when stating space", "Using n for everything when the input has several sizes (V and E, n and m)"],
     quiz: [
@@ -131,43 +137,68 @@ Count extra memory beyond the input: arrays you allocate, hash maps, recursion s
     lesson: md`
 ## The idea
 
-**Amortised analysis** bounds the *total* cost of any sequence of m operations, then divides by m. No probability is involved: it is a worst-case guarantee on sequences, not an average over random inputs.
+Some operations are usually cheap but occasionally expensive: a dynamic array's append is O(1) until it must resize and copy everything. Worst-case analysis per operation would call append O(n), which badly overstates the real cost of n appends. **Amortised analysis** bounds the **total** cost of any sequence of m operations, then divides by m: if any sequence costs at most O(m · f), each operation costs O(f) amortised.
 
-The classic example: appending to a **dynamic array** (C++ vector, Java ArrayList, Python list). When the array is full, allocate one twice as large and copy everything over. That single append costs Θ(n). Yet n appends cost Θ(n) in total, so each append is **amortised O(1)**.
+Amortised cost is a **worst-case guarantee over sequences**, not an average over random inputs and not a probability: no matter which sequence of operations an adversary chooses, the total stays within the bound. (Average-case and expected costs depend on input or random choices; amortised costs do not.)
 
 ## Method 1: aggregate
 
-Add up the whole sequence. With doubling from capacity 1, copies happen at sizes 1, 2, 4, …, up to n. Total copy work is 1 + 2 + 4 + … + n < 2n. Plus n writes for the elements themselves: under 3n total for n appends. Average: < 3 per append.
+Bound the total cost of n operations directly and divide by n.
+
+**Dynamic array with doubling**: n appends trigger copies of 1, 2, 4, …, up to n elements: total copies < 2n, plus n writes: total < 3n, so O(1) amortised per append.
+
+**Binary counter increment**: bit i flips every 2^i increments, so n increments flip at most n + n/2 + n/4 + … < 2n bits: O(1) amortised, although a single increment (0111…1 → 1000…0) flips O(log n) bits.
 
 ## Method 2: accounting (banker's)
 
-Charge each operation a fixed **amortised fee**, larger than its actual cost when it is cheap; store the surplus as **credit** on the data structure; spend credit on expensive operations. If credit never goes negative, the fees bound the true total.
+Charge each operation a fixed "amortised price", possibly more than its actual cost, and store the surplus as **credit** on data elements; expensive operations are paid for with stored credit. The analysis is valid if credit never goes negative.
 
-For the dynamic array, charge 3 per append: 1 pays for writing the element, 2 are saved on it. When the array of capacity k doubles, the k/2 elements added since the last resize each hold 2 credits, which pays for copying all k elements.
+**Dynamic array**: charge 3 per append. 1 pays for writing the element; 2 is stored on it. When the array doubles from size k to 2k, the k/2 elements appended since the last resize each hold 2 credits, enough to pay for copying all k elements (themselves and the k/2 older ones). Credit never runs out, so append is O(1) amortised.
+
+**Queue from two stacks**: charge 3 per push: push onto the in-stack, later move to the out-stack, later pop. Each element is moved at most once, so pop is O(1) amortised.
 
 ## Method 3: potential
 
-Define a **potential function** Φ(state) ≥ 0 with Φ(initial) = 0. The amortised cost of an operation is actual cost + ΔΦ. Summing over a sequence, the ΔΦ terms telescope, so total actual cost ≤ total amortised cost. For the dynamic array, Φ = 2·size − capacity works: a normal append raises Φ by 2 (amortised 3); a resize drops Φ by about the copy cost.
+Define a potential function Φ on the data structure's state, with Φ ≥ 0 and Φ(initial) = 0. Amortised cost = actual cost + ΔΦ. Summed over a sequence, the potential differences telescope: total amortised = total actual + Φ(final) − Φ(initial) ≥ total actual, so amortised costs bound the real total.
 
-The potential method is the one used for hard results like splay trees and Fibonacci heaps.
+**Dynamic array**: Φ = 2·size − capacity (≥ 0 once at least half full). A cheap append: actual 1, ΔΦ = 2: amortised 3. A resizing append at size = capacity = k: actual k + 1 (copy and write), the capacity doubles, so ΔΦ = 2 − k: amortised 3.
+
+The potential method is the most powerful: it proves union-find's O(α(n)), splay trees' O(log n) and Fibonacci heaps' bounds.
 
 ## Growth factor matters
 
-- **Doubling (factor 2)** or any constant factor > 1 gives amortised O(1). Many implementations use 1.5 to reuse freed memory better.
-- **Adding a constant** (grow by 10 slots each time) gives Θ(n) per append amortised: total Θ(n²). Never do this.
-- **Shrinking**: if you halve when the array becomes half full, alternating push/pop at the boundary thrashes (Θ(n) each). Shrink at one quarter full instead; then amortised O(1) holds for both.
+- **Constant increments** (grow by +c): copies of c, 2c, 3c, …: total Θ(n²/c): O(n) amortised per append. Never do this for unbounded growth.
+- **Any constant factor r > 1** (1.5, 2): total copies ≤ n · r/(r − 1): O(1) amortised. Smaller factors waste less memory but copy more often (factor 1.5 copies about 3n in total, factor 2 about 2n). Factors below the golden ratio (≈ 1.618) let the allocator reuse previously freed blocks.
+- **Shrinking**: halve the capacity when the array is a quarter full, not half full. Shrinking at half would let an adversary alternate push and pop at the boundary, resizing every time (O(n) each).
 
 ## Other amortised arguments you will use
 
-- **Monotonic stack**: each element is pushed once and popped at most once. The while-pop loop inside the for loop is O(n) total.
-- **Two pointers / sliding window**: each pointer moves forward at most n times.
-- **Queue from two stacks**: each element is moved from the in-stack to the out-stack at most once. Amortised O(1) per operation.
-- **Union-find** with path compression and union by rank: O(α(n)) amortised per operation.
-- **Hash table rehashing**: same doubling argument as dynamic arrays.
+- **Monotonic stack / deque**: each index is pushed once and popped at most once, so the inner while loops total O(n) over the whole scan.
+- **Two pointers and sliding windows**: each pointer only moves forward, at most n steps each: O(n) total even with nested loops.
+- **Union-find** with path compression and union by rank: O(α(n)) amortised per operation (α ≤ 4 in practice).
+- **Hash table resizing**: amortised O(1) insert, like dynamic arrays.
+- **KMP prefix function**: the matched length rises at most n times in total, so the fallback loop is amortised O(1).
+- **BST iterator** (stack of left spines): next() is amortised O(1) over a full traversal.
+- **Splay trees**: O(log n) amortised per access via a potential function.
+- **Two-stack queue**: amortised O(1) per operation.
 
 ## Amortised vs real-time
 
-Amortised O(1) still allows an occasional O(n) pause. For latency-sensitive systems (games, trading, real-time audio) that matters, and **de-amortised** structures (incremental resizing: copy a few elements per operation) trade simplicity for bounded worst-case latency. Redis's incremental rehashing is a production example.
+Amortised bounds allow an occasional slow operation (an O(n) resize, a long union-find path). That is fine for throughput but bad for latency-sensitive systems (games, trading, real-time audio, garbage collectors). Remedies:
+
+- **Reserve capacity** in advance when the size is known (vector::reserve, ArrayList(int)).
+- **Incremental (de-amortised) resizing**: keep the old and new buffers and move a few elements on each operation (Redis's incremental rehashing; real-time queues).
+- **Different structures**: linked or chunked arrays (deques of blocks) avoid large copies.
+
+## Interview angles
+
+- When you claim O(1) for an append or O(n) for a monotonic stack scan, say "amortised" and give the one-line reason.
+- Explain why doubling works and constant increments do not.
+- Distinguish amortised from average case.
+
+## Connections
+
+Dynamic arrays and hash tables (resizing), stacks and queues (two-stack queue), monotonic structures, union-find, and KMP.
 `,
     doubts: [
       ["Is amortised the same as average case?", "No. Average case averages over a probability distribution of inputs and can be wrong for a particular input. Amortised is a worst-case bound on the total cost of any sequence; no randomness is involved."],
@@ -175,6 +206,9 @@ Amortised O(1) still allows an occasional O(n) pause. For latency-sensitive syst
       ["Then why does any constant factor work, even 1.1?", "Copies happen at geometrically growing sizes, and a geometric series sums to a constant times its largest term: n + n/1.1 + n/1.1² + … = n·(1/(1 − 1/1.1)) = 11n. Smaller factors waste less memory but copy more often."],
       ["Is the monotonic stack's inner while loop O(n) per iteration?", "Per iteration it can be, but every element is popped at most once over the whole run, so all the while loops together do at most n pops. Total O(n)."],
       ["Can amortised analysis be used in an interview answer?", "Yes, and you should name it: 'push_back is amortised O(1), so building the array is O(n)'. For the monotonic stack say 'each index is pushed and popped at most once'."],
+      ["Why must the potential function be non-negative and start at zero?", "Total amortised cost = total actual cost + Φ(final) − Φ(initial). If Φ(final) ≥ Φ(initial) (guaranteed by Φ ≥ 0 and Φ(initial) = 0), the amortised total is at least the actual total, so it is a valid upper bound. A potential that could go negative would let amortised costs underestimate real work."],
+      ["Can a single operation's amortised cost be lower than its actual cost?", "Yes, that is the point: an expensive operation (a resize) has a high actual cost but a low amortised cost because it spends credit (potential) saved by earlier cheap operations. Over the whole sequence the totals still bound the real work."],
+      ["Does amortised O(1) hold if the sequence is very short?", "The bound is on the total of any sequence, so even a sequence of one append is covered: its actual cost (possibly a resize of the initial buffer) is at most a constant plus the potential drop. Formally the guarantee holds for every m ≥ 1."],
     ],
     revise: md`
 ? Amortised analysis bounds what? :: The worst-case total cost of any sequence of operations, divided by its length.
@@ -185,6 +219,10 @@ Amortised O(1) still allows an occasional O(n) pause. For latency-sensitive syst
 ? Monotonic stack total work? :: O(n): each element is pushed once and popped at most once.
 ? Queue from two stacks? :: Amortised O(1): each element moves to the out-stack at most once.
 ? Amortised vs expected? :: Amortised has no randomness; expected averages over random choices.
+? Potential for dynamic arrays? :: Φ = 2·size − capacity; every append costs 3 amortised.
+? Total copies with factor r? :: ≤ n·r/(r − 1): ~2n for r = 2, ~3n for r = 1.5.
+? KMP amortisation? :: Matched length rises ≤ n times, so fallbacks total ≤ n.
+? De-amortisation? :: Move a few elements per operation (incremental resizing).
 `,
     pitfalls: ["Calling amortised O(1) 'average case'", "Growing a buffer by a constant amount", "Shrinking at half-full and thrashing", "Claiming a monotonic stack is O(n²) because of the nested loop"],
     quiz: [
@@ -206,56 +244,72 @@ Amortised O(1) still allows an occasional O(n) pause. For latency-sensitive syst
     lesson: md`
 ## From code to recurrence
 
-Write T(n) = (work in the recursive calls) + (work done in this call). Examples:
+A recursive algorithm's running time satisfies a recurrence: the cost of a problem of size n equals the cost of its recursive calls plus the work done outside them.
 
-| Code shape | Recurrence | Solution |
+| Algorithm | Recurrence | Solution |
 |---|---|---|
-| Binary search: one half, O(1) work | T(n) = T(n/2) + 1 | Θ(log n) |
-| Merge sort: two halves, linear merge | T(n) = 2T(n/2) + n | Θ(n log n) |
-| Tree traversal: two halves, O(1) work | T(n) = 2T(n/2) + 1 | Θ(n) |
-| Peel one element, linear work | T(n) = T(n − 1) + n | Θ(n²) |
-| Peel one, constant work | T(n) = T(n − 1) + 1 | Θ(n) |
-| Two calls on n − 1 (naive Fibonacci) | T(n) = 2T(n − 1) + 1 | Θ(2ⁿ) |
-| Karatsuba multiplication | T(n) = 3T(n/2) + n | Θ(n^1.585) |
-| Strassen | T(n) = 7T(n/2) + n² | Θ(n^2.807) |
+| binary search | T(n) = T(n/2) + O(1) | O(log n) |
+| tree traversal (balanced) | T(n) = 2T(n/2) + O(1) | O(n) |
+| merge sort | T(n) = 2T(n/2) + O(n) | O(n log n) |
+| quicksort, balanced splits | T(n) = 2T(n/2) + O(n) | O(n log n) |
+| quicksort, worst case | T(n) = T(n − 1) + O(n) | O(n²) |
+| quickselect, balanced | T(n) = T(n/2) + O(n) | O(n) |
+| Karatsuba multiplication | T(n) = 3T(n/2) + O(n) | O(n^log₂3) ≈ O(n^1.585) |
+| Strassen matrix multiplication | T(n) = 7T(n/2) + O(n²) | O(n^log₂7) ≈ O(n^2.807) |
+| naive Fibonacci | T(n) = T(n − 1) + T(n − 2) + O(1) | O(φⁿ) ≈ O(1.618ⁿ) |
+| subsets / permutations | T(n) = 2T(n − 1) + O(1); T(n) = n·T(n − 1) | O(2ⁿ); O(n!) |
+
+Write the recurrence by asking: how many recursive calls (a), on what sizes (n/b or n − c), and how much work besides them (f(n))?
 
 ## The recursion tree method
 
-Draw the calls as a tree. Level i has aⁱ subproblems of size n/bⁱ, each doing f(n/bⁱ) work. Total = sum over levels. Three things can happen:
+Draw the tree of calls: the root does f(n) work; its a children each do f(n/b); level i has a^i nodes each doing f(n/b^i); there are log_b n levels until the size is constant. Sum the work per level.
 
-1. **Work grows downward** (leaves dominate): total ≈ number of leaves = n^(log_b a).
-2. **Work is equal on every level**: total = (work per level) × (number of levels) = f(n) · log n.
-3. **Work shrinks downward** (root dominates): total ≈ f(n).
+- **Every level costs the same** (merge sort: level i has 2^i nodes × n/2^i = n): total = n × (number of levels) = n log n.
+- **Levels shrink geometrically** (quickselect: n, n/2, n/4, …): the root dominates: O(n).
+- **Levels grow geometrically** (Karatsuba: n, 3n/2, 9n/4, …): the leaves dominate: O(number of leaves) = O(a^(log_b n)) = O(n^(log_b a)).
 
-Merge sort: level i has 2ⁱ pieces of size n/2ⁱ, each costing n/2ⁱ: n per level, log₂ n levels → n log n.
+The tree makes the Master theorem's three cases intuitive.
 
 ## The Master theorem
 
-For T(n) = a·T(n/b) + f(n) with a ≥ 1, b > 1, compare f(n) with **n^(log_b a)** (the leaf count):
+For T(n) = a·T(n/b) + f(n) with a ≥ 1, b > 1, compare f(n) with n^(log_b a) (the total work at the leaves):
 
-1. If f(n) = O(n^(log_b a − ε)) for some ε > 0: **T(n) = Θ(n^(log_b a))** (leaves win).
-2. If f(n) = Θ(n^(log_b a) · log^k n) with k ≥ 0: **T(n) = Θ(n^(log_b a) · log^(k+1) n)** (balanced).
-3. If f(n) = Ω(n^(log_b a + ε)) and a·f(n/b) ≤ c·f(n) for some c < 1 (regularity): **T(n) = Θ(f(n))** (root wins).
+1. **Leaves dominate**: f(n) = O(n^(log_b a − ε)) for some ε > 0 ⇒ T(n) = Θ(n^(log_b a)).
+2. **Balanced**: f(n) = Θ(n^(log_b a) · log^k n) ⇒ T(n) = Θ(n^(log_b a) · log^(k+1) n). (Most common: k = 0, giving an extra log.)
+3. **Root dominates**: f(n) = Ω(n^(log_b a + ε)) and the regularity condition a·f(n/b) ≤ c·f(n) for some c < 1 ⇒ T(n) = Θ(f(n)).
 
-Quick checks: binary search (a=1, b=2, f=1): n^0 = 1 = f → case 2 → log n. Merge sort (a=2, b=2, f=n): n^1 = f → case 2 → n log n. 2T(n/2) + 1: n^1 vs 1 → case 1 → n. T(n/2) + n: n^0 vs n → case 3 → n.
+Examples: merge sort (a = 2, b = 2, f = n = n^1 = n^(log₂2)): case 2: n log n. Binary search (a = 1, b = 2, f = 1 = n^0): case 2: log n. T(n) = 2T(n/2) + 1 (tree traversal): n^1 vs 1: case 1: n. T(n) = 2T(n/2) + n²: case 3: n².
 
-:::tip Quickselect and the "geometric shrink" shortcut
-T(n) = T(n/2) + n solves to Θ(n), not n log n: the work halves each level (n + n/2 + n/4 + … = 2n). That is why quickselect (expected) and median-of-medians are linear.
-:::
+The **regularity condition** rules out pathological f that oscillate; for polynomials it always holds.
 
 ## When the Master theorem does not apply
 
-- **Subtract-and-conquer** (T(n) = T(n − 1) + …): unroll it or use the tree; it is a sum, not a geometric split.
-- **Uneven splits** (T(n) = T(n/3) + T(2n/3) + n): use the recursion tree (every level does ≤ n work and there are log_{3/2} n levels → Θ(n log n)) or the Akra–Bazzi theorem.
-- **Non-polynomial gaps** (T(n) = 2T(n/2) + n/log n): falls between cases; the answer is Θ(n log log n).
+- **Subtract-and-conquer**: T(n) = T(n − 1) + f(n) sums f: T(n − 1) + 1 = O(n); T(n − 1) + n = O(n²). T(n) = 2T(n − 1) + 1 = O(2ⁿ) (Towers of Hanoi: 2ⁿ − 1 moves).
+- **Unequal splits**: T(n) = T(n/3) + T(2n/3) + n: the recursion tree has levels costing at most n and depth log_{3/2} n: O(n log n). The **Akra–Bazzi** theorem handles such recurrences generally. Quicksort with any constant-ratio split (say 1 : 9) is still O(n log n).
+- **Gaps between cases**: T(n) = 2T(n/2) + n / log n falls between cases 1 and 2 (answer Θ(n log log n)); the basic theorem says nothing.
+- **Non-polynomial sizes**: T(n) = T(√n) + 1: substitute n = 2^m: S(m) = S(m/2) + 1 = O(log m): T(n) = O(log log n) (van Emde Boas trees).
+- **Recurrences with floors and ceilings**: they do not change the asymptotic answer; ignore them.
 
 ## Recursion + memoisation
 
-With memoisation, complexity is **(number of distinct states) × (work per state)**, not a recurrence over calls. Fibonacci with memo: n states × O(1) = O(n). This is the bridge to dynamic programming.
+With memoisation, the cost is no longer the recursion tree's size but **the number of distinct states × the work per state**. Naive Fibonacci has O(φⁿ) calls but only n + 1 distinct arguments: memoised, it is O(n). That is the step from recursion to dynamic programming: if the tree has repeated subproblems, count distinct states instead of nodes.
 
 ## Linear recurrences in closed form
 
-T(n) = T(n − 1) + T(n − 2) grows like φⁿ (φ ≈ 1.618), the golden ratio, because the characteristic equation is x² = x + 1. Matrix exponentiation computes the n-th term in O(log n) multiplications.
+- Fibonacci: F(n) = (φⁿ − ψⁿ)/√5 with φ = (1 + √5)/2, ψ = (1 − √5)/2 (Binet's formula), so F(n) ≈ φⁿ/√5: exponential growth at rate 1.618.
+- Characteristic equation: for T(n) = c₁T(n − 1) + c₂T(n − 2), solve x² = c₁x + c₂; the largest root sets the growth rate.
+- For exact values with large n, use **matrix exponentiation** (O(log n) multiplications) instead of floating-point formulas, which lose precision past n ≈ 70.
+
+## Interview angles
+
+- Translate the code into a recurrence out loud, then solve it with the recursion tree or the Master theorem.
+- Know the table of common recurrences by heart.
+- Mention memoisation when the recursion tree repeats subproblems.
+
+## Connections
+
+Divide and conquer (merge sort, quickselect, Karatsuba), DP (counting distinct states), space complexity (recursion depth), and matrix exponentiation for linear recurrences.
 `,
     doubts: [
       ["Why is 2T(n/2) + 1 only O(n) when merge sort is n log n?", "Count work per level: level i has 2ⁱ calls doing O(1) each, so the bottom level (n leaves) dominates: total ~2n. Merge sort does n work on every level, so all log n levels contribute equally."],
@@ -263,6 +317,9 @@ T(n) = T(n − 1) + T(n − 2) grows like φⁿ (φ ≈ 1.618), the golden ratio
       ["Does it matter if n is not a power of b?", "No. Floors and ceilings change the result by at most a constant factor for these recurrences; analyses assume powers of b for convenience."],
       ["What is the regularity condition in case 3 for?", "It ensures the work really shrinks geometrically down the tree. For normal polynomial f it holds automatically; it can fail for weird oscillating functions."],
       ["What is the space complexity of recursion?", "The maximum depth of the call stack times the frame size, plus any allocations alive at once. Merge sort: O(log n) stack plus O(n) merge buffer. Naive Fibonacci: O(n) stack even though time is exponential."],
+      ["How do I get the space complexity of a recursive algorithm from its recurrence?", "Space follows the depth of the recursion (the longest chain of active calls) plus the space held at each level, not the number of calls. Merge sort has depth log n but allocates O(n) for merging, so O(n); naive Fibonacci has depth n: O(n) space despite O(φⁿ) time."],
+      ["Why does T(n) = 2T(n/2) + n log n give n log² n?", "Here f(n) = n log n = n^(log₂2) · log¹ n, which is case 2 with k = 1, so T(n) = Θ(n log² n). In the recursion tree each of the log n levels costs about n log(n/2^i), which sums to Θ(n log² n)."],
+      ["Is the Master theorem needed in interviews?", "Rarely by name. Interviewers mostly want the recursion-tree reasoning (\"log n levels, n work per level, so n log n\"). Knowing the three cases helps you answer instantly and check yourself."],
     ],
     revise: md`
 ? Master theorem compares f(n) with? :: n^(log_b a), the number of leaves.
@@ -275,6 +332,10 @@ T(n) = T(n − 1) + T(n − 2) grows like φⁿ (φ ≈ 1.618), the golden ratio
 ? T(n) = 3T(n/2) + n? :: Θ(n^log₂3) ≈ Θ(n^1.585) (Karatsuba).
 ? T(n) = T(n/3) + T(2n/3) + n? :: Θ(n log n) via the recursion tree.
 ? Memoised recursion complexity? :: Number of distinct states × work per state.
+? T(n) = T(√n) + 1? :: n = 2^m ⇒ O(log log n).
+? T(n) = 2T(n/2) + n²? :: Case 3: Θ(n²).
+? Quicksort with a 1:9 split? :: Still O(n log n) (depth log_{10/9} n, ≤ n per level).
+? Towers of Hanoi moves? :: T(n) = 2T(n−1) + 1 = 2ⁿ − 1.
 `,
     pitfalls: ["Applying the Master theorem to T(n − 1) recurrences", "Saying T(n) = T(n/2) + n is n log n", "Forgetting recursion stack space", "Counting calls instead of distinct states for memoised code"],
     quiz: [
@@ -297,50 +358,79 @@ T(n) = T(n − 1) + T(n − 2) grows like φⁿ (φ ≈ 1.618), the golden ratio
     lesson: md`
 ## What counts
 
-**Auxiliary space** is memory beyond the input: arrays, hash maps, queues, and the **call stack**. Interviewers usually mean auxiliary space unless they say "total". State whether the output counts (returning all n² pairs is Θ(n²) output however clever the algorithm).
+**Space complexity** measures the extra memory an algorithm needs as a function of the input size. Conventions to state explicitly in an interview:
+
+- **Auxiliary space**: memory beyond the input itself (extra arrays, hash maps, queues, the recursion stack). This is what "O(1) space" usually means.
+- **The output**: often excluded ("O(1) extra space besides the output") because any algorithm must store its answer. Say whether you count it.
+- **Modifying the input**: using the input array as scratch space (marking by negation, sorting in place) gives O(1) auxiliary space, but some interviewers consider destroying the input unacceptable or count it; ask.
+- **The recursion stack** always counts: it is memory, even though it is implicit.
 
 ## The call stack
 
-Each active recursive call keeps a **frame** (arguments, locals, return address). Space = maximum depth × frame size, not the total number of calls.
+Every function call pushes a **stack frame**: return address, arguments, local variables, saved registers. The frame is popped when the call returns. So the stack space used by a recursion is the **maximum depth** of the chain of active calls × the frame size, **not** the total number of calls.
 
-- Recursive binary search: depth log n → O(log n) stack. The iterative version is O(1).
-- DFS on a balanced tree: O(log n); on a skewed tree or a linked list: **O(n)**.
-- Naive Fibonacci makes 2ⁿ calls but its depth is only n → O(n) space.
-- Merge sort: O(log n) stack plus an O(n) merge buffer.
-- Quicksort: O(log n) expected stack, O(n) worst case. Recursing into the **smaller** partition first and looping on the larger guarantees O(log n).
+- Naive Fibonacci makes O(φⁿ) calls but its deepest chain is n calls: **O(n) space**.
+- DFS on a balanced binary tree: depth log n: O(log n). On a skewed tree (a linked list): depth n: O(n).
+- Merge sort: recursion depth log n plus an O(n) merge buffer: O(n) total.
+- Quicksort: O(log n) expected depth; O(n) worst case, unless you recurse on the smaller part and loop on the larger part (tail-call elimination by hand), which guarantees O(log n).
+- Backtracking (subsets, permutations): depth n plus the path: O(n) besides the output.
+- Memoised DP: the memo table (number of states) plus the recursion depth.
 
 ## Stack overflow in practice
 
-Default stacks are small: Python's recursion limit is 1000 frames; the JVM's default thread stack is around 512 KB–1 MB (tens of thousands of frames); C++ main-thread stacks are commonly 8 MB on Linux and 1 MB on Windows. A recursive DFS over 10⁵ nodes in a path-shaped graph can crash.
+- **Python**: the default recursion limit is 1000 frames. sys.setrecursionlimit raises it, but the interpreter's C stack (often 8 MB on the main thread) can still overflow and crash the process at around 10⁴–10⁵ frames. Workarounds: iterative versions; running the recursion in a thread created with threading.stack_size(…) set high; or converting to explicit stacks.
+- **Java**: the default thread stack is about 512 KB to 1 MB, roughly 10⁴ to 10⁵ frames depending on frame size; start a Thread with a larger stack size for deep recursion.
+- **C/C++**: 1–8 MB by default; large local arrays inside recursive functions exhaust it quickly.
+- **Tail calls**: Python and Java do not optimise tail calls; Scheme, some C compilers (with optimisation) and Kotlin's tailrec do.
 
-Options, in the order to mention them:
-1. **Convert to iteration** with an explicit stack. For DFS, push (node, child-index) pairs so you can do post-order work.
-2. Use **BFS** when order does not matter.
-3. Raise the limit (Python \`sys.setrecursionlimit\` plus a bigger thread stack; JVM \`-Xss\` or running in a \`Thread\` with a larger stack size). Works, but mention it as a pragmatic fix rather than the design.
+Rule of thumb: recursion depth up to about 10⁴ is safe everywhere; 10⁵ or more (a path-shaped tree, DFS on a 1000 × 1000 grid) needs an iterative approach.
 
-**Tail calls**: a call is in tail position when nothing remains to be done after it returns. Scheme and some functional languages reuse the frame; **Python, Java and (by guarantee) C++ do not**, so do not rely on tail-call optimisation in interviews.
+**Converting recursion to iteration**: push frames onto an explicit stack: (node, state) pairs where state records which child to visit next or whether the node's post-order work is pending. Any recursion can be converted this way; BFS (a queue) also replaces DFS when the visit order does not matter.
 
 ## In-place techniques
 
-- **Reuse the input** as storage: mark visited cells in the grid itself, negate values as "seen" flags (First Missing Positive, Find All Duplicates), store two values in one integer (a + b·n).
-- **Two pointers** instead of copying.
-- **Reverse in place** (reverse a linked list, rotate an array via three reversals).
-- **Morris traversal**: in-order traversal in O(1) space using temporary threads in null right pointers.
-- **Rolling DP arrays**: keep only the last row or two (2D DP in O(min(n, m)) space).
+Ways to get O(1) auxiliary space:
 
-Modifying the input is a trade-off: say so, and offer to restore it afterwards if the caller needs it.
+- **Two pointers and swapping**: reversal, partitioning, Dutch flag, removing elements with read/write pointers.
+- **Using the input as a marker**: negate a[v − 1] to mark value v as seen; cyclic sort places each value at its index; bit packing (store two values in one integer when ranges allow, e.g. Game of Life's two-bit encoding).
+- **Morris traversal**: in-order tree traversal with O(1) space via temporary threads.
+- **Rolling arrays in DP**: keep only the previous row (or two rows, or a few variables): O(n·m) → O(m) or O(1). Iterate in the right direction (0/1 knapsack downwards) so needed values are not overwritten.
+- **Bit manipulation**: booleans in a bitmask instead of an array.
+- **Floyd's cycle detection** instead of a visited set.
+- **Reservoir sampling** instead of storing a stream.
 
 ## Space-time trade-offs
 
-- Memoisation: spend O(states) memory to avoid exponential recomputation.
-- Precomputation: prefix sums, sparse tables (O(n log n) space for O(1) queries).
-- Bit-packing: bitsets reduce memory by 32–64× and speed up subset DP.
+| Spend memory to save time | Spend time to save memory |
+|---|---|
+| hash maps for O(1) lookups | sort and binary search instead |
+| memoisation / DP tables | recompute instead of storing |
+| prefix sums, sparse tables, precomputed answers | compute ranges on demand |
+| adjacency matrices for O(1) edge checks | adjacency lists, scan neighbours |
+| caching (LRU) | recompute or refetch |
+
+The right choice depends on constraints: with n = 10⁶ and 256 MB, a 10⁶ × 10⁶ table is impossible, while a hash map of 10⁶ entries (tens of MB) is fine.
+
+**Memory estimates**: an int is 4 bytes (Java, C++), but a Python int object is about 28 bytes and a list slot adds 8; a Python dict entry costs roughly 50–100 bytes. 10⁷ Python ints in a list ≈ 350 MB: use array, NumPy or bitsets for large data.
+
+## Interview angles
+
+- State space with the recursion depth included ("O(h) for the stack").
+- Ask whether modifying the input or excluding the output is allowed.
+- Offer an iterative version when depth can be large, and a rolling array for DP.
+
+## Connections
+
+Recurrences (depth), DP space optimisation, Morris traversal, in-place array tricks, and constraints-driven design (memory limits).
 `,
     doubts: [
       ["Does recursion always use more space than iteration?", "It uses stack proportional to depth. An iterative version with an explicit stack uses the same asymptotic space for DFS; what you gain is control (heap memory instead of a small fixed stack) and no frame overhead."],
       ["Why is naive Fibonacci O(n) space when it makes 2ⁿ calls?", "Space is the maximum number of frames alive at once, which is the depth of the call tree, n. Calls that have returned free their frames."],
       ["Is modifying the input array 'O(1) space'?", "It is O(1) auxiliary space, yes. Mention that it destroys the input; some interviewers accept it, others ask you to restore it."],
       ["How do I write an iterative post-order DFS?", "Push (node, nextChildIndex). Peek: if the node has another child, increment the index and push the child; otherwise pop and do the post-order work. Or push a node twice with a 'visited' flag: the second pop does the post-order work."],
+      ["Is a BFS queue better than recursive DFS for memory?", "Not always: BFS holds a whole frontier, which can be O(width) (half the nodes on the last level of a complete tree), while DFS holds O(depth). BFS avoids stack overflow (the queue lives on the heap), which is often the real concern."],
+      ["Do generators or iterators count toward space?", "Each suspended generator keeps its frame alive, so a chain of k nested generators (recursive yield from) holds k frames: O(depth) space, like recursion. A single generator streaming items uses O(1) besides its own state, which is why lazy pipelines save memory."],
+      ["How much memory does a 2D DP table of 5000 × 5000 need?", "25 million cells: 100 MB as 4-byte ints, about 200 MB as 8-byte longs, and far more as Python lists of ints. Roll it to two rows (40 KB) whenever each row depends only on the previous one."],
     ],
     revise: md`
 ? Recursion stack space equals? :: Maximum depth × frame size, not total calls.
@@ -350,6 +440,10 @@ Modifying the input is a trade-off: say so, and offer to restore it afterwards i
 ? Guarantee O(log n) stack in quicksort? :: Recurse on the smaller side, loop on the larger.
 ? O(1)-space in-order traversal? :: Morris traversal (temporary threads).
 ? 2D DP space reduction? :: Keep only the previous row (or two): O(min(n, m)).
+? Quicksort guaranteed O(log n) stack? :: Recurse on the smaller part, loop on the larger.
+? Deep recursion in Python safely? :: Iterative version, or a thread with a larger threading.stack_size.
+? Python int memory? :: ~28 bytes per int object + 8 per list slot.
+? Rolling array direction rule? :: Iterate so values still needed are not overwritten (0/1 knapsack downwards).
 `,
     pitfalls: ["Recursive DFS on a 10⁵-node path in Python without raising the limit", "Counting total calls as space", "Claiming O(1) space while using recursion", "Forgetting the merge buffer in merge sort"],
     quiz: [
@@ -371,56 +465,94 @@ Modifying the input is a trade-off: say so, and offer to restore it afterwards i
     lesson: md`
 ## The budget
 
-A typical judge (and an interviewer's mental model) allows roughly **10⁸ simple operations per second**, often with a 1–2 second limit. Interpreted languages are slower: budget 10⁷ for Python. So the constraint on n tells you the largest complexity that fits.
+Before designing an algorithm, read the **constraints**: they tell you the intended complexity. Judges and interviewers expect solutions that finish within about a second, and a modern machine performs roughly **10⁸ simple operations per second** in compiled languages (C++, Java), about 10⁷ in Python. So the input size bounds the complexity class:
 
 | n up to | Feasible complexity | Typical techniques |
 |---|---|---|
-| 10–12 | O(n!) , O(n · n!) | permutations, brute-force search |
-| 20–25 | O(2ⁿ · n) | subsets, bitmask DP, meet in the middle (n ≤ 40) |
-| 100–500 | O(n³) | Floyd–Warshall, interval DP, cubic DP |
-| 1,000–5,000 | O(n²) | all pairs, 2D DP, O(n²) graph work |
-| 10⁵–10⁶ | O(n log n) or O(n) | sorting, heaps, binary search, two pointers, segment trees, hashing |
-| 10⁹–10¹⁸ (a value) | O(log n), O(√n) | binary search on the answer, math, fast exponentiation, digit DP |
+| 10–12 | O(n!), O(n · n!) | permutations, brute force |
+| 20–25 | O(2ⁿ), O(n · 2ⁿ) | subsets, bitmask DP |
+| 40 | O(2^(n/2)) | meet in the middle |
+| 100–500 | O(n³) | Floyd–Warshall, interval DP, triple loops |
+| 1,000–5,000 | O(n²) | 2D DP, all pairs, O(n²) scans |
+| 10⁵–10⁶ | O(n log n), O(n) | sorting, heaps, binary search, two pointers, prefix sums, hashing |
+| 10⁷–10⁸ | O(n), small constant | linear scans, counting, sieves |
+| 10⁹–10¹⁸ (values) | O(log n), O(√n), O(1) | maths, binary search on the answer, fast exponentiation, digit DP |
 
-Look at **every** variable: values, number of queries, string lengths, grid dimensions. "n ≤ 10⁵ and q ≤ 10⁵ queries" rules out O(n) per query; you need O(log n) per query (prefix sums, segment tree, offline processing).
+Also check the **sum of sizes** across test cases ("Σ n ≤ 2·10⁵") and the **number of queries** q: O(n + q log n) is typical when both are 10⁵.
+
+**Memory**: 256 MB holds about 6·10⁷ 4-byte ints. A 10⁴ × 10⁴ table (10⁸ cells) does not fit; roll the DP to one dimension or reconsider the state.
 
 ## The problem-solving loop
 
-1. **Restate** the problem and ask clarifying questions (input size, ranges, duplicates, negatives, empty input, output format).
-2. **Examples**: work one small example by hand; build a tricky one (duplicates, all equal, sorted, reverse sorted, single element).
-3. **Brute force** out loud with its complexity. It anchors the conversation and is sometimes the answer.
-4. **Find the bottleneck** of the brute force: repeated work (→ memoise / prefix sums), a search (→ hash or binary search), a "best so far" (→ heap or monotonic stack), an ordering (→ sort first).
-5. **Pick the target complexity** from the constraints and the bottleneck.
-6. **Code** with clear names; narrate invariants.
-7. **Test**: trace your example through the code, then edge cases.
-8. **Analyse** time and space from the actual code.
+1. **Clarify** inputs, outputs, edge cases (empty input, duplicates, negatives, overflow) and constraints.
+2. **Brute force**: state the simplest correct algorithm and its cost. It proves you understand the problem and gives a baseline.
+3. **Find the bottleneck**: which work is repeated? Common answers and their fixes:
+   - repeated search for a value → hash map or sorting + binary search;
+   - repeated range sums → prefix sums;
+   - repeated minimum or maximum → heap, monotonic deque, sparse table;
+   - repeated subproblems → memoisation / DP;
+   - pairs checked exhaustively → sorting + two pointers;
+   - all subarrays → sliding window or prefix sums + hash map;
+   - connectivity rechecked → union-find;
+   - shortest paths recomputed → BFS/Dijkstra once.
+4. **Optimise** and recompute the complexity; check it against the budget.
+5. **Test** on examples, edge cases, and a large-input mental check.
 
 ## Lower bounds: knowing when to stop
 
-- You must read the input: Ω(n).
-- Comparison-based sorting: Ω(n log n) (there are n! orderings and each comparison halves them at best: log₂ n! ≈ n log n).
-- Searching an unsorted array: Ω(n).
-- Element distinctness by comparisons: Ω(n log n) (hashing beats it in expectation).
-- Output size: listing all subsets is Ω(2ⁿ).
+Some costs cannot be beaten, and recognising them saves time:
 
-If your solution matches the lower bound, say so: "this is optimal because we must at least look at every element".
+- Reading the input: Ω(n). Producing k outputs: Ω(k).
+- Comparison sorting: Ω(n log n) (decision tree). Element distinctness in the comparison model: Ω(n log n) (hashing escapes it with expected O(n)).
+- Searching an unsorted array: Ω(n).
+- Finding the minimum: n − 1 comparisons.
+- Many problems are NP-hard (TSP, subset sum with large values, graph colouring, longest simple path): exponential algorithms are expected; look for small parameters (n ≤ 20, small values) that make them tractable.
+
+When you reach a lower bound, stop optimising time and consider space, constants or simplicity.
 
 ## Reading hints from the wording
 
-- "Sorted array" → binary search or two pointers.
-- "Top k", "k-th largest" → heap or quickselect.
-- "Subarray / substring with property" → sliding window or prefix sums.
-- "All combinations / permutations" → backtracking (and small n).
-- "Minimum number of steps" on a grid or graph → BFS.
-- "Number of ways", "maximum value" with choices → DP.
-- "Answer is monotone in a parameter" (if x works, bigger x works) → binary search on the answer.
-- "Connectivity under additions" → union-find.
+| Wording | Likely approach |
+|---|---|
+| "sorted array", "find a pair" | binary search, two pointers |
+| "contiguous subarray / substring" | sliding window, prefix sums, Kadane |
+| "k-th largest", "top k", "closest k" | heap, quickselect |
+| "all combinations / permutations / subsets" | backtracking |
+| "minimum number of steps / moves" in an unweighted space | BFS |
+| "minimum cost" with non-negative weights | Dijkstra |
+| "number of ways", "minimum/maximum with choices" | DP |
+| "connected", "groups", "merge accounts" | union-find, DFS |
+| "dependencies", "ordering", "prerequisites" | topological sort |
+| "intervals", "meetings", "overlaps" | sort + sweep, heap |
+| "prefix", "dictionary of words", "autocomplete" | trie |
+| "next greater / smaller", "span" | monotonic stack |
+| "minimise the maximum", "maximise the minimum" | binary search on the answer |
+| "answer modulo 10⁹ + 7" | counting DP, combinatorics |
+| "O(1) extra space" | two pointers, in-place marking, bit tricks |
+| "stream", "online", "data structure design" | heaps, hash maps + lists, balanced trees |
+| "n ≤ 20" | bitmask DP or brute force over subsets |
+| "values up to 10⁹, n up to 10⁵" | coordinate compression, sorting, hashing |
+
+These hints narrow the search; they are not rules. Confirm with the constraints and a quick complexity estimate.
+
+## Interview angles
+
+- Mention the constraints and the target complexity before coding ("n is 10⁵, so I need O(n log n) or better").
+- Always give the brute force first, then the bottleneck and the fix.
+- Know the lower bounds so you can say "this is optimal" with confidence.
+
+## Connections
+
+Every other page: the budget picks the algorithm family, and the patterns above map wording to techniques.
 `,
     doubts: [
       ["The constraint says n ≤ 10⁵ but my O(n²) passes the examples. Is it fine?", "No: 10¹⁰ operations is about 100 seconds. In an interview, say 'quadratic is too slow for 10⁵; we need n log n or better'. Passing examples proves nothing about the limit."],
       ["What if there are no constraints given?", "Ask. If the interviewer says 'assume it's large', aim for O(n log n) or O(n). Asking signals that you know constraints drive design."],
       ["Is 10⁸ operations per second accurate?", "It is a rough rule for C++-like speed with simple operations. Cache misses, hashing and allocation make real constants larger; Python is about 10–50× slower. Treat it as an order-of-magnitude guide."],
       ["Why is n ≤ 20 a hint for bitmask DP specifically?", "2²⁰ ≈ 10⁶ states; with n work per state that is 2 × 10⁷, comfortably fast. At n = 30, 2³⁰ ≈ 10⁹ is too slow, but meet in the middle (2 × 2¹⁵) works up to about 40."],
+      ["How do I estimate operations for an algorithm with a log factor?", "log₂ of 10⁵ is about 17 and of 10⁶ about 20, so n log n is roughly 2·10⁶ to 2·10⁷ operations: comfortable. n log² n at 10⁵ is about 3·10⁷: still fine in compiled languages, tight in Python."],
+      ["My solution is O(n²) with n = 10⁴. Is it acceptable?", "10⁸ simple operations: usually fine in C++ and Java (around a second), too slow in plain Python. Ask about the language and time limit, or look for an O(n log n) improvement; mention that the constant factor matters at this boundary."],
+      ["Do interviewers care about constant factors?", "Mostly they care about the complexity class, but when two solutions share it (two passes vs one pass, a hash map vs an array of 26), mentioning the constant-factor difference shows practical judgement."],
     ],
     revise: md`
 ? Operations per second rule of thumb? :: About 10⁸ simple operations (C++); about 10⁷ in Python.
@@ -432,6 +564,10 @@ If your solution matches the lower bound, say so: "this is optimal because we mu
 ? Value up to 10⁹ or 10¹⁸? :: O(log V) or O(√V): binary search on the answer, math.
 ? Comparison sorting lower bound? :: Ω(n log n), since log₂(n!) ≈ n log n.
 ? The 8-step loop? :: Restate/clarify, examples, brute force, find the bottleneck, target complexity, code, test, analyse.
+? Σ n across test cases? :: Check it: per-test O(n log n) with Σ n ≤ 2·10⁵ is fine even with many tests.
+? Element distinctness lower bound? :: Ω(n log n) in the comparison model; hashing gives expected O(n).
+? "values up to 10⁹, n up to 10⁵" hint? :: Coordinate compression, sorting or hashing.
+? NP-hard problem in an interview? :: Look for a small parameter (n ≤ 20, small values) to exploit.
 `,
     pitfalls: ["Starting to code before reading constraints", "Ignoring the number of queries", "Over-optimising when n is tiny", "Not stating brute force first"],
     quiz: [
