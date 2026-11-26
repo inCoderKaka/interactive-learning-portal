@@ -21,6 +21,12 @@ Generate parentheses (LC 22): add '(' while open < n, ')' while close < open; Ca
 Count leaves × the cost to build each; pruning lowers the constant, rarely the bound.
 ## Backtracking vs DP
 Enumerate every solution → backtracking. Count them or optimise over them → DP is usually polynomial.
+## Extras
+Three parts: state, choices (and their order), goal and pruning.
+Recording path instead of a copy → all entries share one (empty) list.
+Factor Combinations: start each level at the previous factor.
+Lexicographic combinations iteratively: bump the rightmost c[i] < n − k + i.
+Memoising a backtracking function = DP when arguments repeat.
 `,
   permutations: `
 ## Two ways to generate
@@ -40,6 +46,11 @@ Factorial number system: digit = (k − 1) / (n − 1)!, take that unused number
 Permutation in string is a sliding window, not backtracking.
 Letter case permutation: branch only on letters. Beautiful arrangement: prune by divisibility at each position.
 Heap's algorithm generates each permutation from the previous by one swap.
+## Extras
+Internal nodes < e·n!, so copying leaves dominates.
+Heap's algorithm: one swap between consecutive permutations.
+Swap method with duplicates: a per-depth set of values already placed.
+Palindrome Permutation II: permute half and mirror.
 `,
   "constraint-search": `
 ## N-Queens (LC 51, 52)
@@ -61,6 +72,11 @@ Most-constrained variable first; least-constraining value first.
 Forward checking: fail as soon as a variable has no candidates.
 Symmetry breaking (N-Queens: only the left half of the first row, then mirror).
 Bounds: stop when the best possible result cannot beat the current best (branch and bound).
+## Extras
+CSP = variables, domains, constraints.
+Symmetry: first queen in the left half, double, add the middle column for odd n.
+Hidden single: a digit with one possible cell in a unit.
+Algorithm X picks the column with the fewest 1s (MRV); DLX makes undo O(1).
 `,
   "grid-backtracking": `
 ## Word search (LC 79)
@@ -77,6 +93,11 @@ Robot room cleaner (LC 489): backtracking with relative directions and a "go bac
 Rat in a maze, knight's tour (Warnsdorff's rule: move to the square with the fewest onward moves).
 ## Making it iterative
 Explicit stack of (cell, direction index, path state); restoration happens when a frame pops.
+## Extras
+Pruning: count letters first; reverse the word if its last letter is rarer.
+Path with Maximum Gold: DFS from every gold cell.
+Knight's tour: Warnsdorff's rule.
+Robot Room Cleaner: relative coordinates + a "go back" routine.
 `,
   "partition-backtracking": `
 ## Palindrome partitioning (LC 131)
@@ -96,6 +117,11 @@ Check word break I (LC 139) first: if no break exists, return early.
 Assign each bag to a child; prune when a child's sum ≥ the current best; skip children with identical totals.
 ## DP vs backtracking
 Need every partition → backtracking. Need a count, a minimum or a yes/no → DP over (index, state) or bitmask DP.
+## Extras
+Preconditions: total % k == 0 and max ≤ total/k.
+Cookies bitmask DP: dp[j][mask] over submasks, O(k·3ⁿ).
+LC 1723: binary search the answer + feasibility.
+Bin packing and multiprocessor scheduling are NP-hard.
 `,
   "graph-representations": `
 ## Three representations
@@ -117,6 +143,12 @@ BFS/DFS O(V + E). Dijkstra O((V + E) log V). Floyd O(V³). Say V and E, not n.
 Σ degrees = 2E (handshake lemma), so the number of odd-degree vertices is even.
 A tree has V − 1 edges; E > V − 1 in a connected undirected graph means a cycle exists.
 Isomorphism has no known polynomial algorithm in general; trees can be compared by canonical hashing.
+## Extras
+Adjacency set: O(1) edge checks and deletions.
+Graph Valid Tree: E == V − 1 and connected.
+Detonate the Maximum Bombs: directed overlap graph, DFS from each bomb.
+AHU canonical hashing compares rooted trees.
+Grids: V = R·C, E ≈ 4·R·C.
 `,
   bfs: `
 ## Algorithm
@@ -134,6 +166,12 @@ Bidirectional: expand the smaller frontier from both ends; stop when they meet. 
 Word ladder (LC 127), open the lock (LC 752), shortest path in a binary matrix (LC 1091, 8 directions), knight moves, minimum genetic mutation, snakes and ladders (LC 909).
 Level-by-level processing when the answer is a level count.
 Weighted edges → Dijkstra; 0/1 weights → 0-1 BFS.
+## Extras
+Queue holds at most two distance values (d, d+1).
+Level loop: for _ in range(len(q)).
+Girth via BFS from each vertex: O(V·(V+E)).
+Snakes and Ladders: apply jumps when generating neighbours.
+Minimum Knight Moves: symmetry to one quadrant.
 `,
   dfs: `
 ## Algorithm
@@ -156,6 +194,11 @@ BFS: shortest paths in unweighted graphs, level structure.
 Stack; mark when pushing (gives a valid traversal, but a different order from recursion).
 For finish times, push (node, iterator index) frames, or push a node twice (enter and exit markers).
 Recursion depth V = 10⁵ overflows Python and sometimes Java: convert.
+## Extras
+DFS forest: call from every unvisited vertex.
+Subtree = contiguous tin range (Euler tour flattening).
+Surrounded Regions / Pacific Atlantic: start from the border.
+Two-event stack: push (u, exit) then (u, enter) for post-order work.
 `,
   "cycle-detection": `
 ## Undirected
@@ -176,6 +219,11 @@ Longest cycle in a graph (LC 2360), maximum employees at a meeting (LC 2127: cyc
 Cases: a node with two parents (candidate edges), a cycle, or both; remove the edge that resolves both.
 ## Negative cycles
 Bellman–Ford: a relaxation still possible in round V. Floyd: dist[i][i] < 0.
+## Extras
+Counterexample to "visited = cycle" in directed graphs: a→b, a→c, c→b.
+Forest with c components has V − c edges.
+Functional graph cycle length: current step − step first seen in this walk.
+Wait-for graph cycle = deadlock.
 `,
   "grid-graphs": `
 ## Mechanics
@@ -196,6 +244,12 @@ Path with minimum effort (LC 1631): Dijkstra on max-edge, or binary search plus 
 ## Union-find on grids
 Number of islands II (LC 305): add land online and union with neighbours; count components.
 Swim in rising water (LC 778): union cells in order of height until the corners connect.
+## Extras
+Island Perimeter: 4 × land − 2 × adjacent land pairs.
+01 Matrix also by two-pass DP (no obstacles, 4 directions).
+Swim in Rising Water ≈ Minimum Effort (minimax).
+Bricks Falling: reverse time + roof node.
+Python negative indices wrap: check bounds first.
 `,
   bipartite: `
 ## Definition and test
@@ -212,6 +266,11 @@ Two-colouring is easy; three-colouring is NP-complete.
 ## Related tricks
 Grids are bipartite (chessboard colouring by (r + c) mod 2): domino tiling arguments.
 Trees are always bipartite. Parity DSU handles "same/different side" constraints online.
+## Extras
+Self-loop = odd cycle of length 1 → not bipartite.
+2^(components) valid splits (each component can flip).
+Flower Planting: degree ≤ 3, greedy 4-colouring.
+Hopcroft–Karp O(E√V); König: max matching = min vertex cover.
 `,
   "state-space-bfs": `
 ## Design the state
@@ -233,6 +292,12 @@ Prune dominated states (same position with fewer resources and more steps).
 Unequal move costs → Dijkstra over states; 0/1 costs → 0-1 BFS.
 ## Solvability checks
 8-puzzle and 15-puzzle: inversion parity decides solvability before searching.
+## Extras
+Count states first; above ~10⁷ rethink.
+Encode states as integers or short strings; tuples are slow.
+Sliding puzzle: exactly half of arrangements are reachable (inversion parity).
+IDDFS: minimum depth with DFS memory.
+Same state design works with Dijkstra or 0-1 BFS.
 `,
   kahn: `
 ## Algorithm
@@ -250,6 +315,11 @@ Course schedule I/II (LC 207/210), find all recipes (LC 2115), minimum height tr
 ## Kahn vs DFS
 Kahn: iterative, detects cycles by count, naturally gives levels.
 DFS: reverse post-order; detects cycles with colours; recursion depth limits.
+## Extras
+Proof: walking backwards forever in a finite set → cycle; so a DAG has a source.
+Stack or min-heap instead of a queue also work (different valid orders).
+Critical path: finish[v] = time[v] + max finish of predecessors.
+Reachable-only order: restrict in-degrees to the reachable set.
 `,
   "dfs-topo": `
 ## Algorithm
@@ -265,6 +335,11 @@ For huge depths, prefer Kahn (no recursion).
 Build order, course schedule II, compile dependencies, spreadsheet evaluation order.
 Kosaraju's SCC algorithm uses the finish order on the reversed graph.
 Longest path in a DAG processes nodes in topological order.
+## Extras
+Three cases for edge u → v: white (descendant), black (done), grey (cycle).
+Prepend to a deque instead of reversing.
+Build tools: topological order + change detection.
+Iterative frames or Kahn for deep chains.
 `,
   "dag-dp": `
 ## Principle
@@ -282,6 +357,11 @@ If the states can form a cycle, memoisation is wrong: you need shortest paths or
 ## Shortest paths with negative weights on a DAG
 Relax edges in topological order: O(V + E), and negative weights are fine (no cycles to exploit).
 Longest path in a general graph is NP-hard; in a DAG it is linear.
+## Extras
+Longest simple path: NP-hard in general (Hamiltonian path), linear on DAGs.
+Largest Color Value: count[v][c] along Kahn's order; leftover vertices → −1.
+(best, count) pairs to count optimal paths.
+Memoised DFS evaluates in reverse topological order.
 `,
   "order-constraints": `
 ## Alien dictionary (LC 269)
@@ -298,6 +378,11 @@ Build a matrix given row and column conditions (LC 2392): two independent topolo
 Sort items by groups respecting dependencies (LC 1203): topo sort the groups, then the items within each group.
 Difference constraints (xⱼ − xᵢ ≤ w) become shortest paths with Bellman–Ford.
 Loud and rich (LC 851): DFS along "richer" edges with memoisation.
+## Extras
+Alien Dictionary cost: O(total characters) + O(V + E), V ≤ 26.
+Sequence Reconstruction: consecutive org pairs must all be edges.
+Ungrouped items in LC 1203 get their own group ids.
+Smallest String With Swaps is union-find, not ordering.
 `,
   "dsu-core": `
 ## Operations
@@ -316,6 +401,11 @@ Map arbitrary keys (strings, coordinates) to ids with a dictionary, or use a dic
 ## What DSU cannot do
 No splits or edge deletions (use offline reverse time or rollback DSU).
 No paths, no distances (except relative offsets in weighted DSU), no directed reachability.
+## Extras
+Chain example: always attaching the chain under the new node gives depth n without union by size.
+Either optimisation alone: O(log n); both: O(α(n)) amortised.
+Rollback DSU: no compression, change stack, O(log n).
+Per-set data lives at the root.
 `,
   "dsu-applications": `
 ## Choose elements and unions
@@ -335,6 +425,11 @@ Kruskal's MST: sort edges, add those that join different sets.
 ## DSU vs BFS/DFS
 Static graph, one-off question → BFS/DFS is fine.
 Edges arrive online, queries interleave, or edges are processed in sorted order → DSU.
+## Extras
+Bridge through an attribute (prime factors, accounts) avoids O(n²) pairs.
+Smallest root: attach the larger root under the smaller.
+Two-phase: all unions first, then constraint checks.
+Accounts Merge: union each email with the account's first email.
 `,
   "weighted-dsu": `
 ## Idea
@@ -353,6 +448,11 @@ Checking consistency of "x − y = d" constraints online.
 ## Implementation detail
 The recursive find must update weight[x] using the parent's weight after the parent itself has been compressed.
 Iterative find: collect the path, then fix weights from the root downward.
+## Extras
+Evaluate Division dry run: a/b=2, b/c=3 ⇒ a/c = 6.
+BFS alternative: O(Q·(V+E)).
+Exact ratios: store reduced fractions.
+Inequalities → Bellman–Ford, not weighted DSU.
 `,
   "offline-dsu": `
 ## Sort and sweep
@@ -368,6 +468,11 @@ Offline dynamic connectivity: a segment tree over time, adding each edge on the 
 ## Kruskal reconstruction tree
 When Kruskal unions two components, create a new node with the edge weight as its value and both roots as its children.
 The LCA's value of u and v is the minimax edge on their path; subtrees answer "which nodes are reachable with edges ≤ w".
+## Extras
+Threshold sweep: sort edges and queries, pointer adds edges below the current limit.
+Maximum Segment Sum After Removals: reverse into additions.
+Offline dynamic connectivity: segment tree over time + rollback DSU.
+Ask: are all queries known up front?
 `,
   dijkstra: `
 ## Algorithm
@@ -387,6 +492,12 @@ Dense graph (E ≈ V²): the O(V²) array version beats the heap.
 Count shortest paths: when d + w == dist[v], add ways[u] to ways[v].
 ## Choosing
 Unweighted → BFS. 0/1 weights → 0-1 BFS. Non-negative → Dijkstra. Negative edges → Bellman–Ford/SPFA. All pairs and small V → Floyd–Warshall. DAG → topological relaxation.
+## Extras
+Dry-run habit: pop, skip stale, relax.
+OSPF / IS-IS routing run Dijkstra.
+Adding a constant to weights changes shortest paths (more edges penalised).
+Second shortest: keep two distinct distances per vertex.
+Johnson: Bellman–Ford once, then V Dijkstras.
 `,
   "zero-one-bfs": `
 ## Algorithm
@@ -401,6 +512,11 @@ Weights in {0, 1, …, k}: Dial's algorithm with k + 1 buckets (a circular bucke
 Small integer weights: bucket queues beat heaps.
 ## Correctness
 The deque holds at most two distinct distance values (d and d + 1) with the smaller ones at the front, so it behaves like Dijkstra's heap.
+## Extras
+Deque invariant: only distances d and d+1, d's in front.
+Do not mark on push; compare dist on relax.
+LC 2290: obstacle = 1, empty = 0.
+Multi-source: push all sources at distance 0.
 `,
   "bellman-ford": `
 ## Algorithm
@@ -420,6 +536,11 @@ Graphs with negative weights (no negative cycles reachable).
 Difference constraints: xⱼ − xᵢ ≤ w becomes an edge i → j with weight w, plus a super-source; a negative cycle means infeasible.
 Currency arbitrage: weights −log(rate); a negative cycle = an arbitrage opportunity.
 Johnson's algorithm uses one Bellman–Ford run to reweight edges for V Dijkstras.
+## Extras
+Early exit when a round changes nothing.
+−∞ vertices: those improving in extra rounds and everything reachable from them.
+Johnson: Bellman–Ford once + V Dijkstras, O(V·E log V).
+RIP is distributed Bellman–Ford (count to infinity).
 `,
   "floyd-warshall": `
 ## Algorithm
@@ -441,6 +562,11 @@ Minimax and maximin paths: replace + with max/min.
 ## When not to use it
 Sparse graphs with many vertices: V runs of Dijkstra cost O(V·E log V), much less than V³.
 Single source: Dijkstra or Bellman–Ford.
+## Extras
+Duplicate edges: initialise with the minimum weight.
+−∞ pairs: i reaches some k with dist[k][k] < 0 that reaches j.
+LC 1334: count neighbours per row, ties → larger index.
+Min-plus squaring: O(V³ log V) all-pairs (semiring view).
 `,
   "state-dijkstra": `
 ## Expand the state
@@ -460,6 +586,11 @@ Lexicographic costs: compare tuples (primary cost, secondary cost).
 Skip state (v, extra) if another popped state at v has a better or equal cost and better or equal resources.
 ## Alternatives
 Bellman–Ford rounds when the extra is "number of edges"; DP over a DAG when time only increases.
+## Extras
+Expanded graph cost: O(E·X·log(V·X)).
+Dominance: cost ≤ and resources ≥ ⇒ skip the worse state.
+Second Minimum Time: waiting from the light cycle (FIFO holds).
+First pop of the target in any layer is optimal.
 `,
   "a-star": `
 ## A*
@@ -477,5 +608,11 @@ Hub labels and transit-node routing are faster still, with more preprocessing.
 ## Interview usage
 Mention A* for single-pair queries on large implicit graphs (puzzles, grids, maps).
 Sliding puzzle with Manhattan distance; IDA* (iterative deepening) saves memory.
+## Extras
+Hart, Nilsson, Raphael 1968.
+Manhattan with 8 directions overestimates (inadmissible).
+15-puzzle: Manhattan sum admissible; pattern databases stronger.
+Contraction hierarchies: shortcuts + upward bidirectional search.
+Bidirectional stop: top_f + top_b ≥ best meeting distance.
 `,
 };
