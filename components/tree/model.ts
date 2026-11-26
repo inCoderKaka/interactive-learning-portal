@@ -42,7 +42,7 @@ export function buildTree(): TNode[] {
       return {
         id: `c:${ch.id}`, kind: "chapter", label: ch.title, href: `/learn/${ch.id}`, area: a.id, page: ch.id, revisable: !subs.length,
         children: [
-          ...subs.map((s): TNode => ({ id: `p:${s.id}`, kind: "page", label: s.title, href: `/learn/${s.id}`, area: a.id, page: s.id, revisable: !!s.revise, children: problemsFolder(`p:${s.id}`, inCh.filter((p) => p.sub === s.id), a.id) })),
+          ...subs.map((s): TNode => ({ id: `p:${s.id}`, kind: "page", label: s.title, href: `/learn/${s.id}`, area: a.id, page: s.id, revisable: !!s.deepFile || !!s.revise, children: problemsFolder(`p:${s.id}`, inCh.filter((p) => p.sub === s.id), a.id) })),
           ...problemsFolder(`c:${ch.id}`, loose, a.id),
           ...(designs.length ? [{ id: `c:${ch.id}:designs`, kind: "folder" as const, label: `Design exercises (${designs.length})`, area: a.id, children: designs }] : []),
         ],

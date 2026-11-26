@@ -9,6 +9,7 @@ import { DESIGNS, EXTRA_PROBLEMS, PROBLEMS, SUBTOPICS, TOPICS, topicById } from 
 import { OUTLINE } from "@/content/outline";
 import { DEEP } from "@/content/deep";
 import { parseRevise } from "@/lib/revise-parse";
+import { buildMeta } from "./deep-meta";
 import { DESIGN_REFS, LC, PROBLEM_VIDEO, TOPIC_REFS } from "@/content/refs";
 import { AI_REFS } from "@/content/ai/refs";
 import { DRILLS } from "@/content/drills";
@@ -167,6 +168,8 @@ for (const t of SUBTOPICS) {
 for (const p of EXTRA_PROBLEMS) if (!topicById.has(p.topic) || (p.sub && !topicById.has(p.sub))) err(`extra problem ${p.id}: unknown placement ${p.topic}/${p.sub}`);
 
 (async () => {
+  const fresh = JSON.stringify(await buildMeta()), stored = JSON.stringify(JSON.parse(readFileSync("content/deep/meta.json", "utf8")));
+  if (fresh !== stored) err("content/deep/meta.json is stale: run npm run deep:meta");
   let checked = 0;
   if (process.argv.includes("--net")) checked = await net();
   for (const w of warns) console.log(`warn  ${w}`);

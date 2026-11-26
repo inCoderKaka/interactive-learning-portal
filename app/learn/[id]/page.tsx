@@ -14,6 +14,7 @@ import { Flashcards } from "@/components/Flashcards";
 import { RefLink, References } from "@/components/References";
 import { VideoLibrary, type LibProblem } from "@/components/VideoLibrary";
 import { ReviseView } from "@/components/Revise";
+import { useDeepTopic } from "@/lib/deep";
 import { TreeLayout } from "@/components/tree/TreeRail";
 import { AreaPill, Button, DIFF, Empty, Md, Pill, cn, fmtMin } from "@/components/ui";
 import { Lesson } from "@/components/Lesson";
@@ -163,7 +164,12 @@ const libOf = (ps: Problem[]): LibProblem[] => ps.filter((p) => p.lc).map((p) =>
 
 export default function TopicPage() {
   const { id } = useParams<{ id: string }>();
-  const t = topicById.get(id) as Topic | undefined;
+  const base = topicById.get(id) as Topic | undefined;
+  const loaded = useDeepTopic(base);
+  return loaded === null ? <TreeLayout current={id}><div className="space-y-4" aria-busy><div className="h-10 w-2/3 animate-pulse-soft rounded-xl bg-panel2" /><div className="h-5 w-full animate-pulse-soft rounded-lg bg-panel2" /><div className="card h-64 animate-pulse-soft" /></div></TreeLayout> : <TopicBody key={id} id={id} t={loaded} />;
+}
+
+function TopicBody({ id, t }: { id: string; t: Topic | undefined }) {
   const items = useItems();
   const progress = useStore((s) => s.progress);
   const complete = useStore((s) => s.complete);

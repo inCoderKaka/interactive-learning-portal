@@ -14,7 +14,7 @@ import type { Extra } from "./h";
 import { CARDS } from "./cards";
 import { AI_REFS, aiDesigns, aiTopics } from "./ai";
 import { OUTLINE, CHAPTER_OF } from "./outline";
-import { DEEP } from "./deep";
+import DEEP_META from "./deep/meta.json";
 import LC_EXTRA from "./lc-extra.json";
 
 export const AREAS: { id: Area; name: string; short: string; tag: string; color: string }[] = [
@@ -50,15 +50,19 @@ function assemble(): Topic[] {
 /** Chapters: the original topics. Galaxy, progress and catalogs work on these. */
 export const TOPICS: Topic[] = assemble();
 
+type Meta = { file: string; blurb: string; problems?: number[]; prereq?: string[]; widgets?: string[] };
+const META = DEEP_META as Record<string, Meta>;
+
 /** Subtopic pages, in outline order, for every subtopic whose body is written. */
 export const SUBTOPICS: Topic[] = TOPICS.flatMap((ch) =>
   (OUTLINE[ch.id] ?? []).flatMap(([id, title, tier, est]) => {
-    const d = DEEP[id];
+    const d = META[id];
     if (!d) return [];
+    // the body (lesson, revise sheet, doubts, quiz…) loads on demand: see lib/deep.ts
     const t: Topic = {
-      id, area: ch.area, title, tier, est, chapter: ch.id,
-      blurb: d.blurb, signals: d.signals, lesson: d.lesson, revise: d.revise, doubts: d.doubts, pitfalls: d.pitfalls,
-      quiz: d.quiz, template: d.template, sources: d.sources, widgets: d.widgets, prereq: d.prereq, featured: d.problems, cards: [],
+      id, area: ch.area, title, tier, est, chapter: ch.id, deepFile: d.file,
+      blurb: d.blurb, signals: [], lesson: "", revise: "", doubts: [], pitfalls: [], quiz: [],
+      widgets: d.widgets, prereq: d.prereq, featured: d.problems, cards: [],
     };
     return [t];
   }),
@@ -87,7 +91,7 @@ const CURATED_CHAPTER = new Map(RAW_PROBLEMS.filter((p) => p.lc).map((p) => [p.l
 const homeChapter = (lc: number) => { const pl = PLACED.get(lc); return CURATED_CHAPTER.get(lc) ?? (pl ? CHAPTER_OF[pl] ?? pl : undefined); };
 // a page claims a problem only within the problem's own chapter; mentions elsewhere do not move it
 const FEATURED = new Map<number, string>();
-for (const [id, d] of Object.entries(DEEP)) for (const n of d.problems ?? []) if (!FEATURED.has(n) && homeChapter(n) === CHAPTER_OF[id]) FEATURED.set(n, id);
+for (const [id, d] of Object.entries(DEEP_META as Record<string, { problems?: number[] }>)) for (const n of d.problems ?? []) if (!FEATURED.has(n) && homeChapter(n) === CHAPTER_OF[id]) FEATURED.set(n, id);
 function subOf(p: Problem): string | undefined {
   if (!p.lc) return undefined;
   const s = FEATURED.get(p.lc) ?? PLACED.get(p.lc);

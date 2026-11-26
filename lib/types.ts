@@ -44,6 +44,7 @@ export interface Topic {
   sources?: Ref[]; // primary sources: papers, textbook chapters, official docs
   widgets?: string[]; // visuals shown on the page (also usable inline as [[widget:id]])
   featured?: number[]; // LeetCode numbers the page discusses (some live on other pages)
+  deepFile?: string; // subtopic pages: content file holding the body (loaded on demand)
 }
 
 export interface Approach {

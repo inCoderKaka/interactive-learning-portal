@@ -58,18 +58,26 @@ export function TopicTree({ current, compact = false, onNavigate }: { current?: 
   // filter: keep matching nodes and their ancestors; folders on the way are shown open
   const query = q.trim().toLowerCase();
   const visibleTree = useMemo(() => {
+    // mode filter only: what this mode shows at all
+    const allowed = (n: TNode) => !(n.kind === "problem" && (blind || mode === "revise")) && !((n.kind === "folder" || n.kind === "design") && mode === "revise");
+    const prune = (n: TNode): TNode | null => {
+      if (!allowed(n)) return null;
+      const kids = (n.children ?? []).map(prune).filter(Boolean) as TNode[];
+      return { ...n, children: kids.length ? kids : n.kind === "folder" ? [] : undefined };
+    };
+    // query filter: a matching node keeps its whole (mode-filtered) subtree; otherwise keep it only for matching descendants
     const keep = (n: TNode): TNode | null => {
-      if (n.kind === "problem" && (blind || mode === "revise")) return null;
-      if ((n.kind === "folder" || n.kind === "design") && mode === "revise") return null;
+      if (!allowed(n)) return null;
+      if (query && n.label.toLowerCase().includes(query)) return prune(n);
       const kids = (n.children ?? []).map(keep).filter(Boolean) as TNode[];
-      const hit = !query || n.label.toLowerCase().includes(query);
-      if (!hit && !kids.length) return null;
+      if (query && !kids.length) return null;
       return { ...n, children: kids.length ? kids : n.kind === "folder" ? [] : undefined };
     };
     return tree().map(keep).filter(Boolean) as TNode[];
   }, [query, blind, mode]);
 
-  const isOpen = (n: TNode) => !!query || open.has(n.id);
+  const matches = (n: TNode) => !!query && n.label.toLowerCase().includes(query);
+  const isOpen = (n: TNode) => open.has(n.id) || (!!query && !matches(n) && !!n.children?.length);
   const flat = useMemo(() => {
     const out: Flat[] = [];
     const walk = (ns: TNode[], depth: number, parent?: string) => { for (const n of ns) { out.push({ n, depth, parent }); if (n.children?.length && isOpen(n)) walk(n.children, depth + 1, n.id); } };
