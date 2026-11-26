@@ -24,6 +24,12 @@ Greedy fails on a small counterexample → probably DP.
 Number of states × transitions per state. 10⁴ × 10⁴ states is too many: rethink the state.
 ## Common bugs
 Wrong base case (dp[0] meaning), wrong loop order (reading a state not yet computed), off-by-one between 0- and 1-indexed dp, int overflow, forgetting the modulus, mixing −∞ and 0 for impossible states.
+## Extras
+Bellman named it; optimal substructure fails for longest simple paths.
+State test: same state ⇒ same futures; otherwise add information.
+Every DP = path problem on the DAG of states.
+Top-down first for correctness, then bottom-up for space.
+Use −∞ (not 0) for impossible states in max-DPs.
 `,
   "linear-dp": `
 ## Climbing stairs (LC 70)
@@ -45,6 +51,12 @@ dp[i] depends on dp[j] for j in a window: a sliding-window max (deque) or prefix
 Partition array for maximum sum (LC 1043): look back up to k positions.
 ## Counting with mod
 Add then take mod each step: (a + b) % M; for subtraction add M first: (a − b + M) % M.
+## Method
+dp[i] = answer for a prefix; ask what the last decision was; combine over those choices; roll to O(1) space only after it is correct.
+Brainpower (LC 2140): suffix DP dp[i] = max(dp[i+1], p[i] + dp[i + b[i] + 1]).
+Paint House II in O(nk): keep the smallest and second-smallest of the previous row.
+New 21 Game: sliding-window sum of probabilities.
+Decode Ways II '*': one digit ×9; "1*" 9, "2*" 6, "**" 15, "*d" 2 if d ≤ 6 else 1.
 `,
   "state-machine-dp": `
 ## Template
@@ -64,6 +76,12 @@ Be careful when the order does matter (cooldown): use the previous values explic
 Paint house (LC 256): state = the colour used last. Paint house II with k colours: track the best and second-best.
 Wiggle subsequence: up and down states. Student attendance record II: (absences, trailing lates).
 Regex and KMP automata are state machines over characters.
+## Extras
+Cooldown of c days: hold[i] = max(hold[i−1], free[i−c−1] − price).
+Count a transaction at the buy; sell[0] = 0, buy[j] = −∞ at the start.
+Fee can be charged on buy or sell (same answer); the greedy "sum positive gains" breaks with a fee.
+Student attendance II: 6 states (absent 0/1 × trailing lates 0/1/2).
+Maximum alternating subsequence sum: add/subtract states.
 `,
   lis: `
 ## O(n²) DP
@@ -84,6 +102,12 @@ Box stacking, building bridges (sort one side, LIS on the other).
 ## Relation to LCS
 LIS(a) = LCS(a, sorted unique a). LCS of two permutations reduces to LIS in O(n log n).
 Dilworth: the minimum number of non-increasing sequences covering the array = the LIS length.
+## Extras
+O(n²) state: lis[i] ends AT i; answer = max over i; prev[] for reconstruction.
+Invariant: tails strictly increasing; tails[k] = smallest tail of a length-(k+1) increasing subsequence.
+Dilworth: LIS length = minimum number of non-increasing sequences covering the array.
+Segment tree over values: LIS with a value gap (LC 2407), and counting in O(n log n).
+Increasing triplet: two smallest tails, O(1) space.
 `,
   "partition-dp": `
 ## Shape
@@ -101,6 +125,11 @@ Minimum difficulty of a job schedule (LC 1335): dp[d][i] with the max of the las
 Partition array for maximum sum (LC 1043), filling bookcase shelves (LC 1105).
 ## Partition DP vs interval DP
 Partition: the pieces are consecutive from the left, state = a prefix. Interval: decisions split inside a range, state = (l, r).
+## Extras
+Palindrome Partitioning II via centres: for each palindrome s[l..r], cuts[r] = min(cuts[r], l == 0 ? 0 : cuts[l−1] + 1).
+Minimum Difficulty: running max while j moves left; monotonic stack for O(nd).
+Store choice[i] to reconstruct the pieces.
+Greedy longest piece fails Word Break ("aaab" with {a, aaa, ab}).
 `,
   "grid-dp": `
 ## Basic recurrence
@@ -121,6 +150,12 @@ Cherry pickup II (LC 1463): two robots on the same row, state (row, c1, c2).
 Paths with sum divisible by k: add the remainder as a state (r, c, sum mod k).
 Out of boundary paths (LC 576): (moves, r, c) with the modulus.
 Longest increasing path in a matrix: memoised DFS (a DAG), not a row-by-row table.
+## Extras
+Unique Paths II: after an obstacle in the first row/column, all later cells are 0.
+Falling path with a column ban: min and second min of the previous row.
+Cherry Pickup II: state (row, c1, c2), 9 transitions.
+Knight probability: (moves, r, c), divide by 8 per move.
+Longest Increasing Path in a Matrix: memoised DFS (a DAG), not row order.
 `,
   "two-sequence-dp": `
 ## Table
@@ -143,6 +178,12 @@ dp[i][j] = s3[i + j − 1] comes from s1 (dp[i−1][j]) or from s2 (dp[i][j−1]
 Equal: dp[i−1][j−1] + dp[i−1][j]; else dp[i−1][j]. Iterate j backwards when rolling.
 ## Faster special cases
 LCS of permutations → LIS in O(n log n). Edit distance with a small bound k: only the diagonal band, O(n·k). Hunt–Szymanski for sparse matches.
+## Extras
+Taking a match in LCS is always safe (swap argument).
+SCS is built during the LCS walk back; Minimum ASCII Delete Sum = LCS with costs.
+Smith–Waterman: maximise, clamp at 0, best cell anywhere (local alignment).
+Myers' diff: O((n + m)·D).
+Interleaving: s3 index is i + j − 1; check lengths first.
 `,
   "palindrome-dp": `
 ## Substrings (contiguous)
@@ -158,6 +199,11 @@ Valid palindrome III (remove at most k): n − LPS ≤ k.
 ## Choosing
 Contiguous → centres or isPal table. Not contiguous → interval DP or LCS with the reverse.
 Palindrome partitioning reuses the isPal table.
+## Extras
+Count by position: each successful centre-expansion step is one substring.
+Count palindromic subsequences: inclusion–exclusion on the inner range.
+LC 1930: first and last occurrence per letter, distinct letters between.
+Many substring change queries (LC 1177): prefix letter counts, mismatched pairs = odd counts / 2.
 `,
   "counting-dp": `
 ## Sum instead of max
@@ -177,6 +223,12 @@ Never divide under a modulus: multiply by the modular inverse (Fermat when the m
 ## Avoiding double counting
 Define a canonical order of construction (non-decreasing parts, first difference, or the last element chosen).
 Inclusion–exclusion when constraints overlap; distinct subsequences subtract the count at the previous occurrence of the same character.
+## Extras
+Rule: every object must come from exactly one decision path (canonical construction).
+Count optimal solutions: better → copy the count, tie → add it.
+Domino and tromino: dp[n] = 2·dp[n−1] + dp[n−3].
+Music playlists: new song (n − j + 1) or replay (j − k when j > k).
+Probability DP = counts / total; Soup Servings capped for large n.
 `,
   "knapsack-01": `
 ## Recurrence
@@ -198,6 +250,12 @@ Profitable schemes (LC 879): people and profit dimensions (profit capped at the 
 Keep the 2D table (or a choice bitset) and walk back: if dp[i][w] ≠ dp[i−1][w], item i was taken.
 ## Fractional knapsack
 Items can be split: greedy by value/weight ratio is optimal. 0/1 cannot use greedy (counterexample: ratio-first misses the best combination).
+## Extras
+Dry-run table habit: rows = items, columns = capacity.
+Tallest Billboard: dp over the difference, store the taller height.
+Meet in the middle for n ≤ 40: Pareto front of one half, binary search from the other.
+FPTAS by scaling values: (1 − ε)-optimal in O(n³/ε).
+Dictionary of reachable states with dominance pruning when W is sparse.
 `,
   "knapsack-unbounded": `
 ## Difference from 0/1
@@ -214,6 +272,12 @@ Rod cutting, integer break, perfect squares, minimum cost for tickets, complete 
 ## Bounded knapsack
 Item i available c_i times: binary splitting into 1, 2, 4, … copies turns it into 0/1 with O(log c) items each.
 Monotone-queue optimisation per residue class gives O(n·W).
+## Extras
+Min/max: loop order free; counting: coins outer = combinations, amounts outer = permutations.
+Canonical coin systems make greedy optimal; any counterexample is below the sum of the two largest coins.
+Integer Break: as many 3s as possible; 4 = 2 + 2.
+Rod Cutting: dp[L] = max price[k] + dp[L − k].
+Reconstruct with choice[a].
 `,
   "subset-sum": `
 ## Boolean knapsack
@@ -230,6 +294,11 @@ Count subsets with sum S: + instead of |, mod as needed.
 ## Complexity guard
 S up to ~10⁵–10⁶ with n up to ~10³ is fine; larger sums need meet in the middle (n ≤ 40) or other structure.
 Negative numbers: shift by an offset, or use a dict of reachable sums.
+## Extras
+Early exits: odd total (partition), target > total, skip items above the target.
+LC 2035: meet in the middle grouped by element count.
+Minimum elements to reach s: dp[s] = min count (min-knapsack).
+Reconstruct with a 2D table or "first item that reached s".
 `,
   "knapsack-variants": `
 ## Bounded knapsack
@@ -248,6 +317,11 @@ Course selection with prerequisites, and employee importance-style budgets.
 Counting: dp[0] = 1.
 ## Other names
 Multiple-choice knapsack, reliability design (maximise the product of reliabilities), cargo loading, investment allocation.
+## Extras
+Bounded with ≥ constraints: clamp the at-least dimension.
+Exactly one per group: no skip transition, −∞ initial states.
+Tree knapsack total O(n²): each pair of nodes meets once at their LCA.
+Reliability design: products (or log sums) as the combiner.
 `,
   "interval-dp": `
 ## Shape
@@ -266,6 +340,11 @@ Optimal binary search tree; longest palindromic subsequence is interval DP too.
 ## Knuth's optimisation
 When opt[l][r−1] ≤ opt[l][r] ≤ opt[l+1][r] (quadrangle inequality), restrict k to that range: O(n²).
 Applies to optimal BST and merge-stones-type costs.
+## Extras
+Recognise: adjacent merges/removals whose cost depends on current neighbours; n ≤ a few hundred.
+Fill by length (not by l alone).
+Guess Number II: minimax k + max(left, right).
+Triangulation: edge (i, j) is in exactly one triangle (i, k, j).
 `,
   "bitmask-dp": `
 ## State
@@ -284,6 +363,12 @@ for sub = mask; sub > 0; sub = (sub − 1) & mask. All submasks of all masks: O(
 Used when splitting a set into groups (dp[mask] = min over sub of dp[mask ^ sub] + cost[sub]).
 ## Profile DP
 Broken profile: tile a grid column by column with a mask of the cells sticking out; domino tilings, maximum students taking an exam (LC 1349: row masks without adjacent bits).
+## Extras
+Hungarian algorithm O(n³) for large assignment problems.
+Superstring: TSP with w = added characters; parents to rebuild.
+Masks per row (profile DP) for narrow grids.
+SOS DP: Σ over submasks for every mask in O(n·2ⁿ).
+Python: 2ⁿ·n² at n = 20 is too slow; prune unreachable masks.
 `,
   "tree-dp": `
 ## Include / exclude
@@ -304,6 +389,12 @@ Longest path with different adjacent characters (LC 2246).
 Merge children's dp arrays (dp[v][k] = best with k nodes in v's subtree); bounded by sizes → O(n²) total.
 ## General trees
 Build adjacency lists, root anywhere, pass the parent to avoid walking back; use iterative DFS for deep trees.
+## Extras
+Return value design: what must the parent know about v?
+Max path sum: max(0, child chain) drops negative chains.
+Count Nodes With the Highest Score: product of child sizes and n − size(v).
+Tree knapsack O(n²): pairs meet once at their LCA.
+Minimum dominating set and vertex cover are also linear on trees.
 `,
   "game-dp": `
 ## Minimax with score difference
@@ -322,6 +413,12 @@ Grundy value = mex of the Grundy values of reachable positions; a sum of games X
 Alpha-beta prunes branches that cannot change the decision; best case O(b^(d/2)).
 ## Interview angle
 Say "assume both play optimally", define the value from the mover's perspective, and use the score difference so one function covers both players.
+## Extras
+Nim proof: from XOR s ≠ 0, reduce a pile with s's top bit to p XOR s.
+Stone Game II: dp[i][M] = max over X ≤ 2M of suffix[i] − dp[i+X][max(M, X)].
+Stone Game VII: gain = sum of the remaining stones (prefix sums).
+Divisor Game: induction on parity; Nim Game: lose iff n % 4 == 0.
+Alpha-beta: about b^(d/2) nodes with good ordering.
 `,
   "digit-dp": `
 ## Technique
@@ -340,6 +437,11 @@ positions × tight (2) × state × 10 digits; e.g. 10 × 2 × 1024 × 10 for dig
 Memoise only the non-tight states (they are shared across calls).
 ## Typical bugs
 Forgetting f(L − 1); mishandling leading zeros; memoising tight states with an N-specific cache; using a string N but comparing ints.
+## Extras
+Shared memo across f(R) and f(L−1): key on N, or memoise only non-tight states.
+LC 600: previous bit as state; Fibonacci counts.
+k-th number with a property: count completions per digit and skip blocks.
+Divisible by k: keep prefix mod k.
 `,
   "dp-optimizations": `
 ## Monotone queue
@@ -358,5 +460,10 @@ Counting paths of length L in a graph = the adjacency matrix to the power L.
 F[mask] = Σ over submasks of A[sub]: iterate bits, F[mask] += F[mask ^ bit] if the bit is set. O(n·2ⁿ) instead of O(3ⁿ).
 ## Interview usage
 Rarely required: name the optimisation, state the condition it needs, and show the plain DP first.
+## Extras
+Table: window → deque; product term → CHT; monotone opt → D&C; interval monotone → Knuth; linear recurrence → matrix power; submask sums → SOS.
+Matrix power pays off for n ≥ 10⁹ with small s.
+Walks of length L = adjacency matrix to the power L.
+Berlekamp–Massey / Kitamasa for long linear recurrences (name-level).
 `,
 };
