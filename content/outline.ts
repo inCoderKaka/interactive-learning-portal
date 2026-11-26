@@ -27,7 +27,7 @@ export const OUTLINE: Record<string, Sub[]> = {
   "two-pointers": [
     ["opposite-pointers", "Converging pointers on sorted input", 1, 20],
     ["same-direction-pointers", "Same-direction pointers: read/write and dedupe", 1, 15],
-    ["partitioning", "Partitioning and the Dutch national flag", 2, 20],
+    ["array-partition", "Partitioning and the Dutch national flag", 2, 20],
     ["merge-pointers", "Merging two sequences", 1, 15],
   ],
   "sliding-window": [

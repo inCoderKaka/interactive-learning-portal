@@ -86,7 +86,7 @@ Time = number of states × transitions per state. Space = number of states (or l
       Q("A memoised recursion has n·m states and O(k) work per state. Time?", ["O(n + m + k)", "*O(n·m·k)", "O(n·m)", "O(k^n)"], "States × transitions."),
       Q("Merge sort is not DP because…", ["it is not recursive", "*its subproblems do not overlap", "it has no optimal substructure", "it is greedy"], "Halves never repeat."),
     ],
-    sources: [S.book("Algorithms, chapter 3: Dynamic Programming", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf"), S.course("MIT 6.006 Spring 2020, Lectures 15–18: Dynamic Programming (SRTBOT)", "MIT OpenCourseWare", "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/"), S.book("Introduction to Algorithms (CLRS), ch. 14: Dynamic Programming", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/"), S.article("functools.cache", "Python documentation", "https://docs.python.org/3/library/functools.html#functools.cache")],
+    sources: [S.book("Algorithms, chapter 3: Dynamic Programming", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf"), S.course("MIT 6.006 Spring 2020, Lectures 15–18: Dynamic Programming (SRTBOT)", "MIT OpenCourseWare", "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/"), S.book("Introduction to Algorithms (CLRS), ch. 14: Dynamic Programming", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305"), S.article("functools.cache", "Python documentation", "https://docs.python.org/3/library/functools.html#functools.cache")],
     problems: [509, 70, 1137],
   },
   "linear-dp": {
@@ -198,7 +198,7 @@ Small state machines with many steps can also be run with **matrix exponentiatio
 `,
     pitfalls: ["In-place updates where yesterday's values are needed", "Huge k with O(nk) memory (check k ≥ n/2)", "Initial hold of 0 instead of −∞"],
     quiz: [Q("Stock II on [7,1,5,3,6,4] (unlimited) profit?", ["5", "*7", "6", "4"], "(5−1) + (6−3).")],
-    sources: [S.article("Best time to buy and sell stock with cooldown: editorial", "LeetCode", "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/editorial/"), S.article("Finite-state machine", "Wikipedia", "https://en.wikipedia.org/wiki/Finite-state_machine")],
+    sources: [S.book("Algorithms, chapter 3: Dynamic Programming", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf"), S.article("Finite-state machine", "Wikipedia", "https://en.wikipedia.org/wiki/Finite-state_machine")],
     problems: [121, 122, 123, 188, 309, 714, 926, 1220, 935, 552, 376],
   },
   lis: {
@@ -305,7 +305,7 @@ Partition DP cuts a prefix: one index (plus maybe a part count). Interval DP cho
 `,
     pitfalls: ["Substring creation inside loops (O(n) each)", "Recomputing palindromes", "Off-by-one between dp indices and string indices"],
     quiz: [Q("Minimum palindrome cuts for 'aab'?", ["0", "*1", "2", "3"], "'aa' | 'b'.")],
-    sources: [S.book("Algorithms, chapter 3: Dynamic Programming (§3.4 text segmentation)", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf")],
+    sources: [S.article("Word break / text segmentation", "Wikipedia", "https://en.wikipedia.org/wiki/Text_segmentation"), S.book("Algorithms, chapter 3: Dynamic Programming (§3.4 text segmentation)", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf")],
     problems: [139, 140, 132, 410, 1335, 1043, 472],
   },
   "grid-dp": {
@@ -353,7 +353,7 @@ Count paths modulo 10⁹ + 7. For huge grids with few obstacles, combinatorics w
 `,
     pitfalls: ["Forward DP for Dungeon Game", "Double counting a shared cell in Cherry Pickup", "Overwriting values still needed when compressing space"],
     quiz: [Q("Maximal square side at (r,c) with neighbours (top 2, left 3, diagonal 2) and cell '1':", ["4", "*3", "2", "6"], "1 + min(2, 3, 2).")],
-    sources: [S.article("Dynamic programming on grids", "USACO Guide", "https://usaco.guide/gold/paths-grids")],
+    sources: [S.book("Algorithms, chapter 3: Dynamic Programming", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf"), S.article("Dynamic programming on grids", "USACO Guide", "https://usaco.guide/gold/paths-grids")],
     problems: [62, 63, 64, 120, 931, 1289, 221, 1277, 174, 741, 1463],
   },
   "two-sequence-dp": {
@@ -421,7 +421,7 @@ Counting: dp[i][j] = dp[i − 1][j] + (a[i − 1] == b[j − 1] ? dp[i − 1][j 
       Q("Edit distance between 'horse' and 'ros'?", ["2", "*3", "4", "5"], "Replace h→r, delete r, delete e."),
       Q("LCS('abcde', 'ace')?", ["2", "*3", "4", "1"], "'ace'."),
     ],
-    sources: [S.paper("Binary codes capable of correcting deletions, insertions and reversals (Levenshtein, 1965/66)", "Soviet Physics Doklady (English translation)", "https://nymity.ch/sybilhunting/pdf/Levenshtein1966a.pdf"), S.paper("A linear space algorithm for computing maximal common subsequences (Hirschberg, 1975)", "Communications of the ACM", "https://doi.org/10.1145/360825.360861"), S.book("Algorithms, chapter 3: Dynamic Programming (§3.7 edit distance)", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf")],
+    sources: [S.article("Levenshtein distance (history and algorithms)", "Wikipedia", "https://en.wikipedia.org/wiki/Levenshtein_distance"), S.paper("A linear space algorithm for computing maximal common subsequences (Hirschberg, 1975)", "Communications of the ACM", "https://doi.org/10.1145/360825.360861"), S.book("Algorithms, chapter 3: Dynamic Programming (§3.7 edit distance)", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf")],
     problems: [1143, 72, 583, 712, 1035, 1092, 44, 10, 97, 115, 161],
   },
   "palindrome-dp": {
@@ -789,7 +789,7 @@ When the optimal split point is monotone (opt[l][r − 1] ≤ opt[l][r] ≤ opt[
 `,
     pitfalls: ["Choosing 'first' instead of 'last'", "Wrong fill order", "Forgetting padding with 1s in Burst Balloons"],
     quiz: [Q("Burst Balloons on [3,1,5,8] (padded 1s) maximum coins?", ["110", "*167", "160", "120"], "Classic example answer: 167.")],
-    sources: [S.article("Matrix chain multiplication", "Wikipedia", "https://en.wikipedia.org/wiki/Matrix_chain_multiplication"), S.article("Knuth's optimization", "cp-algorithms", "https://cp-algorithms.com/dynamic_programming/knuth-optimization.html"), S.book("Introduction to Algorithms (CLRS), ch. 14.2 Matrix-chain multiplication and 14.5 Optimal BSTs", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/")],
+    sources: [S.article("Matrix chain multiplication", "Wikipedia", "https://en.wikipedia.org/wiki/Matrix_chain_multiplication"), S.article("Knuth's optimization", "cp-algorithms", "https://cp-algorithms.com/dynamic_programming/knuth-optimization.html"), S.book("Introduction to Algorithms (CLRS), ch. 14.2 Matrix-chain multiplication and 14.5 Optimal BSTs", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305")],
     problems: [312, 1547, 1039, 664, 546, 375, 877, 1000],
   },
   "bitmask-dp": {

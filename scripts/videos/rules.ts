@@ -149,7 +149,7 @@ export const LC_RULES: Rule[] = [
   { tags: ["linked-list"], title: /merge|sort/i, to: "ll-merge-sort" },
   { tags: ["linked-list"], title: /copy|random|flatten|clone/i, to: "ll-copy-design" },
   { tags: ["linked-list", "doubly-linked-list"], to: "ll-basics" },
-  { tags: ["two-pointers"], title: /sort colors|partition|move zeroes|segregat|odd even|by parity/i, to: "partitioning" },
+  { tags: ["two-pointers"], title: /sort colors|partition|move zeroes|segregat|odd even|by parity/i, to: "array-partition" },
   { tags: ["two-pointers"], title: /merge|intersection/i, to: "merge-pointers" },
   { tags: ["two-pointers"], title: /sum|container|trap|pair|closest|boats|squares|palindrome/i, to: "opposite-pointers" },
   { tags: ["two-pointers"], to: "same-direction-pointers" },

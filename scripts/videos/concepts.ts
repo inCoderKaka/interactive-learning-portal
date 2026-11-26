@@ -28,7 +28,7 @@ export const DSA_CONCEPTS: ConceptRule[] = [
 
   // windows, pointers, stacks, queues
   [/two pointers?\b(?!.*linked)/i, "opposite-pointers"],
-  [/dutch national flag|sort 0s,? 1s/i, "partitioning"],
+  [/dutch national flag|sort 0s,? 1s/i, "array-partition"],
   [/sliding window(?! (attention|protocol|log|counter))/i, "variable-window"],
   [/^(?!.*rate limit).*(window of size k|fixed (size )?window)/i, "fixed-window"],
   [/monotonic (data structures|stack)|next greater|next smaller|previous (greater|smaller)/i, "monotonic-stack"],

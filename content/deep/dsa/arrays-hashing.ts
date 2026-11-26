@@ -170,7 +170,7 @@ When you only need "definitely not present / probably present" in tiny memory, a
     ],
     sources: [
       S.book("Algorithms, 4th ed. §3.4 Hash Tables", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/34hash/"),
-      S.book("Introduction to Algorithms (CLRS), ch. 11: Hash Tables", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/"),
+      S.book("Introduction to Algorithms (CLRS), ch. 11: Hash Tables", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305"),
       S.article("Swiss Tables design notes", "Abseil", "https://abseil.io/about/design/swisstables"),
       S.article("HashMap (Java SE 21)", "Oracle", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html"),
       S.paper("Space/time trade-offs in hash coding with allowable errors (Bloom, 1970)", "Communications of the ACM", "https://doi.org/10.1145/362686.362692"),
@@ -398,10 +398,9 @@ O(n) expected time, O(n) space for the map. The same idea on trees (prefix sums 
       Q("Longest subarray with sum k: store…", ["the last index of each prefix", "*the first index of each prefix", "counts", "nothing"], "Earliest l maximises length."),
       Q("Subarray Sum Equals K with negatives: best approach?", ["Sliding window", "*Prefix sums + hash map", "Two pointers", "Sorting"], "Signs do not matter for prefix differences."),
     ],
-    sources: [
+    sources: [S.article("Prefix sum", "Wikipedia", "https://en.wikipedia.org/wiki/Prefix_sum"), 
       S.article("Prefix sums (with hash map variants)", "USACO Guide", "https://usaco.guide/silver/prefix-sums"),
-      S.article("Subarray sum equals K: editorial discussion", "LeetCode", "https://leetcode.com/problems/subarray-sum-equals-k/editorial/"),
-    ],
+      ],
     problems: [560, 974, 523, 525, 325, 930, 1248, 437, 1074],
   },
 

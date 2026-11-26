@@ -10,24 +10,8 @@ import { RUN_KEY } from "./tree/TopicTree";
 import { Button, Md, cn } from "./ui";
 import type { Item, Topic } from "@/lib/types";
 
-type Block = { kind: "md"; body: string } | { kind: "recall"; items: [q: string, a: string][] };
-
-/** "? prompt :: answer" lines become recall items (grouped when consecutive); everything else stays markdown. */
-export function parseRevise(text: string): Block[] {
-  const out: Block[] = [];
-  let md: string[] = [];
-  const flush = () => { const b = md.join("\n").trim(); if (b) out.push({ kind: "md", body: b }); md = []; };
-  for (const line of text.split("\n")) {
-    const m = /^\s*\?\s+(.+?)\s+::\s+(.+)$/.exec(line);
-    if (m) {
-      flush();
-      const last = out[out.length - 1];
-      if (last?.kind === "recall") last.items.push([m[1], m[2]]); else out.push({ kind: "recall", items: [[m[1], m[2]]] });
-    } else md.push(line);
-  }
-  flush();
-  return out;
-}
+export { parseRevise } from "@/lib/revise-parse";
+import { parseRevise } from "@/lib/revise-parse";
 
 /** A chapter that has no written subtopics yet gets a sheet built from its own signals, pitfalls and flashcards. */
 export function autoSheet(t: Topic): string {

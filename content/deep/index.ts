@@ -8,6 +8,7 @@ import { treesHeaps } from "./dsa/trees-heaps";
 import { graphsCore } from "./dsa/graphs-core";
 import { dp } from "./dsa/dp";
 import { greedyMath } from "./dsa/greedy-math";
+import { stringsStructures } from "./dsa/strings-structures";
 
 /** Every written subtopic body, keyed by subtopic id. A subtopic without a body is not a page yet. */
 export const DEEP: Record<string, Deep> = {
@@ -19,5 +20,6 @@ export const DEEP: Record<string, Deep> = {
   ...graphsCore,
   ...dp,
   ...greedyMath,
+  ...stringsStructures,
   ...advancedGraphs,
 };

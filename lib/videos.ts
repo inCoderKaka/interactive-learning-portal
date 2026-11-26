@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
-/** [youtube id, display title, channel index] */
-export type Vid = [yt: string, title: string, ch: number];
+/** [youtube id, display title, channel index, 1 when the owner disabled embedding (open on YouTube instead)] */
+export type Vid = [yt: string, title: string, ch: number, noEmbed?: 1];
 /** [display name, catalog file, hindi, named by the user] */
 export type Chan = [name: string, file: string, hi: 0 | 1, mine: 0 | 1];
 export interface VideoData { lc: Record<string, Vid[]>; pages: Record<string, Vid[]>; channels: Chan[] }

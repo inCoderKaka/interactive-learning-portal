@@ -41,7 +41,9 @@ export function clean(t: string, channel: string) {
     .slice(0, 140);
 }
 
-type V = [yt: string, title: string, ch: number];
+/** [id, title, channel index, 1 if embedding is disabled (checked over oEmbed; see noembed.json)] */
+type V = [yt: string, title: string, ch: number, noEmbed?: 1];
+const NOEMBED = new Set<string>(JSON.parse(readFileSync(resolve(here, "noembed.json"), "utf8")));
 const lc: Record<string, V[]> = {};
 const pages: Record<string, V[]> = {};
 const seen = new Set<string>();
@@ -58,7 +60,7 @@ CHANNELS.forEach((c, ci) => {
     if (!id || !raw || seen.has(id)) continue;
     seen.add(id);
     const title = clean(raw, c.name);
-    const v: V = [id, title, ci];
+    const v: V = NOEMBED.has(id) ? [id, title, ci, 1] : [id, title, ci];
     const manual = OVERRIDES[id];
     if (manual !== undefined) {
       for (const to of manual) {

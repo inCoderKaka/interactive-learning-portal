@@ -129,7 +129,7 @@ O(n) time (each node once), O(h) space.
       Q("Diameter of a tree with root having only a long left chain of 4 nodes below it (5 nodes in a line):", ["5", "*4", "3", "2"], "Counted in edges: 4."),
       Q("In max path sum, a node's return value is…", ["left + right + val", "*val + max(0, left gain, right gain)", "max(left, right)", "val"], "Only one branch can continue upward."),
     ],
-    sources: [S.article("Binary tree maximum path sum: editorial", "LeetCode", "https://leetcode.com/problems/binary-tree-maximum-path-sum/editorial/"), S.book("Algorithms, chapter 1: Recursion", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf")],
+    sources: [S.article("Tree traversal", "Wikipedia", "https://en.wikipedia.org/wiki/Tree_traversal"), S.book("Algorithms, chapter 1: Recursion", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf")],
     problems: [104, 543, 110, 124, 687, 1448, 112, 113, 437, 979, 968, 333, 1372],
   },
   "tree-bfs": {
@@ -184,7 +184,7 @@ O(n) time, O(width) queue space (up to about n/2).
 `,
     pitfalls: ["Not snapshotting the level size", "Integer overflow of heap indices without re-basing", "Forgetting visited when BFS goes up through parents"],
     quiz: [Q("Minimum depth of a very wide tree whose shallowest leaf is at depth 2: better approach?", ["DFS", "*BFS", "Either is equally fast", "Morris"], "BFS stops at depth 2.")],
-    sources: [S.article("Breadth-first search", "Wikipedia", "https://en.wikipedia.org/wiki/Breadth-first_search")],
+    sources: [S.article("Breadth-first search", "cp-algorithms", "https://cp-algorithms.com/graph/breadth-first-search.html"), S.article("Breadth-first search", "Wikipedia", "https://en.wikipedia.org/wiki/Breadth-first_search")],
     problems: [102, 199, 103, 637, 111, 662, 863, 2385, 987, 314, 116, 117],
   },
   "tree-construct": {
@@ -239,7 +239,7 @@ Count **slots**: start with 1; each token uses one slot; a non-null token adds t
 `,
     pitfalls: ["Slicing arrays in recursion (O(n²) copying)", "Linear root search", "Building left before right when consuming post-order from the end"],
     quiz: [Q("pre = [3,9,20,15,7], in = [9,3,15,20,7]. Root's right subtree root?", ["9", "15", "*20", "7"], "Left of 3 in in-order is [9]; the next pre-order element after 9 is 20.")],
-    sources: [S.article("Construct binary tree from preorder and inorder: editorial", "LeetCode", "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/editorial/"), S.article("Day–Stout–Warren algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm")],
+    sources: [S.article("Tree traversal (reconstruction)", "Wikipedia", "https://en.wikipedia.org/wiki/Tree_traversal"), S.article("Day–Stout–Warren algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm")],
     problems: [105, 106, 889, 297, 449, 108, 109, 1382, 331, 654],
   },
   lca: {
@@ -370,7 +370,7 @@ C++ \`std::set/map\` (red-black trees, with lower_bound and upper_bound), Java \
 `,
     pitfalls: ["Forgetting to reattach the returned subtree in recursive delete", "Assuming O(log n) without balancing", "Inconsistent duplicate rules"],
     quiz: [Q("Deleting a node with two children, you replace it with…", ["its left child", "*its in-order successor (or predecessor)", "its parent", "the root"], "Keeps the BST property.")],
-    sources: [S.book("Algorithms, 4th ed. §3.2 Binary Search Trees", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/32bst/"), S.book("Introduction to Algorithms (CLRS), ch. 12: Binary Search Trees", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/")],
+    sources: [S.book("Algorithms, 4th ed. §3.2 Binary Search Trees", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/32bst/"), S.book("Introduction to Algorithms (CLRS), ch. 12: Binary Search Trees", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305")],
     problems: [700, 701, 450, 938, 270, 669, 1038],
   },
   "bst-inorder": {
@@ -601,7 +601,7 @@ Sort by length; for each word, check whether it can be split into words already 
 `,
     pitfalls: ["Running a separate DFS per word", "Not restoring visited cells", "Duplicate results in Word Search II"],
     quiz: [Q("Word Search II speed-up versus per-word DFS comes from…", ["sorting words", "*sharing prefixes in a trie and pruning", "BFS", "hashing the board"], "One traversal serves all words.")],
-    sources: [S.article("Aho–Corasick algorithm", "cp-algorithms", "https://cp-algorithms.com/string/aho_corasick.html"), S.article("Word search II: editorial", "LeetCode", "https://leetcode.com/problems/word-search-ii/editorial/")],
+    sources: [S.book("Algorithms, 4th ed. §5.2 Tries", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/52trie/"), S.article("Aho–Corasick algorithm", "cp-algorithms", "https://cp-algorithms.com/string/aho_corasick.html")],
     problems: [212, 1032, 336, 1268, 472, 642],
   },
   "bit-trie": {
@@ -643,7 +643,7 @@ Bit k contributes 2ᵏ, more than all lower bits together (2ᵏ − 1). So maxim
 `,
     pitfalls: ["Inserting from bit 0 upward", "Querying an empty trie", "Negative numbers (decide the bit width and sign handling)"],
     quiz: [Q("Max XOR of [3, 10, 5, 25, 2, 8]?", ["25", "*28", "31", "15"], "5 ⊕ 25 = 28.")],
-    sources: [S.article("Trie for XOR problems (binary trie)", "USACO Guide", "https://usaco.guide/adv/string-search")],
+    sources: [S.article("Trie", "Wikipedia", "https://en.wikipedia.org/wiki/Trie"), S.article("Trie for XOR problems (binary trie)", "USACO Guide", "https://usaco.guide/adv/string-search")],
     problems: [421, 1707, 1803, 1938, 2935],
   },
 
@@ -710,7 +710,7 @@ Children per node = d. Shallower (log_d n), cheaper sift-up, costlier sift-down.
       Q("Building a heap from n elements with heapify costs…", ["O(n log n)", "*O(n)", "O(log n)", "O(n²)"], "Sum of heights."),
       Q("std::priority_queue<int> pops…", ["the smallest", "*the largest", "in insertion order", "random"], "Max-heap by default."),
     ],
-    sources: [S.book("Algorithms, 4th ed. §2.4 Priority Queues", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/24pq/"), S.article("heapq: heap queue algorithm", "Python documentation", "https://docs.python.org/3/library/heapq.html"), S.book("Introduction to Algorithms (CLRS), ch. 6: Heapsort", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/")],
+    sources: [S.book("Algorithms, 4th ed. §2.4 Priority Queues", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/24pq/"), S.article("heapq: heap queue algorithm", "Python documentation", "https://docs.python.org/3/library/heapq.html"), S.book("Introduction to Algorithms (CLRS), ch. 6: Heapsort", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305")],
     problems: [1046, 703, 912],
   },
   "top-k": {
@@ -808,7 +808,7 @@ Two heaps give O(log n) insert and O(1) median with only the standard library. A
 `,
     pitfalls: ["Unbalanced heaps after insert", "Integer overflow when averaging two ints", "Counting lazily deleted elements in sizes"],
     quiz: [Q("After inserting 5, 15, 1, 3 the two-heap median is…", ["3", "*4", "5", "8"], "Sorted 1, 3, 5, 15 → (3 + 5)/2.")],
-    sources: [S.article("Find median from data stream: editorial", "LeetCode", "https://leetcode.com/problems/find-median-from-data-stream/editorial/")],
+    sources: [S.book("Algorithms, 4th ed. §2.4 Priority Queues", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/24pq/"), S.article("Median (streaming / running median)", "Wikipedia", "https://en.wikipedia.org/wiki/Median")],
     problems: [295, 480, 502, 1383, 857, 630, 2402],
   },
   "heap-scheduling": {
@@ -855,7 +855,7 @@ Tasks with cooldown n. Closed form: let maxCount be the highest frequency and t 
 `,
     pitfalls: ["Incrementing time by 1 in simulations", "Wrong tie-breaking order of heap tuples", "Start/end ordering at equal times"],
     quiz: [Q("Meetings [0,30], [5,10], [15,20]: rooms needed?", ["1", "*2", "3", "0"], "[5,10] and [15,20] share a room; [0,30] needs another.")],
-    sources: [S.article("Interval scheduling", "Wikipedia", "https://en.wikipedia.org/wiki/Interval_scheduling"), S.article("Task scheduler: editorial", "LeetCode", "https://leetcode.com/problems/task-scheduler/editorial/")],
+    sources: [S.book("Algorithms, 4th ed. §2.4 Priority Queues", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/24pq/"), S.article("Interval scheduling", "Wikipedia", "https://en.wikipedia.org/wiki/Interval_scheduling")],
     problems: [253, 621, 767, 358, 1834, 1882, 2402, 1642, 630],
   },
   "indexed-pq": {

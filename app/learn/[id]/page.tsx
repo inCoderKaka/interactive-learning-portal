@@ -294,6 +294,15 @@ export default function TopicPage() {
       {!!t.cards?.length && <Flashcards key={"c" + t.id} cards={t.cards!} />}
 
       <Practice list={children} progress={progress} extra={extras} title={subs.length ? "Practise the chapter" : "Practise it"} />
+      {(() => {
+        const rel = (t.featured ?? []).map((n) => problemById.get(`p-${n}`)).filter((p): p is Problem => !!p && p.sub !== t.id && p.topic !== chapterId);
+        return rel.length > 0 && (
+          <div data-read-skip className="flex flex-wrap items-center gap-1.5 text-[12.5px]">
+            <span className="text-faint">Related practice on other pages:</span>
+            {rel.map((p) => <Link key={p.id} href={`/problem/${p.id}`} className="rounded-lg border border-line px-2.5 py-1 text-mute hover:border-accent/50 hover:text-text"><span className="num text-faint">{p.lc}.</span> {p.title}</Link>)}
+          </div>
+        );
+      })()}
 
       <div data-read-skip><RatingBar done={done} suggested={quizScore === null ? undefined : quizScore >= 100 ? 2 : quizScore >= 50 ? 1 : 0} onRate={(r) => complete(item, r, quizScore === null ? {} : { score: quizScore })} /></div>
       </>}

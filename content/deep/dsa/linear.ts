@@ -123,10 +123,10 @@ Moving one pointer twice as fast finds the middle of a list or detects cycles: s
 `,
     pitfalls: ["Comparing with the input instead of the output in dedupe-k", "Allocating a new array when in place is asked"],
     quiz: [Q("Remove duplicates (at most 2) from [1,1,1,2,2,3]: kept length?", ["4", "*5", "6", "3"], "1,1,2,2,3.")],
-    sources: [S.article("Two pointers technique", "USACO Guide", "https://usaco.guide/silver/two-pointers")],
+    sources: [S.article("In-place algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/In-place_algorithm"), S.article("Two pointers technique", "USACO Guide", "https://usaco.guide/silver/two-pointers")],
     problems: [26, 80, 27, 283, 392, 844, 792],
   },
-  partitioning: {
+  "array-partition": {
     blurb: "Rearrange in place around a pivot or into colour classes: Lomuto and Hoare partitions and Dijkstra's three-way Dutch national flag.",
     signals: ["Sort an array of 0s, 1s and 2s in one pass", "Put all elements < x before ≥ x", "Quicksort or quickselect's inner loop", "Segregate odd/even, negative/positive"],
     widgets: ["dutch-flag"],
@@ -264,7 +264,7 @@ The last two show a frequent trick: **re-express the question as a fixed window*
 `,
     pitfalls: ["Recording before the window is full", "Recomputing the whole window each step (O(nk))", "Floating-point averages instead of comparing sums"],
     quiz: [Q("Max points taking k cards from either end of n cards equals total minus…", ["max window of length k", "*min window of length n − k", "min window of length k", "max prefix"], "What you leave behind is a contiguous middle block.")],
-    sources: [S.article("Sliding window technique", "USACO Guide", "https://usaco.guide/gold/sliding-window")],
+    sources: [S.article("Minimum stack / minimum queue (window aggregates)", "cp-algorithms", "https://cp-algorithms.com/data_structures/stack_queue_modification.html"), S.article("Sliding window technique", "USACO Guide", "https://usaco.guide/gold/sliding-window")],
     problems: [643, 438, 567, 187, 1151, 2134, 1423, 1343],
   },
   "variable-window": {
@@ -344,7 +344,7 @@ Keep need[c] counts for t and a counter missing = |t|. Extending r: if need[s[r]
       Q("Longest substring with at most 2 distinct characters in 'eceba'?", ["2", "*3", "4", "5"], "'ece'."),
       Q("Shortest subarray with sum ≥ k, negatives allowed:", ["Sliding window", "*Monotonic deque on prefix sums", "Two pointers on sorted", "Kadane"], "Negatives break window monotonicity."),
     ],
-    sources: [S.article("Sliding window technique", "USACO Guide", "https://usaco.guide/gold/sliding-window"), S.article("Minimum window substring: editorial", "LeetCode", "https://leetcode.com/problems/minimum-window-substring/editorial/")],
+    sources: [S.article("Two pointers", "USACO Guide", "https://usaco.guide/silver/two-pointers"), S.article("Sliding window technique", "USACO Guide", "https://usaco.guide/gold/sliding-window")],
     problems: [3, 340, 424, 1004, 209, 76, 904, 1838, 2024],
   },
   "count-windows": {
@@ -397,7 +397,7 @@ Each atMost call is O(n); two calls are still O(n).
 `,
     pitfalls: ["Calling atMost(−1) when k = 0 (return 0)", "Trying a single window for exactly-k", "Integer overflow on large counts"],
     quiz: [Q("Number of subarrays of [1,2,1] with at most 2 distinct?", ["5", "*6", "4", "3"], "All 6 subarrays have at most 2 distinct values.")],
-    sources: [S.article("Subarrays with K different integers: editorial", "LeetCode", "https://leetcode.com/problems/subarrays-with-k-different-integers/editorial/")],
+    sources: [S.article("Sliding window technique", "USACO Guide", "https://usaco.guide/gold/sliding-window"), S.article("Two pointers", "USACO Guide", "https://usaco.guide/silver/two-pointers")],
     problems: [992, 1248, 930, 2799, 795],
   },
   "window-structures": {
@@ -442,7 +442,7 @@ Monotonic deques are the most common. Ordered sets are fine in C++ and Java (Tre
 `,
     pitfalls: ["Forgetting to pop deque elements that left the window", "Heap sizes counting deleted elements", "Bucket ids for negative numbers (use floor division)"],
     quiz: [Q("Longest subarray with max − min ≤ limit uses…", ["one heap", "*two monotonic deques", "a trie", "binary search only"], "One deque for max, one for min.")],
-    sources: [S.article("Sliding window minimum with a deque", "cp-algorithms", "https://cp-algorithms.com/data_structures/stack_queue_modification.html")],
+    sources: [S.article("Sliding window technique", "USACO Guide", "https://usaco.guide/gold/sliding-window"), S.article("Sliding window minimum with a deque", "cp-algorithms", "https://cp-algorithms.com/data_structures/stack_queue_modification.html")],
     problems: [1438, 480, 220, 239, 2762],
   },
 
@@ -624,7 +624,7 @@ Split at the minimum bar: the best rectangle either spans the whole range at the
 `,
     pitfalls: ["Forgetting the final sentinel", "Using the popped index's position instead of the new top for the left edge", "Confusing maximal square (DP) with maximal rectangle (histogram)"],
     quiz: [Q("Largest rectangle in [2,1,5,6,2,3]?", ["8", "*10", "12", "6"], "Bars 5 and 6 at height 5 → 10.")],
-    sources: [S.article("Largest rectangle in a histogram", "Wikipedia (all nearest smaller values)", "https://en.wikipedia.org/wiki/All_nearest_smaller_values"), S.article("Largest rectangle in histogram: editorial", "LeetCode", "https://leetcode.com/problems/largest-rectangle-in-histogram/editorial/")],
+    sources: [S.article("Stack (abstract data type)", "Wikipedia", "https://en.wikipedia.org/wiki/Stack_(abstract_data_type)"), S.article("Largest rectangle in a histogram", "Wikipedia (all nearest smaller values)", "https://en.wikipedia.org/wiki/All_nearest_smaller_values")],
     problems: [84, 85, 1504, 221, 1793],
   },
   "stack-design": {
@@ -669,7 +669,7 @@ A stack as an immutable linked list shares tails between versions: push creates 
 `,
     pitfalls: ["Using < for the min stack with duplicates", "Transferring from in to out when out is not empty (breaks order)"],
     quiz: [Q("Queue via two stacks: when do you move elements to the out-stack?", ["Every push", "Every pop", "*Only when the out-stack is empty", "Never"], "Moving earlier would scramble the order.")],
-    sources: [S.book("Purely Functional Data Structures", "Chris Okasaki", "https://www.cs.cmu.edu/~rwh/students/okasaki.pdf")],
+    sources: [S.article("Minimum stack / minimum queue", "cp-algorithms", "https://cp-algorithms.com/data_structures/stack_queue_modification.html"), S.book("Purely Functional Data Structures", "Chris Okasaki", "https://www.cs.cmu.edu/~rwh/students/okasaki.pdf")],
     problems: [155, 716, 232, 225, 895, 1381],
   },
 
@@ -782,7 +782,7 @@ When dp[i] = a[i] + max(dp[j]) for j in [i − k, i − 1], the inner max is a s
       Q("Window max of [1,3,−1,−3,5,3,6,7], k = 3: the third window's max?", ["3", "−1", "*5", "6"], "Windows: [1,3,−1]→3, [3,−1,−3]→3, [−1,−3,5]→5."),
       Q("The deque for window maximum keeps values…", ["increasing", "*decreasing", "unsorted", "only the max"], "Smaller older values are dominated."),
     ],
-    sources: [S.article("Minimum stack / minimum queue", "cp-algorithms", "https://cp-algorithms.com/data_structures/stack_queue_modification.html"), S.article("Sliding window maximum: editorial", "LeetCode", "https://leetcode.com/problems/sliding-window-maximum/editorial/")],
+    sources: [S.article("Sliding window technique", "USACO Guide", "https://usaco.guide/gold/sliding-window"), S.article("Minimum stack / minimum queue", "cp-algorithms", "https://cp-algorithms.com/data_structures/stack_queue_modification.html")],
     problems: [239, 862, 1438, 1499, 1696, 1425],
   },
   "deque-dp": {
@@ -831,7 +831,7 @@ A max-heap of (dp[j], j) with lazy removal of expired indices gives O(n log n). 
 `,
     pitfalls: ["Pushing dp[i] into the deque before using the window for i", "Forgetting the 'start fresh' option (max with 0)"],
     quiz: [Q("Jump Game VI with n = 10⁵, k = 10⁵. Naive DP is…", ["fine", "*O(nk) = 10¹⁰, too slow", "O(n log n)", "O(n)"], "Use the monotonic deque.")],
-    sources: [S.article("Monotonic queue optimization", "USACO Guide", "https://usaco.guide/gold/sliding-window")],
+    sources: [S.article("Double-ended queue", "Wikipedia", "https://en.wikipedia.org/wiki/Double-ended_queue"), S.article("Monotonic queue optimization", "USACO Guide", "https://usaco.guide/gold/sliding-window")],
     problems: [1696, 1425, 1499, 1687, 2944],
   },
 };

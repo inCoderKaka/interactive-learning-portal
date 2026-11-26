@@ -5,7 +5,10 @@
  * Exits non-zero on any error; warnings are printed but do not fail.
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { DESIGNS, PROBLEMS, TOPICS, topicById } from "@/content";
+import { DESIGNS, EXTRA_PROBLEMS, PROBLEMS, SUBTOPICS, TOPICS, topicById } from "@/content";
+import { OUTLINE } from "@/content/outline";
+import { DEEP } from "@/content/deep";
+import { parseRevise } from "@/lib/revise-parse";
 import { DESIGN_REFS, LC, PROBLEM_VIDEO, TOPIC_REFS } from "@/content/refs";
 import { AI_REFS } from "@/content/ai/refs";
 import { DRILLS } from "@/content/drills";
@@ -135,13 +138,42 @@ async function net() {
   return Object.values(out).filter(Boolean).length;
 }
 
+// ---- subtopic pages (content/deep) ----
+const outlineIds = new Set<string>();
+for (const [ch, subs] of Object.entries(OUTLINE)) {
+  if (!topicById.has(ch)) err(`outline: chapter "${ch}" is not a topic`);
+  for (const [id] of subs) {
+    if (outlineIds.has(id) || TOPICS.some((t) => t.id === id)) err(`outline: id "${id}" is duplicated or collides with a chapter`);
+    outlineIds.add(id);
+  }
+}
+for (const id of Object.keys(DEEP)) if (!outlineIds.has(id)) err(`deep: "${id}" has a body but is not in the outline`);
+const lcKnown = new Set(JSON.parse(readFileSync("scripts/videos/leetcode.json", "utf8")).map((r: [string]) => Number(r[0])));
+for (const t of SUBTOPICS) {
+  const d = DEEP[t.id], at = `page ${t.id}`;
+  if (d.lesson.length < 800) warn(`${at}: lesson is short (${d.lesson.length} chars)`);
+  const recall = parseRevise(d.revise).reduce((n, b) => n + (b.kind === "recall" ? b.items.length : 0), 0);
+  if (recall < 4) err(`${at}: revise sheet has only ${recall} recall items`);
+  if (d.doubts.length < 2) warn(`${at}: only ${d.doubts.length} common doubts`);
+  if (!d.quiz.length) err(`${at}: no quiz`);
+  d.quiz.forEach((q, i) => { if (q.answer < 0 || q.answer >= q.options.length) err(`${at}: quiz ${i + 1} has no valid answer`); });
+  if (d.sources.length < 2) warn(`${at}: fewer than 2 primary sources`);
+  for (const w of d.widgets ?? []) if (!WIDGETS.has(w)) err(`${at}: widget "${w}" is not registered`);
+  for (const m of d.lesson.matchAll(/\[\[widget:([\w-]+)\]\]/g)) if (!WIDGETS.has(m[1])) err(`${at}: lesson widget "${m[1]}" is not registered`);
+  for (const m of d.lesson.matchAll(/\]\(\/learn\/([\w-]+)\)/g)) if (!topicById.has(m[1])) err(`${at}: link to /learn/${m[1]} which is not a page`);
+  for (const p of d.prereq ?? []) if (!topicById.has(p)) err(`${at}: prereq "${p}" is not a page`);
+  for (const n of d.problems ?? []) if (!lcKnown.has(n)) err(`${at}: LeetCode ${n} does not exist`);
+}
+for (const p of EXTRA_PROBLEMS) if (!topicById.has(p.topic) || (p.sub && !topicById.has(p.sub))) err(`extra problem ${p.id}: unknown placement ${p.topic}/${p.sub}`);
+
 (async () => {
   let checked = 0;
   if (process.argv.includes("--net")) checked = await net();
   for (const w of warns) console.log(`warn  ${w}`);
   for (const e of errors) console.log(`ERROR ${e}`);
   const drills = Object.values(DRILLS).reduce((n, d) => n + d.length, 0);
-  console.log(`\n${TOPICS.length} topics, ${TOPICS.reduce((n, t) => n + t.quiz.length, 0)} quiz questions, ${cardCount} cards, ${drills} drills, ${PROBLEMS.length} problems, ${DESIGNS.length} designs, ${YT.size} videos${checked ? ` (${checked} verified online)` : ""}`);
+  console.log(`\n${SUBTOPICS.length} subtopic pages (${Object.keys(DEEP).length} written of ${outlineIds.size} outlined), ${EXTRA_PROBLEMS.length} extra problem pages`);
+  console.log(`${TOPICS.length} topics, ${TOPICS.reduce((n, t) => n + t.quiz.length, 0)} quiz questions, ${cardCount} cards, ${drills} drills, ${PROBLEMS.length} problems, ${DESIGNS.length} designs, ${YT.size} videos${checked ? ` (${checked} verified online)` : ""}`);
   console.log(`${errors.length} errors, ${warns.length} warnings`);
   process.exit(errors.length ? 1 : 0);
 })();

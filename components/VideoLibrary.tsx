@@ -43,7 +43,9 @@ export function VideoLibrary({ pages, problems, color }: { pages: string[]; prob
   const concept = kind === "question" ? [] : lib.concept.filter(keep);
   const groups = kind === "concept" ? [] : lib.groups.map((g) => ({ ...g, vids: g.vids.filter(keep) })).filter((g) => g.vids.length || (q && g.p.title.toLowerCase().includes(q.toLowerCase())));
   const nq = lib.groups.reduce((n, g) => n + g.vids.length, 0);
-  const play = (v: Vid) => { setPlaying(v); requestAnimationFrame(() => document.getElementById("vlib-player")?.scrollIntoView({ behavior: "smooth", block: "nearest" })); };
+  const play = (v: Vid) => {
+    if (v[3]) { window.open(`https://www.youtube.com/watch?v=${v[0]}`, "_blank", "noopener"); return; }
+    setPlaying(v); requestAnimationFrame(() => document.getElementById("vlib-player")?.scrollIntoView({ behavior: "smooth", block: "nearest" })); };
   const toggleChan = (i: number) => setChans((s) => { const n = new Set(s); if (n.has(i)) n.delete(i); else n.add(i); return n; });
 
   return (
@@ -141,6 +143,7 @@ function Thumb({ v, ch, active, onPlay }: { v: Vid; ch: Chan[]; active: boolean;
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={`https://i.ytimg.com/vi/${v[0]}/mqdefault.jpg`} alt="" loading="lazy" className="aspect-video w-full object-cover opacity-80 transition duration-300 group-hover:scale-[1.03] group-hover:opacity-100" />
         <span className="absolute inset-0 bg-gradient-to-t from-[#07080d] via-[#07080d]/40 to-transparent" />
+        {v[3] && <span className="absolute left-2 top-2 rounded bg-black/70 px-1.5 py-0.5 text-[9.5px] text-mute">opens on YouTube</span>}
         <span className="absolute left-1/2 top-[38%] grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-accent/90 text-ink opacity-0 transition group-hover:opacity-100"><Play size={15} className="translate-x-px" fill="currentColor" /></span>
         <span className="absolute inset-x-0 bottom-0 p-2.5">
           <span className="line-clamp-2 text-[12px] font-medium leading-snug text-text">{v[1]}</span>
@@ -158,13 +161,15 @@ export function ProblemVideos({ lc }: { lc: number }) {
   const [cur, setCur] = useState(0);
   const [picked, setPicked] = useState(false);
   if (!data) return null;
-  const vids = byChannel(data.lc[String(lc)] ?? [], data.channels);
-  if (!vids.length) return null;
+  const all = byChannel(data.lc[String(lc)] ?? [], data.channels);
+  const vids = all.filter((v) => !v[3]), linkOnly = all.filter((v) => v[3]);
+  if (!all.length) return null;
   const ch = data.channels;
   return (
     <div className="space-y-2">
-      <div className="text-[11px] font-semibold uppercase tracking-widest text-faint">Walkthroughs · {vids.length} channel{vids.length > 1 ? "s" : ""}</div>
-      <VideoEmbed key={vids[cur][0]} r={ref(vids[cur], ch)} autoplay={picked} compact />
+      <div className="text-[11px] font-semibold uppercase tracking-widest text-faint">Walkthroughs · {all.length} channel{all.length > 1 ? "s" : ""}</div>
+      {vids.length > 0 && <VideoEmbed key={vids[cur][0]} r={ref(vids[cur], ch)} autoplay={picked} compact />}
+      {linkOnly.map((v) => <a key={v[0]} href={`https://www.youtube.com/watch?v=${v[0]}`} target="_blank" rel="noopener noreferrer" className="block text-[12.5px] text-mute underline hover:text-text">{ch[v[2]][0]}: {v[1]} (opens on YouTube; embedding disabled)</a>)}
       {vids.length > 1 && (
         <div className="flex flex-wrap gap-1.5">
           {vids.map((v, i) => (

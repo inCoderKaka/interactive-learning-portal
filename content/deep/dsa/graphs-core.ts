@@ -215,7 +215,7 @@ Possible with an explicit stack of (cell, direction index), but recursion depth 
 `,
     pitfalls: ["Forgetting to restore the cell", "Permanently marking in a path problem", "Not returning early on success"],
     quiz: [Q("Number of Islands marks visited cells…", ["and unmarks them", "*permanently", "never", "only at the start"], "Each cell is explored once.")],
-    sources: [S.article("Word search: editorial", "LeetCode", "https://leetcode.com/problems/word-search/editorial/")],
+    sources: [S.book("Algorithms, chapter 2: Backtracking", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/02-backtracking.pdf"), S.article("Backtracking", "Wikipedia", "https://en.wikipedia.org/wiki/Backtracking")],
     problems: [79, 1219, 980, 212],
   },
   "partition-backtracking": {
@@ -261,7 +261,7 @@ Counting or optimising with overlapping subproblems → DP. Listing all partitio
 `,
     pitfalls: ["Rechecking palindromes from scratch", "Missing the empty-bucket symmetry break (TLE)", "Not checking divisibility first"],
     quiz: [Q("[4,3,2,3,5,2,1], k = 4: target sum per subset?", ["4", "*5", "6", "20"], "Total 20 / 4.")],
-    sources: [S.article("Partition to k equal sum subsets: editorial", "LeetCode", "https://leetcode.com/problems/partition-to-k-equal-sum-subsets/editorial/")],
+    sources: [S.book("Algorithms, chapter 2: Backtracking", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/02-backtracking.pdf"), S.article("Partition problem", "Wikipedia", "https://en.wikipedia.org/wiki/Partition_problem")],
     problems: [131, 132, 698, 473, 140, 2305],
   },
 
@@ -386,7 +386,7 @@ Store parent[v] = u when discovering v; walk back from the target. For "all shor
       Q("Rotting Oranges: start the BFS from…", ["one rotten orange", "*all rotten oranges at once", "each fresh orange", "the top-left cell"], "Multi-source BFS gives the simultaneous spread."),
       Q("BFS finds shortest paths when…", ["weights are positive", "*all edges have the same weight", "the graph is a DAG", "always"], "Otherwise use Dijkstra or 0-1 BFS."),
     ],
-    sources: [S.book("Algorithms, 4th ed. §4.1 (breadth-first search)", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/41graph/"), S.article("Breadth-first search", "cp-algorithms", "https://cp-algorithms.com/graph/breadth-first-search.html"), S.book("Introduction to Algorithms (CLRS), ch. 20.2: Breadth-first search", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/")],
+    sources: [S.book("Algorithms, 4th ed. §4.1 (breadth-first search)", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/41graph/"), S.article("Breadth-first search", "cp-algorithms", "https://cp-algorithms.com/graph/breadth-first-search.html"), S.book("Introduction to Algorithms (CLRS), ch. 20.2: Breadth-first search", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305")],
     problems: [127, 126, 752, 433, 994, 542, 286, 1091, 133],
   },
   dfs: {
@@ -462,7 +462,7 @@ Push (u, iterator index) so you can resume u's neighbour list and do post-order 
       Q("Directed DFS meets an edge to a grey vertex. The graph…", ["is a DAG", "*has a cycle", "is disconnected", "is bipartite"], "Grey means on the current path."),
       Q("Which edge types can an undirected DFS produce?", ["all four", "*tree and back only", "tree and cross only", "back only"], "Cross and forward edges cannot occur."),
     ],
-    sources: [S.book("Algorithms, chapter 6: Depth-First Search", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/06-dfs.pdf"), S.article("Depth-first search", "cp-algorithms", "https://cp-algorithms.com/graph/depth-first-search.html"), S.book("Introduction to Algorithms (CLRS), ch. 20.3: Depth-first search", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/")],
+    sources: [S.book("Algorithms, chapter 6: Depth-First Search", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/06-dfs.pdf"), S.article("Depth-first search", "cp-algorithms", "https://cp-algorithms.com/graph/depth-first-search.html"), S.book("Introduction to Algorithms (CLRS), ch. 20.3: Depth-first search", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305")],
     problems: [200, 547, 323, 695, 130, 417, 797, 841],
   },
   "cycle-detection": {
@@ -855,7 +855,7 @@ Is org the unique shortest common supersequence of the given sequences? Build ed
 `,
     pitfalls: ["Missing the prefix case", "Comparing beyond the first difference", "Omitting isolated characters", "Duplicate edges double-counting in-degrees"],
     quiz: [Q("Words ['wrt','wrf','er','ett','rftt']: the first edge derived is…", ["w → e", "*t → f", "r → t", "e → r"], "'wrt' vs 'wrf' differ first at t/f.")],
-    sources: [S.article("Alien dictionary discussion", "LeetCode", "https://leetcode.com/problems/alien-dictionary/"), S.article("Topological sorting", "cp-algorithms", "https://cp-algorithms.com/graph/topological-sort.html")],
+    sources: [S.article("Topological sorting", "Wikipedia", "https://en.wikipedia.org/wiki/Topological_sorting"), S.article("Topological sorting", "cp-algorithms", "https://cp-algorithms.com/graph/topological-sort.html")],
     problems: [269, 444, 953, 1462, 2392],
   },
 
@@ -1022,7 +1022,7 @@ Write find recursively, or iteratively with a stack, so weights are updated from
 `,
     pitfalls: ["Updating weights in the wrong order during compression", "Division by zero / unknown variables in queries"],
     quiz: [Q("Parity DSU: u and v share a root with parities 1 and 1. Adding edge u–v…", ["is fine", "*creates an odd cycle (not bipartite)", "creates an even cycle", "merges two components"], "Same parity means same side.")],
-    sources: [S.article("Disjoint set union: supporting the parity / distance to the representative", "cp-algorithms", "https://cp-algorithms.com/data_structures/disjoint_set_union.html#support-the-parity-of-the-path-length-checking-bipartiteness-online")],
+    sources: [S.article("Disjoint-set data structure", "Wikipedia", "https://en.wikipedia.org/wiki/Disjoint-set_data_structure"), S.article("Disjoint set union: supporting the parity / distance to the representative", "cp-algorithms", "https://cp-algorithms.com/data_structures/disjoint_set_union.html#support-the-parity-of-the-path-length-checking-bipartiteness-online")],
     problems: [399, 785, 886],
   },
   "offline-dsu": {

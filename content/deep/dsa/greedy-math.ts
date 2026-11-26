@@ -110,7 +110,7 @@ If total gas < total cost, no start works. Otherwise, scan with a running tank; 
 `,
     pitfalls: ["O(n²) DP for jump game", "Missing the total gas check", "Off-by-one when converting taps to intervals"],
     quiz: [Q("Jump Game II on [2,3,1,1,4]: minimum jumps?", ["1", "*2", "3", "4"], "0 → 1 → 4.")],
-    sources: [S.article("Jump game II: editorial", "LeetCode", "https://leetcode.com/problems/jump-game-ii/editorial/"), S.book("Algorithms, chapter 4: Greedy Algorithms", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/04-greedy.pdf")],
+    sources: [S.article("Greedy algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/Greedy_algorithm"), S.book("Algorithms, chapter 4: Greedy Algorithms", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/04-greedy.pdf")],
     problems: [55, 45, 134, 1024, 1326, 871, 1306],
   },
   "greedy-heap": {
@@ -201,7 +201,7 @@ Typically an exchange: if an optimal assignment pairs a stronger worker with an 
 `,
     pitfalls: ["Sorting by the wrong key", "Missing the binary search + greedy combination in assignment problems"],
     quiz: [Q("Boats with limit 3, people [3,2,2,1]: minimum boats?", ["2", "*3", "4", "1"], "[3], [2,1], [2].")],
-    sources: [S.book("Algorithms, chapter 4: Greedy Algorithms", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/04-greedy.pdf")],
+    sources: [S.article("Greedy algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/Greedy_algorithm"), S.book("Algorithms, chapter 4: Greedy Algorithms", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/04-greedy.pdf")],
     problems: [881, 561, 1877, 826, 2071, 870, 1710, 462, 853],
   },
 
@@ -246,7 +246,7 @@ Most interval problems are about **events** at endpoints. When merging is not en
 `,
     pitfalls: ["Touching endpoints ambiguity", "Not taking max of ends (nested intervals)", "Sorting when the input is already sorted (Insert Interval)"],
     quiz: [Q("Merge [1,4], [2,3]:", ["[1,3]", "*[1,4]", "[[1,4],[2,3]]", "[2,4]"], "Nested: end is max(4, 3).")],
-    sources: [S.article("Merge intervals: editorial", "LeetCode", "https://leetcode.com/problems/merge-intervals/editorial/")],
+    sources: [S.article("Interval (mathematics)", "Wikipedia", "https://en.wikipedia.org/wiki/Interval_(mathematics)"), S.article("Sweep line algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/Sweep_line_algorithm")],
     problems: [56, 57, 986, 1288, 759, 228, 352, 715],
   },
   "sweep-line": {
@@ -387,7 +387,7 @@ Talk through the event ordering rules explicitly; they are the main source of bu
 `,
     pitfalls: ["Emitting duplicate points at equal x", "Removing the wrong copy of equal heights", "Forgetting ground level 0"],
     quiz: [Q("In the heap version, when do you remove a building's height?", ["at its start", "immediately at its end event", "*lazily, when it reaches the top and its end ≤ x", "never"], "Heaps cannot delete arbitrary entries efficiently.")],
-    sources: [S.article("The skyline problem: editorial", "LeetCode", "https://leetcode.com/problems/the-skyline-problem/editorial/"), S.article("Sweep line algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/Sweep_line_algorithm")],
+    sources: [S.article("Segment tree", "cp-algorithms", "https://cp-algorithms.com/data_structures/segment_tree.html"), S.article("Sweep line algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/Sweep_line_algorithm")],
     problems: [218, 699, 850],
   },
 

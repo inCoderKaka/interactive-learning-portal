@@ -277,7 +277,7 @@ Merging up to the middle is O(m + n): fine to say as the brute force before opti
 `,
     pitfalls: ["Starting the staircase at the top-left", "Searching the larger array in the median problem", "Off-by-one in (m + n + 1) / 2", "Forgetting ±∞ sentinels"],
     quiz: [Q("Search a row- and column-sorted matrix starting at the top-right. Value > target:", ["move down", "*move left", "move diagonally", "binary search the row"], "Everything below is even bigger.")],
-    sources: [S.article("Median of two sorted arrays: editorial", "LeetCode", "https://leetcode.com/problems/median-of-two-sorted-arrays/editorial/"), S.article("Kth order statistic in O(N)", "cp-algorithms", "https://cp-algorithms.com/sequences/k-th.html")],
+    sources: [S.article("Median", "Wikipedia", "https://en.wikipedia.org/wiki/Median"), S.article("Kth order statistic in O(N)", "cp-algorithms", "https://cp-algorithms.com/sequences/k-th.html")],
     problems: [74, 240, 378, 4, 1351],
   },
   "bs-real-ternary": {
@@ -431,7 +431,7 @@ Close the list into a ring, find the new tail at length − k mod length, and br
 `,
     pitfalls: ["Losing the next pointer", "Not reconnecting the segment's tail in sublist reversal", "Reversing a partial last group in k-group"],
     quiz: [Q("Reverse 1→2→3→4→5 in groups of 2:", ["*2→1→4→3→5", "2→1→3→4→5", "2→1→5→4→3", "5→4→3→2→1"], "The last group has only one node and is left as is.")],
-    sources: [S.article("Reverse linked list: editorial", "LeetCode", "https://leetcode.com/problems/reverse-linked-list/editorial/")],
+    sources: [S.book("Algorithms, 4th ed. §1.3 (linked lists)", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/13stacks/"), S.article("Linked list", "Wikipedia", "https://en.wikipedia.org/wiki/Linked_list")],
     problems: [206, 92, 25, 24, 143, 234, 61],
   },
   "fast-slow": {
@@ -488,7 +488,7 @@ An alternative that teleports the slow pointer at powers of two; fewer function 
       Q("After fast and slow meet, how do you find the cycle start?", ["Count the cycle length", "*Move one pointer to head, advance both by 1", "Advance fast by 3", "Reverse the list"], "The μ ≡ −a (mod λ) argument."),
       Q("Find the Duplicate Number in O(1) space without modifying the array:", ["Sort", "XOR", "*Floyd on i → nums[i]", "Hash set"], "Sorting modifies the array; XOR fails with multiple repeats."),
     ],
-    sources: [S.article("Cycle detection (Floyd and Brent)", "Wikipedia", "https://en.wikipedia.org/wiki/Cycle_detection"), S.article("Find the duplicate number: editorial", "LeetCode", "https://leetcode.com/problems/find-the-duplicate-number/editorial/")],
+    sources: [S.article("Floyd's cycle-finding and Brent's algorithm", "Wikipedia", "https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare"), S.article("Cycle detection (Floyd and Brent)", "Wikipedia", "https://en.wikipedia.org/wiki/Cycle_detection")],
     problems: [141, 142, 876, 287, 202, 160, 2095],
   },
   "ll-merge-sort": {

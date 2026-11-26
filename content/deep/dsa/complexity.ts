@@ -118,7 +118,7 @@ Count extra memory beyond the input: arrays you allocate, hash maps, recursion s
       Q("Knapsack DP in O(n·W) is called…", ["polynomial", "*pseudo-polynomial", "exponential in n", "linear"], "Polynomial in the value W, exponential in its bit length."),
     ],
     sources: [
-      S.book("Introduction to Algorithms (CLRS), 4th ed., ch. 3: Characterizing Running Times", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/"),
+      S.book("Introduction to Algorithms (CLRS), 4th ed., ch. 3: Characterizing Running Times", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305"),
       S.course("MIT 6.006 Introduction to Algorithms (Spring 2020), Lecture 1: Algorithms and Computation", "MIT OpenCourseWare", "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/"),
       S.article("Big O notation", "Wikipedia", "https://en.wikipedia.org/wiki/Big_O_notation"),
       S.book("Algorithms, 4th ed. §1.4 Analysis of Algorithms", "Sedgewick & Wayne", "https://algs4.cs.princeton.edu/14analysis/"),
@@ -193,7 +193,7 @@ Amortised O(1) still allows an occasional O(n) pause. For latency-sensitive syst
       Q("Amortised bounds are…", ["probabilistic", "*worst-case bounds on sequences", "best-case bounds", "only for trees"], "No probability involved."),
     ],
     sources: [
-      S.book("Introduction to Algorithms (CLRS), ch. 16: Amortized Analysis", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/"),
+      S.book("Introduction to Algorithms (CLRS), ch. 16: Amortized Analysis", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305"),
       S.article("Amortized analysis", "Wikipedia", "https://en.wikipedia.org/wiki/Amortized_analysis"),
       S.course("MIT 6.046J Design and Analysis of Algorithms, Lecture 5: Amortization", "MIT OpenCourseWare", "https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/"),
     ],
@@ -283,7 +283,7 @@ T(n) = T(n − 1) + T(n − 2) grows like φⁿ (φ ≈ 1.618), the golden ratio
       Q("Quickselect with perfect halving: T(n) = T(n/2) + n is…", ["Θ(n log n)", "*Θ(n)", "Θ(log n)", "Θ(n²)"], "n + n/2 + n/4 + … = 2n."),
     ],
     sources: [
-      S.book("Introduction to Algorithms (CLRS), ch. 4: Divide-and-Conquer (the master method)", "Cormen, Leiserson, Rivest, Stein", "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/"),
+      S.book("Introduction to Algorithms (CLRS), ch. 4: Divide-and-Conquer (the master method)", "Cormen, Leiserson, Rivest, Stein", "https://mitpressbookstore.mit.edu/book/9780262046305"),
       S.article("Master theorem (analysis of algorithms)", "Wikipedia", "https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)"),
       S.book("Algorithms, chapter 1: Recursion (recursion trees)", "Jeff Erickson", "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf"),
       S.article("Akra–Bazzi method", "Wikipedia", "https://en.wikipedia.org/wiki/Akra%E2%80%93Bazzi_method"),
@@ -442,7 +442,7 @@ If your solution matches the lower bound, say so: "this is optimal because we mu
     sources: [
       S.article("Comparison sort (lower bound)", "Wikipedia", "https://en.wikipedia.org/wiki/Comparison_sort"),
       S.article("Problem-solving: complexity from constraints", "USACO Guide", "https://usaco.guide/bronze/time-comp"),
-      S.book("How to Solve It", "George Pólya", "https://press.princeton.edu/books/paperback/9780691164076/how-to-solve-it"),
+      S.book("How to Solve It (Pólya, 1945)", "Wikipedia summary", "https://en.wikipedia.org/wiki/How_to_Solve_It"),
     ],
   },
 };
