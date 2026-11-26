@@ -1,0 +1,250 @@
+earlier prompt:
+
+This is a transcript of a youtube video (https://www.youtube.com/watch?v=DBTdrmS-uL8) explaining to use a github repo:
+“Hey everyone, welcome back to Anubhav in Tech. Today we are building a AI agent or maybe a AI conversational agent which will help you in your system design mock interviews. Yep, you heard it right and we'll be using Agora conversational AI to build this. It's a super super great product which you can later extend it as well. So the idea is simple. I mean getting good at system design interviews has one problem, one pitfall because the mock interviews are expensive. If you try to book even a single mock interview on platforms like interviewing.io or I got an offer or even on Top Men will cost you around hundreds of dollars, right? Even if you try the try exponent free peer-to-peer mock interviews, after five free trials, you will have to pay for it. And you don't need one mock interview, right? You need 10s or 20s maybe so that until your whiteboarding, you have good confidence and you feel normal under pressure. And that will cost you a good amount of good amount of money from pockets just to practice, not doing real real interviews. So because I'm I was getting a lot of lot of comments on my system design interview videos that how how to practice mock interviews. So come up with ideas so that most of the people do these three things first. Runs locally, uses Agora's conversational AI, does it wonders, right? Now here the interviewer, the AI interviewer test whatever you're talking, whatever you're drawing on the board and will defend your decision, you'll think out loud and maybe it will push back if you're if you're taking a wrong architectural decision. Yep. So let's move forward. This is how it's something look like. So on the screen you see uh this app is running locally on my system. System design mock interview select. Right now I have just put four question, but you can extend it to have more than that. I mean I'll show you in the code where you can have more such problems. Even you can give the exact problem maybe from interview club.com. You just you just ingest all the exact a boundary in which you want your agent to run and react. So I exactly built that, right? And it's free to run and you're locally and this is like AI mock interview for a system design. It asks you real question, right? Let's say design a URL URL shortener or maybe design right sharing like Rapido. And it does three things a human interview does. First, it listens to you. When you when you when you reason so when you think out loud, it it watches I mean in the MVP uh this feature is not there but I would like someone of you to extend it and build that. That whatever you're drawing on the whiteboard we are using Excalidraw which is like open source drawing board. Whatever you're drawing it is able to catch it and feed it in the context and and here's the part I love, it interrupts you. Yes, with this conversation AI model that Agora provides, it interrupts you if you violate every read straight into a single in in a single context, right? So it it sometimes would say hold on uh this is this is not clear or maybe this is this is I'm not uh sure of what you're doing. Uh do you want to think again and come up with a better solution? These kind of feedback you get I mean real human feedback. And that pressure being challenged mid-thought is what you want to practice, right? So in next 10 minute or 8 minute, I'll show you how you can build this using Agora conversation AI engine and how you can scaffold the same voice AI foundation with couple of CLIs like I'm going to show you guys. Okay, so I'll quickly give you a walk-through and then we'll uh jump directly into setting up in your local repository or maybe I'll provide you the GitHub link in the description where you can uh fork it or clone it and start using it directly. So let's say if I say I click I mean you have multiple other options but we'll start with URL shortener because that's easy for demo. >> Hi, I'm Sam. I'll be your interviewer today. Here's your question. Design a URL shortener like Bitly. Given a long URL, return a short link that redirects to it. Feel free to ask clarifying questions first, then sketch your design on the whiteboard while you talk me through it. >> Yep, as you can see you we have an Excalidraw on our left-hand side which is which is where you will draw and right-hand side this is your agent actually. All right, I have muted it but if I if I start start with the functional comment, I'll unmute and say okay, I'll start with functional comment. It will give you feedback, it will interrupt you, it will actually act as a interview in MVP feature. It doesn't actually sees what you're drawing but I would like someone of you to extend it and maybe develop a better version of it. So let's do a quick demo. Hey, thanks. So, I would like to start with functional requirement and some of the very basic functional requirement that I would like to have in URL shortener would be that a user should be able to shorten a long URL into a shortened or URL, right? Something like Bitly does. And you should should user should be able to uh put an expiry on that particular shortened code URL. Is that fine with you? >> Yes, those are solid functional requirements. You've mentioned shortening a long URL and allowing for an expiration on the shortened link. Are there any other requirements you want to consider like analytics or user accounts? >> Um definitely, I would like to talk on the analytics part of it. Maybe we can track the number of clicks uh that the shortened code has seen so far. And about the user account, can can we assume that all the authorization authentication things are like are out of scope and we can just focus on these three functional requirement? >> That sounds reasonable. So, to summarize, you want to focus on shortening a URL, setting an expiration, and tracking the number of clicks. We can assume user authentication and authorization are out of scope for now. What scale are we designing for? >> So, as you can see, uh this is how excellent interview would be like where you are actually uh talking to it as if you're talking a human interviewer and then you can start maybe start typing like functional requirement exactly how would you do I mean whatever requirement one that we discussed and then requirement two that we discussed and requirement three that we discussed, right? So, crazy, right? Well, now I've muted so that agent can't hear whatever you're talking, but this is the gist of it what we're what you can what you can build and this is so powerful, right? This Agora conversation AI is such a powerful thing that you can build an agent such agent like maybe in a like 5 to 10 minutes or maybe in max max of 10 minutes, I would say. First First on the very clear question, why why should we use Agora here? Because I I I I think Agora is a >> [clears throat] >> kind of leader here which will which will which can which can be very helpful for any if a student or even a working professional. Agora provides a voice voice This like this is this is like really real-time, right? Where where it uses a microphone audio which I stored it to cloud, get transcribed as you can see here. We are using Deep brand STT. STT is like speech-to-text and then we are using OpenAI LLM. We are using photo mini and then we are using mini max TTS. And this is probably before TTS is text-to-speech model. We are using mini max. These are all the default values and you can also use any of your own. I mean you can use bring your own identity. You can use the Gemini. You can use OpenAI Deep Seek. Just bring your API keys. You can use it. Let me talk about what what different. Yeah. So, you use your microphone audio which has to reach to cloud and that can get transcribed, run through LLM, get converted back to speech and stream back to your browser. This is like complete pipeline of what you're seeing here. And it's all happening very very real-time. And like the latency here is like 100 milliseconds. And it's faster that it feels like a conversation, right? Not like a walkie-talkie. So, that's the Agora conversation AI engine that runs the entire pipeline and that is provided to you as a SaaS. I mean just in one CLI like I want to get it, right? Speech-to-text, the LLM and text-to-speech as a managed agent in Agora cloud. So, the agent joins the call like another participant which is like your interview here. And my app limit teaches the raw audio, right? Here's the best part. I didn't need a single third API key, right? Everything is provided by Agora. No API key, no OpenAI key, no Deep brand key, no TTS key. Agora manages the model, the complete agent end-to-end and everything get billed through your one Agora project. That's it. And two channel works, I mean two channel does the audio like RTC carries your audio both ways and RTM which is Agora real-time messaging um algorithm. It carries everything else which is like live transcripts, whatever agent state it is in the latency and everything that is seen here. And even with the my my white white board updates which you can integrate with later. Yep. So, let's get started into the integration part of how you can set up Agora in your local uh basically your local machine and get started in then in just one click of command which is this is the Agora CLI repo. It will be available in the description. You can you You just jump to here and you just need this this command. Yeah. If you don't have this command, it's fine. You come here, paste it. I have already installed it, so it might throw that it is already there available. Okay. So, this is installing. It says if it is not installed on my machine, it will install them and we're good to go. And yep, if you have other option like if you don't have a Mac machine, then you can run commands via file Linux and for Windows. Yeah, come back. And once you are done with this, then the next command is Agora login. And that's it, man. Just see. I mean, you see the very the other option could be do a Agora login via UI, but I'm a developer. I love CLI commands. So, I'll just do Agora login, and it will actually open a login page for me. Something like this. And it'll say because my it was for me, Agora was already logged in. So, it'll say authentication successful. Otherwise, you have to go through some bunch of steps where you select a Google account and just login. That's it. Yeah, that's it. And login is done. So, once the authentication is done, the next step is to set up our application. I'll use Next.js app. You'll have plenty of other options, but the command is simple. Agora init, and you put your project name. Let's say my my AI interviewer. viewer. That's it. You get three quick start templates. One is Next.js, Python, and other is Go. All built in for you. I'll I'll use Next.js. So, the good and the best part of it here, if you would have used in the Agora UI, which is like you have to go Agora login login page, and then the login page you have to set up your project. You have to create a project, and then get the API key, and go back to your app, and then you pick you all those things. I mean, you have to then start with your creating that NPM NPM application. What not, man. So, but with all of these, things are pretty straightforward. And you can see here, it has given our next command to follow. You are into your application. If you you see here, the PNPM install will install all the dependencies, but while it installs, let's see what all it has done. So, as you can see, it has all the bunch of the default components, docs, whatnot, hooks, libraries. So, we'll see the important part is our ENV local file. Here you see all the in essentials that we need to start the Agora API ID, which is API key and the certificate, agent ID, everything is set up by default. You don't need You don't need to do the hassle of popping it from there, pasting it here, and setting it up, and then running the application. No, not at all needed. Okay, so we'll say PNPM dev. There's some error. Let me come Let me quickly fix it and come back. Okay, so fix the issue. The issue was with this allow builds PNPM workspace file. Uh there were placeholders which we had to change it to true for all of these three. Earlier, it was set to something else. So, now our service is running. So, meanwhile, you can see that it has a default base and agent setup. I mean, all the hassle is all gone now. Available to you right away. You can just click on start conversation. And you'll see the magic happening, right? So, in just like a minute or two, you're able to set up your life. >> I'm Ada, your virtual assistant from Agora. How can I help? >> Yep, see? It's all done live. So, this is this is what we have quickly built, right? And also, let's see where the exactly we are setting the configuration of our configuration of our the voice agent, right? So, if you see here, this is where we are setting up agent, the Agora agent, and the pipeline that you're setting is for STT is our deep ground default, which is like OpenAI, LLM, MiniMax, Reseller, TTS, which is like text to speech. So, this is this is where we set. Right? And then, with STT, we use deep ground. Everything comes by default. You don't need to don't need to set up any of these, but if you want to bring your own API key, you can change it to do whatever you want. Maybe it could be a Gemini model, it could be another OpenAI model, right? Here we're using GPT-4 for mini testing purpose, quite a good model for basic thing, and then TTS is 11 Labs TTS, that's it. So, this agent has has to be I mean, this is the baseline agent that we are talking with, right? It has some default instruction, right? The agent takes some instruction, and here we we'll change the system instruction so that it it lives in a interview persona, right? So, we'll define it to maybe some principal engineer, some principal engineer, and we'll say, "Okay, you are a principal engineer where you have to act like a a fang guy who who takes like bunch of interviews, and you have to guide I mean, you have to be maybe you can ask your agent to be very very much grilling. It should be could be very rude, and or it could be in a helping nature. I mean, you can tweak it as you ever you want, right? This is the persona that I've added. The prompt, right? Persona friendly and a guide. That's it. I mean, so this is the place where you have to edit it. And if if if if you open my repo, you'll see a different prompt. I'll take it. This is the default prompt, right? This is the default prompt you'll see which you actually need to tweak it. Yeah, but this is this is my interview prompt in the starting so I don't know, right? This is this is the This is the system prompt that I have written for myself. The voice style, the interview flow, the whiteboarding, the canvas, even catching the reply and how to reply, everything. I mean, this is the system prompt that you want your agent to behave like. And also, if you don't want to do all the hassle of these things, you can use AINA skills. I mean, this is the fastest way to build real-time conversational AI apps with with your maybe the baseline agent, or you can tweak it to your personal agent, right? And this AINA skill has every knowledge. I mean, this this skill can help you build AI voice agent, tutor, companion, customer service, straight out of the box. Just Just use this AI. I mean, using this Using skill is very simple. You just you just install it install this skill and this skill will be available directly to your cloud code Open AI Codex, Gemini Anti-Gravity, whatever you want. And it covers everything that you want. Straightforward with the RTC conversation AI, which is one the one we are using. Even for recording, all tokens, authentication, everything is straight out of the box. Can be used by this Auras skill. So, that's how we That's how you can build a mock interview that would cost that would actually actually cost like hundreds of dollars, but now this is like free of cost running on your laptop and you can tweak it and make it really personal for yourself, for your interview preparation, for your next fine interview, startup interview. And the repo will be linked below in the description. Just clone it, run Auras and you are like practicing in minutes, right? And the same pattern. You can change the voice agent, change the behavior, however however you want to tweak it, use it, use it use it for tutoring, use it for any other purpose. Like you can also use it for like you you want to learn new language, you can use it for that. Anything where like an AI needs to watch you work and gives you some tips or it wants you to interrupt and speak up for your behalf. So, if this was useful, like and subscribe. It generally helps me motivate. Drop a comment, what what do you want to build next on this? And then see you in the next one. Bye.”
+
+This is the github repo: https://github.com/AgoraIO-Conversational-AI/agent-quickstart-nextjs
+
+what best can we do to integrate this into our mock interview system ? I dont want to illegally (or like looked down upon) copy its logics and contents. either use that repo as an external agent/copy its working in a way that looks like fully new (suggest me some ways in which we can leverage this functionality) which is a preferred way as it might allow us to customize the way we want it.
+
+customizations include user selecting a list of topics/questions to get interviewed on, the interview tone. things like whiteboard, text input exactly like in the real Google interviews.
+Even the roadmap can include (or better yet suggest) interviews based on whatever’s been learned by the user.
+the interview can also include some randomly new situations like conversations on unknown or higher level topics or conversations on AI updates in the world etc.
+the interview can also include introduce yourself and is there anything you’d like to ask me.
+
+think of more such customizations and ways of integration which I can’t think of right now ! the objective is to make it feel as real world and cost effective and personal for the users as possible.
+also, do add the repo and the youtube video link in our docs for inspiration.
+
+last session responded:
+Now the README credit, which is the one concrete change you asked for:
+
+⏺ Update(README.md)
+Added 9 lines
+
+Settings → *Import your practice notes* accepts a Markdown file whose problems are link headings, e.g. `## [200: Number of Islands](https://…)`. Matches
+ get your notes attached; the rest are added as your own problems. Everything imported is queued for review rather than marked as mastered.
+
+## Inspiration and credits
+
+The voice mock interviewer is inspired by:
+
+- **[Building an AI system design mock interviewer with Agora Conversational AI](https://www.youtube.com/watch?v=DBTdrmS-uL8)** by *Anubhav in Tech* on
+YouTube. The idea of a voice interviewer beside a whiteboard, which pushes back while you think out loud, comes from this video.
+- **[AgoraIO-Conversational-AI/agent-quickstart-nextjs](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-nextjs)** (MIT, © 2025 Agora Commu
+nity), the reference for how a browser joins an Agora channel and starts a managed STT → LLM → TTS agent.
+
+Ascent's interviewer is its own implementation, built on Agora's published SDKs. If any file is adapted from the quickstart, it keeps the quickstart's M
+IT notice at the top.
+
+## Layout
+
+```
+
+I've read the Agora quickstart and our /mock page and have a recommendation. I also added an "Inspiration and credits" section to README.md linking the video and the repo. It isn't committed yet.
+
+Is using the repo allowed?
+
+Yes. The quickstart is MIT licensed (© 2025 Agora Community), so copying it is legal as long as copied files keep its copyright notice. You can still avoid copying altogether, because the quickstart is mostly thin glue around Agora's own npm packages (agora-agents, agora-rtc-sdk-ng, agora-rtm, agora-agent-client-toolkit). The glue is about three API routes plus mapping the live transcript into a chat view. If we depend on those packages and write our own glue, nothing needs a copied-code notice. The README credit covers the courtesy side.
+
+The repo you gave me is Agora's generic starter, not the YouTuber's own repo with the interviewer prompt and whiteboard. We'd write our own prompt by extending the one /mock already uses, so we don't copy his.
+
+Three ways to integrate
+
+┌───────────────────────┬──────────────────────────────────────────────────────────────────────────────┬───────────────────────────────────────────────────────────┐
+│                       │                                     How                                      │                          Verdict                          │
+├───────────────────────┼──────────────────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────┤
+│ A. External agent     │ Run the quickstart as a separate app and link or embed it                    │ Fastest, but two deploys, hard to pass in the question or │
+│                       │                                                                              │  whiteboard, and little room to customize                 │
+├───────────────────────┼──────────────────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────┤
+│ B. Native, with Agora │ Add /api/agora/{token,start,stop} routes. Start the Agora agent with its LLM │ Recommended. All customization lives in that endpoint: on │
+│  calling our own LLM  │  pointed at our /api/interviewer endpoint, which speaks the OpenAI chat      │  every turn it adds the question, tone, rubric, time      │
+│ endpoint              │ format                                                                       │ left, current phase, and the latest whiteboard and code   │
+├───────────────────────┼──────────────────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────┤
+│ C. Swappable voice    │ One interface with three engines: Text (today), Browser voice (free          │ Do this together with B. Free by default, Agora when you  │
+│ engine                │ speech-to-text and text-to-speech built into Chrome, plus your existing      │ want realism                                              │
+│                       │ Gemini, Claude or local key), and Agora (premium)                            │                                                           │
+└───────────────────────┴──────────────────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────┘
+
+Some honest corrections to what the video implies:
+- It isn't free. Agora bills per agent minute after its free allowance, on whoever's Agora project runs it. If public users can start voice sessions, you pay for their minutes.
+- The app gains server code. Agora needs a server route that holds the App Certificate and issues short-lived tokens (a Vercel function). Today Ascent is entirely in the browser with keys kept there.
+- "It interrupts you" mostly means fast turn-taking. It replies after about 0.5 s of silence, and you can talk over it. For the interviewer to cut in on its own ("you've been silent for 40 s", "that database won't hold at this write rate"), our server has to watch whiteboard and code changes and trigger it. I still need to check the exact Agora call for that against the agora-agents docs.
+
+Customizations
+
+Setup screen
+- Choose a pool of topics or questions, and the question is drawn at random from that pool. The current /mock page deliberately won't let you pick, as a bias guard, and choosing a pool keeps that intent.
+- Tone: friendly guide, neutral Google, grilling, or a quiet note-taker.
+- Level (L4 or L5 bar), length, interviewer voice, and pressure. Pressure sets how much silence the interviewer allows before speaking.
+
+Google realism
+- The full arc: "Tell me about yourself" (about 5 min), then the main problem, then "Anything you'd like to ask me?" with the interviewer answering as a fictional Google engineer.
+- A plain-text code doc with no compiler and optional no highlighting, which already exists.
+- An Excalidraw whiteboard (MIT licensed) for HLD and LLD rounds.
+- "Can I take a minute to think?" pauses the interviewer.
+- Hints are available but recorded as costing signal.
+
+Whiteboard into context, cheaply
+- Turn the Excalidraw drawing into text such as Client → LB → API ×3 → Redis; API → Postgres (label: "sharded by user_id").
+- Send only what changed every few seconds, so no vision model is needed.
+- A "look at my diagram" button sends a picture of the board to a vision model only when you ask.
+
+Personal, driven by what you've learned
+- The roadmap suggests mocks from completed topics plus weak spots: spaced-review lapses, poor confidence calibration, low-scoring design stages.
+- A "readiness mock" mixes two learned topics with one unseen.
+- Mock results feed back into spaced review and the roadmap.
+- An optional coach mode lets the interviewer remember last time ("you skipped capacity estimates again"). Real mode keeps it blind, as a real interviewer would be.
+
+Curveballs
+- A requirement changes mid-interview.
+- The interviewer suggests a bad idea to see if you push back.
+- An out-of-curriculum design.
+- "Find my ceiling" probes beyond L5.
+- A production-incident scenario.
+- "Explain it to a PM."
+- A chat about recent AI news. This needs a fresh news feed or a model that can search the web at the start of the session; otherwise the model's knowledge is stale.
+
+Ideas beyond your list
+- Replay: scrub through audio, transcript and whiteboard together. Show filler words, how much you talked versus the interviewer, the longest silence, and time until your first clarifying question.
+- Hiring-committee packet: each rating comes with timestamped quotes as evidence.
+- Loop day: 4–5 back-to-back rounds with different interviewers, breaks between, and a final committee decision.
+- Reverse mode: you interview an AI candidate who makes planted mistakes, and you have to catch them. It teaches the rubric fast.
+- Peer mode: Agora natively supports multiple people in one call, so two users interview each other while the AI observes and scores. This is the cheapest realistic practice.
+- Cost guard: a monthly minute budget, a cheap model during the round with a strong model only for the scorecard, and an automatic switch to free browser voice when the budget runs out.
+- Privacy mode: browser voice plus your local-server LLM, so nothing leaves your machine.
+
+Suggested order
+
+1. Phase 1 (no Agora, free, fits today's app): the setup screen (pool, tone, intro and questions arc, curveballs), Excalidraw with the drawing-to-text step, browser voice in the existing mock, and roadmap-suggested mocks.
+2. Phase 2: the Agora engine through our own /api/interviewer endpoint (option B), plus the interviewer cutting in when the whiteboard or code changes.
+3. Phase 3: replay and analytics, loop day, peer mode, reverse mode, the AI-news round.
+
+Decisions I need from you
+
+1. Who pays for voice minutes? You (Agora and LLM keys on the server, voice limited to your account), or each user connects their own Agora project. This decides whether Agora voice is public.
+2. Pick a pool versus pick a question: OK to keep the random draw within a chosen pool?
+3. Start with Phase 1?
+
+I can also write this up as a design doc.
+
+
+my response:
+
+regarding ways to integrate: B+C. choose pool of Qs & topics (but user should also have the ability to get interviewed on a particular question if he wants to). tone  can also be set to random. all the others (google realism, whiteboard into context, personal, curveball (except the chat about recent AI news, I just wanted out of curriculum design), ideas beyond list) look good. ideally, users use their own API keys (also for Agora if possible) and in the future users can sign up for premium (different categories of subscription) of ascent such that they won't have to use API keys at all and ascent server can incur all costs. users can use developer mode where they should be able to customize the various parameters like model, temperature, top K (think of things I cant think of right now) etc used for various AI functionalities to make the AI results as close to reality and perfection as possible along with recommended settings. also, the actual repo the video was talking about was https://github.com/iamanubhavsethi/ai-mock-interview which you’ll find cloned here: ~/files/Projects/ai-mock-interview. Yes, write up the design docs (in a very professional, genuine way). We also have to support scalability, extensibility of features, adapter patterns etc. also, is there a better easier way if we can skip the agora thing to avoid creating two different accounts to use ascent software ? Can we implement something like that ourself without compromising the quality?
+
+agent response:
+Yes, we can skip Agora, and voice quality doesn't have to drop. The design docs are written on that basis, in a new docs/ folder in the repo. Nothing is committed yet.
+
+Skipping Agora
+
+For one learner talking to an AI, Agora adds two things: a managed network for carrying audio, and a ready-made speech-to-text → LLM → text-to-speech pipeline. A one-to-one call needs neither. Gemini and OpenAI both sell low-latency voice models that listen and speak directly ("realtime" APIs), and the browser can connect to them with the same key the learner already enters in Ascent.
+
+So the learner needs one account: the AI key they already have. I reordered the voice options:
+
+┌───────────────────────────────────────────────────┬───────────────────────────────┬──────────────────────────────────────────────────┬──────────────────────────┐
+│                      Engine                       │             Needs             │                     Quality                      │           Role           │
+├───────────────────────────────────────────────────┼───────────────────────────────┼──────────────────────────────────────────────────┼──────────────────────────┤
+│ Realtime voice (Gemini Live / OpenAI Realtime)    │ Existing Gemini or OpenAI key │ Best: natural voice, fast replies, can be talked │ Default                  │
+│                                                   │                               │  over                                            │                          │
+├───────────────────────────────────────────────────┼───────────────────────────────┼──────────────────────────────────────────────────┼──────────────────────────┤
+│ Ascent Voice (in the browser: detect speech,      │ Any key, including Claude or  │ Good. Replies take about 1–2 s, and the free     │ Fallback, free tier,     │
+│ transcribe, any LLM, speak)                       │ a local model                 │ browser voices sound robotic                     │ privacy mode             │
+├───────────────────────────────────────────────────┼───────────────────────────────┼──────────────────────────────────────────────────┼──────────────────────────┤
+│ Text                                              │ Any key                       │ n/a                                              │ As today                 │
+├───────────────────────────────────────────────────┼───────────────────────────────┼──────────────────────────────────────────────────┼──────────────────────────┤
+│ Agora                                             │ Agora project                 │ Good                                             │ Optional, later          │
+└───────────────────────────────────────────────────┴───────────────────────────────┴──────────────────────────────────────────────────┴──────────────────────────┘
+
+What we build:
+- the interviewer logic
+- turning the whiteboard into text the interviewer can read
+- the rules for when to interrupt
+- the scorecard
+
+We'd write all of that whichever engine we used.
+
+What we don't build: speech models or audio servers. Building those is where quality would suffer.
+
+This also fits your earlier rule that keys stay in the browser. Agora's custom-model mode would have needed learners' AI keys on our server. For paid plans later, our server would hand out short-lived tokens, so subscribers never need a key at all.
+
+Downsides of the realtime default:
+- Cost: realtime audio is the most expensive engine per minute. The setup screen shows an estimate before each round, and a monthly budget can switch to a cheaper engine automatically.
+- Gemini session limits: a Gemini Live connection lasts about 10 minutes, and audio-only sessions are reportedly capped near 15. A 45-minute round needs reconnect-and-resume handling, which is designed in.
+- Claude: I found no Anthropic realtime voice API, so Claude users get Ascent Voice.
+
+One correction to last session: Chrome's built-in speech recognition sends audio to Google unless on-device recognition is available. Browser voice is not automatically private.
+
+What I wrote
+
+Under docs/:
+- README.md: an index of the docs.
+- design/mock-interviewer/, six documents:
+  - 00 Overview: goals, non-goals, principles, glossary, and credits to both repos and the video.
+  - 01 Product spec: every requirement you approved, each with an ID, phase and acceptance criteria, plus new ones:
+    - questions picked by hand are tracked separately from random draws, so the bias report can compare them;
+    - a "surprise me" tone that is revealed only on the scorecard;
+    - a fictional interviewer persona that stays consistent through the round;
+    - a deliberate "interviewer slip" curveball and a time-crunch curveball;
+    - scheduled mocks, a phone-friendly voice round, and predicting your own result before seeing the scorecard.
+  - 02 Architecture: the engine comparison, components, how each engine works, scalability, extensibility through swappable adapters, and security.
+  - 03 Detailed design: TypeScript interfaces, the interview state machine, the interruption rules by pressure level, the database schema, event types, and the roadmap scoring formula.
+  - 04 AI configuration: every AI task, all tunable parameters (topK etc. greyed out where a provider doesn't support it), four presets (Recommended / Budget / Max quality / Private), and an evaluation set for checking scorecard quality.
+  - 05 Delivery plan: Phases 0–4 with exit criteria, cost model, risks, and a list of facts to verify before each phase.
+- adr/0001–0004, one decision record each:
+  - build natively rather than embed or fork;
+  - put every capability behind swappable adapters;
+  - make provider realtime voice the default and Agora optional;
+  - your own keys first, paid plans later.
+
+README.md now credits Anubhav Sethi's ai-mock-interview and says what we learned from it. The mock page's setup screen also gets an "Inspired by" line (requirement MI-SET-13).
+
+Decision for you: ADR 0003 replaces the Agora-first plan you approved with this realtime-first one. If you'd rather keep Agora as the default, it's one ADR to flip, because every engine sits behind the same interface.
+
+I also added a note to my saved memory for this project that future paid plans may use server-held keys.
+
+Sources:
+- Gemini Live session management (https://ai.google.dev/gemini-api/docs/live-api/session-management)
+- Firebase Live API session limits (https://firebase.google.com/docs/ai-logic/live-api/sessions?api=dev)
+- OpenAI Realtime conversations (https://developers.openai.com/api/docs/guides/realtime-conversations.md)
+- OpenAI Realtime client secrets (https://developers.openai.com/api/reference/resources/realtime/subresources/client_secrets)
+- Voice AI: OpenAI vs Claude (https://callsphere.ai/blog/voice-ai-builders-openai-vs-claude-decision)
+
+my response: good, start building all this. commit the changes and what should I send to the next chat session ?
+
+agent’s response:
+I committed everything to a new branch, feat/voice-mock-interviewer (commit d34fceb). It's not pushed, and main is untouched.
+
+I left one file uncommitted: inputs/req2.txt, your pasted prompt and the video transcript. The repo already keeps personal notes in inputs/ out of git. Note the gitignore only covers inputs/*.md, so this .txt file could be committed by accident. Either delete it or widen that rule.
+
+I also saved a project memory (branch, decisions, what's untested), so the next session will see it automatically. The prompt below is still worth pasting, because it says exactly what to do first.
+
+Prompt for the next session
+
+Continue the voice mock interviewer on branch feat/voice-mock-interviewer (commit d34fceb).
+Read docs/design/mock-interviewer/05-delivery-plan.md §0 (implementation status) first, then
+docs/README.md for the design set and ADRs. Code is in lib/interview/ (pure core in core/,
+run `npm test`), components/interview/ and app/mock/page.tsx.
+
+Already decided, do not reopen: realtime voice from my own Gemini/OpenAI key is the default
+(ADR 0003), Agora is optional and later, keys stay in the browser (BYOK) until paid plans
+(ADR 0004), no AI-news round.
+
+Step 1, verification. I will run real rounds with my keys and report what happens:
+  a) Gemini Live (realtime), b) OpenAI Realtime, c) Ascent Voice with browser speech,
+  d) a text round with AI scoring.
+Help me debug anything that breaks before building more (verification items V3-V6 in
+the delivery plan).
+
+Step 2, finish Phase 2:
+  - Supabase interview_sessions / interview_events / interview_scorecards tables with RLS
+    (schema in 03-detailed-design.md §6) and sync. Show me the migration before pushing it.
+  - replay with opt-in local audio recording (MI-FB-2)
+  - prompt-template overrides in developer mode (MI-DEV-4)
+  - budget enforcement with automatic engine fallback (MI-X-5)
+
+Then update the status table in 05-delivery-plan.md §0.
+
+The most useful thing you can do before that session is run one quick round on each engine and note what goes wrong: an error message, the interviewer staying silent, it talking over you, or a garbled transcript. The voice paths are the only part that hasn't been exercised for real. Paste those notes in with the prompt above.
+
+My response:
+I'll run all the browser testing at the end of the whole thing (req2).

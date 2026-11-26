@@ -8,6 +8,7 @@ import { useStore } from "@/lib/store";
 import { VideoEmbed } from "@/components/References";
 import { ProblemVideos } from "@/components/VideoLibrary";
 import { TreeLayout } from "@/components/tree/TreeRail";
+import { pageOfProblem } from "@/components/tree/model";
 import { useItems, useProblem, useStopwatch, useTrackTime } from "@/lib/hooks";
 import { aiReady, generateTwists, hint as aiHint, reviewCode } from "@/lib/ai";
 import { areaOf, lcLink, problemItem, topicById } from "@/content";
@@ -119,7 +120,7 @@ export default function ProblemPage() {
   const sub = p.sub ? topicById.get(p.sub) : undefined;
   const hasVideos = !!p.lc || !!p.video;
   return (
-    <TreeLayout current={p.id} wide>
+    <TreeLayout current={pageOfProblem(p.id) ?? p.topic} wide>
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link href={settings.blind ? "/learn" : `/learn/${p.topic}`} className="inline-flex items-center gap-1.5 text-[13px] text-mute hover:text-text"><ArrowLeft size={14} />{settings.blind ? "Curriculum" : sub ? `${topic?.title} / ${sub.title}` : topic?.title}</Link>

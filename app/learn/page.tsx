@@ -44,8 +44,8 @@ export default function Learn() {
 
       {view === "tree" && (
         <div className="card mb-10 flex h-[min(78vh,880px)] flex-col p-5">
-          <p className="mb-3 text-[13px] text-mute">Every area, chapter, page and problem as folders. Arrow keys move and open folders; type to jump. Switch to Revise to open revision sheets, and use ▶ on any folder to run through its sheets in order.</p>
-          <TopicTree />
+          <p className="mb-3 text-[13px] text-mute">Every area, chapter and page as folders. A name opens the lesson. Hover a name and press Revise to open its revision sheet; on a folder, Revise runs through every sheet inside in order. Arrow keys move and open folders, Shift+Enter revises, and typing jumps to a name.</p>
+          <TopicTree heading="Topic tree" />
         </div>
       )}
 

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Flag, Radar, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronRight, Eye, EyeOff, Flag, Radar, RotateCcw, ScrollText, X } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { topicById } from "@/content";
 import { RatingBar } from "./Work";
@@ -67,6 +67,29 @@ function Recall({ items, math }: { items: [string, string][]; math?: boolean }) 
   );
 }
 
+/** Cheat-sheet notes: plain lines grouped under "## " headings, collapsed until asked for. */
+export function notesMarkdown(notes: string): string {
+  return notes.split("\n").map((l) => l.trim()).filter(Boolean).map((l) => (/^#{2,4}\s/.test(l) ? `\n#### ${l.replace(/^#+\s*/, "")}\n` : `- ${l.replace(/^[-•]\s*/, "")}`)).join("\n").trim();
+}
+
+function CheatSheet({ notes, math }: { notes: string; math?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const md = useMemo(() => notesMarkdown(notes), [notes]);
+  const lines = useMemo(() => notes.split("\n").filter((l) => l.trim() && !/^#{2,4}\s/.test(l.trim())).length, [notes]);
+  return (
+    <section className="card overflow-hidden">
+      <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="flex w-full items-center gap-2.5 px-5 py-3.5 text-left hover:bg-white/[0.02]">
+        <ScrollText size={15} className="text-accent" />
+        <span className="font-semibold">Cheat sheet</span>
+        <span className="num text-[12px] text-faint">{lines} lines</span>
+        <span className="ml-auto text-[12px] text-mute">{open ? "Hide" : "Read every fact of the page in one pass"}</span>
+        <ChevronRight size={15} className={cn("text-faint transition", open && "rotate-90")} />
+      </button>
+      {open && <div className="border-t border-line px-5 pb-5 pt-2 sm:px-6"><Md math={math} className="cheat text-[14px] [&_h4]:mb-1 [&_h4]:mt-4 [&_h4]:text-[13px] [&_h4]:uppercase [&_h4]:tracking-wide [&_h4]:text-accent [&_li]:my-0.5 [&_ul]:my-0">{md}</Md></div>}
+    </section>
+  );
+}
+
 /** Where we are in a Revise run started from the tree, if this page is part of it. */
 function useRun(id: string) {
   const [run, setRun] = useState<{ ids: string[]; label: string } | null>(null);
@@ -119,6 +142,8 @@ export function ReviseView({ t, item }: { t: Topic; item: Item }) {
           </div>
         );
       })}
+
+      {t.notes && <CheatSheet notes={t.notes} math={math} />}
 
       {t.template && (
         <section className="card overflow-hidden">

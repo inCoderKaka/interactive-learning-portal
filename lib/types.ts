@@ -39,6 +39,7 @@ export interface Topic {
   prereq?: string[];
   refs?: Ref[];
   chapter?: string; // set on subtopic pages: the chapter (original topic) they belong to
+  notes?: string; // cheat-sheet lines shown collapsed under the revise sheet's recall items
   revise?: string; // concise revision sheet (markdown; "? prompt :: answer" lines become hidden-answer recall items)
   doubts?: [q: string, a: string][]; // common learner doubts, answered
   sources?: Ref[]; // primary sources: papers, textbook chapters, official docs

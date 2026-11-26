@@ -19,5 +19,5 @@ export function useDeepTopic(t: Topic | undefined): Topic | undefined | null {
   if (!t || !t.deepFile) return t;
   if (!body || body.id !== t.id) return null; // loading
   const d = body.d;
-  return { ...t, signals: d.signals, lesson: d.lesson, revise: d.revise, doubts: d.doubts, pitfalls: d.pitfalls, quiz: d.quiz, template: d.template, sources: d.sources };
+  return { ...t, signals: d.signals, lesson: d.lesson, revise: d.revise, notes: d.notes, doubts: d.doubts, pitfalls: d.pitfalls, quiz: d.quiz, template: d.template, sources: d.sources };
 }

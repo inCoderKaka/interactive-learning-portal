@@ -184,7 +184,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           </div>
         )}
         {ready && <BookingBanner />}
-        <main className="relative mx-auto w-full max-w-[1240px] flex-1 px-4 pb-28 pt-8 sm:px-8 lg:pb-16">
+        <main className={cn("relative mx-auto w-full max-w-[1240px] flex-1 px-4 pb-28 pt-8 sm:px-8 lg:pb-16", /^\/(learn|problem)\/./.test(path) && "xl:max-w-none xl:pl-6")}>
           {ready ? children : <div className="grid h-[60vh] place-items-center text-sm text-faint animate-pulse-soft">Loading your trail…</div>}
         </main>
       </div>

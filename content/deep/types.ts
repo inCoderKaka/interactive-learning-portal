@@ -8,6 +8,8 @@ import type { Quiz, Ref } from "@/lib/types";
  *           → implementation traps → variants and disguises → interview angles → connections.
  * revise  — the Revise sheet, one screen. Lines "? prompt :: answer" become hidden-answer recall items;
  *           everything else (tables, the template) renders as plain markdown.
+ * notes   — the cheat sheet under the recall items (collapsed by default): plain lines, one fact per line, that together
+ *           bring the whole Learn page back to mind. "## Heading" lines group them.
  * doubts  — questions learners actually get stuck on, answered in full.
  * problems — LeetCode numbers that belong on this page (portal problems and extra pages alike).
  */
@@ -16,6 +18,7 @@ export interface Deep {
   signals: string[];
   lesson: string;
   revise: string;
+  notes?: string;
   doubts: [q: string, a: string][];
   pitfalls: string[];
   quiz: Quiz[];

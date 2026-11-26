@@ -156,6 +156,8 @@ for (const t of SUBTOPICS) {
   const recall = parseRevise(d.revise).reduce((n, b) => n + (b.kind === "recall" ? b.items.length : 0), 0);
   if (recall < 4) err(`${at}: revise sheet has only ${recall} recall items`);
   if (d.doubts.length < 2) warn(`${at}: only ${d.doubts.length} common doubts`);
+  if (!d.notes) warn(`${at}: no cheat-sheet notes`);
+  else if (d.notes.split("\n").filter((l) => l.trim() && !l.trim().startsWith("#")).length < 12) warn(`${at}: cheat sheet has under 12 lines`);
   if (!d.quiz.length) err(`${at}: no quiz`);
   d.quiz.forEach((q, i) => { if (q.answer < 0 || q.answer >= q.options.length) err(`${at}: quiz ${i + 1} has no valid answer`); });
   if (d.sources.length < 2) warn(`${at}: fewer than 2 primary sources`);
