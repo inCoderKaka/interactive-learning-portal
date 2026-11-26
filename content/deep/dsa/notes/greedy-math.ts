@@ -17,6 +17,11 @@ Activity selection, Huffman coding, fractional knapsack, minimum spanning trees 
 When the feasible sets form a matroid (independent sets with the exchange property), the greedy by weight is optimal. Graphic matroids give Kruskal.
 ## Interview habit
 State the greedy rule, the proof sketch (exchange or stays-ahead), and the complexity (usually sorting, O(n log n)).
+## Extras
+Greedy-choice property + optimal substructure.
+Candy: left pass, right pass, take the max.
+Remove K Digits: monotonic stack (pop larger previous digits).
+Brute-force small cases to validate a greedy.
 `,
   "greedy-reach": `
 ## Jump game (LC 55)
@@ -34,6 +39,11 @@ Minimum number of refuelling stops: greedy with a max-heap of passed stations.
 ## Variants needing more than greedy
 Jump game III (LC 1306, both directions): BFS/DFS. Jump game IV (LC 1345): BFS with value buckets.
 Jump game V and VI: DP (VI with a monotonic deque). Frog jump (LC 403): DP over (stone, last jump).
+## Extras
+Backward Jump Game: lastGood scan from the right.
+Gas Station: total check + reset start after a negative tank.
+Jump Game VII: BFS with a sliding pointer / prefix sums.
+Frog Jump: DP over (stone, last jump).
 `,
   "greedy-heap": `
 ## Huffman coding
@@ -53,6 +63,12 @@ Max-heap simulation: smash the two heaviest; push the difference.
 Last stone weight II is a subset-sum DP, not greedy.
 ## Proof habit
 The heap greedy is right when the best available choice now never hurts later choices (an exchange argument on the order of picks).
+## Extras
+Connect Sticks = Huffman cost.
+k distance apart: heap + cooldown queue.
+Maximum Score From Removing Stones: min(sum/2, sum − max).
+Last Stone Weight II is DP, not a heap greedy.
+Arithmetic coding / ANS beat Huffman's whole-bit codes.
 `,
   "greedy-sorting": `
 ## Pairing
@@ -72,6 +88,11 @@ Queue reconstruction by height (LC 406): sort by height descending and k ascendi
 Custom comparators must be transitive and consistent.
 ## Proving it
 Adjacent-swap exchange: show that swapping two neighbours that violate the order never improves the answer.
+## Extras
+Minimize Maximum Pair Sum: sort, pair smallest with largest.
+Most Profit Assigning Work: sort both, sweep with the best profit so far.
+Exchange derivation: compare i-then-j vs j-then-i.
+Best Meeting Point: medians per coordinate.
 `,
   "merge-intervals": `
 ## Merge intervals (LC 56)
@@ -88,6 +109,11 @@ Summary ranges, range module (LC 715: ordered map of intervals), data stream as 
 ## Coordinate thinking
 Intervals overlap iff a.start < b.end and b.start < a.end (half-open).
 Sorting by start is for merging; sorting by end is for selecting the maximum number of disjoint intervals.
+## Extras
+Touching: s ≤ last end merges closed intervals.
+Employee Free Time: merge all, report gaps.
+Count Integers in Intervals: dynamic map + running count.
+Intersection [max starts, min ends]; union [min starts, max ends].
 `,
   "sweep-line": `
 ## Events
@@ -104,6 +130,11 @@ Line segment intersection (Bentley–Ottmann) uses an ordered status structure.
 ## Coordinate compression
 Map large coordinates to ranks 0…k−1 (sort the unique values); then use arrays, difference arrays or Fenwick trees.
 Keep the original coordinates to compute lengths or areas between compressed points.
+## Extras
+Car Pooling with small positions: difference array.
+Rectangle Area II: compressed y segment tree with cover counts.
+Bentley–Ottmann: all segment intersections in O((n + k) log n).
+Heap of ends also assigns rooms; sweep gives the profile.
 `,
   "interval-scheduling": `
 ## Earliest end first
@@ -122,6 +153,11 @@ Set cover in general is NP-hard; the 1D interval version is greedy.
 Day by day: add events starting today to a min-heap of end days, drop expired ones, attend the one ending soonest.
 ## Summary
 Max disjoint → end-sort greedy. Weighted → DP + binary search. Rooms → heap or sweep. Cover → farthest-reach greedy.
+## Extras
+Wrong rules: shortest first, earliest start, fewest conflicts.
+Covering: replace any chosen interval with the farthest-reaching one (exchange).
+Stabbing points = max disjoint intervals.
+Set cover in general is NP-hard; intervals make greedy optimal.
 `,
   skyline: `
 ## Skyline problem (LC 218)
@@ -137,6 +173,11 @@ Perfect rectangle (LC 391): area sum plus corner parity (every inner corner appe
 Number of visible people, the maximum building height with restrictions (two passes).
 ## Interview strategy
 Explain the event representation and tie rules first; then the active-set structure; then the output rule ("emit when the max changes").
+## Extras
+Tie rules: starts first, taller starts first, shorter ends first.
+Emit when the max changes after processing an x.
+Test: equal adjacent heights, nesting, single building.
+Buildings With an Ocean View: 1D monotonic scan.
 `,
   "bit-basics": `
 ## Operators
@@ -157,6 +198,12 @@ Divide two integers (LC 29): subtract shifted divisors, handle overflow at INT_M
 Bitwise AND of a range (LC 201): the common prefix of left and right.
 ## Built-ins
 Python bin(x).count("1") or int.bit_count(); Java Integer.bitCount, numberOfTrailingZeros, highestOneBit; C++ __builtin_popcount, __builtin_ctz, std::popcount.
+## Extras
+Java >>> logical shift.
+Python ~x = −x − 1; emulate 32 bits with & 0xFFFFFFFF.
+Reverse bits: swap halves, quarters, … with masks.
+UTF-8 validation: leading-bit masks.
+Complement: XOR with the same-length all-ones mask.
 `,
   "xor-tricks": `
 ## Properties
@@ -175,6 +222,12 @@ XOR of 1..n has a period of 4: n, 1, n + 1, 0 for n mod 4 = 0, 1, 2, 3.
 g(i) = i ^ (i >> 1): consecutive codes differ in exactly one bit. Inverse: XOR all right shifts.
 ## Maximum XOR
 Pairs: a binary trie, greedy from the top bit. Subsets: a linear XOR basis (Gaussian elimination over GF(2)).
+## Extras
+Missing Number via XOR avoids overflow.
+Set Mismatch: split dup ^ missing by a set bit.
+Subarrays with XOR k: prefix XOR + count map.
+Gray inverse: XOR of all right shifts.
+XOR swap fails on aliased locations.
 `,
   "bitmask-enum": `
 ## Enumerating subsets
@@ -192,6 +245,11 @@ Next mask with the same popcount: c = x & −x; r = x + c; x = (((r ^ x) >> 2) /
 ## Meet in the middle
 Split n ≤ 40 items into two halves; enumerate 2^(n/2) sums of each; sort one and binary search or two-pointer the other. O(2^(n/2)·n).
 Closest subsequence sum (LC 1755), partition array into two arrays to minimise the sum difference (LC 2035: group by count).
+## Extras
+Subset check: a & ~b == 0.
+LC 1177: popcount(XOR of prefix masks) // 2 replacements.
+Increasing submasks: sub = (sub − m) & m.
+SOS DP when 3ⁿ is too slow.
 `,
   "bit-counting": `
 ## Single numbers
@@ -206,6 +264,11 @@ Per bit b: full cycles of length 2^(b+1) contribute 2^b each, plus the partial r
 ## Minimum flips
 Minimum bit flips to convert a to b (LC 2220): popcount(a ^ b).
 Minimum flips so that a OR b == c (LC 1318): per bit, compare c's bit with a's and b's bits (two flips when c is 0 and both are 1).
+## Extras
+SWAR popcount: masks 0x5555…, 0x3333…, 0x0F0F…, multiply 0x01010101.
+Sum of subarray ORs: total − subarrays without the bit (runs).
+LC 2411: nearest index to the right per bit.
+Majority by bits: majority holder of each bit.
 `,
   "gcd-primes": `
 ## GCD
@@ -227,6 +290,12 @@ Greatest common divisor of strings (LC 1071): str1 + str2 == str2 + str1, then t
 Water jug (LC 365): target must be a multiple of gcd(x, y) and ≤ x + y.
 Ugly numbers (LC 264): three pointers over multiples of 2, 3, 5.
 Count primes, the closest prime pair in a range, and the number of subarrays with gcd k.
+## Extras
+Lamé: worst case is consecutive Fibonacci numbers.
+Linear sieve: each composite crossed once (O(n)).
+Totient φ(n) = n·Π(1 − 1/p).
+Divisor lists for all numbers ≤ n: harmonic loop, O(n log n).
+X of a Kind: gcd of counts ≥ 2.
 `,
   modular: `
 ## Rules
@@ -247,6 +316,12 @@ Pascal's triangle for small n (n ≤ ~5000) avoids inverses.
 Lucas's theorem when n ≥ p.
 ## Matrix exponentiation
 Linear recurrences mod m: raise the transition matrix to n in O(k³ log n).
+## Extras
+pow(b, −1, M) in Python 3.8+.
+inv(2) = (M + 1)/2 for odd prime M.
+998244353 = 119·2²³ + 1 (NTT-friendly).
+CRT combines answers modulo coprime moduli.
+Max/min on true values before reducing.
 `,
   combinatorics: `
 ## Basics
@@ -268,6 +343,12 @@ Linearity of expectation needs no independence: expected fixed points of a rando
 Geometric distribution: the expected number of trials until success = 1/p (coupon collector ≈ n·Hₙ).
 ## Large values
 Use the modulus, logarithms for comparisons, or Python big integers; check for overflow in factorials quickly (20! fits in 64 bits, 21! does not).
+## Extras
+Count Sorted Vowel Strings = C(n + 4, 4).
+Pigeonhole: a subarray sum divisible by n always exists.
+Birthday paradox: collision around √M.
+20! < 2⁶³ < 21!.
+Upper limits: inclusion–exclusion over violating bins.
 `,
   geometry: `
 ## Cross product orientation
@@ -287,6 +368,12 @@ K closest points: squared distances, a heap or quickselect.
 ## Floating point
 Compare with ε; prefer integer arithmetic (squared distances, cross products, reduced fractions).
 atan2 for angles (visible points, LC 1610: sort the angles, duplicate them +360°, sliding window).
+## Extras
+Dot product sign: acute / right / obtuse.
+Convex polygon: all turns have the same sign.
+Detect Squares: same-x partner as a side, check two corners.
+Minimum Time Visiting All Points: Chebyshev distance.
+Floats: ε comparisons, atan2, compare squared distances.
 `,
   randomized: `
 ## Fisher–Yates shuffle (LC 384)
@@ -308,5 +395,11 @@ Las Vegas (always correct, random time) vs Monte Carlo (fixed time, possibly wro
 ## Insert Delete GetRandom O(1) (LC 380)
 Array plus value → index map; delete by swapping with the last element and popping; getRandom picks a random index.
 With duplicates (LC 381): value → set of indices.
+## Extras
+rand10 from rand7: 2.45 expected calls; reuse rejected values to reduce.
+Random point in a circle: radius R·√u.
+Las Vegas (always correct) vs Monte Carlo (probably correct).
+Zobrist hashing: XOR random labels.
+Test shuffles with frequency counts.
 `,
 };
