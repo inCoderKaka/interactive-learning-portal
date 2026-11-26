@@ -1,0 +1,45 @@
+# Learning and Revision Portal: Content, Visuals, and Resources
+
+## Goal
+
+Build a learning and revision portal for preparing for top professional companies such as Google, Meta, and Amazon. The portal should support learning DSA, HLD, LLD, and AI.
+
+## Learning and Revision Content
+
+- Treat learning and revision as separate experiences.
+- Learning content should be comprehensive and in depth. Cover the knowledge for each topic, common learner doubts and questions, and the details needed to understand the subject fully. Research the best learning strategy in depth.
+- Revision content should be separate, concise, and contain all the information a learner needs to retain what they studied in the learning section.
+- Expand topic coverage where many topics are currently compressed into a single page. For example, MSP, bridges, SCC, and Eulerian paths are currently on one page with little information about each. Each topic needs enough depth; these subjects could not be adequately covered in one page when studied in depth.
+- The learner has studied DSA through videos and LeetCode but has difficulty retaining much of the information. The portal should address this retention problem.
+
+## Visuals and Interaction
+
+Review these websites for visual inspiration:
+
+- designed-to-scale.vercel.app
+- protocol-explorer-alpha.vercel.app
+- byte-sized-algorithms.vercel.app
+- sysdesign.simuveda.in
+- engineering-atlas.in
+
+These websites have strong visuals, but may stay at a basic level instead of exploring a topic in the depth of a book. Basic explanations are useful for first-time learners, while learners who want comprehensive revision need to cover every small topic in depth.
+
+- Use judgment to decide which topics benefit from visuals and how interactive they should be. Preserve the website's UI experience and quality.
+- Do not add animations for very simple topics such as binary search just for the sake of having them. Where animations or interactions are included for a simple topic such as BFS, include the corresponding treatment for topics such as Eulerian paths as well.
+- Implement as much visual and interactive learning as practical, while allowing users to hide any visual element, animation, or interaction they choose.
+- Deeply research the best ways to implement these visual and interactive learning experiences.
+
+## Videos and Other Learning Sources
+
+- Embed more YouTube videos so users can refer to them.
+- For each topic page, include all videos related to its topics from the YouTube channels already mentioned, including videos about individual questions and general learning.
+- After the first pass of adding related videos from each channel, check for missing videos and add them. Do not omit any related video from those channels for the topic covered on the page.
+- For DSA in particular, many videos focus on individual questions. Those videos can appear directly on the corresponding question page when the learner is in non-blind mode.
+- Add Techdose to the list of YouTube channels.
+- The existing channel list contains DSA channels only. Research the best channels for HLD, LLD, and AI as well. Known examples include CodeWithAryan and Concept and Coding by Shreyansh for LLD and HLD, and Krish Nayak for AI. Official Google YouTube channels may also be used.
+- Include links to authoritative sources, such as research papers and articles.
+
+## Topic Navigation
+
+- Add a hierarchy pane with a collapsible, nested-folder structure that shows all topics in every area as an additional option alongside the existing Map, List only, and Flashcards views on the Learn page.
+- Deeply research the best way to implement this navigation and the large number of embedded YouTube videos. One possible video interaction is a two-click flow: one click to expand and another to view the video.

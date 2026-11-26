@@ -1,0 +1,25 @@
+XoGvCBRnwLs	Building a distributed training framework from first principles
+zy8ChVd_oTM	Flash Attention derived and coded from first principles with Triton (Python)
+vAmKB7iPkWw	Coding a Multimodal (Vision) Language Model from scratch in PyTorch with full explanation
+lg1-M8hEX50	ML Interpretability: feature visualization, adversarial example, interp. for language models
+-PFIkkwWdnM	Kolmogorov-Arnold Networks: MLP vs KAN, Math, B-Splines, Universal Approximation Theorem
+hvGa5Mba4c8	Direct Preference Optimization (DPO) explained: Bradley-Terry model, log probabilities, math
+qGyFrqc34yc	Reinforcement Learning from Human Feedback explained with math derivations and the PyTorch code.
+8Q_tqwpTpVU	Mamba and S4 Explained: Architecture, Parallel Scan, Kernel Fusion, Recurrent, Convolution, Math
+UiX8K-xBUpE	Mistral / Mixtral Explained: Sliding Window Attention, Sparse Mixture of Experts, Rolling Buffer
+toUSzwR0EV8	Distributed Data Parallel (DDP) with PyTorch: complete tutorial with cloud infrastructure and code
+0VdNflU08yA	Quantization explained with PyTorch - Post-Training Quantization, Quantization-Aware Training
+rhZgXNdhWDY	Retrieval Augmented Generation (RAG) Explained: Embedding, Sentence BERT, Vector Database (HNSW)
+90mGPxR2GgY	BERT explained: Training, Inference,  BERT vs GPT/LLamA, Fine tuning, [CLS] token
+ZBKpAp_6TGI	Coding Stable Diffusion from scratch in PyTorch
+oM4VmoabDAI	Coding LLaMA 2 from scratch in PyTorch - KV Cache, Grouped Query Attention, Rotary PE, RMSNorm
+Mn_9W1nCFLo	LLaMA explained: KV-Cache, Rotary Positional Embedding, RMS Norm, Grouped Query Attention, SwiGLU
+eYhvJR4zFUM	Segment Anything - Model explanation with code
+PXWYUTMt-AU	LoRA: Low-Rank Adaptation of Large Language Models - Explained visually + PyTorch code from scratch
+nC2nU9j9DVQ	LongNet: Scaling Transformers to 1,000,000,000 tokens: Python Code + Explanation
+I1sPXkm2NH4	How diffusion models work - explanation and code!
+iwEzwTTalbg	Variational Autoencoder - Model, ELBO, loss function and maths explained easily!
+bCz4OMemCcA	Attention is all you need (Transformer) - Model explanation (including math), Inference and Training
+ISNdQcPhsts	Coding a Transformer from scratch on PyTorch, with full explanation, training and inference.
+L3BTG8ETY_Y	CLIP - Paper explanation (training and inference)
+n9ILOE2kyB0	Wav2Lip (generate talking avatar videos) - Paper reading and explanation

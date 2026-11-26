@@ -1,0 +1,19 @@
+look at these websites: designed-to-scale.vercel.app, protocol-explorer-alpha.vercel.app, byte-sized-algorithms.vercel.app, sysdesign.simuveda.in,
+  engineering-atlas.in. These websites have great visuals but the issue is that they might stick to basics and not go deeper into a particular topic like how it
+  happens in books. and knowing basics is good for a first time learner, but for a person who wants to comprehensively revise and not miss any smallest of the topics
+  in depth, learner should also be exposed to reading and hearing tools. humans are visual learners and to retain the attention visuals are great thing. but I wouldn't
+  want to watch an animation on simplest things as basic as binary search. use your judgement to know which topics to show visuals for and interactiveness of the
+  website and the ui experience of the website shouldn't degrade. its not necessary to copy everything from these websites, just the ones that might help me. as a
+  matter of fact, lets try to implement as much as possible and let the user optionally hide certain visuals or animations. if we're having animations/interactions for
+  a topic as simple as BFS, it should definitely be there for Eulear path. users can choose to hide any visual element animation/interaction they want. for me,
+  personally, I have done DSA a lot in videos and in leetcode but I fail to retain a lot of those informations. Add more in depth information for each topic keeping
+  revision content and facts to remember for those topics separate. Like i see the MSP, bridges, SCC, Eulerian paths is only 1 single page and it mentions very few
+  info on each individual topic. like when I studied these topics and it would definitely not have been not be able to condensed to one single page. I searched a lot
+  and deeply looked at all my doubts, questions to know everything. learning should be separate and comprehensive including knowledge as well as common learner
+  doubts/questions in depth informations eveything, revision should be separate and concise containing all and enough info required for any human to retain all he's
+  learned in learn section. deep research on what should be best strategy. Also, add more embeded youtube videos for users to refer to. from the youtube channels I
+  mentioned, add all the videos related to the topics mentioned in that page from each of the youtube channels I mentioned. be it videos of all questions or general
+  learning videos. from those list of youtube channels, also add techdose as 1 of the youtube channels. I've only added DSA youtube channels and not HLD, LLD, AI
+  channels as I dont know a lot of them. deep research yourself the best youtube channels for all the areas. few I know in them is codeWithAryan, concept and coding by
+  shreyansh for lld, hld and krish nayak for ai. you can also use official google's youtube channels. And official knowledge sources like direct link of the research papers and articles. Also, there should be a heirarchy pane like collapsible nested folder structure showing all topics in any area (along with map, list only). deep
+  research on best ways to implement all these like also how to show so many youtube videos embedded (probably keep 2 clicks 1 to expand another to view the video). after one pass of adding all the related youtube videos for each of the channels, check if any video might be missing and add them. no related youtube video from each of the youtube channels on the topic being discussed in the page should be missed. Also, specifically for DSA, a lot of videos are just questions which can be shown directly in the question page (in the non blind mode).

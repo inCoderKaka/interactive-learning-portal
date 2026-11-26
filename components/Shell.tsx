@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { Command } from "cmdk";
 import confetti from "canvas-confetti";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { BarChart3, CalendarRange, CloudOff, Flame, Gamepad2, Home, Layers, LogIn, Mic, NotebookPen, RefreshCw, Search, Settings as Cog, Sparkles, Mountain } from "lucide-react";
 import { useStore, selectXp } from "@/lib/store";
 import { BookingBanner } from "@/components/interview/BookingBanner";
@@ -122,11 +122,13 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("keydown", h);
   }, []);
 
+  const reduced = useStore((s) => s.settings.visuals?.motion === "reduced");
   const bare = path === "/login";
   const isActive = (href: string) => (href === "/" ? path === "/" : path.startsWith(href) || (href === "/learn" && (path.startsWith("/problem") || path.startsWith("/design"))));
 
   if (bare) return <>{children}</>;
   return (
+    <MotionConfig reducedMotion={reduced ? "always" : "user"}>
     <div className="flex min-h-dvh">
       <aside className="sticky top-0 hidden h-dvh w-[232px] shrink-0 flex-col border-r border-line bg-panel/60 px-3 py-5 backdrop-blur lg:flex">
         <Link href="/" className="mb-7 flex items-center gap-2.5 px-2">
@@ -182,7 +184,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           </div>
         )}
         {ready && <BookingBanner />}
-        <main className="relative mx-auto w-full max-w-[1240px] flex-1 px-4 pb-28 pt-8 sm:px-8 lg:pb-16">
+        <main className={cn("relative mx-auto w-full max-w-[1240px] flex-1 px-4 pb-28 pt-8 sm:px-8 lg:pb-16", /^\/(learn|problem)\/./.test(path) && "xl:max-w-none xl:pl-6")}>
           {ready ? children : <div className="grid h-[60vh] place-items-center text-sm text-faint animate-pulse-soft">Loading your trail…</div>}
         </main>
       </div>
@@ -204,5 +206,6 @@ export default function Shell({ children }: { children: React.ReactNode }) {
       <Breather />
       <ReaderRoot />
     </div>
+    </MotionConfig>
   );
 }

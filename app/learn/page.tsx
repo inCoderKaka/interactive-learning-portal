@@ -2,10 +2,11 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Check, Layers, List, Orbit } from "lucide-react";
+import { Check, Layers, List, ListTree, Orbit } from "lucide-react";
+import { TopicTree } from "@/components/tree/TopicTree";
 import { useStore } from "@/lib/store";
 import { useItems } from "@/lib/hooks";
-import { AREAS, TOPICS } from "@/content";
+import { AREAS, SUBTOPICS, TOPICS, subsOf } from "@/content";
 import { PageHead, Pill, Ring, Tabs, cn, fmtMin } from "@/components/ui";
 import { FlashDeck } from "@/components/Flashcards";
 import type { StarInfo } from "@/components/Galaxy";
@@ -16,7 +17,7 @@ const TIER = { 1: "Must know", 2: "Expected", 3: "Stretch" } as const;
 export default function Learn() {
   const progress = useStore((s) => s.progress);
   const items = useItems();
-  const [view, setView] = useState<"map" | "list" | "cards">("map");
+  const [view, setView] = useState<"map" | "list" | "tree" | "cards">("map");
   const stars = useMemo<StarInfo[]>(() => TOPICS.map((topic) => {
     const its = items.filter((i) => i.topic === topic.id);
     const done = its.filter((i) => progress[i.id]?.status === "done").length;
@@ -30,14 +31,21 @@ export default function Learn() {
 
   return (
     <div>
-      <PageHead eyebrow="Curriculum" title="The whole mountain" sub={`${TOPICS.length} topics and ${items.length - TOPICS.length} exercises covering what a Google L4/L5 loop expects. Each star is a topic: it brightens as you master it.`}
-        right={<Tabs value={view} onChange={setView} tabs={[{ id: "map", label: <span className="flex items-center gap-1.5"><Orbit size={14} />Map</span> }, { id: "list", label: <span className="flex items-center gap-1.5"><List size={14} />List only</span> }, { id: "cards", label: <span className="flex items-center gap-1.5"><Layers size={14} />Flashcards{cardCount > 0 && <span className="num text-faint">{cardCount}</span>}</span> }]} />} />
+      <PageHead eyebrow="Curriculum" title="The whole mountain" sub={`${TOPICS.length} chapters, ${SUBTOPICS.length} in-depth pages and ${items.filter((i) => i.kind !== "topic").length} exercises covering what a Google L4/L5 loop expects. Each star is a chapter: it brightens as you master it.`}
+        right={<Tabs value={view} onChange={setView} tabs={[{ id: "map", label: <span className="flex items-center gap-1.5"><Orbit size={14} />Map</span> }, { id: "list", label: <span className="flex items-center gap-1.5"><List size={14} />List only</span> }, { id: "tree", label: <span className="flex items-center gap-1.5"><ListTree size={14} />Tree</span> }, { id: "cards", label: <span className="flex items-center gap-1.5"><Layers size={14} />Flashcards{cardCount > 0 && <span className="num text-faint">{cardCount}</span>}</span> }]} />} />
 
       {view === "map" && (
         <div className="card relative mb-8 h-[460px] overflow-hidden bg-[#07080d]">
           <Galaxy stars={stars} />
           <div className="pointer-events-none absolute bottom-3 left-4 text-[11.5px] text-faint">Drag to rotate · scroll to zoom · hover a star to see what it builds on and unlocks · click to open</div>
           <div className="pointer-events-none absolute right-4 top-3 flex gap-3 text-[11.5px]">{AREAS.map((a) => <span key={a.id} className="flex items-center gap-1.5" style={{ color: a.color }}><span className="h-2 w-2 rounded-full" style={{ background: a.color }} />{a.short}</span>)}</div>
+        </div>
+      )}
+
+      {view === "tree" && (
+        <div className="card mb-10 flex h-[min(78vh,880px)] flex-col p-5">
+          <p className="mb-3 text-[13px] text-mute">Every area, chapter and page as folders. A name opens the lesson. Hover a name and press Revise to open its revision sheet; on a folder, Revise runs through every sheet inside in order. Arrow keys move and open folders, Shift+Enter revises, and typing jumps to a name.</p>
+          <TopicTree heading="Topic tree" />
         </div>
       )}
 
@@ -67,7 +75,7 @@ export default function Learn() {
                       <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-mute">{t.blurb}</p>
                       <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] text-faint">
                         <Pill className={cn("border-line", t.tier === 1 ? "text-text" : "text-mute")}>{TIER[t.tier]}</Pill>
-                        <span>{n - 1} exercise{n - 1 === 1 ? "" : "s"}</span><span>·</span><span>{fmtMin(t.est)} lesson</span>{t.viz && <><span>·</span><span style={{ color: a.color }}>interactive</span></>}
+                        {subsOf(t.id).length > 0 && <><span>{subsOf(t.id).length} pages</span><span>·</span></>}<span>{n - 1 - subsOf(t.id).length} exercise{n - 1 - subsOf(t.id).length === 1 ? "" : "s"}</span><span>·</span><span>{fmtMin(t.est)} lesson</span>{t.viz && <><span>·</span><span style={{ color: a.color }}>interactive</span></>}
                       </div>
                     </div>
                   </Link>

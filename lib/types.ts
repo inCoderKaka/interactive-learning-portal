@@ -38,6 +38,14 @@ export interface Topic {
   cards?: Card[]; // flashcards, authored in content/cards/
   prereq?: string[];
   refs?: Ref[];
+  chapter?: string; // set on subtopic pages: the chapter (original topic) they belong to
+  notes?: string; // cheat-sheet lines shown collapsed under the revise sheet's recall items
+  revise?: string; // concise revision sheet (markdown; "? prompt :: answer" lines become hidden-answer recall items)
+  doubts?: [q: string, a: string][]; // common learner doubts, answered
+  sources?: Ref[]; // primary sources: papers, textbook chapters, official docs
+  widgets?: string[]; // visuals shown on the page (also usable inline as [[widget:id]])
+  featured?: number[]; // LeetCode numbers the page discusses (some live on other pages)
+  deepFile?: string; // subtopic pages: content file holding the body (loaded on demand)
 }
 
 export interface Approach {
@@ -64,6 +72,9 @@ export interface Problem {
   premium?: boolean; // LeetCode subscription needed
   video?: Ref; // a walkthrough, shown only alongside the approaches
   custom?: boolean;
+  sub?: string; // the subtopic page it belongs to (topic stays the chapter)
+  extra?: boolean; // video-backed LeetCode page: outside the plan, no hand-written approaches
+  slug?: string; // LeetCode slug (extra problems)
 }
 
 export interface Stage {
@@ -168,9 +179,17 @@ export interface Settings {
   focusMin: number;
   breakMin: number;
   blind: boolean; // hide topic tags while practising
+  visuals?: VisualPrefs; // which visuals, animations and interactions to show
   areas: Record<Area, boolean>;
   ai?: AiSettingsPatch; // developer mode and voice; merged with defaults by getAi()
   mockBookings?: MockBooking[]; // scheduled mocks (MI-X-4); synced with the profile
+}
+
+/** Visual preferences: a global level plus per-visual overrides (ids are widget ids). */
+export interface VisualPrefs {
+  mode: "all" | "collapsed" | "off"; // show visuals, show them folded, or hide them everywhere
+  motion: "auto" | "reduced"; // auto follows the OS reduced-motion setting
+  hidden: string[]; // visuals the learner hid one by one
 }
 
 /** A booked mock round; the full shape lives in lib/interview/core/booking.ts. */

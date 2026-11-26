@@ -124,14 +124,21 @@ export default function Player({ id }: { id: string }) {
   const [i, setI] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
+  // predict mode: at a step that carries a question, moving on waits for the learner's guess
+  const hasAsk = steps.some((s) => s.ask);
+  const [predict, setPredict] = useState(true);
+  const [guess, setGuess] = useState<Record<number, number>>({});
+  const gate = (k: number) => predict && !!steps[k]?.ask && guess[k] === undefined;
+  const next = () => setI((x) => (gate(x) ? x : Math.min(steps.length - 1, x + 1)));
 
-  useEffect(() => { setI(0); setPlaying(false); }, [id]);
+  useEffect(() => { setI(0); setPlaying(false); setGuess({}); }, [id]);
   useEffect(() => {
     if (!playing) return;
-    if (i >= steps.length - 1) { setPlaying(false); return; }
+    if (i >= steps.length - 1 || gate(i)) { setPlaying(false); return; }
     const t = setTimeout(() => setI((x) => x + 1), 1700 / speed);
     return () => clearTimeout(t);
-  }, [playing, i, steps.length, speed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing, i, steps.length, speed, predict, guess]);
 
   // the reader steps through the animation, reading each step's caption
   const readRef = useReadable<HTMLElement>((ctx) => {
@@ -150,7 +157,7 @@ export default function Player({ id }: { id: string }) {
   const st = steps[i];
   return (
     <section ref={readRef} data-read-block data-viz={id} className="card overflow-hidden" aria-label={`Visualiser: ${algo.title}`}
-      onKeyDown={(e) => { if (e.key === "ArrowRight") setI((x) => Math.min(steps.length - 1, x + 1)); if (e.key === "ArrowLeft") setI((x) => Math.max(0, x - 1)); if (e.key === " ") { e.preventDefault(); setPlaying((p) => !p); } }} tabIndex={0}>
+      onKeyDown={(e) => { if (e.key === "ArrowRight") next(); if (e.key === "ArrowLeft") setI((x) => Math.max(0, x - 1)); if (e.key === " ") { e.preventDefault(); setPlaying((p) => !p); } }} tabIndex={0}>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3.5">
         <div className="min-w-0">
           <div className="eyebrow">See it run</div>
@@ -160,8 +167,9 @@ export default function Player({ id }: { id: string }) {
           <button aria-label="Restart" onClick={() => { setI(0); setPlaying(false); }} className="grid h-8 w-8 place-items-center rounded-lg text-mute hover:bg-white/5 hover:text-text"><RotateCcw size={15} /></button>
           <button aria-label="Previous step" onClick={() => setI((x) => Math.max(0, x - 1))} className="grid h-8 w-8 place-items-center rounded-lg text-mute hover:bg-white/5 hover:text-text"><ChevronLeft size={17} /></button>
           <button aria-label={playing ? "Pause" : "Play"} onClick={() => { if (i >= steps.length - 1) setI(0); setPlaying((p) => !p); }} className="grid h-9 w-9 place-items-center rounded-xl bg-accent text-ink">{playing ? <Pause size={16} /> : <Play size={16} />}</button>
-          <button aria-label="Next step" onClick={() => setI((x) => Math.min(steps.length - 1, x + 1))} className="grid h-8 w-8 place-items-center rounded-lg text-mute hover:bg-white/5 hover:text-text"><ChevronRight size={17} /></button>
+          <button aria-label="Next step" onClick={next} className="grid h-8 w-8 place-items-center rounded-lg text-mute hover:bg-white/5 hover:text-text"><ChevronRight size={17} /></button>
           <button aria-label="Playback speed" onClick={() => setSpeed((s) => (s === 1 ? 2 : s === 2 ? 0.5 : 1))} className="num h-8 rounded-lg px-2 text-[12px] font-semibold text-mute hover:bg-white/5 hover:text-text">{speed}×</button>
+          {hasAsk && <button aria-pressed={predict} onClick={() => setPredict((p) => !p)} title="Predict mode: guess what happens next before the animation shows it" className={cn("h-8 rounded-lg border px-2 text-[11.5px] font-semibold", predict ? "border-accent/50 text-accent" : "border-line text-faint hover:text-mute")}>Predict</button>}
         </div>
       </div>
       <div className="px-5 pt-3 text-[13px] text-mute">{algo.about}</div>
@@ -181,6 +189,19 @@ export default function Player({ id }: { id: string }) {
         <AnimatePresence mode="wait">
           <motion.p key={i} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }} className="min-h-[44px] text-[14.5px] leading-relaxed" aria-live="polite">{st.note}</motion.p>
         </AnimatePresence>
+        {predict && st.ask && (
+          <div className="mt-3 rounded-xl border border-accent/30 bg-accent/[0.05] p-3.5">
+            <div className="text-[13px] font-semibold text-accent">Predict: {st.ask.q}</div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {st.ask.options.map((o, k) => {
+                const g = guess[i];
+                const state = g === undefined ? "idle" : k === st.ask!.answer ? "right" : k === g ? "wrong" : "off";
+                return <button key={k} disabled={g !== undefined} onClick={() => setGuess((m) => ({ ...m, [i]: k }))} className={cn("rounded-lg border px-2.5 py-1 text-[12.5px] transition", state === "idle" && "border-line hover:border-accent/50", state === "right" && "border-ok/60 bg-ok/10 text-ok", state === "wrong" && "border-bad/60 bg-bad/10 text-bad", state === "off" && "border-line opacity-40")}>{o}</button>;
+              })}
+            </div>
+            {guess[i] !== undefined && <p className="mt-2 text-[12.5px] text-mute">{guess[i] === st.ask.answer ? "Right. " : "Not quite. "}{st.ask.why ?? "Step forward to see it happen."}</p>}
+          </div>
+        )}
         <div className="mt-3 flex items-center gap-3">
           <input type="range" min={0} max={steps.length - 1} value={i} onChange={(e) => { setI(+e.target.value); setPlaying(false); }} className="w-full" aria-label="Step" />
           <span className="num shrink-0 text-[12px] text-faint">{i + 1} / {steps.length}</span>

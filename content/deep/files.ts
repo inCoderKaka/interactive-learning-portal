@@ -1,0 +1,23 @@
+import type { Deep } from "./types";
+
+type Bodies = Record<string, Deep>;
+/** Attach a file's cheat-sheet notes (content/deep/<area>/notes/<file>.ts) to its bodies. */
+const withNotes = (bodies: Bodies, notes: Record<string, string>): Bodies =>
+  Object.fromEntries(Object.entries(bodies).map(([id, d]) => [id, notes[id] ? { ...d, notes: notes[id] } : d]));
+
+/**
+ * Lazy loaders for the subtopic bodies, one per content file. Pages import only the file they need, so the
+ * lessons are not part of the bundle every page downloads. meta.json (generated) says which file holds which id.
+ */
+export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
+  "dsa/complexity": () => Promise.all([import("./dsa/complexity"), import("./dsa/notes/complexity")]).then(([m, n]) => withNotes(m.complexity, n.notes)),
+  "dsa/arrays-hashing": () => Promise.all([import("./dsa/arrays-hashing"), import("./dsa/notes/arrays-hashing")]).then(([m, n]) => withNotes(m.arraysHashing, n.notes)),
+  "dsa/linear": () => Promise.all([import("./dsa/linear"), import("./dsa/notes/linear")]).then(([m, n]) => withNotes(m.linear, n.notes)),
+  "dsa/search-lists": () => Promise.all([import("./dsa/search-lists"), import("./dsa/notes/search-lists")]).then(([m, n]) => withNotes(m.searchLists, n.notes)),
+  "dsa/trees-heaps": () => Promise.all([import("./dsa/trees-heaps"), import("./dsa/notes/trees-heaps")]).then(([m, n]) => withNotes(m.treesHeaps, n.notes)),
+  "dsa/graphs-core": () => Promise.all([import("./dsa/graphs-core"), import("./dsa/notes/graphs-core")]).then(([m, n]) => withNotes(m.graphsCore, n.notes)),
+  "dsa/dp": () => Promise.all([import("./dsa/dp"), import("./dsa/notes/dp")]).then(([m, n]) => withNotes(m.dp, n.notes)),
+  "dsa/greedy-math": () => Promise.all([import("./dsa/greedy-math"), import("./dsa/notes/greedy-math")]).then(([m, n]) => withNotes(m.greedyMath, n.notes)),
+  "dsa/strings-structures": () => Promise.all([import("./dsa/strings-structures"), import("./dsa/notes/strings-structures")]).then(([m, n]) => withNotes(m.stringsStructures, n.notes)),
+  "dsa/advanced-graphs": () => Promise.all([import("./dsa/advanced-graphs"), import("./dsa/notes/advanced-graphs")]).then(([m, n]) => withNotes(m.advancedGraphs, n.notes)),
+};

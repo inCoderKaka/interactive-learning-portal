@@ -1,3 +1,5 @@
+import { GRAPH_ALGOS } from "./graphs";
+import { DSA_ALGOS } from "./dsa-algos";
 export type S = "cur" | "done" | "front" | "bad" | "dim" | "hit";
 export interface Row { label?: string; cells: (string | number)[]; hi?: Record<number, S>; ptr?: Record<string, number>; range?: [number, number] }
 export interface GNode { id: string; x: number; y: number; label?: string; sub?: string; s?: S }
@@ -8,6 +10,8 @@ export interface Step {
   graph?: { nodes: GNode[]; edges: GEdge[] };
   grid?: { cells: (string | number)[][]; s?: (S | undefined)[][]; rowH?: string[]; colH?: string[] };
   vars?: Record<string, string | number>;
+  /** Asked before moving past this step in predict mode: what happens next? The next step reveals it. */
+  ask?: { q: string; options: string[]; answer: number; why?: string };
 }
 export interface Algo { title: string; about: string; steps: () => Step[] }
 
@@ -388,4 +392,6 @@ const intervals: Algo = {
 export const ALGOS: Record<string, Algo> = {
   "prefix-sum": prefixSum, "two-pointers": twoPointers, "sliding-window": slidingWindow, "mono-stack": monoStack, "binary-search": binarySearch,
   "linked-reverse": linkedReverse, "tree-dfs": treeDfs, heap: heapAlgo, subsets, "bfs-grid": bfsGrid, topo, "union-find": unionFind, dijkstra, "dp-lcs": lcs, lis, intervals,
+  ...GRAPH_ALGOS,
+  ...DSA_ALGOS,
 };
