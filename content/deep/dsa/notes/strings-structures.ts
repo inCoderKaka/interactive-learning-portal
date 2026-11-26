@@ -20,6 +20,12 @@ Interviews usually assume ASCII: say so.
 ## Comparing strings
 Lexicographic comparison costs O(min length). Equality is O(n) (hash once to compare many times).
 Isomorphism and pattern matching need maps in both directions.
+## Extras
+Java substring copies (since Java 7); pass indices.
+Bitmask of letters: share-a-letter test via AND.
+Roman: subtract when a smaller symbol precedes a larger one.
+Add strings: from the end with a carry, then reverse.
+Unicode: code units vs code points vs graphemes; normalise before comparing.
 `,
   "rolling-hash": `
 ## Polynomial hash
@@ -39,6 +45,12 @@ Longest happy prefix, distinct echo substrings (LC 1316), shortest palindrome (f
 Comparing substrings lexicographically: binary search the LCP with hashes.
 ## When to prefer exact algorithms
 KMP or Z for single-pattern matching with worst-case guarantees; suffix arrays for many substring queries; hashing when it makes the code short.
+## Extras
+Rabin–Karp shines for many same-length patterns (hash set).
+DNA windows: 2 bits per letter → exact 20-bit keys.
+Substring compare in O(log n): binary search LCP with hashes.
+2D hashing: rows, then columns of row hashes.
+Thue–Morse breaks mod 2⁶⁴ hashing.
 `,
   kmp: `
 ## Prefix function
@@ -56,6 +68,11 @@ Every border length is reachable by following π from the end.
 Longest happy prefix (LC 1392) = π[n−1]. Count occurrences of each prefix. Building a KMP automaton for DP over strings that must avoid a pattern (find all good strings, LC 1397).
 ## KMP vs Z vs hashing
 All O(n + m) for one pattern; KMP and Z are exact and deterministic; hashing is simpler for substring comparisons; Aho–Corasick for many patterns.
+## Extras
+Border of s[0..i] extends a border of s[0..i−1] (try the longest, fall back to borders of borders).
+KMP automaton: next state for (k, c); used in Find All Good Strings.
+Strstr (LC 28), rotation (LC 796) via KMP.
+Textbook fail[] is often π shifted by one.
 `,
   "z-algorithm": `
 ## Definition
@@ -72,6 +89,11 @@ Sum of scores of built strings (LC 2223) = Σ Z[i] + n.
 Minimum time to revert a word to its initial state (LC 3031): the first k-multiple i with Z[i] ≥ n − i.
 ## Z vs prefix function
 They hold the same information and each converts to the other in O(n); Z is often easier to reason about for "prefix matches at position i".
+## Extras
+Z-box [l, r) matches the prefix; start at min(r − i, Z[i − l]).
+r only moves right ⇒ O(n).
+Revert word (LC 3031): first t·k with Z[t·k] ≥ n − t·k.
+π looks back (borders), Z looks forward (prefix matches).
 `,
   manacher: `
 ## Idea
@@ -88,6 +110,11 @@ Maximum product of the lengths of two non-overlapping palindromic substrings (LC
 ## Related structures
 Palindromic tree (eertree): every distinct palindrome as a node, built in O(n).
 Hashing forward and reverse also tests palindromic substrings in O(1) each.
+## Extras
+Sentinels "^#…#$" remove bounds checks.
+Mirror bound: P[i] ≥ min(r − i, P[2c − i]).
+LC 1960: odd palindromes, prefix/suffix bests, combine at splits.
+At most n distinct palindromic substrings.
 `,
   "suffix-structures": `
 ## Suffix array + LCP
@@ -108,6 +135,11 @@ Stream of characters, word filters, banned-word detection.
 The BWT (from the suffix array) compresses well (bzip2) and supports substring counting in O(m) — DNA read aligners.
 ## Interview stance
 Know what each structure answers and its complexity; implement hashing or KMP in the interview, and mention the suffix structures as the scalable option.
+## Extras
+Prefix doubling: sort by (rank[i], rank[i+k]), O(n log² n).
+LCP RMQ ⇒ O(1) substring comparison.
+Aho–Corasick: trie + failure links (BFS) + output links.
+FM-index: count occurrences in O(m) on compressed text (DNA aligners).
 `,
   "sparse-table": `
 ## Construction
@@ -123,6 +155,11 @@ Precompute log₂ for all lengths in a table.
 Euler tour of the tree plus depths; LCA(u, v) = the minimum-depth node between their first occurrences: O(1) per query.
 ## Disjoint sparse table
 Answers non-idempotent associative queries (sum, product mod m) in O(1) after O(n log n) preprocessing.
+## Extras
+lg table: lg[i] = lg[i // 2] + 1.
+Index version: store indices, compare values, tie → smaller index.
+Updates touch O(n) entries in the worst case → use a segment tree.
+Two sparse tables (min and max) for "max − min ≤ limit" on arbitrary windows.
 `,
   fenwick: `
 ## Structure
@@ -143,6 +180,11 @@ Order statistics: binary-lift over the tree to find the k-th one in O(log n).
 ## Fenwick vs segment tree
 Fenwick: tiny code, small constant, needs an invertible operation for range queries (sum, XOR).
 Segment tree: any associative operation (min, max, gcd), lazy range updates, custom nodes.
+## Extras
+Table: i=6 covers a[5..6]; i=8 covers a[1..8].
+Range update + point query: difference array in the tree.
+Count of Range Sum: query P-value ranges after compression.
+Prefix max works only when values only increase.
 `,
   "segment-tree": `
 ## Structure
@@ -161,6 +203,11 @@ Range sum query mutable (LC 307), count of smaller numbers after self, my calend
 Segment tree "descend" queries: the first index with a value ≥ x in O(log n).
 ## Variants to name
 Lazy propagation (range updates), dynamic / implicit segment trees (huge coordinates), persistent segment trees (versions), merge-sort trees (sorted lists per node), segment tree beats.
+## Extras
+Count of minimum: (min, count) nodes.
+Merge sort tree: sorted lists per node, O(log² n) count ≤ x.
+LIS II (LC 2407): range max over [x−k, x−1].
+Segment tree beats: range chmin with sums (name-level).
 `,
   "lazy-propagation": `
 ## Idea
@@ -178,6 +225,11 @@ Affine tags (x → a·x + b) cover add, multiply and assign together.
 Range module (LC 715), rectangle area II (coverage counts), falling squares (range assign max), the number of flowers / booking counts with range increments, handling sum queries after updates (LC 2569: flip ranges).
 ## Dynamic (implicit) segment trees
 Create children on demand for coordinates up to 10⁹: O(q log C) nodes. Alternative: coordinate-compress offline.
+## Extras
+Assign overrides older tags; add-after-assign folds into the assign.
+LC 2158: count newly painted cells per range.
+Compression preferred over dynamic nodes when coordinates are known offline.
+Push only on partial overlap.
 `,
   "sqrt-mo": `
 ## Square-root decomposition
@@ -192,6 +244,11 @@ Mo with updates adds a time dimension (block size ~ n^(2/3)).
 ## When to use
 Offline queries with an add/remove-friendly statistic that has no nice merge (number of distinct values in a range).
 Online or mergeable statistics → segment tree, Fenwick or a persistent structure.
+## Extras
+Blocks sorted for "count ≤ x in range with updates": O(√n log n) query.
+Alternating r order per block speeds Mo's.
+Mo's on trees: Euler tour.
+Online distinct counts: persistent tree; offline: sort by r + Fenwick.
 `,
   "lru-lfu": `
 ## LRU cache (LC 146)
@@ -207,6 +264,12 @@ Every operation O(1).
 A global lock serialises everything: shard the cache by key hash, or use striped locks.
 Approximate LRU (sampling, CLOCK) avoids list updates on every read; Redis samples keys.
 TTLs, size-aware eviction (bytes, not entries), and admission policies (TinyLFU in Caffeine) matter in real systems.
+## Extras
+Java: LinkedHashMap(accessOrder=true) + removeEldestEntry.
+LFU: freq → ordered list; bump moves the key to list[freq+1].
+Redis approximates LRU by sampling.
+Shard caches by key hash for concurrency.
+Capacity 0: put does nothing.
 `,
   iterators: `
 ## Principles
@@ -224,6 +287,11 @@ Python yield (and yield from) gives lazy iterators with tiny code; mention that 
 ## Talking points
 Memory: O(depth) rather than O(total). Invalidation when the underlying collection changes (fail-fast iterators in Java throw ConcurrentModificationException).
 Thread safety: iterators are usually single-consumer.
+## Extras
+Zigzag for k lists: queue of non-empty iterators, round robin.
+Merging sorted iterators: heap of (value, id).
+yield from for recursive flattening.
+remove() once per next(); fix the index.
 `,
   "time-versioned": `
 ## Time-based key-value store (LC 981)
@@ -239,6 +307,11 @@ Path copying: an update copies only the nodes on the path, so old versions stay 
 Copy-on-write and multi-version concurrency control (MVCC in databases) use the same idea.
 ## Design points
 State the read/write ratio, whether time is monotonic, how to garbage-collect old versions, and the per-key memory.
+## Extras
+Parallel lists avoid comparing (t, value) tuples in bisect.
+Fat nodes vs path copying.
+Git: content-addressed blobs and trees (path copying).
+Event sourcing + periodic snapshots.
 `,
   "randomized-set": `
 ## RandomizedSet (LC 380)
@@ -253,6 +326,14 @@ A hash set cannot pick a uniform random element in O(1): its buckets are uneven 
 Random pick with blacklist (LC 710): remap blacklisted values below the cut to whitelisted values above it.
 Random pick index (reservoir sampling), weighted random (prefix sums).
 Shuffle (Fisher–Yates).
+## Extras
+Order in remove: overwrite slot i and pos[last] first, then pop and delete pos[x] (handles x == last).
+Random Pick Index: reservoir sampling.
+Remove a random element: random index + normal remove.
+Array alone: O(n) to find and remove; hash set alone: no O(1) uniform pick.
+insert: append + pos[x] = len − 1; reject duplicates.
+getRandom: uniform index into the dense array.
+Random Pick Index (LC 398): reservoir over matching positions.
 `,
   "stream-counters": `
 ## Hit counter (LC 362)
@@ -271,6 +352,11 @@ Leaky bucket: a queue drained at a constant rate; smooths the output.
 Distributed limits: a shared counter (Redis INCR + EXPIRE, Lua scripts for atomicity) or local limits with periodic sync.
 ## Data stream statistics
 Running median (two heaps), top-k frequent (count map + heap, or count-min sketch + heap for huge streams), distinct counts (HyperLogLog), reservoir samples.
+## Extras
+Buckets: O(1) hit, O(window) query and memory independent of rate.
+Leaky bucket = constant drain queue.
+HyperLogLog ~1.5 KB, ~2% error.
+Misra–Gries / space-saving for heavy hitters.
 `,
   skiplist: `
 ## Structure
@@ -287,6 +373,11 @@ Redis sorted sets use a skip list plus a hash map; LevelDB and RocksDB memtables
 Worst case is O(n) with tiny probability; guarantees are expected, not worst-case.
 ## Interview usage
 Explain the levels, the coin flips and the expected O(log n); implement with a max level of about 16–32 and sentinel heads.
+## Extras
+Level cap ~16–32.
+Erase: unlink at every level, then lower the list level if top levels are empty.
+Lucene posting lists use skip pointers.
+Deterministic 1-2-3 skip lists exist.
 `,
   "matrix-traversal": `
 ## Spiral order (LC 54, 59)
@@ -303,6 +394,11 @@ Cells on the same diagonal share r − c; on the same anti-diagonal share r + c.
 Diagonal traverse (LC 498): iterate s = r + c, alternating direction. Sort the diagonals (LC 1329): group by r − c.
 ## Other traversals
 Snake (boustrophedon) order, layer-by-layer shifting (LC 1914, cyclically rotating a grid), transpose of a non-square matrix (a new array).
+## Extras
+Four-way cycle rotation per layer with one temp.
+Diagonal Traverse II: bucket by r + c, reverse each bucket.
+Layer rotation: extract, rotate by k mod length, write back.
+Toeplitz: each cell equals its up-left neighbour.
 `,
   "matrix-in-place": `
 ## Set matrix zeroes (LC 73)
@@ -318,6 +414,10 @@ Rotating the box (LC 1861): gravity per row, then rotate.
 Flood fill, the image smoother: separate the read and write states, or encode them in spare bits.
 ## Principle
 When an update must not see the cells already updated in this pass, either copy, or encode old and new in the same cell, or order the updates so dependencies are read first.
+## Extras
+Four strategies: copy, encode, markers in the matrix, ordered updates.
+Candy Crush: negate to mark, gravity with a write pointer.
+Rotating the Box: per-row gravity resetting at obstacles, then rotate.
 `,
   "matrix-search": `
 ## Fully sorted (LC 74)
@@ -333,6 +433,11 @@ Rows are sorted 0…1: start at the top-right; on a 1 move left, on a 0 move dow
 ## When to binary search each row
 Rows are sorted but the columns are not; or one dimension is tiny.
 Count negatives in a sorted matrix (LC 1351): the staircase is O(r + c).
+## Extras
+Bottom-left count: m[r][c] ≤ x ⇒ add r + 1, move right; else up.
+Peak II: binary search columns via column maxima.
+Count negatives: staircase O(R + C).
+Duplicates are fine for the staircase.
 `,
   "comparison-sorts": `
 ## Merge sort
@@ -355,6 +460,12 @@ C++ std::sort: introsort (quicksort that switches to heapsort at depth 2 log n, 
 Any comparison sort needs Ω(n log n) comparisons in the worst case: a decision tree with n! leaves has height log₂(n!) ≈ n log n.
 ## Interview usage
 Know merge sort and quicksort cold; state stability; sort then scan is often the O(n log n) baseline.
+## Extras
+Hoare vs Lomuto partition schemes.
+Rust: pdqsort (unstable), driftsort/Timsort-like (stable).
+std::partial_sort uses a heap.
+Python's merge policy: Powersort (refined Timsort).
+Stable quicksort only via extra memory or (key, index).
 `,
   "linear-sorts": `
 ## Counting sort
@@ -369,6 +480,15 @@ Sort colours (counting with 3 values), top-k frequent elements (buckets indexed 
 Contains duplicate III with buckets of width t + 1.
 ## When not to use them
 Large key ranges (k ≫ n) waste memory; floating-point or complex keys need mapping; comparison sorts are simpler and fast enough below about 10⁶ elements.
+## Extras
+Counting sort keys-only: write each value cnt[v] times.
+32-bit ints base 256: 4 passes.
+Relative Sort Array: counting over small values.
+Suffix arrays use radix sort on rank pairs.
+Counting sort: count, prefix-sum to positions, place stably; O(n + k).
+LSD radix: stable pass per digit from least significant; O(d·(n + b)).
+Bucket sort: n buckets for uniform data, sort each, concatenate.
+Top K Frequent: bucket[f] lists, scan from high f.
 `,
   quickselect: `
 ## Algorithm
@@ -385,6 +505,11 @@ C++ std::nth_element; Python has no built-in (heapq.nlargest is O(n log k)).
 Use three-way partitioning, or many equal keys degrade to O(n²).
 ## Heap vs quickselect
 Heap: O(n log k), streaming-friendly, stable worst case. Quickselect: O(n) expected, needs the whole array in memory and reorders it.
+## Extras
+Expected work ≈ 4n (range shrinks to ≤ 3/4 with probability 1/2).
+Three-way partition: return immediately if k is in the equal band.
+LC 462: median via quickselect.
+Hoare partition variant recurses until one element remains.
 `,
   "custom-sort": `
 ## Comparators
@@ -402,6 +527,11 @@ Largest number: a + b vs b + a. Reorder log files (LC 937): letter logs by (cont
 Custom sort string (LC 791): rank by the order string, or count and emit.
 Sort by frequency, then by value; relative sort array (LC 1122).
 Sorting by a key that is expensive to compute: decorate–sort–undecorate (compute each key once).
+## Extras
+Java contract violation exception from inconsistent comparators.
+Frequency sort ties (LC 1636): key (count, −value).
+Minimum adjacent swaps = inversions.
+Python key= computes keys once (decorate–sort–undecorate).
 `,
   "meet-in-middle": `
 ## Idea
@@ -415,6 +545,11 @@ Split array with the same average (LC 805): per count, sets of sums.
 Bidirectional BFS is meet in the middle on graphs.
 ## Memory
 2^(n/2) values per half (about 10⁶ for n = 40); store compactly, and generate sorted sums by merging to avoid a sort.
+## Extras
+n ≈ 25–45 and large values → meet in the middle.
+4Sum II: map of a + b counts, look up −(c + d).
+Store (sum, mask) to reconstruct the choice.
+Count sums ≤ T: binary search or two pointers on sorted halves.
 `,
   "heavy-light": `
 ## Heavy-light decomposition
@@ -430,6 +565,11 @@ tin/tout from a DFS: the subtree of v is the range [tin[v], tout[v]] → subtree
 Path-to-root queries: +x at tin and −x at tout.
 ## Interview stance
 Rare in interviews; name them for "many path queries with updates on a tree" and fall back to LCA with prefix sums when there are no updates.
+## Extras
+Ancestor test: tin[u] ≤ tin[v] ≤ tout[u].
+HLD gives LCA: shallower node once on one chain.
+Nearest red node: per-centroid best distance, O(log n) ancestors.
+Link-cut trees for dynamic forests (name-level).
 `,
   persistent: `
 ## Path copying
@@ -446,6 +586,11 @@ Git commits and copy-on-write file systems (ZFS, Btrfs) are persistent trees.
 ## Where it appears
 Version history and undo, time-travel queries, MVCC snapshots in databases, offline queries that would otherwise need sorting.
 Memory O(n + q log n); fat nodes (store a version list per field) are the alternative.
+## Extras
+Chairman tree: k-th smallest in a range via two versions.
+Persistent stack: O(1) push/pop with shared tails.
+Node copying (DSST 1989): O(1) amortised space per update.
+Use int arrays, not node objects, for memory.
 `,
   "randomized-structures": `
 ## Treap
@@ -461,5 +606,10 @@ Heap-ordered by value and in-order by index; built in O(n) with a stack. The LCA
 A treap is a Cartesian tree on (key, random priority).
 ## Interview stance
 Mention treaps or skip lists when an ordered structure with split and merge is needed; use the language's ordered map in actual code.
+## Extras
+Treap delete: split out the key, merge the remaining parts.
+Implicit treap = rope: insert/delete/reverse at positions.
+Splay trees: working-set property; link-cut trees.
+Random BST average depth ≈ 2 ln n (same as quicksort's recursion).
 `,
 };

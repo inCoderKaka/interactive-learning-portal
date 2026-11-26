@@ -30,6 +30,10 @@ Amortised is a guarantee over a sequence, not a probability.
 ## Interview use
 State time and space for every solution, and name the dominant term and why.
 Mention the brute force's cost first, then the improvement and what it trades.
+## Extras
+Output-sensitive bounds: O(… + k) for k reported items.
+Multi-parameter inputs: keep every size (V + E, n·m, n + q log n).
+O(n + m) = O(max(n, m)).
 `,
   amortized: `
 ## Idea
@@ -55,6 +59,11 @@ Splay trees and Fibonacci heaps are amortised structures.
 ## Amortised vs real time
 A single operation can still be slow (a resize is O(n)): bad for latency-critical paths.
 Fixes: reserve capacity up front, or incremental resizing (move a few elements per operation, as Redis does when rehashing).
+## Extras
+Potential method proves union-find, splay trees, Fibonacci heaps.
+Counter: bit i flips every 2^i increments.
+BST iterator: amortised O(1) next().
+Reserve capacity when size is known.
 `,
   recurrences: `
 ## From code to recurrence
@@ -79,6 +88,12 @@ Gaps that are not polynomial, e.g. 2T(n/2) + n/log n, fall between the cases.
 ## Memoisation and linear recurrences
 With memo, time = number of distinct states × work per state (Fibonacci becomes O(n)).
 Linear recurrences (Fibonacci-like) grow like φⁿ, φ ≈ 1.618; matrix exponentiation computes term n in O(k³ log n).
+## Extras
+Akra–Bazzi for unequal splits.
+Floors and ceilings do not change asymptotics.
+Binet: F(n) ≈ φⁿ/√5; float formulas fail past n ≈ 70.
+2T(n/2) + n log n = Θ(n log² n).
+Characteristic equation's largest root = growth rate.
 `,
   "space-recursion": `
 ## What counts
@@ -103,6 +118,11 @@ Bit tricks: store booleans in an int mask.
 ## Space-time trade-offs
 Hash map: O(n) space for O(1) lookups. Precomputation (prefix sums, sparse tables) trades memory for query speed.
 Recompute instead of storing when memory is tight; memoise when time is tight.
+## Extras
+Large local arrays in recursive C/C++ functions overflow the stack.
+Kotlin tailrec / Scheme optimise tail calls; Python and Java do not.
+Generators chain frames like recursion.
+5000×5000 table: ~100 MB of ints; roll to two rows.
 `,
   "constraints-budget": `
 ## Budget
@@ -126,5 +146,10 @@ If you are already at the lower bound, stop optimising time and look at space or
 "Top/k-th" → heap or quickselect. "All combinations" → backtracking. "Minimum steps" → BFS.
 "Count ways / min cost with choices" → DP. "Connected / groups" → union-find or DFS.
 "Answer modulo 10⁹+7" → counting DP or combinatorics. "O(1) extra space" → in-place tricks or bits.
+## Extras
+log₂(10⁵) ≈ 17, log₂(10⁶) ≈ 20.
+n² at n = 10⁴ ≈ 10⁸: fine in C++/Java, slow in Python.
+Bottleneck fixes: hash map, prefix sums, heap/deque, memo, two pointers, DSU.
+Clarify → brute force → bottleneck → optimise → test.
 `,
 };
