@@ -23,6 +23,11 @@ Reverse an array or a string in place. Squares of a sorted array: fill from the 
 Two-sum count pairs below target: when a[l] + a[r] < t, add r − l pairs at once.
 ## Unsorted input
 Sort first (O(n log n)) if indices are not needed; otherwise use a hash map (Two Sum, O(n)).
+## Extras
+Elimination: too small ⇒ a[l] fails with every remaining partner.
+3Sum prunes: a[i] > 0 stop; smallest triple > 0 stop; largest < 0 skip.
+Trapping Rain Water: process the side with the smaller current height.
+Valid Palindrome II: try skipping each side once.
 `,
   "same-direction-pointers": `
 ## Read/write pointers
@@ -39,6 +44,11 @@ Linked lists use the same idea: middle node, cycle detection, k-th from the end 
 ## Pitfalls
 Off-by-one in the returned length; comparing with the wrong neighbour when deduping (compare with a[write−1], not a[read−1]).
 Order matters? Read/write preserves order; swap-with-end does not.
+## Extras
+Move Zeroes by swapping: zeros drift right in one pass.
+Adjacent Duplicates (LC 1047): write pointer as a stack.
+LC 2486: answer = unmatched remainder of t.
+w ≤ r + 1 always: overwriting is safe.
 `,
   "array-partition": `
 ## Two-way partition
@@ -56,6 +66,11 @@ Quickselect: partition, recurse into the side holding k; randomise the pivot to 
 Wiggle sort II: median by quickselect, then three-way partition on virtual (interleaved) indices.
 Stable partition needs O(n) extra space, or O(n log n) time in place.
 Partition labels (LC 763) is a different "partition": greedy on last occurrence.
+## Extras
+Lomuto returns the pivot index; Hoare returns a split point.
+Three-way partition rescues quicksort with many duplicates.
+LC 2161 (stable): build three lists.
+Counting alternative for tiny ranges (two passes).
 `,
   "merge-pointers": `
 ## Merge
@@ -73,6 +88,11 @@ Merging one by one costs O(N·k).
 Backspace string compare: walk both from the end, skipping deleted characters: O(1) space.
 Version numbers: split on dots, compare piece by piece, treat missing pieces as 0.
 Smallest range covering k lists: heap of heads, track the current max.
+## Extras
+≤ on ties = stability.
+Merge join in databases: two cursors, runs of equal keys.
+m ≪ n: binary search each short element (O(m log n)).
+Linked-list merge relinks nodes: O(1) extra.
 `,
   "fixed-window": `
 ## Loop
@@ -87,6 +107,11 @@ Sum of window minimums/maximums: deque. Distinct count in a window: count map pl
 Circular windows: iterate i up to n + k − 1 and use i mod n.
 Fixed window over a string of words (LC 30): step by word length; run one window per offset.
 Pitfalls: decrementing a count to 0 without deleting the key breaks "len(map)" distinct counts.
+## Extras
+Template: add a[i]; remove a[i−k] if i ≥ k; record if i ≥ k−1.
+K Radius Averages: window 2k + 1.
+k > n: no window; define the return value.
+Window start = i − k + 1.
 `,
   "variable-window": `
 ## Two templates
@@ -109,6 +134,11 @@ O(|s| + |t|) time.
 ## Details
 The stale maxFreq trick (LC 424) works because the answer only grows when maxFreq grows.
 Use a fixed array for small alphabets; a hash map otherwise.
+## Extras
+Minimum Window optimisation: slide over the filtered list of useful characters.
+LC 1004: at most k zeros; LC 1493: at most one zero, answer − 1.
+Negatives ⇒ prefix sums + hash map, or deque (LC 862).
+Shortest template: record inside the shrinking loop.
 `,
   "count-windows": `
 ## Counting with a window
@@ -125,6 +155,11 @@ Keep two left pointers: the smallest l with ≤ k distinct and the smallest l wi
 ## Complexity
 O(n) per atMost call, so O(n) overall; space is the count map.
 Prefix sum + hash map is the alternative for sums (and the only one with negatives).
+## Extras
+At least: after the shrinking loop, add l.
+Three-pointer exactly: add l2 − l1 per r.
+LC 2062: exactly 5 distinct vowels within vowel-only stretches.
+Answers up to ~5·10⁹: use 64-bit.
 `,
   "window-structures": `
 ## Pairing
@@ -142,6 +177,11 @@ Bucket trick: bucket width t + 1; check the same and adjacent buckets: O(n).
 ## Picking
 Max/min only → deque. Order statistics or arbitrary deletes → ordered multiset or two heaps. Frequency → count map.
 State the structure's per-operation cost and multiply by n.
+## Extras
+Table: max/min → deque; median → two heaps/multiset; nearby → sorted set/buckets.
+Top-m sum per window: two multisets with a boundary.
+LC 2461: distinct check via map size.
+Lazy deletion: delete counter + logical sizes.
 `,
   "stack-parsing": `
 ## Matching
@@ -162,6 +202,12 @@ Simplify Unix path: split on '/', skip "" and ".", pop on "..", join.
 Browser history, undo stacks and asteroid collision are stacks of pending state.
 ## Why stacks fit
 Nesting is last-opened, first-closed: exactly LIFO. Recursion is an implicit stack; an explicit stack avoids depth limits.
+## Extras
+Single bracket type: counter is enough.
+LC 1249: remove unmatched ')' immediately, leftover '(' at the end.
+Ternary parser: scan from the right with a stack.
+Asteroids: right-movers wait on the stack.
+Python // floors; use int(a / b) for truncation.
 `,
   "monotonic-stack": `
 ## Next greater element
@@ -184,6 +230,11 @@ Remove k digits (LC 402) and smallest subsequence of distinct characters (LC 108
 Car fleet, asteroid collision and trapping rain water (layer by layer) use the same machinery.
 ## Recognising it
 "Nearest bigger/smaller to the left or right", or "for each element, how far does it dominate".
+## Extras
+Next Greater I: map from nums2's answers.
+Stock Span: merge spans while popping.
+132 Pattern: scan right-to-left, popped values are "2" candidates.
+Both neighbours in one pass: popper = next, below = previous.
 `,
   histogram: `
 ## Largest rectangle in histogram (LC 84)
@@ -199,6 +250,11 @@ Trapping rain water with a stack: pop a bottom, water = (min(left, right) − bo
 Largest rectangle with fixed width k: a sliding-window minimum.
 ## Divide and conquer alternative
 Split at the minimum bar: best = max(min × width, left part, right part). O(n log n) with a segment tree for the minimum; O(n²) worst case on sorted input without one.
+## Extras
+Sentinel 0 flushes; or clean up after the loop with boundary n.
+LC 1793: expand from k toward the larger neighbour.
+D&C: split at the minimum, O(n log n) with RMQ.
+Trapping Rain Water stack is the dual.
 `,
   "stack-design": `
 ## Min stack (LC 155)
@@ -218,6 +274,11 @@ Push: freq++, push onto group[freq]. Pop: pop group[maxFreq]; if it empties, max
 ## Persistent stacks
 A linked list where push creates a new head sharing the tail: versions cost O(1) each and are immutable.
 Undo/redo uses two stacks; a new action clears redo.
+## Extras
+Encoding min stack: store 2x − min (overflow risk).
+Max Stack via heaps: lazy deletion by id.
+Real-time queue variants avoid O(n) refills.
+Browser History: array + cursor + logical end.
 `,
   "queues-deques": `
 ## Queue
@@ -239,6 +300,11 @@ Moving average from a data stream: queue plus running sum.
 Number of recent calls: pop timestamps older than t − 3000.
 Design hit counter: queue, or a 300-slot circular buffer of (timestamp, count).
 Rotting oranges, walls and gates: multi-source BFS seeded with all sources at once.
+## Extras
+Full vs empty: count, a spare slot, or a flag.
+Growing a ring buffer: copy in logical order, head = 0.
+Reveal Cards: simulate on a deque of indices.
+Bounded blocking queue: lock + two condition variables.
 `,
   "monotonic-deque": `
 ## Sliding window maximum (LC 239)
@@ -258,6 +324,11 @@ Constrained subsequence sum (LC 1425), jump game VI (LC 1696).
 ## Related
 Longest subarray with |max − min| ≤ limit: two deques.
 Max value of yi + yj + |xi − xj| (LC 1499): a deque on yi − xi.
+## Extras
+Expiry needs only an if (one position per step).
+Min version: pop while a[back] ≥ a[i].
+Variable window: pop the front when index < current left.
+Deque keeps only potential maxima (no order statistics).
 `,
   "deque-dp": `
 ## Shape
@@ -274,5 +345,10 @@ When the cost depends on both i and j as a product, use convex hull trick or Li 
 Divide-and-conquer optimisation and Knuth optimisation handle other monotone-argmin structures.
 ## Heap alternative
 Max-heap of (dp[j], j) with lazy removal of indices outside the window: O(n log n). Simpler to get right; slower.
+## Extras
+Valid because dp[j] is final before i reads it.
+Min version: increasing deque.
+Path: parent[i] = front index used.
+Delivering Boxes: window by count and weight, candidate dp[j] − diff[j+1].
 `,
 };
