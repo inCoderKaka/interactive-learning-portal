@@ -6,6 +6,7 @@ import { linear } from "./dsa/linear";
 import { searchLists } from "./dsa/search-lists";
 import { treesHeaps } from "./dsa/trees-heaps";
 import { graphsCore } from "./dsa/graphs-core";
+import { dp } from "./dsa/dp";
 
 /** Every written subtopic body, keyed by subtopic id. A subtopic without a body is not a page yet. */
 export const DEEP: Record<string, Deep> = {
@@ -15,5 +16,6 @@ export const DEEP: Record<string, Deep> = {
   ...searchLists,
   ...treesHeaps,
   ...graphsCore,
+  ...dp,
   ...advancedGraphs,
 };
