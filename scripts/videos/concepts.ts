@@ -369,3 +369,99 @@ export const HLD_DESIGNS: ConceptRule[] = ([
   [/calendar|meeting schedul/i, "d-calendar"],
   [/inventory (management|system)/i, "d-inventory"],
 ] as ConceptRule[]).map(([re, to]) => [new RegExp(`^(?=.*(${DESIGNISH.source}))(?=.*(${re.source}))`, "i"), to] as ConceptRule);
+
+// ───────────────────────── LLD ─────────────────────────
+/** Titles on LLD channels that are not LLD study material (frameworks, cloud, tools, other languages' courses). */
+export const LLD_SKIP = /spring ?boot|spring (security|data|cloud|ai|bean)|\bjpa\b|hibernate|\baws\b|terraform|\bgit\b|github|kafka|redis|elasticsearch|react(js)?\b|vue\.?js|ramda|\bvim\b|blockchain|leetcode|\bdsa\b|dynamic programming|binary search|\bgraph|linked ?list|\bheap\b|\bbst\b|maven|lombok|devops|docker|kubernetes|forward deployed|genai|\brag\b|\bllm\b|interview experience|cracked|laid ?off|resume|referral|work life|studio tour|kilimanjaro|questions? (&|and) answers/i;
+
+/** Titles that are LLD despite matching LLD_SKIP (e.g. "Pub-Sub like Kafka | LLD + Multithreading"). */
+export const LLD_ALLOW = /\blld\b|low[- ]level|multi[- ]?thread|concurrency/i;
+const L = (re: RegExp, to: string) => [re, to] as ConceptRule;
+export const LLD_CONCEPTS: ConceptRule[] = [
+  // the interview
+  L(/what is (lld|low level design)|introduction to (lld|low level design)|lld (roadmap|crash course|101)|low[- ]level (system )?design (interviews? )?roadmap|approach (to solve )?(lld|low level design)|types of low level designs|machine coding|do we have to create each and every class|chatgpt mock lld|mock low level system design interview/i, "ood-at-google"),
+  L(/approach (to solve )?(lld|low level design)|requirements? (gathering|clarif)|use case diagram/i, "ood-requirements"),
+  L(/class diagram|\buml\b|association,? aggregation|composition vs aggregation|aggregation vs composition/i, "class-diagrams"),
+  L(/sequence diagram|state (machine|diagram)|diagrams every software developer/i, "behaviour-diagrams"),
+  L(/remove hardcodings|extensibility in low level design|design choices, solid/i, "ood-core-code"),
+  // OOP & SOLID
+  L(/encapsulation|oops? concepts?|4 pillars|pillars of (object|oop)|master oops|\boop(s)? in java|object oriented programming|classes,? objects|java classes in depth|immutable class|access modifiers|constructors? in (java|depth)|objects deep dive/i, "encapsulation"),
+  L(/inheritance|composition over inheritance|preferring composition/i, "inheritance-composition"),
+  L(/polymorphism|abstract class|interfaces? (in depth|deep dive)|java interface|generics|wildcards|always use interfaces|covariance|functional interface|pattern matching for (switch|instanceof)|switch expressions|sealed classes/i, "polymorphism"),
+  L(/\bsolid\b|single responsibility|open[- ]closed/i, "srp-ocp"),
+  L(/\bsolid\b|liskov|square[- ]rectangle|interface segregation/i, "lsp-isp"),
+  L(/\bsolid\b|dependency (inversion|injection)|depend on abstractions|inversion of control|\bioc\b/i, "dip-di"),
+  L(/\b(dry|kiss|yagni)\b|design principles|law of demeter/i, "design-heuristics"),
+  // patterns I
+  L(/factory|creational design patterns?|become a master developer by using creational/i, "factory-patterns"),
+  L(/builder (design )?pattern|prototype|creational design patterns?/i, "builder-prototype"),
+  L(/singleton|object pool|double[- ]checked locking|creational design patterns?/i, "singleton-pool"),
+  L(/adapter|facade|structural design patterns?/i, "adapter-facade"),
+  L(/decorator|proxy (design )?pattern|structural design patterns?/i, "decorator-proxy"),
+  L(/composite|bridge (design )?pattern|flyweight|structural design patterns?/i, "composite-bridge-flyweight"),
+  // patterns II
+  L(/strategy (design )?pattern|template (method )?(design )?pattern|behavio(u)?ral design patterns?/i, "strategy-template"),
+  L(/observer|behavio(u)?ral design patterns?/i, "observer-pattern"),
+  L(/state (design )?pattern|behavio(u)?ral design patterns?/i, "state-pattern"),
+  L(/command (design )?pattern|memento|undo,? redo/i, "command-memento"),
+  L(/chain of responsibility/i, "chain-of-responsibility"),
+  L(/iterator (design )?pattern|visitor/i, "iterator-visitor"),
+  L(/mediator|null object|interpreter (design )?pattern/i, "mediator-null-object"),
+  // clean code
+  L(/api design|java optional|exception handling|exceptions? vs errors|custom exceptions/i, "library-api"),
+  L(/\benums?\b|pojo|record class|immutable (class|objects)|value objects?|sealed classes/i, "modelling-data"),
+  L(/unit test|junit|mockito|mock vs stub|test doubles?|write just enough tests/i, "testability"),
+  L(/code smells?|refactor/i, "smells-refactoring"),
+  L(/\bmvc\b|layered architecture|hexagonal|clean architecture|repository pattern/i, "code-layers"),
+  // concurrency
+  L(/multithreading (basics|in java|introduction)|introduction to multithreading|process vs thread|threads?,? process|thread (creation|lifecycle|methods)|thread vs runnable|create threads?|daemon thread|cpu, core, program|how jvm h[a]?ndles multithreading|concurrency (&|and) multithreading/i, "threads-basics"),
+  L(/race condition|thread safety|synchroniz(ed|ation)|problems in multithreading|monitor locks/i, "race-conditions"),
+  L(/volatile|memory model|visibility, ordering/i, "memory-visibility"),
+  L(/reentrant ?lock|read ?write ?lock|stamped ?lock|java locks|locks and condition|lock'?s?'? fairness|monitor locks/i, "locks"),
+  L(/wait\(\)|notify|inter[- ]?thread communication|thread communication|locks and condition/i, "condition-variables"),
+  L(/deadlock/i, "deadlock"),
+  L(/atomic|compare[- ]and[- ]swap|\bcas\b|lock[- ]free/i, "atomics-cas"),
+  L(/producer[- ]consumer|blocking ?queue|bounded buffer|multi[- ]threaded message queue|pub[- ]?sub model like kafka/i, "producer-consumer"),
+  L(/semaphore|count ?down ?latch|cyclic ?barrier|phaser/i, "sync-primitives"),
+  L(/thread ?pools?|executor|fork ?join|work ?stealing|future and callable|cachedthreadpool|fixedthreadpool/i, "thread-pools"),
+  L(/concurrent ?hash ?map|concurrent ?skip ?list|copy ?on ?write|concurrent collections|hashtable explained/i, "concurrent-collections"),
+  L(/completable ?future|virtual ?threads?|async(hronous)? (programming|await)|event loop|threadlocal/i, "async-virtual-threads"),
+  L(/scheduled ?thread ?pool|scheduled ?executor|\bscheduler\b|cron job|fixed ?rate|fixed ?delay|timing wheel/i, "timers-scheduling"),
+  L(/print (n|1 to n) numbers via 2 threads|odd[- ]even (using )?threads|dining philosophers|print in order|\bh2o\b|fizz ?buzz multithreaded/i, "concurrency-puzzles"),
+];
+
+/** LLD "design X" videos → LLD design questions (always shown on the design page). */
+export const LLD_DESIGNS: ConceptRule[] = ([
+  [/parking lot/i, "d-lld-parking-lot"],
+  [/elevator/i, "d-lld-elevator"],
+  [/vending machine/i, "d-lld-vending-machine"],
+  [/splitwise|expense sharing/i, "d-lld-splitwise"],
+  [/lru cache|low level design of cache|multi level cache|cache\| low level|design (a )?cache/i, "d-lld-lru-concurrent"],
+  [/rate limiter/i, "d-lld-rate-limiter-lld"],
+  [/logging (system|framework)|design logging|distributed logging|logger/i, "d-lld-logger"],
+  [/file system/i, "d-lld-file-system"],
+  [/pub[- ]?sub|message queue like kafka|messaging queue/i, "d-lld-pub-sub"],
+  [/tic[- ]?tac[- ]?toe|chess|battleship|board game/i, "d-lld-board-game"],
+  [/text editor|undo,? redo|word processor/i, "d-lld-text-editor"],
+  [/key[- ]value store/i, "d-lld-kv-transactions"],
+  [/meeting (scheduler|room)|calendar/i, "d-lld-meeting-scheduler"],
+  [/task scheduler|job scheduler|distributed scheduler/i, "d-lld-task-scheduler-lld"],
+  [/circuit breaker|retry pattern|bulkhead|fault tolerance/i, "d-lld-resilient-client"],
+  [/library management/i, "d-lld-library"],
+  [/bookmyshow|movie ticket|ticket booking|booking system/i, "d-lld-movie-booking"],
+  [/hotel (management|booking|reservation)/i, "d-lld-hotel-booking"],
+  [/\batm\b/i, "d-lld-atm"],
+  [/snake (and|&|n) ladder/i, "d-lld-snake-ladder"],
+  [/car rental|zoomcar/i, "d-lld-car-rental"],
+  [/auction/i, "d-lld-auction"],
+  [/coupons?.*cart|shopping cart/i, "d-lld-cart-coupons"],
+  [/payment gateway|payments app/i, "d-lld-payment-gateway"],
+  [/spreadsheet|excel/i, "d-lld-spreadsheet"],
+  [/deck of cards|blackjack|card game/i, "d-lld-card-game"],
+  [/stack ?overflow|q ?& ?a (site|platform)/i, "d-lld-qa-site"],
+  [/(uber|ola|cab|taxi).*(low level|lld)|(low level|lld).*(uber|ola|cab|taxi)/i, "d-lld-ride-matching"],
+  [/web crawler/i, "d-lld-web-crawler-mt"],
+  [/connection pool/i, "d-lld-connection-pool"],
+  [/notify[- ]?me|notification (system|service)/i, "d-lld-notification"],
+  [/inventory management|inventory system/i, "d-lld-inventory"],
+] as ConceptRule[]);
