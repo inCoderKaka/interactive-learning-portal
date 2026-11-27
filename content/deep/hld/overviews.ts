@@ -102,4 +102,20 @@ Almost every design question comes down to "where does the data live, and how is
 Start from how the data is read and written, how much of it there is and what must never go wrong; the database follows from those answers.
 :::
 `,
+  replication: md`
+## What this chapter is about
+
+Keeping copies of your data on several machines protects you from failures and lets more users read at once. But copies take time to update, machines fail at awkward moments, and networks break between data centres. This chapter explains, step by step, what each way of copying data guarantees, what users might see, and what can be lost.
+
+1. **Single-leader replication.** One machine takes all writes and streams them to the others; the difference between waiting for copies and not waiting; what happens, and what can be lost, when the leader dies.
+2. **Multi-leader and leaderless replication.** Letting several machines accept writes (for several regions, offline apps or maximum availability), and how the resulting conflicts are detected and resolved.
+3. **Quorums.** The simple arithmetic of how many copies must confirm a write and answer a read so that reads see the latest data, and what that arithmetic does not guarantee.
+4. **Consistency models.** Precisely what "strongly consistent", "causal" and "eventually consistent" promise, with examples of reads that each one allows or forbids.
+5. **Session guarantees.** Cheap promises that make eventual consistency feel right to each user: seeing your own changes, and never seeing data go backwards.
+6. **CAP and PACELC.** What really has to be given up when data centres lose contact, and the latency cost of consistency even when nothing is broken. A simulator lets you cut the link yourself.
+
+:::tip The one idea to keep
+Choose guarantees per operation: strong ones for money, uniqueness and locks; cheaper ones, plus "users see their own changes", for everything else.
+:::
+`,
 };

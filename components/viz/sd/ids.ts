@@ -5,4 +5,5 @@ export const HLD_WIDGET_IDS = new Set<string>([
   "l4-l7", "health-timeline", "seq-gateway", "seq-global",
   "seq-cache-patterns", "seq-invalidation", "seq-cdn", "eviction-race", "stampede",
   "index-explorer", "btree-lsm", "row-column",
+  "seq-failover", "seq-conflict", "seq-linearizable", "seq-session", "partition-sim",
 ]);

@@ -6,6 +6,7 @@ import { HolBlocking, PushCompare } from "./net";
 import { HealthTimeline, L4L7 } from "./traffic";
 import { EvictionRace, Stampede } from "./caching";
 import { BtreeLsm, IndexExplorer, RowColumn } from "./db";
+import { PartitionSim } from "./repl";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -22,6 +23,7 @@ const SIMS: Record<string, ComponentType> = {
   "index-explorer": IndexExplorer,
   "btree-lsm": BtreeLsm,
   "row-column": RowColumn,
+  "partition-sim": PartitionSim,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */

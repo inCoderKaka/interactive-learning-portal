@@ -1,0 +1,964 @@
+=== leader-replication
+blurb: Keeping copies of a database on several machines with one leader: how changes flow to followers, synchronous vs asynchronous replication, replication lag, and what really happens during failover, including lost writes and split brain.
+signals: Surviving a database server failure | Scaling reads with replicas | "What if the primary dies?" | Users see stale data after writing
+widgets: seq-failover
+
+--- lesson
+:::words
+- **Replica**: a full copy of the data on another machine.
+- **Leader (primary)**: the one replica that accepts writes. **Followers (secondaries, read replicas)**: replicas that copy the leader's changes and can serve reads.
+- **Replication log**: the ordered stream of changes the leader sends to followers.
+- **Synchronous replication**: the leader waits for a follower to confirm before telling the client "done". **Asynchronous**: it does not wait.
+- **Replication lag**: how far behind the leader a follower is.
+- **Failover**: promoting a follower to be the new leader when the old one fails.
+- **Split brain**: two nodes both acting as leader at the same time.
+:::
+
+## The problem in plain words
+
+One database server will eventually fail: hardware breaks, a data centre loses power, someone deploys a bad configuration. If it holds the only copy, you lose availability (and maybe data). So you keep copies on other machines. The simplest arrangement is **one leader** that takes every write and **followers** that copy it. That raises three questions this page answers: how do changes reach followers, how stale can followers be, and what happens when the leader dies?
+
+:::eli5
+A teacher writes on the main whiteboard (the leader); assistants copy everything onto whiteboards in other rooms (followers), so students there can read too. If the teacher falls ill, one assistant takes over the main board. Problem: if the teacher wrote one last line just before leaving and no assistant had copied it yet, that line is gone.
+:::
+
+## How changes flow
+
+Every write goes to the leader, which applies it and appends it to its **replication log** (often its write-ahead log, or a logical log of row changes). Followers stream the log and apply changes **in the same order**, so each follower is an exact copy of the leader as it was some moments ago.
+
+Reads can go to followers, which is the main way to scale reads: one leader, five followers, five times the read capacity (writes still all go to the leader).
+
+## Synchronous or asynchronous
+
+| | Synchronous | Asynchronous |
+|---|---|---|
+| Client is told "committed" after | The leader **and** a follower have the write | The leader has the write |
+| Write latency | + one round trip to the follower | Lowest |
+| If the leader dies right after | No acknowledged write is lost | Recent acknowledged writes can be lost |
+| If the follower is slow or down | Writes stall | Writes continue |
+
+Fully synchronous replication to every follower would stall writes whenever any follower hiccups, so real systems use **semi-synchronous** replication (wait for one follower, or for a majority), or asynchronous replication accepting a small loss window. Consensus-based databases (Spanner, CockroachDB, etcd) wait for a **majority** of replicas, which is both safe and tolerant of a minority being slow or down.
+
+## Replication lag
+
+With asynchronous followers, a follower may be milliseconds behind normally, and seconds or minutes behind under load, during big writes or after a network blip. That creates visible anomalies (a user updates their profile, refreshes, and the page, served by a lagging follower, shows the old version). The session-guarantees page covers fixes. Always **monitor lag** and stop sending reads to followers that fall too far behind.
+
+## Failover, step by step
+
+Step through a failover, then the version where things go wrong:
+
+[[widget:seq-failover]]
+
+1. **Detect** that the leader is dead, usually by missed heartbeats over a timeout (say 10–30 s). Too short a timeout causes needless failovers during brief slowdowns; too long means a long outage.
+2. **Choose** a new leader: the follower with the most up-to-date log (ideally agreed by a consensus system, so only one is chosen).
+3. **Reconfigure**: clients and the other followers must now send writes to / replicate from the new leader (via a service registry, a virtual IP, or the database's own routing).
+4. **Fence the old leader**: if it was not actually dead (just slow or cut off), it must not keep accepting writes when it comes back.
+
+What can go wrong:
+
+- **Lost writes**: with asynchronous replication, writes the old leader acknowledged but had not sent are gone. If the old leader rejoins, those writes conflict with the new leader's history and are usually discarded. (GitHub's 2012 incident: a promoted, out-of-date MySQL follower reused auto-increment IDs that a Redis cache still associated with other rows, briefly exposing some private data across users.)
+- **Split brain**: the old leader was only partitioned away, keeps accepting writes, and now two leaders diverge. Defences: a majority-based leader election (a minority side cannot elect or keep a leader), leases that expire, and **fencing** (STONITH: "shoot the other node in the head", or fencing tokens that storage checks).
+- **Wrong timeouts** causing failover storms under load.
+
+## Interview angles
+
+- "What happens when your primary database fails?" Detection time, promotion of the most up-to-date replica, client rerouting, data loss window (async), and split-brain protection.
+- "Sync or async replication?" Trade write latency against data loss; semi-sync or majority quorum is the usual answer for important data.
+- "Why do users sometimes see stale data?" Reads from lagging followers; fix with read-your-writes routing.
+
+--- revise
+### Basics
+? How does leader–follower replication work? :: All writes go to the leader, which streams an ordered log; followers apply it in the same order and serve reads.
+? What do read replicas scale, and what don't they? :: Reads scale; writes still all go to the single leader.
+
+### Sync vs async
+? Asynchronous replication's risk? :: A leader crash loses writes it acknowledged but had not sent.
+? Fully synchronous replication's risk? :: Any slow or failed follower stalls all writes.
+? What do most important systems use instead? :: Semi-synchronous (wait for one) or majority quorum (consensus).
+
+### Failover
+? Four steps of failover? :: Detect (heartbeat timeout), choose the most up-to-date follower, reconfigure clients/followers, fence the old leader.
+? What is split brain and its defences? :: Two leaders accepting writes; majority-based election, leases, fencing (STONITH, fencing tokens).
+? Trade-off of the failure-detection timeout? :: Short: false failovers under load; long: longer outages.
+
+--- notes
+## Flow
+Leader takes all writes → ordered replication log (WAL or logical) → followers apply in order.
+Followers serve reads: read scaling only.
+## Sync vs async
+Sync: no acknowledged loss, + RTT per write, stalls if follower slow.
+Async: fastest, loses recent acknowledged writes on leader crash.
+Semi-sync (one follower) or majority quorum (Spanner, CockroachDB, etcd) in practice.
+## Lag
+Normally ms; seconds–minutes under load. Monitor it; stop routing reads to far-behind followers.
+## Failover
+Detect via heartbeat timeout (10–30 s typical) → elect most up-to-date follower (ideally via consensus) → reroute clients → fence old leader.
+Risks: lost async writes (GitHub 2012 ID reuse incident), split brain, failover storms from tight timeouts.
+Defences: majority election, leases, STONITH, fencing tokens.
+
+--- doubts
+Q: Why not make every follower synchronous to never lose data?
+A: Because then the slowest follower sets the speed of every write, and any follower being down stops all writes, making the system less available than a single server. Waiting for a majority gives the same "no acknowledged write lost" guarantee (as long as a majority survives) while tolerating slow or failed minorities.
+
+Q: How do clients find the new leader after failover?
+A: Through some indirection that changes on failover: a virtual IP moved to the new leader, a DNS name updated (slow), a service registry or coordination service (ZooKeeper, etcd) that clients watch, or a proxy in front of the database that knows the current leader. Many cloud databases handle this behind a single endpoint.
+
+Q: Can followers handle writes in leader–follower replication?
+A: No; they reject writes or forward them to the leader. Allowing writes on several nodes is multi-leader or leaderless replication, which brings conflict resolution (next page).
+
+Q: Is replication a backup?
+A: No. Replication copies mistakes instantly too: a dropped table or a bad migration is replicated to every follower within milliseconds. You still need point-in-time backups (snapshots plus archived logs) to recover from errors, not just from hardware failure.
+
+--- exercises
+[estimate] A leader with asynchronous replication handles 5,000 writes/s and followers lag by 200 ms on average. If the leader crashes, roughly how many acknowledged writes can be lost?
+A: Writes in the lag window: 5,000 × 0.2 = about 1,000 acknowledged writes that may not have reached any follower. Under load, lag may be seconds, meaning tens of thousands. If that is unacceptable, require at least one synchronous (or majority) acknowledgement for those writes.
+
+[design] Describe a failover plan for a PostgreSQL primary with two replicas in different zones, minimising both downtime and data loss.
+A: Semi-synchronous replication to at least one replica (commit waits for one replica's confirmation), the other asynchronous. A consensus-backed manager (e.g. Patroni with etcd) holds a leader lease; if the primary misses heartbeats beyond ~15 s, the manager promotes the synchronous replica (most up-to-date, no acknowledged loss), updates the endpoint clients use, and the old primary is fenced (it loses its lease and refuses writes; or is powered off). Applications retry writes with idempotency keys. Monitor lag and alert on failovers.
+
+[break] After a network blip, both the old primary and a newly promoted replica accept writes for two minutes. What went wrong in the design, and what fixes it?
+A: The failover did not fence the old primary: it was only cut off from the manager, not dead, and kept serving clients that could still reach it: split brain. Fixes: leader election by majority (the old primary, in the minority, must step down when it loses its lease), the old primary refusing writes once its lease expires, STONITH or fencing tokens that storage or clients verify, and clients discovering the leader through the same consensus system.
+
+--- pitfalls
+- Assuming replicas are backups
+- Asynchronous replication for data that must never lose an acknowledged write
+- Failover without fencing the old leader (split brain)
+- Failure-detection timeouts so tight that load spikes trigger failovers
+- Reading from followers without considering lag
+
+--- quiz
+Q: What scales when you add read replicas?
+- Write throughput
+- *Read throughput
+- Both reads and writes
+- Neither
+W: Every write still goes through the single leader.
+Q: With asynchronous replication, a leader crash can…
+- Never lose data
+- *Lose writes it acknowledged but had not yet sent to followers
+- Corrupt all followers
+- Stop reads permanently
+W: The client was told "done" before any follower had the write.
+Q: Split brain means…
+- A replica falls behind
+- *Two nodes both act as leader and accept conflicting writes
+- The log is corrupted
+- Reads and writes go to different nodes
+W: Fencing and majority-based election prevent it.
+Q: Waiting for a majority of replicas before acknowledging a write…
+- Stalls whenever any replica is slow
+- *Loses no acknowledged writes while tolerating a slow or failed minority
+- Is the same as asynchronous replication
+- Only works with two replicas
+W: The basis of consensus-replicated databases.
+
+--- sources
+- book :: Designing Data-Intensive Applications, ch. 5 (Replication) :: Martin Kleppmann :: https://dataintensive.net/
+- article :: GitHub availability this week (September 2012 MySQL failover incident) :: GitHub :: https://github.blog/news-insights/the-library/github-availability-this-week/
+- article :: High availability, load balancing and replication :: PostgreSQL documentation :: https://www.postgresql.org/docs/current/high-availability.html
+- course :: Distributed Systems lecture series (replication) :: Martin Kleppmann, University of Cambridge :: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf
+
+=== multi-leader-leaderless
+blurb: Letting more than one replica accept writes: multi-leader replication across data centres and offline devices, leaderless (Dynamo-style) replication where clients write to several replicas, the conflicts both create, and how they are resolved.
+signals: Writes must be accepted in several regions with low latency | Apps that work offline and sync later | Extremely high write availability | Explaining Cassandra or DynamoDB-style replication
+widgets: seq-conflict
+prereq: leader-replication
+
+--- lesson
+:::words
+- **Multi-leader replication**: several replicas each accept writes and send them to each other.
+- **Leaderless replication**: no leader at all; the client (or a coordinator) sends each write to several replicas directly.
+- **Write conflict**: two replicas accepted different changes to the same data at about the same time.
+- **Last-writer-wins (LWW)**: resolve a conflict by keeping the write with the latest timestamp.
+- **Read repair**: when a read notices a replica with old data, it writes the newer value back to it.
+- **Anti-entropy**: a background process that compares replicas and copies over missing data.
+:::
+
+## The problem in plain words
+
+A single leader has limits: every write must travel to it (slow for users on other continents), and if it is unreachable, nobody can write. Letting several replicas accept writes fixes both, but creates a new problem: **two people can change the same thing in two places at the same time**, and when the replicas exchange changes, they disagree. Every multi-writer design must answer: how are conflicts detected and resolved?
+
+:::eli5
+Two shop branches share a stock list. Each updates its own copy during the day and they phone each other updates in the evening. If both sold "the last red bike" at 2 p.m., the evening call reveals a conflict that someone has to sort out.
+:::
+
+## Multi-leader replication
+
+Each region (or device) has a leader that accepts local writes immediately and replicates them asynchronously to the other leaders.
+
+Good for:
+- **Multiple data centres**: each region writes locally (fast), survives other regions being unreachable.
+- **Offline clients**: each phone or laptop is effectively a leader (calendar apps, note apps, Google Docs-style collaboration with its own techniques), syncing when online.
+
+The cost is **conflicts**: the same record edited in two regions before replication catches up.
+
+Step through a conflict and the ways to resolve it:
+
+[[widget:seq-conflict]]
+
+## Resolving conflicts
+
+- **Avoid them**: route all writes for a given record to one "home" region (each user's data is mastered in their home region). Most conflicts disappear; you lose local writes for travellers.
+- **Last-writer-wins**: attach a timestamp and keep the latest. Simple and convergent, but it **silently discards** the other write, and clocks on different machines disagree, so "latest" may not be the one that happened last. Fine for data where losing a concurrent update is acceptable (a "last seen" time); dangerous for anything else.
+- **Merge**: combine both (union of shopping-cart items; both edits to different fields). **CRDTs** are data types designed so concurrent edits always merge to the same result (counters, sets, text): the multi-region chapter goes deeper.
+- **Keep both and ask**: store sibling versions and let the application or the user pick (Dynamo returned both cart versions to the client to merge).
+
+To know whether two writes **conflict** at all (rather than one simply following the other), systems use version vectors: a counter per replica, telling "B saw A's write before making its own" (no conflict) from "A and B wrote without seeing each other" (conflict).
+
+## Leaderless replication (Dynamo style)
+
+No replica is special. With **N** replicas per key, the client (or a coordinator node) sends each write to all N and considers it successful once **W** acknowledge; reads ask all N and wait for **R** replies, taking the newest version. If **R + W > N**, every read set overlaps every write set, so a read sees at least one copy of the latest successful write (the next page goes deep on quorums).
+
+Replicas that missed writes catch up through:
+- **Read repair**: a read that sees an old value on some replica writes the newer value back.
+- **Hinted handoff**: when a replica is down, another node temporarily holds its writes ("hints") and passes them on when it returns.
+- **Anti-entropy**: background comparison of replicas using Merkle trees (hash trees) to find and copy differences efficiently.
+
+Used by Amazon's Dynamo (2007), Cassandra, Riak and ScyllaDB. Strengths: very high write availability (any W replicas will do), no failover step, tolerant of slow nodes. Weaknesses: conflicts still possible with concurrent writes, consistency is tunable but subtle, and no multi-key transactions.
+
+## Choosing
+
+| Need | Choose |
+|---|---|
+| Simplicity, transactions, strong consistency | Single leader (plus consensus for failover) |
+| Low-latency writes in several regions, tolerate conflicts | Multi-leader with a clear conflict policy (or home-region routing) |
+| Offline-first apps | Multi-leader per device with CRDT-style merging |
+| Maximum write availability at huge scale, simple key-value access | Leaderless with tunable quorums |
+
+## Interview angles
+
+- "Users in Europe and Asia both write; how?" Home-region routing (single leader per record) if possible; otherwise multi-leader with an explicit conflict policy.
+- "What does last-writer-wins lose?" Concurrent updates, silently, and it depends on clocks.
+- "How does Cassandra stay consistent?" Tunable quorums, read repair, hinted handoff and anti-entropy; conflicts resolved by timestamp (LWW) per column.
+
+--- revise
+### Multi-leader
+? Why multi-leader? :: Local, low-latency writes in several regions (or offline devices) that survive other regions being unreachable.
+? Its central problem? :: Write conflicts: the same data changed in two places before replication.
+? Best way to avoid conflicts? :: Route each record's writes to one home region.
+
+### Conflict resolution
+? What does last-writer-wins do and lose? :: Keeps the latest timestamp; silently discards concurrent writes and depends on clocks.
+? Merge-based resolution? :: Combine both versions (cart union, CRDTs) so nothing is lost.
+? What tells "conflict" from "one followed the other"? :: Version vectors.
+
+### Leaderless
+? Leaderless write and read rule? :: Write to N, succeed on W acks; read from N, wait for R replies; R + W > N gives overlap.
+? Read repair, hinted handoff, anti-entropy? :: Fix stale replicas on read; hold writes for a down replica; background Merkle-tree comparison.
+? Leaderless strengths and weaknesses? :: High write availability, no failover; conflicts possible, subtle consistency, no multi-key transactions.
+
+--- notes
+## Multi-leader
+Each region/device writes locally, replicates async to other leaders.
+Uses: multi-region low-latency writes; offline-first clients.
+Cost: conflicts.
+## Conflict handling
+Avoid: home-region per record.
+LWW: simple, convergent, loses concurrent writes, clock-dependent.
+Merge: cart unions, CRDTs.
+Siblings: keep both, app/user decides (Dynamo carts).
+Version vectors detect true concurrency.
+## Leaderless (Dynamo, Cassandra, Riak, Scylla)
+N replicas; write succeeds after W acks; read waits for R; R + W > N → overlap.
+Read repair · hinted handoff · Merkle-tree anti-entropy.
+High write availability, no failover; conflicts and subtle consistency; no multi-key transactions.
+## Choosing
+Single leader: simplicity, transactions. Multi-leader: regional writes with a conflict policy. Leaderless: max availability for key-value access.
+
+--- doubts
+Q: Why is last-writer-wins dangerous if it always converges?
+A: Converging means all replicas end up with the same value, not the right one. If two users concurrently add different items to a shared list and LWW keeps one write, the other user's change is silently thrown away, and nobody is told. And because the winner is chosen by clocks that disagree by milliseconds or more, the write that "wins" may even be the earlier one.
+
+Q: Isn't leaderless replication just multi-leader with extra steps?
+A: They share the conflict problem, but differ in mechanics: in multi-leader, each leader accepts the full write and later replicates it; in leaderless, every write is sent to several replicas up front and counted by quorum, with no failover and no special node. Leaderless also tends to be used within one data centre or cluster, multi-leader across data centres.
+
+Q: Does Google use multi-leader replication?
+A: Google's flagship databases (Spanner) avoid write conflicts instead: they use consensus (Paxos) to agree on every write across replicas, so there is effectively a leader per data range and no conflicting versions, at the cost of cross-region latency on writes. Collaborative products like Docs use operational transformation, a specialised merge technique.
+
+Q: How do Merkle trees help anti-entropy?
+A: Each replica builds a tree of hashes over its key ranges: leaves hash small ranges, parents hash their children. Two replicas compare root hashes; if they match, they are identical. If not, they compare children and descend only into ranges that differ, finding the few inconsistent keys without transferring everything.
+
+--- exercises
+[choose] A note-taking app must work fully offline on phones and laptops and sync when online. Single-leader, multi-leader or leaderless? How would you handle two devices editing the same note offline?
+A: Multi-leader (each device is a leader for its local copy). Concurrent edits to the same note: use a merge-friendly representation (a text CRDT or operational transformation) so both edits survive; fall back to keeping both versions as conflicting copies for content that cannot be merged, and show them to the user. Last-writer-wins would silently discard one device's edits.
+
+[design] A global e-commerce site wants low-latency profile edits in three regions. Propose a way to avoid conflicts entirely.
+A: Give each user a home region (where they signed up or usually are) holding the leader for their records; writes from anywhere are routed to the home region (fast for most users, slower when travelling), and other regions hold read replicas. No record ever has two leaders, so no conflicts. If a home region fails, fail that user's records over to another region via a consensus-managed mapping.
+
+[estimate] A leaderless store uses N = 3. Which (W, R) settings guarantee reads see the latest successful write, and which maximise write availability?
+A: Overlap requires R + W > 3: (W=2, R=2), (W=3, R=1), (W=1, R=3). (2, 2) balances, tolerating one down replica for both reads and writes. Maximum write availability is W = 1 (any single replica), but then R must be 3 for overlap, so reads fail if any replica is down; with W = 1 and R = 1 you get speed and availability but stale reads are possible.
+
+--- pitfalls
+- Multi-leader without a stated conflict policy
+- Last-writer-wins for data where losing a concurrent update matters
+- Trusting machine clocks to order concurrent writes
+- Assuming leaderless quorums make everything strongly consistent
+- Forgetting anti-entropy for data that is rarely read (read repair never fixes it)
+
+--- quiz
+Q: The main new problem multi-leader replication introduces is…
+- Slow reads
+- *Write conflicts between leaders
+- No way to scale reads
+- Single points of failure
+W: Two leaders can accept different changes to the same data.
+Q: Last-writer-wins…
+- Merges both writes
+- *Keeps the latest-timestamped write and silently drops the other
+- Asks the user
+- Prevents conflicts
+W: Convergent but lossy, and clock-dependent.
+Q: In leaderless replication with N=3, W=2, R=2…
+- Reads may never see the latest write
+- *Every read overlaps every successful write on at least one replica
+- Only one replica stores each write
+- Writes need all 3 replicas
+W: R + W = 4 > 3.
+Q: Hinted handoff…
+- Elects a leader
+- *Has another node hold writes for a down replica and deliver them later
+- Compares Merkle trees
+- Repairs data during reads
+W: It keeps writes flowing while a replica is unavailable.
+
+--- sources
+- paper :: Dynamo: Amazon's Highly Available Key-value Store (SOSP 2007) :: DeCandia et al. :: https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf
+- book :: Designing Data-Intensive Applications, ch. 5 (Multi-leader and leaderless replication) :: Martin Kleppmann :: https://dataintensive.net/
+- article :: Apache Cassandra architecture: dynamo, hinted handoff, read repair :: Apache Software Foundation :: https://cassandra.apache.org/doc/latest/cassandra/architecture/dynamo.html
+- paper :: Conflict-free Replicated Data Types (SSS 2011) :: Shapiro, Preguiça, Baquero, Zawirski :: https://inria.hal.science/inria-00609399
+
+=== quorums
+blurb: The arithmetic behind replicated reads and writes: N, W and R, why R + W > N gives overlap, what it does not guarantee, sloppy quorums and hinted handoff during failures, and how to choose the numbers for speed, availability and freshness.
+signals: Tuning Cassandra/Dynamo-style consistency | "How many replicas must acknowledge a write?" | Designing a system that keeps working with a node down | Explaining majority-based systems
+widgets: quorum
+prereq: multi-leader-leaderless
+
+--- lesson
+:::words
+- **Quorum**: the minimum number of replicas that must take part for an operation to count.
+- **N**: how many replicas hold each piece of data. **W**: how many must acknowledge a write. **R**: how many must answer a read.
+- **Majority**: more than half: 2 of 3, 3 of 5.
+- **Sloppy quorum**: accepting writes on other, healthy nodes when the proper replicas are unreachable.
+- **Hinted handoff**: those stand-in nodes later deliver the writes to the proper replicas.
+- **Version (timestamp)**: attached to each value so a reader can tell which copy is newest.
+:::
+
+## The problem in plain words
+
+With several copies of the data, you have to decide how many copies a write must reach before you call it done, and how many copies a read must check before trusting the answer. Ask too many and every slow or broken replica blocks you; ask too few and readers may miss the latest write. Quorums give a simple rule for getting **overlap** between the two.
+
+:::eli5
+Five friends keep copies of a shared shopping list. If every change is told to at least 3 of them, and whenever you want the list you ask at least 3 of them, at least one person you ask must have heard the latest change, because two groups of three out of five always share someone.
+:::
+
+## The rule
+
+If **R + W > N**, every read set and every write set overlap in at least one replica, so a read contacts at least one replica that has the latest successful write. The reader compares versions and returns the newest.
+
+Typical settings for N = 3:
+
+| W | R | Effect |
+|---|---|---|
+| 2 | 2 | Balanced; tolerates 1 replica down for both reads and writes |
+| 3 | 1 | Fast reads; any replica down blocks writes |
+| 1 | 3 | Fast, highly available writes; any replica down blocks reads |
+| 1 | 1 | Fastest and most available; reads can be stale (no overlap) |
+
+With N = 5 and majorities (W = R = 3) the system tolerates 2 failures for both.
+
+Experiment: fail replicas, change N, W and R, and watch when reads may be stale and when operations become impossible:
+
+[[widget:quorum]]
+
+## What overlap does not guarantee
+
+R + W > N sounds like strong consistency, but in leaderless systems several things can still go wrong:
+
+- **Concurrent writes**: two writes in flight at once can land in different orders on different replicas; resolution (often last-writer-wins by timestamp) may drop one.
+- **A write that failed**: if a write reached only 1 of the required 2 replicas, the client sees an error, but the value is not rolled back on that replica; later reads may or may not see it.
+- **Reads during a write**: a read concurrent with a write may see the new value from one replica, and a later read may see the old one from others (no linearisability without extra measures like read repair before returning).
+- **Clock-based versions** can order writes incorrectly when clocks disagree.
+
+So "quorum consistency" is stronger than eventual consistency but **not linearisable** on its own. Consensus protocols (Raft, Paxos) add the missing pieces (a single ordered log, leaders, terms) to get true linearisability with majority quorums.
+
+## Sloppy quorums and hinted handoff
+
+If some of a key's N "home" replicas are unreachable, a strict quorum fails. A **sloppy quorum** accepts the write on other healthy nodes instead (they keep a "hint" saying who the data really belongs to) and **hands it off** when the home replicas return. This keeps writes available during failures, but a read during that time may consult only the home replicas and miss the write: R + W > N no longer guarantees overlap. Dynamo used sloppy quorums for its shopping cart, prioritising "always writable".
+
+## Latency and quorums
+
+Waiting for W of N replies means latency is set by the **W-th fastest** replica, not the slowest. With W = 2 of 3, one slow replica does not slow writes. This is one reason quorums are popular: they tolerate stragglers as well as failures. Coordinators often send to all N and return after the first W replies.
+
+## Choosing N, W, R
+
+- **N = 3** is the common default (survive one failure with margin); N = 5 for critical metadata (survive two).
+- **Majorities** (W = R = ⌊N/2⌋ + 1) when you need overlap and tolerance of minority failures.
+- **Small W, large R** for write-heavy, read-rare data; the reverse for read-heavy data.
+- **R = W = 1** only when staleness is acceptable and speed matters most.
+
+## Interview angles
+
+- "What do N, W and R mean, and how do you choose them?" Overlap rule plus failure tolerance plus latency.
+- "Does R + W > N give strong consistency?" Overlap, yes; linearisability, no, without more (concurrent writes, failed writes, sloppy quorums).
+- "How do quorums help tail latency?" You wait for the W-th fastest reply, ignoring stragglers.
+
+--- revise
+### The rule
+? Quorum overlap condition? :: R + W > N: every read set shares at least one replica with every write set.
+? N=3, W=2, R=2 tolerates? :: One replica down for both reads and writes.
+? Majority of 5? :: 3: tolerates 2 failures.
+
+### Limits
+? Is R + W > N linearisable? :: No: concurrent writes, partially failed writes, sloppy quorums and clock-based ordering can still give anomalies.
+? What does a sloppy quorum trade? :: Write availability during failures for loss of guaranteed overlap until hinted handoff completes.
+
+### Latency and choice
+? Why do quorums help tail latency? :: You wait for the W-th fastest reply, so one slow replica doesn't delay you.
+? Read-heavy data quorum choice? :: Small R, larger W (e.g. W=3, R=1 for N=3).
+
+--- notes
+## Rule
+N copies; write ok after W acks; read waits for R replies; newest version wins.
+R + W > N ⇒ overlap.
+N=3: (2,2) balanced · (3,1) fast reads · (1,3) fast writes · (1,1) fast but stale.
+N=5 majorities (3,3): survive 2 failures.
+## Not guaranteed
+Concurrent writes may be ordered differently; failed partial writes linger; reads during writes can flip; clock-based versions misorder.
+Quorums ≠ linearisability; consensus adds a single ordered log.
+## Sloppy quorum + hinted handoff
+Write to healthy stand-ins when home replicas are down; hand off later; overlap not guaranteed meanwhile (Dynamo carts).
+## Latency
+Wait for the W-th fastest: stragglers ignored.
+## Choosing
+N=3 default, N=5 for critical metadata; majorities for overlap; tune W/R by read/write mix.
+
+--- doubts
+Q: Why does overlap mean the read sees the latest write?
+A: The write was stored on at least W replicas; the read asks R replicas. If R + W > N, by counting there must be at least one replica in both groups. That replica has the latest write, and since each value carries a version, the reader can pick it out from the older copies returned by the others.
+
+Q: If quorums aren't linearisable, why do consensus systems use majorities?
+A: Majorities provide the overlap, and consensus adds the rest: a single leader per term ordering all writes into one log, terms that let nodes reject stale leaders, and commit rules ensuring an entry is never lost once committed. Overlap alone (as in leaderless stores) lacks the single ordering.
+
+Q: What happens if fewer than W replicas are reachable?
+A: With a strict quorum the write fails (the client gets an error and should retry later). With a sloppy quorum, other nodes accept it temporarily. Which one you choose is exactly the consistency-versus-availability trade-off of the CAP page.
+
+Q: Can I set different quorums per request?
+A: In Cassandra and similar systems, yes: each read and write can specify its consistency level (ONE, QUORUM, ALL, LOCAL_QUORUM for one data centre). Critical reads can use QUORUM while analytics reads use ONE.
+
+--- exercises
+[estimate] N = 5. List the (W, R) pairs that guarantee overlap with the smallest total, and say how many failures each tolerates for writes and reads.
+A: Overlap needs R + W ≥ 6. Pairs with total 6: (1,5), (2,4), (3,3), (4,2), (5,1). Failures tolerated = N − W for writes and N − R for reads: (3,3) tolerates 2 and 2; (2,4) tolerates 3 for writes, 1 for reads; (5,1) tolerates 0 for writes, 4 for reads.
+
+[break] A Cassandra cluster uses N=3 with writes at ONE and reads at ONE for speed. Users report that after posting a comment, it sometimes doesn't appear on refresh. Explain and fix.
+A: W + R = 2 ≤ 3: no overlap. The write may have reached one replica while the read hits another that hasn't received it yet. Fix: QUORUM for both (2 + 2 > 3), or at least route the author's follow-up reads to read at QUORUM (read-your-writes), accepting slightly higher latency.
+
+[choose] A metrics pipeline writes 1M points/s and reads them rarely for dashboards; losing occasional points is acceptable. Choose W and R for N = 3.
+A: W = 1 (fast, highly available writes; any single replica accepts) and R = 1 or 2 for dashboards (staleness of a few seconds is fine for metrics). Strong overlap is not worth the write cost here; anti-entropy and read repair eventually fix missed copies.
+
+--- pitfalls
+- Claiming R + W > N gives linearisability
+- W = R = 1 while expecting read-your-writes
+- Forgetting that sloppy quorums break the overlap guarantee
+- N = 2 (a majority of 2 is 2: no failure tolerance with overlap)
+- Choosing quorums without stating failures tolerated
+
+--- quiz
+Q: With N = 3, which setting guarantees read–write overlap?
+- W=1, R=1
+- W=1, R=2
+- *W=2, R=2
+- W=2, R=1
+W: 2 + 2 = 4 > 3.
+Q: A quorum write's latency is determined by…
+- The slowest replica
+- *The W-th fastest replica
+- The leader
+- The client's clock
+W: Stragglers beyond the W-th reply are not waited for.
+Q: A sloppy quorum…
+- Requires all replicas
+- *Writes to stand-in nodes when home replicas are down, weakening overlap until handoff
+- Always gives linearisability
+- Is used for reads only
+W: Availability during failures at the cost of guaranteed overlap.
+Q: How many failures can a majority quorum of 5 replicas tolerate?
+- 1
+- *2
+- 3
+- 4
+W: 3 of 5 must respond.
+
+--- sources
+- paper :: Dynamo: Amazon's Highly Available Key-value Store (SOSP 2007) :: DeCandia et al. :: https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf
+- paper :: Probabilistically Bounded Staleness for Practical Partial Quorums (VLDB 2012) :: Bailis et al. :: https://vldb.org/pvldb/vol5/p776_peterbailis_vldb2012.pdf
+- book :: Designing Data-Intensive Applications, ch. 5 (Quorums for reading and writing) :: Martin Kleppmann :: https://dataintensive.net/
+- article :: How are consistency levels configured? (Cassandra) :: Apache Software Foundation :: https://cassandra.apache.org/doc/latest/cassandra/architecture/dynamo.html
+
+=== consistency-models
+blurb: What "consistent" can mean for replicated data, from strongest to weakest: linearisability, sequential, causal and eventual consistency, explained with concrete histories, and what each costs in latency and availability.
+signals: "Is this system strongly consistent?" | Choosing guarantees for each feature | Explaining Spanner, Cassandra or DynamoDB consistency options | Bugs where users see data in impossible orders
+widgets: seq-linearizable
+prereq: quorums
+
+--- lesson
+:::words
+- **Consistency model**: a promise about which values reads may return when data is replicated and accessed concurrently.
+- **Linearisability (strong consistency)**: the system behaves as if there were one copy and each operation happened at one instant between its start and end.
+- **Sequential consistency**: all clients see operations in the same order, consistent with each client's own order, but not necessarily real time.
+- **Causal consistency**: if one operation could have caused another, everyone sees them in that order.
+- **Eventual consistency**: if writes stop, replicas eventually agree; before that, anything goes.
+- **History**: the list of operations clients performed, with when each started and finished.
+:::
+
+## The problem in plain words
+
+With one database on one machine, "the current value" is obvious. With copies on many machines and many clients reading and writing at once, a read might return the newest value, an older one, or values in a strange order. A **consistency model** is a precise promise about which of those outcomes can happen. Stronger promises are easier to program against and cost more latency and availability. Senior engineers pick the weakest promise each feature can tolerate, and know exactly what anomalies that admits.
+
+:::eli5
+Several noticeboards show the same announcements. Linearisable: the moment a notice is pinned on any board, everyone everywhere sees it. Causal: you never see a reply before the question it answers. Eventual: given enough time, every board shows every notice, but right now some may be missing or out of order.
+:::
+
+## Linearisability
+
+Every operation appears to take effect at a single instant somewhere between when it started and when it finished, and all clients agree on that order. Consequence: **once a write has completed, every later read (by anyone) returns it or something newer.** It is what programmers intuitively expect from a variable.
+
+Watch a history that breaks it:
+
+[[widget:seq-linearizable]]
+
+Needed for: leader election and locks, uniqueness constraints (one username per person), "the balance must never go negative", anything where acting on stale data is a correctness bug. Provided by single-leader systems that read from the leader, consensus systems (etcd, ZooKeeper writes, Spanner), and Bigtable single-row operations.
+
+Cost: every operation must coordinate with a majority or the leader, adding latency (a cross-region round trip for global data), and during a network partition the minority side cannot serve requests.
+
+## Sequential consistency
+
+All clients see all operations in **one common order** that respects each client's own program order, but that order need not match real time: a write that finished may still be invisible to another client for a while, as long as everyone sees things in the same order. Rarely offered as a database guarantee by name; it appears in CPU memory models and some replicated logs.
+
+## Causal consistency
+
+Operations that are **causally related** (one could have influenced the other: I read your post, then reply) are seen by everyone in that order; unrelated, concurrent operations may appear in different orders to different clients. It forbids the most confusing anomalies (seeing a reply before the post, a comment on a photo you cannot see yet) while allowing replicas to work independently during partitions. It is the strongest model that remains available during network partitions. Implemented with dependency tracking (version vectors, or hybrid logical clocks plus metadata).
+
+## Eventual consistency
+
+If writes stop, all replicas converge to the same value. No promise about what reads return before that: stale values, values going backwards, writes appearing in different orders. Cheap, fast and always available. Fine for likes, view counts, recommendations, presence, DNS. Usually paired with **session guarantees** (next page) that make it tolerable for each user.
+
+## The ladder
+
+| Model | Promise | Available during partitions? | Typical cost |
+|---|---|---|---|
+| Linearisable | Single-copy behaviour in real time | No (minority side must refuse) | Coordination round trips per operation |
+| Sequential | One agreed order, not real time | No | Ordering coordination |
+| Causal | Cause before effect, everywhere | Yes | Dependency metadata |
+| Eventual | Converge eventually | Yes | Minimal |
+
+Related but different: **serialisability** is about *transactions* (multi-object operations appear to run one at a time) while linearisability is about *single objects* in real time. **Strict serialisability** combines both (Spanner provides it via TrueTime). Transactions chapter.
+
+## Choosing per feature
+
+- Username registration, payments, inventory decrement, distributed locks: **linearisable** (or serialisable transactions).
+- Comments, chat messages, social posts: **causal** (replies after posts; a user's own messages in order).
+- Counters, likes, recommendations, analytics: **eventual**.
+- Profile edits: eventual plus **read-your-writes** for the editor.
+
+## Interview angles
+
+- "Is your design strongly consistent?" Say which operations are linearisable and which are eventually consistent, and why.
+- "What's the difference between linearisability and serialisability?" Single-object real-time order vs multi-object transaction isolation.
+- "Why not make everything linearisable?" Latency per operation and unavailability during partitions.
+
+--- revise
+### Models
+? Linearisability's key consequence? :: Once a write completes, every later read by anyone returns it or newer.
+? Sequential vs linearisable? :: Both have one agreed order; sequential need not respect real time.
+? Causal consistency promises? :: Causally related operations are seen in cause-then-effect order by everyone; concurrent ones may differ.
+? Eventual consistency promises? :: Convergence once writes stop; nothing about reads before that.
+? Strongest model available during partitions? :: Causal consistency.
+
+### Distinctions and choices
+? Linearisability vs serialisability? :: Single-object real-time order vs multi-object transactions appearing one at a time.
+? What is strict serialisability? :: Serialisable transactions that also respect real-time order (Spanner).
+? Which features need linearisability? :: Uniqueness, locks/leader election, money and inventory invariants.
+
+--- notes
+## Ladder
+Linearisable: one copy, real-time order; unavailable on minority side of a partition; coordination per op.
+Sequential: one common order, not real time.
+Causal: cause → effect everywhere; concurrent ops may vary; partition-available; dependency metadata.
+Eventual: converges when writes stop; anything before.
+## Related
+Serialisability = transactions; linearisability = single objects in real time; strict serialisability = both (Spanner).
+## Who provides what
+Linearisable: leader reads, consensus stores (etcd, ZooKeeper writes, Spanner), Bigtable single-row.
+Eventual: async replicas, DNS, leaderless at low quorums.
+## Per-feature choice
+Uniqueness, locks, payments, inventory → linearisable/serialisable.
+Comments, chat → causal.
+Likes, counts, recommendations → eventual.
+Profile edits → eventual + read-your-writes.
+
+--- doubts
+Q: Is a single-leader database linearisable?
+A: Reads from the leader are (barring subtle failover edge cases); reads from asynchronous followers are not, because a follower can return an old value after a newer write completed. Many "strongly consistent" claims really mean "if you read from the primary".
+
+Q: Why can't a linearisable system stay available during a partition?
+A: If the network splits and both sides keep serving reads and writes, a write on one side cannot be seen by a read on the other, which violates "every read after a completed write sees it". So one side (the minority, without a quorum) must refuse requests. This is the core of the CAP theorem (next pages).
+
+Q: How is causal consistency tracked in practice?
+A: Each write carries metadata about what it depends on: a version vector, or the timestamps of operations the client had seen. A replica delays making a write visible until its dependencies are visible. Simpler, partial versions are common: per-user ordering (a user's own writes stay in order) or per-thread ordering of comments.
+
+Q: Does eventual consistency mean data can be lost?
+A: Not by itself: it describes what reads may see, not durability. Data loss comes from other choices, like last-writer-wins discarding concurrent writes or asynchronous replication losing writes on a crash.
+
+--- exercises
+[choose] For a social app, assign a consistency model to: creating a username, posting a comment, the like count, the follower list shown to the user who just followed someone.
+A: Username creation: linearisable (uniqueness must hold; use a consensus-backed store or a unique constraint on a single leader). Comments: causal (a reply must not appear before its parent; your own comments in order). Like count: eventual (approximate and delayed is fine). Follower list for the follower: read-your-writes on top of eventual (the user must see their own follow).
+
+[break] A ticketing site checks "seats remaining > 0" on a read replica, then decrements on the primary. During a sale, it sells 120 tickets for 100 seats. Explain using consistency models.
+A: The check reads a lagging replica (not linearisable), so many buyers see seats remaining after they are gone. The check-then-act also isn't atomic. Fix: perform check and decrement atomically on the primary (a conditional UPDATE … WHERE remaining > 0, or a serialisable transaction), i.e. linearisable, for this operation only.
+
+[design] Explain to a product manager, without jargon, why making the global "follow" feature strongly consistent across continents would make it slower and occasionally unavailable.
+A: Strong consistency means every data centre must agree before we confirm a follow, so the confirmation waits for a message to travel to other continents and back (around a tenth of a second or more each time), and if the link between continents breaks, one side has to stop accepting follows until it is restored. Since nobody is harmed if a friend on another continent sees your follow a second later, we confirm locally and copy it in the background, and make sure you see your own follow immediately.
+
+--- pitfalls
+- Calling a system "strongly consistent" when reads go to async replicas
+- Confusing linearisability (single objects) with serialisability (transactions)
+- One consistency model for the whole design instead of per feature
+- Eventual consistency without session guarantees for the user's own actions
+- Check-then-act on stale reads for invariants (seats, balances)
+
+--- quiz
+Q: Which model guarantees that a read after a completed write (by anyone) sees it?
+- Eventual
+- Causal
+- *Linearisable
+- Read-your-writes
+W: Linearisability respects real-time order across all clients.
+Q: The strongest model that stays available during a network partition is…
+- Linearisable
+- Sequential
+- *Causal
+- Strict serialisable
+W: Stronger models require one side to refuse requests.
+Q: Seeing a reply before the post it answers violates…
+- Only linearisability
+- *Causal consistency
+- Eventual consistency
+- Durability
+W: Cause must come before effect for everyone.
+Q: Serialisability is about…
+- Single-object real-time order
+- *Multi-object transactions appearing to run one at a time
+- Replication lag
+- Clock synchronisation
+W: Linearisability is the single-object, real-time guarantee.
+
+--- sources
+- paper :: Linearizability: A Correctness Condition for Concurrent Objects (TOPLAS 1990) :: Herlihy, Wing :: https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf
+- article :: Consistency models (map and definitions) :: Jepsen (Kyle Kingsbury) :: https://jepsen.io/consistency
+- book :: Designing Data-Intensive Applications, ch. 9 (Consistency and Consensus) :: Martin Kleppmann :: https://dataintensive.net/
+- paper :: Don't Settle for Eventual: Scalable Causal Consistency (COPS, SOSP 2011) :: Lloyd et al. :: https://www.cs.princeton.edu/~mfreed/docs/cops-sosp11.pdf
+
+=== session-guarantees
+blurb: Making eventually consistent systems feel right to each user: read-your-writes, monotonic reads, monotonic writes and consistent prefix reads, the anomalies each prevents, and the routing and versioning tricks that implement them.
+signals: "I updated my profile but it shows the old one" | Data appears and disappears on refresh | Replies shown before questions | Reads go to replicas
+widgets: seq-session
+prereq: consistency-models
+
+--- lesson
+:::words
+- **Session**: one user's (or one client's) sequence of operations.
+- **Read-your-writes**: after you write something, your own later reads show it.
+- **Monotonic reads**: once you have seen a value, you never later see an older one.
+- **Monotonic writes**: your writes are applied in the order you made them.
+- **Consistent prefix reads**: you see writes in an order that makes sense (never an answer before its question).
+- **Sticky routing**: sending one user's requests to the same replica.
+:::
+
+## The problem in plain words
+
+Eventual consistency is cheap and fast, but raw, it produces experiences that look broken to users: you save your new bio and the page shows the old one; you refresh and a comment you just saw disappears; you see an answer to a question that hasn't appeared yet. Users don't need global strong consistency to be happy; they need the system to be consistent **with what they themselves have done and seen**. Session guarantees give exactly that, much more cheaply.
+
+:::eli5
+You hand in homework and the teacher keeps copies in several folders. You don't need every folder updated instantly; you just need that when *you* ask to see your homework, you get the version you handed in, and that it never goes back to an older version after you have seen the new one.
+:::
+
+## The four guarantees and their anomalies
+
+Step through each anomaly and its fix:
+
+[[widget:seq-session]]
+
+**Read-your-writes.** Anomaly: you write to the leader, then read from a lagging follower and your change is missing. Fixes:
+- Read **your own** data from the leader (your profile, your settings), others' data from followers.
+- After a write, send that user's reads to the leader for a short time (e.g. 10–60 s, or until replicas catch up).
+- Remember the write's **log position or timestamp** in the client session; any replica serving that user must have applied at least that position (otherwise wait or forward).
+
+**Monotonic reads.** Anomaly: two refreshes hit two different followers, a fresh one then a lagging one, so data appears then vanishes. Fixes: **sticky routing** (a user always reads from the same replica, e.g. chosen by hashing the user ID), or tracking the highest version seen in the session and rejecting older replicas.
+
+**Monotonic writes.** Anomaly: you edit a post twice; the edits reach a replica in the wrong order and the older edit wins. Fixes: send a session's writes through one leader (single-leader systems give this for free), or version writes and reject out-of-order ones.
+
+**Consistent prefix reads.** Anomaly: in a partitioned system, a reply stored on one partition replicates faster than the question on another, so a reader sees the reply first. Fixes: keep causally related data in the same partition (a whole conversation together), or attach dependencies and delay showing a write until what it depends on is visible.
+
+## Why this is the usual senior answer
+
+Most features in large products tolerate other users seeing changes a little late, but not the acting user. Session guarantees deliver what users perceive as "consistent" at a fraction of the cost of linearisability: reads still go mostly to nearby replicas, and no cross-region coordination is needed for the common case.
+
+## Across devices and regions
+
+Session guarantees are per session; a user switching from phone to laptop is a different session. If that must also look consistent, keep the "last write position" in the user's account (server-side) rather than the client, or route the user's own data reads to their home region's leader. With multiple regions, read-your-writes for a user who just wrote in Europe and then reads in the US requires either waiting for replication to the US or reading from Europe.
+
+## Interview angles
+
+- "A user updates their profile and refreshes; what do they see?" Read-your-writes: route their own reads to the leader or check log positions.
+- "Data flickers between refreshes." Monotonic reads: sticky replica per user.
+- "How do you keep this cheap?" Only the acting user pays for freshness; everyone else reads from nearby replicas.
+
+--- revise
+### Guarantees and anomalies
+? Read-your-writes prevents? :: Your own just-written change missing on your next read (lagging replica).
+? Monotonic reads prevents? :: Data appearing then disappearing across refreshes (different replicas).
+? Monotonic writes prevents? :: Your writes being applied out of order.
+? Consistent prefix prevents? :: Seeing effects before causes (a reply before its question).
+
+### Fixes
+? Three ways to give read-your-writes? :: Read own data from the leader; route a user to the leader briefly after a write; require replicas to have applied the session's last write position.
+? Fix for monotonic reads? :: Sticky replica per user, or track the highest version seen.
+? Fix for consistent prefix? :: Co-locate causally related data in one partition, or track dependencies.
+? Across devices? :: Store the last-write position server-side or route own-data reads to the home leader.
+
+--- notes
+## Anomalies → guarantees
+Own write missing → read-your-writes.
+Data flickers backwards → monotonic reads.
+Own writes reordered → monotonic writes.
+Reply before question → consistent prefix.
+## Implementations
+RYW: own data from leader · leader for N seconds after a write · session stores last log position/timestamp; replica must be at least there.
+Monotonic reads: sticky replica (hash user ID) · highest-seen version in session.
+Monotonic writes: one leader per session's writes · versioned writes.
+Consistent prefix: same partition for related data · dependency tracking.
+## Why it matters
+Only the acting user pays for freshness; others read nearby replicas.
+## Scope
+Per session: cross-device needs server-side positions or home-region routing; cross-region RYW needs waiting or remote reads.
+
+--- doubts
+Q: Isn't read-your-writes just strong consistency for one user?
+A: It is much weaker: it only promises that *you* see *your* writes. Other users may still see old data, and you may still see other people's changes late. That is why it is cheap: it only constrains where one user's reads go, not how replicas coordinate.
+
+Q: How long should I route a user to the leader after a write?
+A: Long enough to cover normal replication lag with a margin (often 10–60 seconds), or adaptively: until the replicas have applied the write's log position. Track replication lag and make sure the window exceeds it; if lag spikes beyond the window, the anomaly reappears.
+
+Q: Does sticky routing break load balancing?
+A: It reduces flexibility a little: if a sticky replica fails, the user moves to another and may see older data once (which is why storing the highest seen version is more robust). Hash-based stickiness spreads users evenly, so overall balance is usually fine.
+
+Q: Do I need these guarantees if all reads go to the leader?
+A: No: leader reads already give read-your-writes, monotonic reads and writes. Session guarantees matter once you read from replicas, caches or multiple regions for scale, which most large systems do.
+
+--- exercises
+[design] A user changes their display name. Reads normally go to 5 asynchronous replicas. Implement read-your-writes without sending all reads to the primary.
+A: When the write commits, return its log position (LSN) and store it in the user's session (cookie or server-side session). Each read for that user carries the LSN; the routing layer sends it to a replica whose applied position is ≥ that LSN, or to the primary if none is caught up, or waits briefly. Other users' reads are unaffected.
+
+[break] A dashboard's list of orders sometimes shows 41 orders, then 39 after refresh, then 41 again. What is happening and what is the cheapest fix?
+A: Consecutive requests hit different replicas with different lag (monotonic reads violation). Cheapest fix: sticky routing of each user (or dashboard session) to one replica by hashing the user ID; more robust: track the highest data version seen and avoid replicas behind it.
+
+[choose] A Q&A site partitions questions and answers by their own IDs, so an answer and its question may live on different partitions. Readers occasionally see answers before the question appears. Which guarantee is violated, and how would you redesign?
+A: Consistent prefix reads (causally related writes seen out of order). Redesign: partition answers by their question ID so a question and its answers share a partition and replicate in order; or attach the question's version to each answer and hide answers until the question is visible.
+
+--- pitfalls
+- Reading a user's own just-edited data from a lagging replica
+- Round-robin across replicas for the same user (flicker)
+- Partitioning causally related data apart
+- Assuming session guarantees hold across devices automatically
+- A fixed "leader for 10 seconds" window shorter than real replication lag
+
+--- quiz
+Q: A user posts a comment, refreshes, and it's gone. Which guarantee is missing?
+- Monotonic writes
+- *Read-your-writes
+- Consistent prefix
+- Linearisability for everyone
+W: The user's own write is missing from their next read.
+Q: Sticky routing of each user to one replica mainly provides…
+- Read-your-writes
+- *Monotonic reads
+- Linearisability
+- Monotonic writes
+W: Reads never go backwards for that user.
+Q: Seeing an answer before its question is a violation of…
+- Monotonic reads
+- *Consistent prefix reads
+- Read-your-writes
+- Durability
+W: Writes must be seen in an order that makes causal sense.
+Q: Why are session guarantees cheaper than linearisability?
+- They avoid replication
+- *They only constrain the acting user's reads, not global coordination
+- They skip durability
+- They use bigger servers
+W: Others still read from any nearby replica.
+
+--- sources
+- paper :: Session Guarantees for Weakly Consistent Replicated Data (PDIS 1994) :: Terry et al. :: https://www.cs.cornell.edu/courses/cs734/2000FA/cached%20papers/SessionGuaranteesPDIS_1.html
+- article :: Replicated Data Consistency Explained Through Baseball (MSR technical report / CACM 2013) :: Doug Terry :: https://www.microsoft.com/en-us/research/publication/replicated-data-consistency-explained-through-baseball/
+- book :: Designing Data-Intensive Applications, ch. 5 (Problems with replication lag) :: Martin Kleppmann :: https://dataintensive.net/
+
+=== cap-pacelc
+blurb: What the CAP theorem actually says (and the many things it doesn't), why the real choice is what to do during a network partition, PACELC's addition of the latency-versus-consistency trade-off in normal operation, and how to talk about CP and AP systems precisely.
+signals: "Is this CP or AP?" | Choosing behaviour when data centres lose contact | Justifying eventual consistency | Explaining Spanner, Cassandra or DynamoDB trade-offs
+widgets: partition-sim
+prereq: consistency-models
+
+--- lesson
+:::words
+- **Network partition**: some machines can no longer communicate with others, although all are still running.
+- **C (consistency) in CAP**: linearisability: every read sees the latest completed write.
+- **A (availability) in CAP**: every request to a non-failed node gets a (non-error) response.
+- **P (partition tolerance)**: the system keeps working (in some form) despite partitions.
+- **CP system**: chooses consistency during a partition (some requests are refused).
+- **AP system**: chooses availability during a partition (requests answered, possibly with stale or conflicting data).
+:::
+
+## The problem in plain words
+
+Networks fail in partial ways: a cable cut, a misconfigured router, an overloaded link. Suddenly your data centre in Europe cannot talk to the one in the US, but both are running and both have users. A user in Europe writes; a user in the US reads. The system has exactly two options: let the US side answer with what it has (possibly old), or make the US side refuse until contact is restored. CAP is the statement that **you cannot have both** "always answer" and "always latest" while partitioned.
+
+:::eli5
+Two shops share one stock count by phone. The phone line goes dead. A customer asks the second shop if the last bike is still available. The shop can say "yes" from its own notes (maybe wrong: the first shop may have sold it) or say "sorry, I can't check right now". It cannot both answer and be sure.
+:::
+
+## What CAP says precisely
+
+In a system replicated across a network, **when a partition happens**, each operation must either:
+- **Stay consistent (C)**: refuse or block requests that could return stale data or create conflicts, on at least one side; or
+- **Stay available (A)**: answer every request on both sides, accepting stale reads and possibly conflicting writes.
+
+Try it: cut the link, send writes and reads to both sides in each mode, then heal the partition:
+
+[[widget:partition-sim]]
+
+## What CAP does not say
+
+- **It is not "pick two of three" in general.** Partitions are not optional in real networks, so P is a given; the choice between C and A only arises *during* a partition. When the network is healthy, a system can be both consistent and available.
+- **C means linearisability, A means every non-failed node answers.** Real systems sit between: many are neither fully CAP-consistent nor fully CAP-available, and that's fine.
+- **It is per operation, not per product.** One system can be CP for usernames and AP for likes.
+- **It says nothing about latency**, which is what users feel every day. That's where PACELC comes in.
+
+## PACELC: the everyday trade-off
+
+PACELC (Daniel Abadi, 2010–2012): **if Partition, choose Availability or Consistency; Else (normal operation), choose Latency or Consistency.** Even with no failures, keeping replicas consistent requires coordination (waiting for a majority or for a remote region), which costs latency. Systems that answer from the nearest replica are fast but may be stale.
+
+| System (typical configuration) | During partition | Normally | Label |
+|---|---|---|---|
+| Spanner, etcd, ZooKeeper, CockroachDB | Consistency (minority refuses) | Consistency (pay coordination latency) | PC/EC |
+| Cassandra, DynamoDB (default reads), Riak | Availability | Latency (local, possibly stale) | PA/EL |
+| Single-leader with async replicas (PostgreSQL, MySQL) reading from leader | Consistency for writes (followers can't write) | Latency for replica reads | Mixed |
+
+Many systems are tunable per request (Cassandra's QUORUM vs ONE; DynamoDB's strongly consistent reads), so the label describes defaults, not destiny.
+
+## How to use this in an interview
+
+1. Identify operations where stale or conflicting data causes real harm (money, inventory, uniqueness, permissions). For those, choose **CP**: refuse or delay during a partition, and pay coordination latency normally.
+2. For everything else, choose **AP / EL**: answer from local replicas, accept staleness, add session guarantees, and plan conflict resolution.
+3. Say what the user sees during a partition: "checkout in the cut-off region fails with a retry message for the minutes the partition lasts; browsing and carts keep working".
+
+Google's Spanner is a nuanced example: technically CP, but Google's private network makes partitions so rare that it achieves "effectively CA" availability for users (Eric Brewer's 2017 article), showing that engineering can make the bad case rare even if it can't make it impossible.
+
+## Interview angles
+
+- "Is your system CP or AP?" Per operation, with what happens during a partition.
+- "What does CAP's 'C' mean?" Linearisability, not ACID consistency.
+- "Isn't it pick two?" No: partitions happen; the choice is C or A during one, and latency or consistency otherwise (PACELC).
+
+--- revise
+### CAP
+? What CAP really says? :: During a network partition, an operation can stay consistent (linearisable) or available, not both.
+? Why is "pick two of three" misleading? :: Partitions aren't optional; the C-vs-A choice only arises during one.
+? C and A in CAP mean? :: C: linearisability. A: every request to a non-failed node gets a non-error response.
+? Is CAP per system? :: No, per operation: CP for usernames, AP for likes.
+
+### PACELC
+? PACELC? :: If Partition: Availability or Consistency; Else: Latency or Consistency.
+? Spanner / etcd label? :: PC/EC.
+? Cassandra / DynamoDB default label? :: PA/EL.
+? Why "effectively CA" for Spanner? :: Google's network makes partitions rare enough that its CP choice is rarely felt.
+
+--- notes
+## CAP precisely
+During a partition each operation chooses: consistent (some requests refused/blocked) or available (answers, maybe stale/conflicting).
+C = linearisability; A = every non-failed node answers.
+P is not optional; healthy networks allow both C and A.
+Per operation, not per product.
+## PACELC (Abadi)
+Partition → A or C; Else → Latency or Consistency.
+PC/EC: Spanner, etcd, ZooKeeper, CockroachDB.
+PA/EL: Cassandra, DynamoDB default, Riak.
+Tunable systems: label = defaults.
+## Interview use
+CP for money, inventory, uniqueness, permissions.
+AP/EL + session guarantees + conflict resolution for the rest.
+Describe user experience during a partition.
+Spanner: CP but "effectively CA" via a reliable private network (Brewer 2017).
+
+--- doubts
+Q: Can a system be CA?
+A: Only if partitions never happen, which is true for a single machine (if it fails, it is simply down) but not for anything spread across a network. Claims of CA usually mean "we assume partitions are rare and we will choose consistency (refuse) when they happen", which is CP in practice.
+
+Q: Is an AP system "eventually consistent" and a CP system "strongly consistent"?
+A: Roughly, but the precise statement is about partitions. An AP system can offer strong guarantees when healthy for some operations; a CP system may still serve stale reads from followers if you let it. Describe behaviour per operation, both during partitions and normally (PACELC).
+
+Q: How long do partitions last?
+A: From seconds (a routing flap) to hours (a fibre cut, a misconfiguration). Most are short, which is why "refuse for a few seconds" (CP) is often acceptable, and why designs also need behaviour for the long ones (graceful degradation, queueing writes for later).
+
+Q: During a partition, which side keeps working in a CP system?
+A: The side that still has a majority (quorum) of replicas. With 3 regions, a partition isolating one region leaves the other two (a majority) able to elect a leader and continue; the isolated region refuses writes and strong reads. Placing replicas so that no single failure takes away the majority is a key design step.
+
+--- exercises
+[design] An e-commerce site runs in two regions. A partition separates them for 10 minutes. Describe CP/AP choices for: browsing products, adding to cart, checkout payment, inventory decrement.
+A: Browsing: AP (serve local, slightly stale catalogue). Cart: AP (accept locally; merge carts on heal by union, as Dynamo did). Payment: CP (process only where the payment record's leader/majority is; the cut-off region shows "try again shortly" or queues the order for confirmation). Inventory: CP for the decrement (no overselling), or AP with a per-region allocation of stock that each region can sell without coordination, reconciled after.
+
+[estimate] A Spanner-like database replicates across 3 regions; a majority write needs one round trip to the nearest other region (about 30 ms) on top of local work. A Cassandra-like store writing at LOCAL_ONE takes about 2 ms. What does each do during a partition that isolates the local region?
+A: The Spanner-like system: normal writes ~30+ ms (EC); when isolated, the local region has no majority and refuses writes (PC). The Cassandra-like store: ~2 ms normally (EL); when isolated, it keeps accepting writes locally (PA), and the regions reconcile after healing, possibly with last-writer-wins conflicts.
+
+[choose] A distributed lock service for leader election in your system: CP or AP?
+A: CP. A lock that two clients both believe they hold (because each side of a partition granted it) defeats its purpose. During a partition the minority side must refuse to grant or renew locks; clients without a valid lease stop acting as leader.
+
+--- pitfalls
+- "Pick two of three" framing
+- Using CAP's C to mean ACID consistency
+- Labelling a whole product CP or AP instead of each operation
+- Ignoring latency in normal operation (PACELC)
+- Not describing what users experience during a partition
+
+--- quiz
+Q: CAP forces a choice between consistency and availability…
+- At all times
+- *Only during a network partition
+- Only during writes
+- Only on a single machine
+W: With a healthy network, both are possible.
+Q: In CAP, "C" means…
+- ACID consistency
+- *Linearisability
+- Eventual consistency
+- Data never lost
+W: Every read sees the latest completed write.
+Q: PACELC adds which everyday trade-off?
+- Cost vs durability
+- *Latency vs consistency when there is no partition
+- Throughput vs cost
+- Reads vs writes
+W: Coordination costs time even when nothing is broken.
+Q: Which part of a CP system keeps serving writes during a partition?
+- Both sides
+- Neither side
+- *The side with a majority of replicas
+- The side with the most users
+W: Only a quorum can safely elect a leader and commit.
+
+--- sources
+- paper :: Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services (SIGACT News 2002) :: Gilbert, Lynch :: https://www.comp.nus.edu.sg/~gilbert/pubs/BrewersConjecture-SigAct.pdf
+- article :: CAP Twelve Years Later: How the "Rules" Have Changed (IEEE Computer 2012) :: Eric Brewer :: https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
+- paper :: Consistency Tradeoffs in Modern Distributed Database System Design (PACELC, IEEE Computer 2012) :: Daniel Abadi :: https://www.cs.umd.edu/~abadi/papers/abadi-pacelc.pdf
+- article :: Spanner, TrueTime and the CAP Theorem :: Eric Brewer, Google :: https://research.google/pubs/spanner-truetime-and-the-cap-theorem/
+- article :: Please stop calling databases CP or AP :: Martin Kleppmann :: https://martin.kleppmann.com/2015/05/11/please-stop-calling-databases-cp-or-ap.html
