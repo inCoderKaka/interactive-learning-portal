@@ -7,6 +7,7 @@ import { HealthTimeline, L4L7 } from "./traffic";
 import { EvictionRace, Stampede } from "./caching";
 import { BtreeLsm, IndexExplorer, RowColumn } from "./db";
 import { PartitionSim } from "./repl";
+import { PartitionLoad, Rebalance, Snowflake } from "./part";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -24,6 +25,9 @@ const SIMS: Record<string, ComponentType> = {
   "btree-lsm": BtreeLsm,
   "row-column": RowColumn,
   "partition-sim": PartitionSim,
+  "partition-load": PartitionLoad,
+  rebalance: Rebalance,
+  snowflake: Snowflake,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */

@@ -118,4 +118,20 @@ Keeping copies of your data on several machines protects you from failures and l
 Choose guarantees per operation: strong ones for money, uniqueness and locks; cheaper ones, plus "users see their own changes", for everything else.
 :::
 `,
+  partitioning: md`
+## What this chapter is about
+
+When data grows too big, or writes too many, for one machine, you split it: each machine owns part of the data. How you split decides which questions can be answered by one machine and which must ask all of them, whether the load is even or one machine melts, and how painful growth will be later.
+
+1. **Range, hash and directory partitioning.** Three ways to decide which machine owns which data, what each makes fast and slow, and how to choose the key you split by.
+2. **Consistent hashing.** How to place keys on servers so that adding or removing a server moves only a small share of the data, with virtual nodes, rendezvous hashing and Google's variants.
+3. **Hot keys.** When one celebrity, one viral post or one huge customer overwhelms a single machine, and the techniques for spreading it out.
+4. **Secondary indexes on partitioned data.** Finding records by something other than the key they were split by: asking every machine, or maintaining a separate index.
+5. **Rebalancing.** Moving data between machines as the system grows, without downtime and without moving more than necessary.
+6. **Unique IDs.** Generating IDs on many machines at once without collisions, including the Snowflake layout and time-ordered UUIDs.
+
+:::tip The one idea to keep
+Choose the split key from your most frequent query, check it spreads load evenly, and plan from day one for the one key that will be far hotter than the rest.
+:::
+`,
 };

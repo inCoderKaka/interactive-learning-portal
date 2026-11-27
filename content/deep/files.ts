@@ -26,4 +26,5 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "hld/caching": () => Promise.all([import("./hld/caching"), import("./hld/notes/caching")]).then(([m, n]) => withNotes(m.caching, n.notes)),
   "hld/databases": () => Promise.all([import("./hld/databases"), import("./hld/notes/databases")]).then(([m, n]) => withNotes(m.databases, n.notes)),
   "hld/replication": () => Promise.all([import("./hld/replication"), import("./hld/notes/replication")]).then(([m, n]) => withNotes(m.replication, n.notes)),
+  "hld/partitioning": () => Promise.all([import("./hld/partitioning"), import("./hld/notes/partitioning")]).then(([m, n]) => withNotes(m.partitioning, n.notes)),
 };

@@ -6,4 +6,5 @@ export const HLD_WIDGET_IDS = new Set<string>([
   "seq-cache-patterns", "seq-invalidation", "seq-cdn", "eviction-race", "stampede",
   "index-explorer", "btree-lsm", "row-column",
   "seq-failover", "seq-conflict", "seq-linearizable", "seq-session", "partition-sim",
+  "partition-load", "rebalance", "snowflake", "seq-partitioned-index",
 ]);
