@@ -14,6 +14,7 @@ import type { Extra } from "./h";
 import { CARDS } from "./cards";
 import { AI_REFS, aiDesigns, aiTopics } from "./ai";
 import { OUTLINE, CHAPTER_OF } from "./outline";
+import { HLD_OVERVIEWS } from "./deep/hld/overviews";
 import DEEP_META from "./deep/meta.json";
 import LC_EXTRA from "./lc-extra.json";
 
@@ -29,6 +30,7 @@ export const areaOf = (id: Area) => AREAS.find((a) => a.id === id)!;
 const EXTRA: Record<string, Extra> = { ...dsaExtra, ...designExtra };
 
 function withExtra(t: Topic): Topic {
+  if (HLD_OVERVIEWS[t.id]) return { ...t, lesson: HLD_OVERVIEWS[t.id], prereq: [...new Set([...(t.prereq ?? []), ...(EXTRA[t.id]?.pre ?? [])])] };
   const x = EXTRA[t.id];
   if (!x) return t;
   return {

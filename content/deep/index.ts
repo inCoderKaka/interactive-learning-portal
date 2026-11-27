@@ -23,9 +23,13 @@ import { notes as n_strings_structures } from "./dsa/notes/strings-structures";
 import { foundations } from "./hld/foundations";
 import { notes as n_hld_foundations } from "./hld/notes/foundations";
 
-const NOTES: Record<string, string> = { ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
+import { networking } from "./hld/networking";
+import { notes as n_hld_networking } from "./hld/notes/networking";
+
+const NOTES: Record<string, string> = { ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
 
 const BODIES: Record<string, Deep> = {
+  ...networking,
   ...foundations,
   ...complexity,
   ...arraysHashing,

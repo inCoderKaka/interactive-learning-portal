@@ -20,7 +20,7 @@ export type Step = {
   kind?: "req" | "res" | "async" | "drop" | "bad" | "ok";
   set?: Record<string, string>; // state badges that change at this step
 };
-export type Variant = { key: string; label: string; steps: Step[]; end?: string };
+export type Variant = { key: string; label: string; steps: Step[]; end?: string; init?: Record<string, string> };
 export type Scenario = {
   title: string;
   q?: string;
@@ -55,7 +55,7 @@ export function Seq({ sc }: { sc: Scenario }) {
   const x = (id: string) => { const i = sc.actors.findIndex((a) => a.id === id); return M + (i * (W - 2 * M)) / Math.max(1, n - 1); };
   const H = TOP + v.steps.length * ROW + 16;
   const state = useMemo(() => {
-    const st: Record<string, string> = { ...(sc.init ?? {}) };
+    const st: Record<string, string> = { ...(sc.init ?? {}), ...(v.init ?? {}) };
     v.steps.slice(0, cur + 1).forEach((s) => Object.assign(st, s.set ?? {}));
     return st;
   }, [v, cur, sc.init]);
