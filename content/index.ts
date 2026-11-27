@@ -17,8 +17,9 @@ import { AI_REFS, aiDesigns, aiTopics } from "./ai";
 import { OUTLINE, CHAPTER_OF } from "./outline";
 import { HLD_OVERVIEWS } from "./deep/hld/overviews";
 import { LLD_OVERVIEWS } from "./deep/lld/overviews";
+import { AI_OVERVIEWS } from "./deep/ai/overviews";
 
-const OVERVIEWS: Record<string, string> = { ...HLD_OVERVIEWS, ...LLD_OVERVIEWS };
+const OVERVIEWS: Record<string, string> = { ...HLD_OVERVIEWS, ...LLD_OVERVIEWS, ...AI_OVERVIEWS };
 import DEEP_META from "./deep/meta.json";
 import LC_EXTRA from "./lc-extra.json";
 

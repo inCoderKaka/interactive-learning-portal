@@ -1,0 +1,576 @@
+=== data-labels
+blurb: Where training data comes from in real products, logging for ML, label quality and rater agreement, sampling strategies and their biases, selection and feedback effects, and how much data you need.
+signals: "Where would you get training data?" | "How would you label this?" | "Your labels come from users' reports" | Cold-start products with no logs yet
+prereq: ml-framing, validation-leakage
+
+--- lesson
+:::words
+- **Logging**: recording what the system showed, what the user did, and the features at that moment, so it can become training data later.
+- **Impression**: one time an item was shown to a user. Training examples for recommenders are usually impressions with an outcome (clicked or not).
+- **Rater** (annotator): a person paid to label examples by following written guidelines.
+- **Inter-rater agreement**: how often raters agree with each other; a ceiling on how clean your labels can be. Measured with **Cohen's kappa**.
+- **Selection bias**: your data isn't a fair sample of the world you'll predict on.
+- **Active learning**: choosing which examples to label next based on where the model is most unsure.
+- **Weak supervision**: generating many noisy labels from heuristics or models instead of hand-labelling.
+:::
+
+## The problem in plain words
+
+Models learn whatever is in the data, including its mistakes and its blind spots. At big companies the model code is often the easy part; the hard parts are getting **enough examples**, with **trustworthy labels**, that **represent the situations** the model will face. Interviewers spend a large share of an ML system design round here, because a candidate who says "assume we have labelled data" has skipped the real problem.
+
+:::eli5
+If you only ever taste apples from the top of the tree, you'll think all apples are sunny-side red. The model can't learn about the shady ones it never saw. Data collection is deciding which apples to pick, and labelling is deciding honestly which ones are good.
+:::
+
+## Where the data comes from
+
+1. **Product logs** (most common): impressions, clicks, watch time, purchases, searches. Free and huge, but they only show reactions to what the **current system chose to show**.
+2. **Human labelling**: in-house raters, vendors, or experts (doctors, lawyers). Needed for safety, relevance and anything users won't tell you. Expensive, slow, needs guidelines and quality control.
+3. **User-provided labels**: reports, ratings, "not interested". Sparse and biased toward motivated users.
+4. **Synthetic data**: simulators, augmentation, LLM-generated examples. Cheap; risk of a gap between synthetic and real data.
+5. **Public and licensed datasets**: for pretraining and benchmarks; check licences and privacy.
+6. **Model-generated labels**: a large model labels data for a small one (distillation, LLM-as-labeller), audited against a gold set.
+
+## Logging for ML: log what you'll need
+
+The training example must contain the features **as they were when the prediction was made**, not as they are later. The safest design: at serving time, log the request, the candidate items, the features computed, the model's scores and what was shown, with a request ID. Then join the outcome (click, watch, purchase) later by that ID. This avoids the training–serving skew and leakage from recomputing features afterwards (feature-engineering page).
+
+Decide the **label window**: a "click" is counted if it happens within, say, 1 minute of the impression; a "conversion" within 7 days. Long windows mean delayed training data; short ones miss late outcomes.
+
+## Label quality
+
+- **Guidelines**: write clear rules with examples of edge cases; iterate when raters disagree.
+- **Agreement**: have 2–5 raters label the same items; measure agreement. **Cohen's kappa** corrects raw agreement for chance: $\kappa = (p_o - p_e)/(1 - p_e)$, where $p_o$ is observed agreement and $p_e$ is what chance would give. Above 0.8 is strong, 0.4–0.6 moderate. Low agreement means the task is ambiguous; fix the guidelines or accept a noise ceiling.
+- **Aggregation**: majority vote, or weighted by each rater's reliability (Dawid–Skene model).
+- **Gold questions**: hide items with known answers in each rater's queue to catch careless work.
+- **Label noise in training**: modest random noise mostly slows learning; **systematic** noise (one rater always labels sarcasm as abuse) teaches wrong rules. Find it by reviewing examples where a trained model confidently disagrees with the label (confident learning).
+
+## Sampling and the biases it creates
+
+- **Position and exposure bias**: logs only contain items you showed, and items shown higher get more clicks regardless of quality. Models trained naively learn "being shown at the top is good" and keep showing the same things.
+- **Feedback loops**: the model's choices become its next training data, amplifying early mistakes and popularity. Remedies: **exploration** (show a small random or uncertain fraction), logging propensities (the probability each item was shown) and weighting by their inverse (**inverse propensity scoring**), and holdout traffic served by a simple policy.
+- **Survivorship and selection bias**: a loan-default model only sees outcomes for loans that were approved; rejected applicants never get a label (**reject inference** problem).
+- **Negative sampling**: for implicit feedback you have positives (clicks) and an ocean of non-clicks. Sample negatives (random items, shown-but-not-clicked, hard negatives that look similar), and remember that sampling changes the base rate, so correct predicted probabilities afterwards if you need calibration: with negatives sampled at rate $w$, $p = p' / (p' + (1 - p')/w)$.
+- **Stratified sampling**: oversample rare but important slices (new users, rare languages) so they're represented, then weight back.
+
+## How much data, and which data, next?
+
+- Plot a **learning curve** (bias–variance page): if validation error still falls steeply with more data, labelling pays.
+- **Active learning**: label the examples the model is least sure about (uncertainty sampling) or that disagree most across an ensemble. Often gets the same accuracy with a fraction of the labels.
+- **Weak supervision** (Snorkel-style): write many noisy labelling functions (keyword rules, heuristics, an LLM prompt), combine their votes with a model of their accuracies, train on the result.
+- **Transfer learning**: start from a pretrained model (vision backbone, language model, embeddings), so you need far fewer labelled examples.
+- **Data quality over quantity** for the last mile: deduplicate, fix label errors, cover the edge cases.
+
+## Privacy and governance
+
+Training data about people needs a lawful basis and minimisation: collect only what the model needs, respect deletion requests (data must be removed from future training sets, and sometimes models retrained), anonymise or aggregate where possible, keep sensitive attributes out of features unless needed for fairness audits. On-device and federated training (fairness page) keep raw data on phones.
+
+## Interview angles
+
+- "Where do labels come from?" Name the source, its delay, its bias, and how you'd measure its quality. Offer a rater-labelled gold set for evaluation even if training uses implicit labels.
+- "We have no data yet." Heuristic launch with logging, a human-labelled seed set, transfer learning, synthetic data, and exploration traffic to collect unbiased examples.
+- "The model keeps recommending the same popular items." Feedback loop plus exposure bias: exploration, inverse propensity weighting, diversity constraints.
+
+--- revise
+### Sources
+? Six sources of training data? :: Product logs, human raters, user reports/ratings, synthetic data, public datasets, model-generated labels.
+? Main weakness of product logs? :: They only show reactions to what the current system chose to show.
+? What should be logged at serving time? :: Request, candidates, features as computed, scores, what was shown, with an ID to join outcomes later.
+? What is a label window? :: How long after an impression an outcome still counts (click within 1 min, purchase within 7 days).
+
+### Quality
+? Cohen's kappa? :: $(p_o - p_e)/(1-p_e)$: agreement corrected for chance; >0.8 strong.
+? Gold questions? :: Items with known answers hidden among rater tasks to catch careless work.
+? Random vs systematic label noise? :: Random mostly slows learning; systematic teaches wrong rules.
+
+### Bias and sampling
+? Exposure/position bias? :: You only see outcomes for shown items, and higher positions get more clicks regardless of quality.
+? Inverse propensity scoring? :: Weight each logged example by 1 / probability it was shown, to correct exposure bias.
+? Feedback loop remedies? :: Exploration traffic, propensity logging + IPS, holdout policies, diversity constraints.
+? Correcting probabilities after negative downsampling at rate w? :: $p = p'/(p' + (1-p')/w)$.
+? Reject-inference problem? :: Outcomes exist only for approved cases (loans), so the model never learns about rejected ones.
+
+### More data
+? Active learning? :: Label the examples the model is least certain about first.
+? Weak supervision? :: Combine many noisy labelling functions into probabilistic labels.
+
+--- notes
+## Sources
+Logs (huge, biased by what was shown) · raters (costly, needed for safety/relevance) · user reports (sparse) · synthetic · public · model labels.
+## Logging
+Log request + candidates + features-at-time + scores + shown, with request ID; join outcomes later.
+Label window: click ≤1 min, conversion ≤7 days. Longer = later data.
+## Label quality
+Guidelines with edge cases. 2–5 raters per item. κ = (pₒ − pₑ)/(1 − pₑ); >0.8 strong.
+Aggregate: majority or Dawid–Skene. Gold questions catch careless raters.
+Systematic noise is worse than random; find with confident-learning review.
+## Bias
+Exposure & position bias → model learns "shown on top = good".
+Feedback loops → exploration, propensity logging + IPS, holdout policy.
+Reject inference: no labels for rejected cases.
+Negative sampling: random, shown-not-clicked, hard. Recalibrate: p = p'/(p' + (1−p')/w).
+Stratify rare slices, weight back.
+## More data
+Learning curve steep → label. Active learning (uncertainty, ensemble disagreement).
+Weak supervision (labelling functions). Transfer learning. Dedupe + fix label errors.
+## Privacy
+Minimise, honour deletion, anonymise, keep sensitive attributes out of features; federated/on-device.
+
+--- doubts
+Q: If logs are biased by the current model, why does everyone still train on them?
+A: Because they're enormous, cheap and closely match real user behaviour; nothing else comes close in volume. The bias is managed rather than avoided: some exploration traffic, propensity weighting, position as a training feature (then fixed at serving), and periodic evaluation on unbiased or randomised traffic.
+
+Q: How many raters per item do I need?
+A: For training data, often one, with a quality-checked subset labelled by several. For evaluation (gold) sets, three to five so you can take a majority and measure agreement. Spend more on the evaluation set: it decides what you ship.
+
+Q: Is synthetic data from an LLM good enough to train on?
+A: It's useful for coverage (rare intents, edge cases, other languages) and bootstrapping, but it carries the generator's biases and can be unrealistically clean. Always evaluate on real data, mix synthetic with real, filter generated examples for quality, and watch for model collapse when models train repeatedly on model output.
+
+Q: Why does negative downsampling change the predicted probabilities?
+A: Keeping only a fraction $w$ of negatives makes positives look more common in training, so the model's raw output overestimates the true rate. Ranking order is unaffected, but anything that needs real probabilities (ad auctions, thresholds, combining scores) must apply the correction.
+
+--- exercises
+[design] You're building a model to flag misleading health claims in YouTube videos. Design the labelling programme.
+A: Medical-expert guidelines with examples; a tiered pipeline: cheap classifiers and user reports surface candidates; trained raters label transcripts and key frames; experts adjudicate disagreements and audit samples. Three raters on the evaluation set, measure kappa per claim type, refine guidelines where it's low. Gold questions in each queue. Stratify sampling across languages and channel sizes so small creators and non-English content are represented. Track label latency, cost per label and agreement weekly.
+
+[estimate] Your training data has 1% positives. You keep all positives and 10% of negatives. The model predicts 0.40 for an example. What's the calibrated probability?
+A: $w = 0.1$: $p = 0.4 / (0.4 + 0.6/0.1) = 0.4 / 6.4 \approx 0.0625$. The raw 40% corresponds to about 6% in the real distribution.
+
+[break] A loan model is retrained every month on the outcomes of loans it approved. Over a year, approval rates for one neighbourhood fall steadily even though nothing changed there. Explain.
+A: Selection bias plus a feedback loop: applicants the model rejects never produce outcomes, so the training data only covers people the model already liked. If early versions under-approved the neighbourhood, there's less and less data showing those applicants repay, and the model drifts further. Fixes: a small randomised approval band (where legally allowed), reject-inference techniques, fairness monitoring by group, and periodic human review.
+
+--- pitfalls
+- Assuming labelled data exists without saying where it comes from
+- Recomputing features after the fact instead of logging them at prediction time
+- Ignoring rater disagreement and treating labels as ground truth
+- Training only on what the current system showed (no exploration)
+- Downsampling negatives and forgetting to recalibrate
+
+--- quiz
+Q: Why log features at prediction time rather than recompute them later for training?
+- It's cheaper
+- *Recomputed features can include later information and differ from what serving saw (leakage, skew)
+- Models need more features
+- Logs are smaller
+W: Point-in-time features keep training identical to serving.
+
+Q: Raters agree 90% of the time on a task where chance agreement is 50%. Cohen's kappa?
+- 0.9
+- *0.8
+- 0.5
+- 0.4
+W: (0.9 − 0.5)/(1 − 0.5) = 0.8.
+
+Q: What does inverse propensity scoring correct?
+- Label noise
+- *Exposure bias: items shown more often being over-represented in logged outcomes
+- Overfitting
+- Slow training
+W: Each example is weighted by the inverse probability that it was shown.
+
+Q: Which strategy labels the examples the model is least sure about first?
+- Weak supervision
+- Stratified sampling
+- *Active learning
+- Distillation
+W: Uncertainty sampling is the classic active-learning strategy.
+
+--- sources
+- book :: Designing Machine Learning Systems (chapter 4, training data) :: Chip Huyen :: https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/
+- paper :: Snorkel: Rapid Training Data Creation with Weak Supervision :: Ratner et al. (2017) :: https://arxiv.org/abs/1711.10160
+- paper :: Confident Learning: Estimating Uncertainty in Dataset Labels :: Northcutt, Jiang, Chuang (2021) :: https://arxiv.org/abs/1911.00068
+- paper :: Practical Lessons from Predicting Clicks on Ads at Facebook :: He et al. (2014) :: https://research.facebook.com/publications/practical-lessons-from-predicting-clicks-on-ads-at-facebook/
+
+=== class-imbalance
+blurb: Why rare positives break naive training and evaluation, the metrics to use instead, resampling (undersampling, oversampling, SMOTE), class weights and focal loss, threshold tuning, and recalibrating afterwards.
+signals: Fraud, abuse, disease, click prediction: anything with under 5% positives | "The model predicts 'not fraud' for everything and gets 99.8% accuracy" | "Should you oversample?" | Choosing a decision threshold
+prereq: loss-functions
+
+--- lesson
+:::words
+- **Imbalanced data**: one class (usually the interesting one) is much rarer than the other: 1 fraud per 1,000 transactions.
+- **Majority / minority class**: the common and the rare class.
+- **Undersampling**: dropping majority examples. **Oversampling**: repeating or synthesising minority examples.
+- **SMOTE**: creating synthetic minority examples by interpolating between neighbouring minority points.
+- **Class weight**: making mistakes on one class cost more in the loss.
+- **Threshold**: the score above which you predict positive; it need not be 0.5.
+- **Calibration**: whether predicted probabilities match observed frequencies.
+:::
+
+## The problem in plain words
+
+When 99.9% of transactions are legitimate, a model that always says "legitimate" is 99.9% accurate and completely useless. Training is also lopsided: the loss is dominated by the easy majority, so the model gets little pressure to learn what fraud looks like. Imbalance is the normal case for the problems companies care most about (fraud, abuse, failures, conversions, rare diseases), so interviewers expect a clear, ordered answer, not a reflexive "use SMOTE".
+
+:::eli5
+Finding a few counterfeit notes in a bank vault: saying "they're all real" is right almost every time, and you've found nothing. You need to measure how many fakes you catch and how many real notes you wrongly reject, and you need to look hardest at the notes that look suspicious.
+:::
+
+## Step 1: fix the evaluation first
+
+Accuracy is meaningless here. Use metrics that focus on the rare class (classification-metrics page):
+
+- **Precision**: of the items flagged, how many were truly positive.
+- **Recall**: of the true positives, how many were flagged.
+- **PR-AUC** (average precision): area under the precision–recall curve; its baseline is the positive rate, so it's honest about how hard the problem is. **ROC-AUC** can look great (0.95) on a 0.1% problem while precision at useful recall is poor, because the false-positive *rate* is divided by a huge number of negatives.
+- **Recall at a fixed precision** (or precision at a fixed recall) tied to operations: "catch as much fraud as possible while keeping false alarms to what 20 analysts can review per day".
+- Per-slice metrics: imbalance is often worse in some segments.
+
+Often the model is fine and only the metric and threshold were wrong.
+
+## Step 2: choose the threshold from costs
+
+A model outputs a score; the action threshold should come from the **costs** of each mistake, not 0.5. If a missed fraud costs 200 and a false alarm costs 5 (an analyst review plus customer friction), flag when the expected cost of not flagging exceeds that of flagging:
+
+$$p \cdot 200 > (1 - p) \cdot 5 \;\Rightarrow\; p > \frac{5}{205} \approx 0.024$$
+
+So with calibrated probabilities, flag anything above about 2.4%. Operational limits (review capacity) can override this: take the top $k$ scores per day.
+
+## Step 3: rebalance training, if needed
+
+Options, from simplest:
+
+1. **Do nothing** to the data, use log-loss, a strong model (gradient-boosted trees handle imbalance well) and enough positives. With millions of examples and thousands of positives, this often works best and keeps probabilities calibrated.
+2. **Class weights**: multiply the loss of positive examples by $w$ (e.g. inverse frequency, often softened with a square root). Same effect as oversampling in expectation, without duplicating data.
+3. **Undersample the majority**: keep all positives and a random fraction of negatives. Faster training, often little loss of accuracy at web scale (ads systems famously downsample negatives). Recalibrate afterwards.
+4. **Oversample the minority**: duplicate positives. Risk: overfitting to the exact duplicated examples.
+5. **SMOTE**: synthesise new positives between a positive and one of its nearest positive neighbours: $x_{\text{new}} = x_i + \lambda(x_{nn} - x_i)$, $\lambda \in [0, 1]$. Helps some low-dimensional tabular problems; adds little for strong models (boosted trees, neural nets) and can create unrealistic points in high dimensions or with categorical features. Apply it **only to the training fold**, never before splitting.
+6. **Focal loss**: down-weights easy examples (loss-functions page); designed for dense detection with extreme imbalance.
+7. **Hard negative mining**: train more on the negatives the model gets wrong.
+8. **Reframe**: anomaly detection (model "normal" and flag deviations) when positives are almost nonexistent or keep changing.
+
+## Step 4: recalibrate
+
+Weights, resampling and focal loss all distort predicted probabilities: the model will over-predict the positive class. If anything downstream needs real probabilities (thresholds from costs, combining scores, auctions), fix it:
+
+- Analytical correction for negative downsampling (data-labels page).
+- **Platt scaling** (fit a logistic regression on the model's scores using validation data) or **isotonic regression** (a monotonic step function; needs more data). Check with a reliability diagram.
+
+## A good interview answer, in order
+
+1. "Accuracy is useless here; I'd use PR-AUC and recall at a precision the operations team can handle, per slice."
+2. "Threshold from costs or review capacity, not 0.5."
+3. "Start with no resampling or mild class weights and a strong model; if training is slow, downsample negatives."
+4. "Recalibrate if probabilities matter."
+5. "If positives are extremely rare or adversarial, add anomaly detection and human review, and watch for drift."
+
+## Interview angles
+
+- "99.8% accurate fraud model." Ask for the positive rate and recall. Then the four steps above.
+- "Would you use SMOTE?" Rarely the first choice: metric, threshold, class weights and downsampling usually matter more; if used, only inside the training fold.
+- "How do you set the threshold?" Expected cost or capacity, validated on recent data and revisited as fraud patterns drift.
+
+--- revise
+### Evaluation
+? Why is accuracy useless for 0.1% positives? :: Predicting all negative scores 99.9% and finds nothing.
+? Which curve is honest for rare positives, ROC or PR? :: PR: its baseline is the positive rate; ROC can look great while precision is poor.
+? Operational metric for fraud review? :: Recall at the precision (or volume) the review team can handle.
+
+### Threshold
+? How to set a threshold from costs? :: Flag when p·cost(miss) > (1−p)·cost(false alarm): p > c_FA/(c_FA + c_miss).
+? Miss costs 200, false alarm 5: threshold? :: About 0.024.
+
+### Rebalancing
+? Simplest first approach? :: No resampling or mild class weights, log-loss, a strong model.
+? Class weights vs oversampling? :: Same expected effect; weights avoid duplicating data.
+? When is negative downsampling attractive? :: Web-scale data where training cost matters; recalibrate afterwards.
+? SMOTE formula? :: $x_i + \lambda(x_{nn} - x_i)$ between a positive and a positive neighbour.
+? Where must SMOTE be applied? :: Only inside the training fold, after splitting.
+? When to switch to anomaly detection? :: Positives almost nonexistent or constantly changing.
+
+### Calibration
+? What distorts probabilities? :: Class weights, resampling, focal loss.
+? Two recalibration methods? :: Platt scaling (logistic on scores) and isotonic regression; check with a reliability diagram.
+
+--- notes
+## Evaluate first
+Accuracy useless. Use precision, recall, PR-AUC (baseline = positive rate), recall @ fixed precision, per slice.
+ROC-AUC flatters: FPR divides by a huge negative count.
+## Threshold
+p > c_FA / (c_FA + c_miss). Miss 200, FA 5 → 0.024. Or top-k by review capacity.
+## Rebalance (in order)
+Nothing + log-loss + strong model (GBDT) · class weights (√ inverse freq) · undersample negatives (recalibrate)
+Oversample (overfit risk) · SMOTE xᵢ + λ(x_nn − xᵢ), training fold only, weak for deep models/high-D
+Focal loss · hard negative mining · anomaly detection reframe.
+## Recalibrate
+Weights/resampling/focal inflate p. Downsampling: p = p'/(p' + (1−p')/w).
+Platt (logistic) or isotonic; reliability diagram.
+## Answer order
+Metric → threshold → minimal rebalancing → recalibrate → anomaly detection + human review + drift watch.
+
+--- doubts
+Q: If class weights and oversampling do the same thing, why have both?
+A: In expectation, yes. In practice weights are cheaper (no extra rows) and deterministic; oversampling changes what each mini-batch contains, which can help stochastic training see positives every batch. For trees, weights are usually the cleaner option.
+
+Q: My dataset has 50% positives because I collected it that way, but production has 1%. Is that a problem?
+A: The model's probabilities will be far too high in production, and precision there will be much lower than your test set suggests. Evaluate on data with the production rate (or reweight the test set), and recalibrate the probabilities to the true prior.
+
+Q: Is ROC-AUC ever the right metric for imbalanced problems?
+A: It's fine for comparing models' overall ranking quality and is insensitive to the positive rate, which is sometimes what you want. But it hides how many false alarms you'd get at a useful recall, so pair it with PR-AUC or precision at the operating point.
+
+--- exercises
+[estimate] 1 million transactions per day, 0.2% fraud. Your model at threshold t catches 80% of fraud with a 1% false-positive rate. How many alerts per day, and what's the precision?
+A: Fraud: 2,000 per day, caught 1,600. Legitimate: 998,000, false alarms 9,980. Alerts ≈ 11,580, precision ≈ 1,600 / 11,580 ≈ 14%. Seven of eight alerts are false; if analysts can review only 2,000 per day you must raise the threshold and accept lower recall.
+
+[choose] You're training a click model on 10 billion impressions per day with a 1% click rate. Keep all data, class-weight, or downsample negatives?
+A: Downsample negatives (to around 5–10%): training cost drops about 10× with little loss of accuracy, then apply the analytical recalibration so P(click) is correct for the auction. Class weights don't save compute; keeping all data is unaffordable to retrain daily.
+
+[break] A team applies SMOTE to the full dataset, then does 5-fold cross-validation and reports a big recall gain. What's wrong?
+A: Synthetic positives created from points that end up in validation folds leak information: validation positives have near-copies in training. The recall gain is inflated. Apply SMOTE inside each training fold only (a pipeline), and evaluate on untouched, naturally imbalanced folds.
+
+--- pitfalls
+- Reporting accuracy or ROC-AUC alone on rare-event problems
+- Using a 0.5 threshold by default
+- Resampling before splitting
+- Using reweighted or resampled model scores as real probabilities
+- Evaluating on a balanced test set when production is imbalanced
+
+--- quiz
+Q: A model flags nothing as fraud. Positive rate 0.5%. Its accuracy?
+- 0.5%
+- 50%
+- *99.5%
+- 0%
+W: Every legitimate transaction is "correct".
+
+Q: A false alarm costs 1 and a miss costs 99. With calibrated probabilities, the cost-optimal threshold is?
+- 0.5
+- 0.99
+- *0.01
+- 0.1
+W: p > 1/(1 + 99) = 0.01.
+
+Q: Which metric's baseline equals the positive rate?
+- ROC-AUC
+- *PR-AUC (average precision)
+- Accuracy
+- Log-loss
+W: A random classifier's precision equals the positive rate.
+
+Q: After training with class weights, the model's probabilities are typically?
+- Perfectly calibrated
+- *Too high for the weighted class, so they need recalibration
+- Too low for all classes
+- Unchanged
+W: Weighting is like seeing more positives, inflating P(positive).
+
+--- sources
+- paper :: SMOTE: Synthetic Minority Over-sampling Technique :: Chawla et al. (2002) :: https://arxiv.org/abs/1106.1813
+- paper :: The Relationship Between Precision-Recall and ROC Curves :: Davis, Goadrich (ICML 2006) :: https://www.biostat.wisc.edu/~page/rocpr.pdf
+- article :: Probability calibration :: scikit-learn documentation :: https://scikit-learn.org/stable/modules/calibration.html
+- course :: Imbalanced datasets :: Google Machine Learning Crash Course :: https://developers.google.com/machine-learning/crash-course/overfitting/imbalanced-datasets
+
+=== feature-engineering
+blurb: Turning raw data into model inputs: scaling numbers, encoding categories (one-hot, hashing, embeddings, target encoding), crosses, text and time features, aggregates over windows, missing values, and the training–serving skew that ruins production models.
+signals: "What features would you use?" in every ML design round | High-cardinality IDs (user, video, ad) | "Offline good, online bad" | Real-time features like "clicks in the last 5 minutes"
+prereq: data-labels
+widgets: feature-hashing
+
+--- lesson
+:::words
+- **Feature**: one input number (or vector) given to the model.
+- **Numerical / categorical feature**: a number (price) versus a choice from a set (country).
+- **Cardinality**: how many distinct values a categorical feature has. "Country" ~200; "video ID" billions.
+- **One-hot encoding**: a vector with a 1 in the slot for the category and 0 elsewhere.
+- **Hashing trick**: mapping categories into a fixed number of buckets with a hash function.
+- **Embedding**: a learned short vector for each category, trained with the model.
+- **Feature cross**: a combined feature from two others (country × language).
+- **Training–serving skew**: a feature computed differently in training than in production.
+- **Feature store**: a system that computes, stores and serves features consistently for training and serving.
+:::
+
+## The problem in plain words
+
+Models only see numbers. Feature engineering is deciding **which facts about the world** to give the model and **how to turn them into numbers** so the patterns are easy to learn. Deep learning learns many features itself from raw pixels and text, but for ranking, ads, fraud and most tabular problems, the features you design (and how reliably you compute them) still decide much of the quality. ML design interviews always include a "features" section; a strong answer groups features by source and explains encoding and freshness.
+
+:::eli5
+Predicting whether a friend will enjoy a film: their age, the genre, whether they liked the director's last film, how many films they watched this week. Each fact becomes a number the model can weigh. Choosing good facts, and checking you look them up the same way every time, is feature engineering.
+:::
+
+## Organise features by source
+
+For "will this user click this video?":
+
+- **User features**: age bucket, language, country, account age, historical watch time per category.
+- **Item features**: category, length, upload age, creator, title embedding, thumbnail embedding, popularity.
+- **User × item (interaction) features**: has the user watched this creator before, similarity between the user's embedding and the video's, time since last watch of this topic.
+- **Context features**: time of day, day of week, device, network speed, page (home vs search), position in the list.
+- **Real-time / session features**: what the user did in the last 5 minutes.
+
+## Numerical features
+
+- **Scaling**: standardise ($z = (x - \mu)/\sigma$) or min–max scale for linear models, neural nets, and distance-based methods (kNN, SVM). Trees don't care about scale.
+- **Skewed values** (counts, prices, durations): apply $\log(1 + x)$, or clip outliers.
+- **Bucketing** (binning): turn a number into ranges (age 18–24, 25–34) so a linear model can learn non-linear effects; quantile buckets keep bins equally full.
+- **Ratios and rates** usually beat raw counts: click-through rate instead of clicks, with **smoothing** for small counts: $\text{CTR} = (\text{clicks} + \alpha p_0)/(\text{impressions} + \alpha)$, so an item with 1 click in 1 impression doesn't get CTR 100%.
+
+## Categorical features
+
+| Encoding | How | Good for | Watch out |
+|---|---|---|---|
+| **One-hot** | 1 in the category's slot | Low cardinality (< ~100) | Explodes with many values |
+| **Hashing trick** | bucket = hash(value) mod $B$ | Huge or open-ended vocabularies, new values at serving | Collisions mix unrelated values |
+| **Embedding** | learned $d$-dim vector per value (often after hashing) | IDs: users, items, ads, queries | Needs data per value; cold start for new ones |
+| **Target encoding** | replace category with the average label for it | Trees on high-cardinality columns | **Leakage**: compute out-of-fold and smooth |
+| **Frequency encoding** | replace with how common the value is | Quick signal of popularity | Ties between different values |
+
+The hashing trick keeps memory fixed and handles unseen values, at the cost of collisions; with $B$ buckets and $n$ distinct values the expected fraction of values sharing a bucket is about $1 - e^{-n/B}$. Watch how collisions grow as buckets shrink:
+
+[[widget:feature-hashing]]
+
+Large recommenders combine these: hash a user ID into, say, 10 million buckets, then learn a 64-dimensional embedding per bucket. Embedding tables can reach hundreds of gigabytes and are sharded across machines.
+
+## Feature crosses
+
+A linear model can't learn "Spanish speakers in the US like this content" from separate language and country features. A **cross** (language × country as one categorical feature, often hashed) lets it. Wide & Deep models pair memorising crosses (the wide part) with generalising embeddings (the deep part); DCN (deep & cross networks) learn crosses automatically. Neural networks can learn interactions, but explicit crosses of known-important pairs still help.
+
+## Text, images and other raw inputs
+
+- **Text**: bag of words / TF-IDF for simple models; pretrained embeddings (sentence encoders) as dense features; or fine-tune a language model end to end.
+- **Images, audio, video**: embeddings from a pretrained network.
+- **Time**: hour of day and day of week as **cyclical** features ($\sin(2\pi h/24)$, $\cos(2\pi h/24)$) so 23:00 is close to 00:00; time since an event; holidays.
+- **Geography**: geohash or S2 cells at several resolutions, distance to points of interest.
+
+## Aggregates over time windows
+
+Many of the strongest features are counts and rates over windows: "user's clicks on sports in the last 1 hour, 1 day, 7 days", "card's transactions in the last 10 minutes", "item's CTR over the last day". They need:
+
+- **Point-in-time correctness** in training: only events before the prediction time.
+- **Streaming computation** for fresh windows (seconds–minutes) and batch computation for long ones; both must agree.
+- **Decay**: exponentially decayed counts approximate sliding windows cheaply.
+
+## Missing values
+
+Impute (mean, median, a constant) **and** add a "was missing" indicator, because missingness itself is often informative (no phone number on a loan application). Trees like XGBoost learn which way to send missing values. Never impute with statistics computed on the full dataset including test data.
+
+## Training–serving skew
+
+The number-one silent killer of production ML. Causes:
+
+- **Different code paths**: features computed in a Python batch job for training and in a Java service for serving, with subtly different logic (time zones, tokenisation, rounding, default values).
+- **Different data**: training uses the final, cleaned table; serving sees late or missing data.
+- **Time travel**: training features include information from after the prediction moment.
+
+Defences: **log features at serving time** and train on the logs; one feature definition shared by both paths (a **feature store** such as Feast, Tecton or Vertex AI Feature Store, with point-in-time joins for training and a low-latency online store for serving); and monitoring that compares feature distributions between training data and live traffic.
+
+## Feature selection and importance
+
+More features aren't free: each costs computation, storage, latency, monitoring, and can leak or drift. Measure value with **permutation importance** (shuffle one feature in the validation set; how much does the metric drop?) or ablations (retrain without a feature group). SHAP values explain individual predictions. Remove features that add little.
+
+## Interview angles
+
+- Present features as a table: source, examples, encoding, freshness (batch or real-time).
+- IDs: hashing + embeddings; cold start via content features (title, category, creator).
+- "Clicks in the last 10 minutes": a streaming aggregation, served from a low-latency store, with the same definition logged for training.
+- "Offline good, online bad": check for training–serving skew first.
+
+--- revise
+### Numbers
+? Which models need feature scaling? :: Linear models, neural nets, distance-based methods (kNN, SVM); trees don't.
+? Transform for skewed counts? :: log(1 + x), or clipping.
+? Smoothed CTR? :: (clicks + αp₀)/(impressions + α): avoids 100% CTR from 1/1.
+? Encode hour of day? :: sin and cos of 2πh/24, so 23:00 is near 00:00.
+
+### Categories
+? One-hot limit? :: Fine for low cardinality; explodes for many values.
+? Hashing trick pros and cons? :: Fixed memory, handles unseen values; collisions mix values.
+? Embeddings for categories? :: Learned d-dim vector per value (often hashed): standard for user/item/ad IDs.
+? Target encoding risk and fix? :: Leakage; compute out-of-fold and smooth with a prior.
+? Why feature crosses? :: Let linear models capture interactions (language × country); Wide & Deep, DCN.
+
+### Windows and missing values
+? Requirements for window aggregates? :: Point-in-time correctness, consistent streaming and batch computation, maybe decay.
+? Missing values? :: Impute and add a missing indicator; missingness is often informative.
+
+### Skew
+? Three causes of training–serving skew? :: Different code paths, different data availability, time travel.
+? Defences? :: Log serving features and train on them; shared definitions in a feature store with point-in-time joins; monitor distributions.
+? Permutation importance? :: Shuffle one feature in validation data and measure the metric drop.
+
+--- notes
+## Sources
+User · item · user×item · context · real-time session.
+## Numeric
+Standardise for linear/NN/kNN/SVM; trees don't care. log(1+x) for skew. Quantile buckets.
+Rates over counts; smoothed CTR = (c + αp₀)/(n + α).
+Cyclical time: sin/cos(2πh/24).
+## Categorical
+One-hot: low cardinality. Hashing: fixed B buckets, unseen OK, collisions ≈ 1 − e^(−n/B).
+Embeddings for IDs (hash → embedding table; shard huge tables).
+Target encoding: out-of-fold + smoothing. Frequency encoding.
+Crosses: language × country; Wide & Deep, DCN.
+## Raw inputs
+Text: TF-IDF / pretrained embeddings / fine-tune. Images/audio: pretrained embeddings. Geo: geohash/S2 multi-res.
+## Windows
+Counts/rates over 1h/1d/7d. Point-in-time. Streaming + batch agree. Exponential decay.
+## Missing
+Impute + indicator. Trees route missing. No full-data statistics.
+## Skew
+Causes: two code paths, different data, time travel.
+Fix: log serving features; feature store (offline point-in-time + online low-latency); distribution monitoring.
+## Selection
+Permutation importance, ablations, SHAP. Each feature costs latency, storage, drift risk.
+
+--- doubts
+Q: Deep learning learns features automatically. Why does feature engineering still matter?
+A: For raw perceptual data (images, audio, text) it mostly doesn't: networks learn better features than humans design. For behavioural and tabular data (clicks, transactions, histories), the most informative signals are aggregates over time and joins across tables that the network never sees unless you compute them. Freshness and consistency of those features are engineering problems, not modelling ones.
+
+Q: How do I pick the number of hash buckets?
+A: Large enough that collisions among frequent values are rare: a few times the number of distinct values that occur often enough to learn from. Rare values colliding hurts little (they had little data anyway). Memory sets the upper bound: buckets × embedding size × 4 bytes.
+
+Q: What's the problem with target encoding, exactly?
+A: If a category's encoding is the mean label of its own rows, each row's label partly determines its own feature, so the model sees a cheat. It's worst for rare categories (a category with one row encodes that row's label exactly). Compute the encoding on other folds, add smoothing toward the global mean, and sometimes add noise.
+
+Q: Should I one-hot encode for tree models?
+A: Often not: gradient-boosting libraries (LightGBM, CatBoost) handle categorical features natively and better. One-hot with many values makes many weak, sparse splits.
+
+--- exercises
+[design] List features for predicting whether a user will install an app shown in the Play Store, grouped by source, with encodings and freshness.
+A: User: country and language (embeddings), device model and storage free (bucketed), installed-app categories (multi-hot or averaged embedding), install counts by category over 30 days (batch). App: category, size (log), rating (smoothed), install velocity in the last day (near-real-time), description embedding, developer ID (hashed embedding). User × app: similarity of the user's installed-app embedding to the app's, whether the user installed the developer's other apps. Context: surface (home, search, ad slot), position, time of day (cyclical), network type. Freshness: profile batch daily; velocity and session behaviour streaming.
+
+[estimate] You hash 50 million distinct ad IDs into 20 million buckets with a 32-dimensional float32 embedding. Memory, and roughly what fraction of IDs share a bucket?
+A: $20\text{M} \times 32 \times 4$ bytes $\approx 2.56$ GB. With $n/B = 2.5$, the fraction of IDs in a bucket with another ID is about $1 - e^{-2.5} \approx 92\%$. That's a lot of sharing, but most IDs are rare; the frequent ones matter. Consider giving the top few million IDs their own rows and hashing only the long tail.
+
+[break] Training computes "user's average session length" in a daily Spark job using the user's local time zone; serving computes it in a Go service using UTC. What symptoms will you see, and how do you catch it?
+A: Feature values differ systematically for users far from UTC (sessions split at different midnights), so the model sees a shifted distribution online; quality drops for those regions only. Catch it by logging served features and comparing their distribution with training's, per region; fix by one shared definition (feature store) or by training on logged serving features.
+
+--- pitfalls
+- Two separate implementations of the same feature for training and serving
+- Target encoding without out-of-fold computation
+- Raw counts instead of smoothed rates
+- Imputing with statistics from the whole dataset
+- Adding features without measuring their value and cost
+
+--- quiz
+Q: Which encoding handles categories never seen in training without extra work?
+- One-hot with a fixed vocabulary
+- *The hashing trick
+- Label encoding
+- Target encoding
+W: Any string hashes to some bucket.
+
+Q: Why encode hour of day with sine and cosine?
+- It's faster
+- *So 23:00 and 00:00 are close together
+- Trees require it
+- To remove outliers
+W: A plain number puts midnight hours 23 apart.
+
+Q: What is the most reliable defence against training–serving skew?
+- Bigger models
+- More regularisation
+- *Logging features at serving time and training on those logs (or a shared feature store)
+- Higher learning rate
+W: Training then sees exactly what serving computed.
+
+Q: An item has 2 clicks from 2 impressions. With smoothing α = 100 and a global CTR of 3%, its smoothed CTR?
+- 100%
+- *About 4.9%
+- 3%
+- 2%
+W: (2 + 100 × 0.03)/(2 + 100) = 5/102 ≈ 4.9%.
+
+--- sources
+- paper :: Wide & Deep Learning for Recommender Systems :: Cheng et al., Google (2016) :: https://arxiv.org/abs/1606.07792
+- paper :: Feature Hashing for Large Scale Multitask Learning :: Weinberger et al. (2009) :: https://arxiv.org/abs/0902.2206
+- paper :: Hidden Technical Debt in Machine Learning Systems :: Sculley et al., Google (NeurIPS 2015) :: https://papers.nips.cc/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html
+- book :: Feature Engineering for Machine Learning :: Zheng, Casari (O'Reilly) :: https://www.oreilly.com/library/view/feature-engineering-for/9781491953235/

@@ -53,7 +53,10 @@ def tpl(s: str) -> str:
     s = s.strip("\n")
     if "${" in s:
         raise SystemExit('"${" is not allowed in page text')
-    return "md`\n" + s.replace("\\", "\\\\").replace("`", "\\`") + "\n`"
+    # md is String.raw: backslashes stay as written (TeX, escaped quotes); only backticks need escaping
+    if s.endswith("\\"):
+        raise SystemExit("page text may not end with a backslash")
+    return "md`\n" + s.replace("`", "\\`") + "\n`"
 
 
 def js(s: str) -> str:

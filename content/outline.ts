@@ -405,6 +405,166 @@ export const OUTLINE: Record<string, Sub[]> = {
     ["timers-scheduling", "Timers and scheduling: delay queues and timing wheels", 2, 20],
     ["concurrency-puzzles", "Classic concurrency puzzles: ordering threads, dining philosophers, H2O", 2, 30],
   ],
+  // ───────────── AI ─────────────
+  "ai-math": [
+    ["linear-algebra-ml", "Linear algebra for ML: vectors, matrices, eigenvectors and SVD", 1, 30],
+    ["calculus-gradients", "Calculus for ML: derivatives, gradients and the chain rule", 1, 25],
+    ["probability-ml", "Probability for ML: distributions, likelihood, entropy and KL", 1, 30],
+    ["statistics-tests", "Statistics: estimates, confidence intervals and hypothesis tests", 2, 25],
+  ],
+  "ai-ml-basics": [
+    ["ml-framing", "Framing a problem as machine learning", 1, 20],
+    ["bias-variance", "Generalisation, overfitting and the bias–variance trade-off", 1, 25],
+    ["validation-leakage", "Validation, cross-validation and data leakage", 1, 20],
+    ["loss-functions", "Loss functions and where they come from", 1, 30],
+    ["regularisation", "Regularisation: L1, L2, early stopping and more data", 1, 25],
+  ],
+  "ai-data": [
+    ["data-labels", "Data collection, labels and sampling", 1, 25],
+    ["class-imbalance", "Class imbalance: resampling, weighting and the right metric", 2, 20],
+    ["feature-engineering", "Feature engineering and the training–serving skew", 1, 30],
+  ],
+  "ai-classic-models": [
+    ["linear-regression", "Linear regression: least squares, gradient descent and assumptions", 1, 25],
+    ["logistic-regression", "Logistic and softmax regression", 1, 30],
+    ["decision-trees", "Decision trees and random forests", 1, 30],
+    ["gradient-boosting", "Gradient boosting: GBDT, XGBoost and LightGBM", 2, 30],
+    ["svm-knn-bayes", "SVMs, k-nearest neighbours and naive Bayes", 2, 30],
+    ["clustering-pca", "Clustering and dimensionality reduction: k-means, GMMs, PCA", 2, 30],
+  ],
+  "ai-metrics": [
+    ["classification-metrics", "Classification metrics, thresholds and calibration", 1, 30],
+    ["ranking-metrics", "Ranking metrics: precision@k, MAP, MRR and NDCG", 1, 25],
+    ["regression-business-metrics", "Regression metrics and business metrics", 2, 20],
+    ["ab-testing-ml", "Online experiments and A/B tests for ML", 1, 30],
+  ],
+  "ai-neural-nets": [
+    ["mlp-activations", "Neurons, layers and activation functions", 1, 25],
+    ["backpropagation", "Backpropagation, derived and stepped through", 1, 35],
+    ["optimisers", "Optimisers and learning-rate schedules: SGD, momentum, Adam", 1, 30],
+    ["init-normalisation", "Initialisation, normalisation and residual connections", 2, 30],
+    ["training-debugging", "Regularising and debugging neural network training", 2, 25],
+  ],
+  "ai-pytorch": [
+    ["tensors-autograd", "Tensors, broadcasting and autograd", 2, 25],
+    ["training-loop", "The PyTorch training loop", 2, 25],
+    ["pytorch-performance", "GPU performance, mixed precision and memory", 3, 25],
+  ],
+  "ai-cnn": [
+    ["convolution-basics", "Convolution, padding, stride and pooling", 1, 25],
+    ["cnn-architectures", "CNN architectures: from LeNet to ResNet and ViT", 2, 25],
+    ["detection-segmentation", "Object detection and segmentation: IoU, NMS and anchors", 2, 30],
+  ],
+  "ai-rnn": [
+    ["rnn-lstm", "RNNs, LSTMs and GRUs", 2, 25],
+    ["seq2seq-attention", "Sequence-to-sequence, attention and beam search", 2, 25],
+  ],
+  "ai-embeddings": [
+    ["word2vec", "Word2vec and the idea of learned embeddings", 1, 25],
+    ["contrastive-embeddings", "Contrastive learning and sentence embeddings", 1, 30],
+    ["embedding-similarity", "Similarity, dimensions and embedding hygiene", 2, 20],
+  ],
+  "ai-recsys": [
+    ["collaborative-filtering", "Collaborative filtering and matrix factorisation", 1, 30],
+    ["two-tower-retrieval", "Two-tower retrieval and the recommendation funnel", 1, 30],
+    ["ranking-models", "Ranking models: learning to rank, CTR models and multi-task heads", 1, 35],
+    ["recsys-problems", "Cold start, exploration, position bias and feedback loops", 2, 30],
+  ],
+  "ai-tokenization": [
+    ["bpe-wordpiece", "BPE, WordPiece and SentencePiece", 1, 25],
+    ["tokenization-effects", "What tokenization changes: cost, languages, numbers and code", 2, 20],
+  ],
+  "ai-transformers": [
+    ["self-attention", "Self-attention step by step", 1, 35],
+    ["transformer-block", "Multi-head attention and the transformer block", 1, 30],
+    ["positional-encodings", "Positional encodings: sinusoidal, learned, RoPE and ALiBi", 2, 25],
+    ["transformer-families", "Encoder, decoder and encoder–decoder models", 1, 25],
+    ["efficient-attention", "Efficient attention: FlashAttention, MQA/GQA and long context", 2, 30],
+    ["mixture-of-experts", "Mixture of experts", 2, 25],
+  ],
+  "ai-llm-training": [
+    ["pretraining-data", "Pretraining data: collection, filtering, deduplication and mixtures", 2, 25],
+    ["scaling-laws", "Scaling laws and compute budgets", 1, 25],
+    ["distributed-training", "Distributed training: data, tensor and pipeline parallelism, ZeRO and FSDP", 2, 35],
+    ["training-memory", "Mixed precision and the memory of training", 2, 25],
+  ],
+  "ai-alignment": [
+    ["sft-chat", "Supervised fine-tuning and chat templates", 1, 25],
+    ["rlhf-ppo", "Reward models and RLHF with PPO", 2, 35],
+    ["dpo-preferences", "DPO and preference optimisation without RL", 2, 25],
+  ],
+  "ai-reasoning": [
+    ["chain-of-thought", "Chain of thought and test-time compute", 1, 25],
+    ["reasoning-rl", "Training reasoning with RL: verifiable rewards, GRPO and process rewards", 2, 30],
+  ],
+  "ai-fine-tuning": [
+    ["peft-vs-full", "Full fine-tuning vs parameter-efficient fine-tuning", 1, 25],
+    ["lora-qlora", "LoRA and QLoRA", 1, 25],
+    ["distillation", "Knowledge distillation", 2, 20],
+  ],
+  "ai-decoding": [
+    ["sampling-strategies", "Greedy, beam search and sampling", 1, 25],
+    ["structured-output", "Structured output and constrained decoding", 2, 20],
+    ["speculative-decoding", "Speculative decoding", 2, 20],
+  ],
+  "ai-inference": [
+    ["kv-cache", "The KV cache and inference memory", 1, 30],
+    ["llm-serving-engines", "Batching and serving engines: continuous batching and PagedAttention", 2, 30],
+    ["quantization", "Quantization: int8, int4 and FP8", 2, 25],
+    ["latency-cost", "Latency, throughput and cost of LLM serving", 1, 25],
+  ],
+  "ai-prompting": [
+    ["prompt-patterns", "Prompt patterns: instructions, examples, roles and reasoning", 1, 25],
+    ["prompts-production", "Prompts that survive production: versioning, testing and robustness", 2, 20],
+  ],
+  "ai-context-engineering": [
+    ["context-window", "Managing the context window", 1, 20],
+    ["assistant-memory", "Memory for assistants and long conversations", 2, 20],
+  ],
+  "ai-vector-search": [
+    ["ann-indexes", "Approximate nearest-neighbour indexes: IVF, HNSW and PQ", 2, 30],
+    ["vector-db-production", "Vector databases in production: filters, hybrid search and scale", 2, 25],
+  ],
+  "ai-rag": [
+    ["rag-pipeline", "The RAG pipeline: ingest, chunk, embed, retrieve, generate", 1, 30],
+    ["retrieval-quality", "Retrieval quality: hybrid search, reranking and query rewriting", 1, 30],
+    ["advanced-rag", "Advanced RAG: agentic, graph and multimodal retrieval", 2, 25],
+    ["rag-evaluation", "Evaluating RAG systems", 1, 25],
+  ],
+  "ai-agents": [
+    ["agent-loop-tools", "The agent loop and tool calling", 1, 30],
+    ["agent-planning-memory", "Planning, reflection and memory for agents", 2, 25],
+    ["multi-agent", "Multi-agent systems", 2, 20],
+    ["agent-reliability", "Reliable and safe agents: evals, sandboxes and permissions", 1, 25],
+  ],
+  "ai-multimodal": [
+    ["vit-clip", "Vision transformers and CLIP", 2, 25],
+    ["speech-models", "Speech: recognition and synthesis", 2, 25],
+    ["multimodal-llms", "Multimodal LLMs", 2, 25],
+  ],
+  "ai-generative-images": [
+    ["gans-vaes", "GANs and VAEs", 2, 25],
+    ["diffusion-models", "Diffusion models", 2, 30],
+  ],
+  "ai-evals": [
+    ["llm-eval-methods", "How LLMs are evaluated: benchmarks, judges and humans", 1, 30],
+    ["eval-pipelines", "Building an evaluation pipeline for an LLM product", 1, 25],
+  ],
+  "ai-safety": [
+    ["prompt-injection", "Prompt injection, jailbreaks and LLM security", 1, 30],
+    ["hallucination-guardrails", "Hallucination and guardrails", 1, 25],
+    ["fairness-privacy", "Fairness, privacy and responsible AI", 2, 25],
+  ],
+  "ai-production": [
+    ["model-serving", "Model serving patterns: batch, online, streaming and on-device", 1, 30],
+    ["monitoring-drift", "Monitoring, drift and retraining", 1, 25],
+    ["ml-pipelines", "ML pipelines, feature stores and reproducibility", 2, 25],
+  ],
+  "ai-system-design": [
+    ["ml-design-framework", "The ML system design framework", 1, 35],
+    ["genai-design-framework", "The GenAI system design framework", 1, 30],
+    ["ml-coding-round", "The ML coding round", 1, 25],
+  ],
 };
 
 /** Chapter id of each subtopic. */
