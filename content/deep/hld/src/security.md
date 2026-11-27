@@ -1,0 +1,748 @@
+=== authn
+blurb: Proving who a user or service is: sessions vs tokens, what a JWT is and what it isn't, OAuth 2.0 authorisation code flow with PKCE, OpenID Connect for login, refresh tokens and revocation, and service-to-service identity with mTLS.
+signals: Login for a web or mobile app | "Sign in with Google" | Stateless API authentication | Services calling each other securely | Token revocation and logout
+
+--- lesson
+:::words
+- **Authentication (authn)**: proving who you are. **Authorisation (authz)**: what you're allowed to do (next page).
+- **Session**: the server remembers that you logged in, referenced by a random ID in a cookie.
+- **Token**: a credential the client presents with each request instead of (or as well as) a session.
+- **JWT (JSON Web Token)**: a signed token carrying claims (user ID, expiry) that a server can verify without a database lookup.
+- **OAuth 2.0**: a standard for letting an app act on a user's behalf at another service (delegated access), without the user's password.
+- **OIDC (OpenID Connect)**: a layer on OAuth 2.0 that tells the app who the user is (an ID token): "Sign in with Google".
+- **PKCE**: an OAuth extension that stops a stolen authorisation code from being used.
+- **mTLS**: mutual TLS, where both client and server present certificates.
+:::
+
+## The problem in plain words
+
+Every request must answer "who is this?". Asking for a password on every request is impossible, so after one strong check (password, passkey, Google login) the user gets a **credential** to present afterwards: a session cookie or a token. The design choices are where that credential's truth lives (in a server-side store, or inside a signed token), how long it lasts, how it can be revoked, and how third-party apps and other services prove identity safely.
+
+:::eli5
+At a festival you show your ID once at the gate and get a wristband. Staff inside don't check your ID again; they check the wristband. A paper list at the gate (a session) can be updated instantly ("this wristband is cancelled"); a tamper-proof stamped wristband (a token) needs no list, but can't be cancelled until it expires.
+:::
+
+## Sessions vs tokens
+
+**Server-side sessions**: after login, the server stores `session_id → user` (in a database or Redis) and sets a cookie with the random ID (`HttpOnly`, `Secure`, `SameSite`). Each request looks the session up. Revocation is instant (delete the row); the cost is a lookup per request and a shared session store.
+
+**Self-contained tokens (JWT)**: the server signs claims (`sub: user42, exp: 10:30, scope: read`) with a private key; any service verifies the signature with the public key, **no lookup**. Ideal for many services and gateways verifying cheaply. The cost: a token can't be revoked before it expires (unless you add a denylist, which brings back the lookup), so access tokens are **short-lived** (minutes) and paired with a **refresh token** (long-lived, stored server-side, revocable) to get new ones.
+
+Edit a JWT and see why tampering fails:
+
+
+A JWT is **signed, not encrypted**: anyone can read its contents (base64), so never put secrets in it.
+
+## OAuth 2.0 authorisation code flow with PKCE
+
+The standard for "let this app access my Google Drive" and, with OIDC, for "Sign in with Google":
+1. The app generates a random **code verifier** and sends its hash (the **code challenge**) when redirecting the user to the authorisation server.
+2. The user logs in and consents there (the app never sees the password).
+3. The authorisation server redirects back with a short-lived **authorisation code**.
+4. The app exchanges the code **plus the original verifier** for an **access token** (and refresh token; with OIDC also an **ID token** identifying the user).
+5. The app calls the API with the access token.
+
+PKCE ensures that an attacker who intercepts the code (a malicious app on the same phone, a leaked redirect) can't exchange it, because they don't have the verifier. It's recommended for all clients today. Step through the flow and the stolen-code attack:
+
+
+## Service-to-service identity
+
+Inside a system, services authenticate each other with **mTLS** (each workload has a certificate issued by an internal CA; SPIFFE IDs; meshes automate it) or with signed service tokens. Google's internal system (ALTS, part of BeyondCorp/BeyondProd thinking) follows the same idea: authenticate every call, never trust the network location alone (zero trust).
+
+## Security basics an interviewer expects you to mention
+
+- Store passwords only as slow, salted hashes (bcrypt, scrypt, Argon2); better, support passkeys (WebAuthn) and MFA.
+- Rate-limit login attempts per account and IP; lock out or add CAPTCHAs after repeated failures.
+- Cookies: `HttpOnly` (no JavaScript access), `Secure` (HTTPS only), `SameSite` (CSRF protection).
+- Short-lived access tokens, rotating refresh tokens, revocation on logout and password change.
+
+## Interview angles
+
+- "Sessions or JWTs?" Sessions for simple web apps with instant revocation; short-lived JWTs + refresh tokens for many services/APIs verifying locally.
+- "How does Sign in with Google work?" OIDC: authorisation code flow with PKCE; ID token proves identity; your app creates its own session.
+- "How do you log a user out everywhere?" Revoke refresh tokens and sessions; access tokens expire within minutes (or a denylist for urgent cases).
+
+--- revise
+### Credentials
+? Session vs JWT in one line each? :: Session: random ID referencing server-side state (instant revocation, lookup per request). JWT: signed self-contained claims (no lookup, hard to revoke).
+? Why are access tokens short-lived? :: Signed tokens can't be revoked before expiry; short lifetimes bound the damage.
+? Role of a refresh token? :: A long-lived, server-side, revocable credential used to obtain new access tokens.
+? Is a JWT encrypted? :: No, only signed: anyone can read it; never put secrets in it.
+
+### OAuth / OIDC
+? OAuth 2.0 vs OIDC? :: OAuth delegates access (access tokens); OIDC adds identity (ID token) for login.
+? Authorisation code flow steps? :: Redirect to authorisation server → user logs in/consents → code back to app → app exchanges code (+ verifier) for tokens → calls API.
+? What does PKCE prevent? :: A stolen authorisation code being exchanged, since the attacker lacks the code verifier.
+
+### Practice
+? Service-to-service authentication? :: mTLS with workload certificates (or signed service tokens): zero trust.
+? How to store passwords? :: Slow salted hashes (bcrypt/scrypt/Argon2); prefer passkeys + MFA.
+? Cookie flags? :: HttpOnly, Secure, SameSite.
+
+--- notes
+## Sessions
+Random ID cookie → server store (DB/Redis); instant revocation; lookup per request.
+## Tokens (JWT)
+header.payload.signature (base64); signed with private key, verified with public key (JWKS).
+No lookup; not encrypted; short-lived access (minutes) + revocable refresh token; denylist only if needed.
+## OAuth 2.0 + PKCE
+Verifier → challenge in redirect → login/consent at auth server → code → exchange code + verifier → access/refresh tokens.
+PKCE stops stolen-code exchange; recommended for all clients.
+## OIDC
+Adds ID token (who the user is); "Sign in with Google"; app then creates its own session.
+## Services
+mTLS (workload certs, SPIFFE, mesh); zero trust (BeyondProd, ALTS).
+## Basics
+bcrypt/scrypt/Argon2; passkeys/WebAuthn; MFA; login rate limits; HttpOnly/Secure/SameSite; rotate refresh tokens; revoke on logout/password change.
+
+--- doubts
+Q: If JWTs can't be revoked, why use them?
+A: Because verifying them needs no network call, so hundreds of services and gateways can authenticate millions of requests per second independently. With access tokens valid for 5–15 minutes and revocable refresh tokens, the window in which a revoked user can still act is short, which is acceptable for most systems; truly urgent cases use a small denylist.
+
+Q: Why does OAuth need an authorisation code at all? Why not return the token directly?
+A: The old "implicit" flow did that, putting tokens in browser URLs where they leaked into history and logs. The code is short-lived and useless on its own; it's exchanged over a direct back-channel (with PKCE) for the tokens, which never appear in the browser's address bar.
+
+Q: What's the difference between OAuth scopes and authorisation in my app?
+A: Scopes say what the app is allowed to do on the user's behalf at a provider ("read your calendar"). Your own app still decides what each user may do to each resource (the next page). An access token with scope `read` doesn't mean the user may read every document.
+
+--- exercises
+[design] Design authentication for a mobile app with a backend of 30 microservices.
+A: Login via OIDC (your own identity service, or Sign in with Google) using authorisation code + PKCE from the app. The identity service issues a short-lived access token (JWT, 10 min, signed with a rotating key published as JWKS) and a refresh token (stored server-side, rotated on each use, bound to the device). The API gateway verifies JWTs locally and passes the user ID to services in a trusted header; services authenticate each other with mTLS via the mesh. Logout and password change revoke refresh tokens.
+
+[break] A team puts the user's email, role and a password-reset secret into a JWT and sets its expiry to 30 days. What's wrong?
+A: JWTs are readable by anyone (only signed), so the reset secret leaks; 30-day tokens can't be revoked (a fired admin keeps their role for a month); roles in long-lived tokens go stale. Fix: no secrets in tokens, short expiry (minutes) with refresh tokens, and look up fast-changing permissions server-side or re-issue tokens on change.
+
+[choose] A simple internal admin web app with 200 users and one server. Sessions or JWTs?
+A: Server-side sessions with secure cookies: simpler, instant revocation, and one server makes the lookup trivial. JWTs add complexity (key rotation, refresh flows) without benefit at this scale.
+
+--- pitfalls
+- Long-lived JWTs with no revocation strategy
+- Secrets or sensitive data inside JWTs
+- Implicit OAuth flow or no PKCE
+- Plain or fast-hashed passwords (MD5, SHA-1)
+- Trusting the network instead of authenticating service calls
+
+--- quiz
+Q: The main advantage of a JWT over a server-side session is…
+- Instant revocation
+- Encryption of contents
+- *Verification without a lookup, by any service holding the public key
+- Smaller cookies
+W: Signatures can be checked locally.
+Q: PKCE protects against…
+- Password guessing
+- *An intercepted authorisation code being exchanged by an attacker
+- Expired tokens
+- Slow logins
+W: Only the holder of the code verifier can exchange the code.
+Q: OpenID Connect adds what to OAuth 2.0?
+- Encryption
+- *An ID token that says who the user is
+- Rate limiting
+- Refresh tokens
+W: OAuth alone is about delegated access, not identity.
+Q: Why pair short-lived access tokens with refresh tokens?
+- To save bandwidth
+- *Access tokens can't be revoked early, so they're kept short; revocable refresh tokens get new ones
+- Browsers require it
+- For PKCE
+W: Bounded exposure with good usability.
+
+--- sources
+- paper :: RFC 6749: The OAuth 2.0 Authorization Framework :: IETF :: https://www.rfc-editor.org/rfc/rfc6749
+- paper :: RFC 7636: Proof Key for Code Exchange (PKCE) :: IETF :: https://www.rfc-editor.org/rfc/rfc7636
+- paper :: RFC 7519: JSON Web Token (JWT) :: IETF :: https://www.rfc-editor.org/rfc/rfc7519
+- article :: OpenID Connect Core 1.0 :: OpenID Foundation :: https://openid.net/specs/openid-connect-core-1_0.html
+- article :: BeyondProd: a new approach to cloud-native security :: Google :: https://cloud.google.com/docs/security/beyondprod
+- article :: OWASP Password Storage Cheat Sheet :: OWASP :: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+
+=== authz
+blurb: Deciding what an authenticated user may do: role-based (RBAC), attribute-based (ABAC) and relationship-based access control, Google's Zanzibar model of relation tuples behind Drive and YouTube sharing, and where authorisation checks belong in a design.
+signals: Sharing documents with users and groups | Admin, editor and viewer roles | Multi-tenant permissions | "Can user X see resource Y?" at scale
+prereq: authn
+
+--- lesson
+:::words
+- **Authorisation (authz)**: deciding whether an authenticated identity may perform an action on a resource.
+- **RBAC (role-based access control)**: permissions attached to roles (admin, editor, viewer); users get roles.
+- **ABAC (attribute-based access control)**: decisions from attributes of the user, resource and context (department, region, time).
+- **ReBAC (relationship-based access control)**: decisions from relationships (owner of, member of, parent folder of).
+- **Relation tuple**: a stored fact like `doc:readme#viewer@user:alice` ("Alice is a viewer of readme").
+- **ACL (access control list)**: a list on a resource of who may do what.
+:::
+
+## The problem in plain words
+
+Logging in tells you who someone is. Then every action needs a second question: **may this person do this to this thing?** A blog needs "only authors edit their posts"; a company app needs "managers approve expenses for their team"; Google Drive needs "anyone in the Marketing group, or anyone with the link, can view this doc, inherited from its folder". Each step up in sharing richness needs a richer model, and at Google's scale the check itself becomes a globally distributed system.
+
+:::eli5
+A building's key cards. Simple version: cards by job (cleaner, manager) open certain doors (roles). Richer: "anyone in the finance team, during office hours, in this country" (attributes). Richest: "anyone the room's owner has invited, or anyone invited to the floor the room is on" (relationships).
+:::
+
+## RBAC
+
+Define roles with permissions (`editor: read, write`), assign roles to users (optionally per project or tenant: "Alice is editor in project 7"). Simple to understand and audit; the default for admin consoles and SaaS products. It struggles with per-object sharing ("Alice can edit *this* document") and causes "role explosion" when every special case becomes a new role.
+
+## ABAC
+
+Write policies over attributes: "allow `read` if `user.department == resource.department` and `request.country in user.allowed_countries`". Very flexible for enterprise rules and data residency; harder to reason about ("who can see this file?" requires evaluating policies for everyone). Policy engines like Open Policy Agent (OPA) or Google's IAM Conditions evaluate them.
+
+## ReBAC and Zanzibar
+
+Google's **Zanzibar** (2019 paper) is the authorisation system behind Drive, YouTube, Photos, Calendar and Cloud. Permissions are stored as **relation tuples**:
+
+- `doc:plan#owner@user:alice`
+- `doc:plan#parent@folder:marketing`
+- `folder:marketing#viewer@group:mkt#member`
+- `group:mkt#member@user:bob`
+
+A **namespace configuration** defines how relations combine: an editor is also a viewer; a viewer of a folder is a viewer of its documents. A check ("is Bob a viewer of doc:plan?") walks this graph: doc:plan's parent is folder:marketing; its viewers include group:mkt's members; Bob is a member, so **yes**.
+
+Try checks against a small set of tuples:
+
+
+Scale and consistency matter: Zanzibar stores trillions of tuples in Spanner and answers millions of checks per second with low latency (caching, a denormalised group index called Leopard). It uses **zookies** (consistency tokens) to avoid the "new enemy problem": after you remove someone's access and then add sensitive content, the check for that content must see the removal. Open-source descendants include SpiceDB, OpenFGA and Ory Keto.
+
+## Where checks belong
+
+- **At the gateway**: coarse checks (is this token valid, does it have the scope for this API).
+- **In the service that owns the data**: fine-grained checks per resource ("may user 7 edit doc 42?"), calling the authorisation service or evaluating local policies.
+- **In queries**: filter lists by permission ("documents I can see") efficiently: either ask the authorisation system for the set of accessible IDs, or store an access-control field you can filter on; checking every row one by one doesn't scale.
+- **Deny by default**, log decisions for audit, and make permission changes take effect promptly.
+
+## Interview angles
+
+- "Design sharing for a Google Docs-like product." ReBAC with relation tuples (owner/editor/viewer, groups, folder inheritance, link sharing), a check API, consistency tokens, caching.
+- "RBAC or ABAC?" RBAC for role-shaped permissions; ABAC for contextual enterprise rules; ReBAC for per-object sharing.
+- "How do you list everything a user can access?" Precomputed/denormalised access indexes or reverse lookups, not per-object checks.
+
+--- revise
+### Models
+? RBAC? :: Permissions grouped into roles; users get roles (optionally per project/tenant).
+? RBAC's weakness? :: Per-object sharing and role explosion.
+? ABAC? :: Policies over user, resource and context attributes (OPA, IAM Conditions).
+? ReBAC? :: Decisions from relationships (owner of, member of, parent folder of).
+
+### Zanzibar
+? What is a relation tuple? :: A stored fact object#relation@subject, e.g. doc:plan#viewer@user:alice.
+? How is a check answered? :: Walk relations per the namespace config: doc → parent folder → viewers → group members.
+? What is the "new enemy problem"? :: A check missing a recent permission removal; zookies (consistency tokens) prevent it.
+? Zanzibar's storage? :: Spanner, with caching and a denormalised group index (Leopard).
+
+### Placement
+? Gateway vs service checks? :: Gateway: token validity and scopes. Service: fine-grained per-resource decisions.
+? How to list accessible items efficiently? :: Reverse lookups or denormalised access indexes, not per-row checks.
+
+--- notes
+## RBAC
+Roles → permissions; users → roles (scoped per project/tenant).
+Simple, auditable; poor for per-object sharing; role explosion.
+## ABAC
+Attribute policies (user, resource, environment); OPA, IAM Conditions; flexible, hard to answer "who can see X?".
+## ReBAC / Zanzibar (Google 2019)
+Tuples: object#relation@subject (users, groups#member, folders).
+Namespace config: editor ⊂ viewer; folder viewers → document viewers.
+Checks walk the relationship graph.
+Spanner-backed; trillions of tuples; millions of checks/s; Leopard index; caching.
+Zookies: consistency tokens against the new-enemy problem.
+SpiceDB, OpenFGA, Ory Keto.
+## Placement
+Gateway: authn + scopes. Owning service: per-resource checks.
+Listing: reverse index / access-filtered queries.
+Deny by default; audit logs; prompt revocation.
+
+--- doubts
+Q: Isn't ReBAC just RBAC with more roles?
+A: RBAC attaches roles to users globally or per project; ReBAC attaches relationships to individual objects and lets them chain (group membership, folder inheritance). "Bob can view this doc because he's in a group that can view its parent folder" is natural in ReBAC and awkward in RBAC.
+
+Q: Why does consistency matter for permissions?
+A: Because of ordering: if Alice removes Bob from a document and then adds a confidential paragraph, a stale permission check might still let Bob read the new paragraph. Zanzibar's zookies let the content write record "as of this permission state", so later checks are evaluated at least that fresh.
+
+Q: Should every service call the central authorisation service on every request?
+A: For fine-grained object permissions, typically yes (it's built for low latency with caching), but checks are often batched, cached briefly, or replaced by local evaluation of signed policies for hot paths. Coarse role checks can be done from token claims.
+
+--- exercises
+[design] Model permissions for Google Drive-style sharing: users, groups, folders, documents, "anyone with the link", and owner/editor/commenter/viewer.
+A: Tuples: doc#owner@user, doc#editor@user|group#member, doc#parent@folder, folder#viewer@group#member, doc#viewer@user:* (link sharing as a wildcard subject, with the link token as a condition). Namespace config: owner ⊂ editor ⊂ commenter ⊂ viewer; folder roles inherit to children via parent. Check API: can(user, action, doc). List API: documents a user can view via reverse lookups and a per-user access index. Consistency tokens on writes; audit log of sharing changes.
+
+[choose] An internal HR tool: employees see their own records, managers see their reports, HR sees everyone in their country. Which model?
+A: Mostly ABAC (country of the HR user vs the employee's country) combined with ReBAC-style relationships (manager-of chains) and RBAC (HR role). A policy engine evaluating "role = HR and user.country = record.country, or user = record.employee, or user in record.manager_chain" fits well.
+
+[break] A team checks document permissions by loading each search result and calling the permission service per result. Search pages time out for users with large result sets. Why, and what's better?
+A: N permission checks per query (hundreds of network calls) add up. Better: pre-filter at the index (store an access-control field or principal IDs on each document and filter in the search query), or ask the authorisation system once for the set of document IDs the user can access within the candidate set (batched checks), then post-filter with care.
+
+--- pitfalls
+- Authorisation only at the gateway (no per-resource checks in services)
+- Role explosion instead of relationship-based sharing
+- Per-row permission checks when listing large result sets
+- Stale permission caches ignoring revocations
+- Allow-by-default policies
+
+--- quiz
+Q: Which model naturally expresses "Bob can view this doc because his group can view its folder"?
+- RBAC
+- *ReBAC (relationship-based)
+- ACL on users
+- ABAC only
+W: Relationships chain through groups and parents.
+Q: In Zanzibar, permissions are stored as…
+- Roles per user
+- *Relation tuples like doc:x#viewer@user:y
+- Encrypted files
+- JWT claims
+W: Plus a namespace config describing how relations combine.
+Q: Zanzibar's zookies solve…
+- Performance
+- *The "new enemy" problem of checks missing recent permission changes
+- Login
+- Caching
+W: Checks are evaluated at least as fresh as the protected content.
+Q: Fine-grained "may user 7 edit doc 42" checks belong…
+- Only at the gateway
+- *In the service that owns the document (via an authorisation system)
+- In the browser
+- In DNS
+W: The owning service knows the resource.
+
+--- sources
+- paper :: Zanzibar: Google's Consistent, Global Authorization System (USENIX ATC 2019) :: Pang et al., Google :: https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/
+- article :: NIST: Role-Based Access Control :: NIST :: https://csrc.nist.gov/projects/role-based-access-control
+- article :: Open Policy Agent documentation :: OPA (CNCF) :: https://www.openpolicyagent.org/docs/latest/
+- tool :: OpenFGA (open-source Zanzibar-inspired authorisation) :: OpenFGA Authors (CNCF) :: https://openfga.dev/docs/fga
+
+=== encryption
+blurb: Protecting data in transit and at rest: TLS everywhere, encryption at rest with envelope encryption and a key management service, key rotation, end-to-end encryption, and hashing vs encryption vs signing, explained without cryptography maths.
+signals: "How do you protect user data?" | Storing sensitive data (payments, health, messages) | Key rotation and compromise | End-to-end encrypted messaging
+prereq: authn
+
+--- lesson
+:::words
+- **Encryption**: scrambling data with a key so only holders of the right key can read it.
+- **Symmetric encryption**: the same key encrypts and decrypts (AES). **Asymmetric**: a public key encrypts or verifies, a private key decrypts or signs (RSA, elliptic curves).
+- **Data encryption key (DEK)**: the key that encrypts the actual data. **Key encryption key (KEK)**: a key that encrypts other keys.
+- **KMS (key management service)**: a service that stores master keys (often in hardware security modules) and performs encryption with them without ever revealing them.
+- **Hash**: a one-way fingerprint of data; can't be reversed.
+- **End-to-end encryption (E2EE)**: only the communicating users can decrypt; the service in the middle can't.
+:::
+
+## The problem in plain words
+
+Data is exposed in two places: **moving** across networks (anyone on the path could read or alter it) and **sitting** on disks and backups (a stolen disk, a misconfigured bucket, a curious insider). Encryption protects both, but encryption only moves the problem to the **keys**: whoever holds the key holds the data. Most of the engineering is about managing keys safely: who can use them, how they're rotated, and how little damage one leaked key can do.
+
+:::eli5
+Your valuables go in a box locked with a padlock (encrypting data). The padlock's key goes into a bank's safe-deposit box that only the bank can open, and the bank writes down every time someone asks to use it (a key management service). Lose the box: useless without the key. Lose a padlock key: replace that one padlock.
+:::
+
+## In transit
+
+**TLS everywhere**: between users and your edge (HTTPS), and between internal services (mTLS), since internal networks are not trusted (zero trust). Use modern versions (TLS 1.3), automate certificate issuance and rotation (short-lived certificates).
+
+## At rest: envelope encryption
+
+Encrypting terabytes directly with a master key held in a KMS would mean sending all that data to the KMS. Instead, **envelope encryption**:
+1. Generate a random **DEK** locally and encrypt the data with it (fast, AES).
+2. Ask the KMS to encrypt the DEK with a **KEK** that never leaves the KMS.
+3. Store the **encrypted DEK next to the encrypted data**; throw away the plain DEK.
+4. To read: send the encrypted DEK to the KMS (which checks permissions and logs the request), get the plain DEK back, decrypt the data.
+
+Step through it:
+
+
+Benefits: master keys never leave hardware security modules; every key use is permission-checked and **audited**; **rotation** of the KEK means re-encrypting only small DEKs, not all the data; deleting a key "crypto-shreds" all data encrypted under it (useful for deletion requirements). Google Cloud encrypts all data at rest by default this way, with customer-managed keys (CMEK) as an option.
+
+## Hashing, encryption and signing are different
+
+| Tool | Reversible? | Used for |
+|---|---|---|
+| **Hash** (SHA-256) | No | Integrity checks, content addressing |
+| **Slow salted hash** (Argon2, bcrypt) | No | Storing passwords |
+| **Symmetric encryption** (AES-GCM) | Yes, with the key | Bulk data at rest and in transit |
+| **Asymmetric encryption** | Yes, with the private key | Key exchange, small secrets |
+| **Signature** | Verifiable, not secret | Authenticity of tokens, software, messages |
+
+## End-to-end encryption
+
+In E2EE messaging (Signal protocol, used by WhatsApp and Google Messages RCS chats), keys live only on users' devices; the server relays ciphertext it can't read. Design consequences: the server can't search, moderate content by reading it, or restore history without device-held keys; multi-device needs per-device keys and key distribution; backups need user-held keys.
+
+## Interview angles
+
+- "How do you protect user data?" TLS in transit (mTLS internally); encryption at rest with envelope encryption via KMS; least-privilege key access with audit; rotation; field-level encryption for the most sensitive fields.
+- "A database backup leaked. What's the damage?" Encrypted with keys in a KMS the attacker can't use: ciphertext only.
+- "What does E2EE change in the design?" Server can't read content: no server-side search or moderation of content; key management on devices.
+
+--- revise
+### Transit and rest
+? Encryption in transit? :: TLS to the edge and mTLS between internal services (zero trust).
+? Envelope encryption steps? :: Encrypt data with a local DEK; KMS encrypts the DEK with a KEK; store encrypted DEK with data; KMS decrypts the DEK to read.
+? Why envelope encryption? :: Master keys never leave the KMS/HSM; every use is checked and audited; rotation re-encrypts only DEKs.
+? Crypto-shredding? :: Deleting a key makes all data encrypted under it unreadable.
+
+### Tools
+? Hash vs encryption? :: Hashing is one-way (integrity, passwords with slow salted hashes); encryption is reversible with a key.
+? What is a signature for? :: Proving authenticity/integrity (tokens, software), not secrecy.
+
+### E2EE
+? What does end-to-end encryption mean? :: Only users' devices hold the keys; the server relays unreadable ciphertext.
+? Design costs of E2EE? :: No server-side search or content moderation by reading; device key management; user-held backup keys.
+
+--- notes
+## In transit
+HTTPS to users; mTLS internally; TLS 1.3; automated short-lived certificates.
+## At rest: envelope
+DEK (AES-GCM, local) encrypts data; KEK in KMS/HSM encrypts DEK; store wrapped DEK with data.
+Read: KMS unwraps DEK (IAM-checked, audited) → decrypt.
+Rotate KEK cheaply; crypto-shred by deleting keys.
+GCP: default at-rest encryption; CMEK for customer-managed keys.
+## Tools
+SHA-256: integrity. Argon2/bcrypt/scrypt: passwords. AES-GCM: bulk. Asymmetric: key exchange, small secrets. Signatures: authenticity.
+## E2EE
+Signal protocol (WhatsApp, Google Messages); keys on devices; server sees ciphertext; no server search/moderation of content; multi-device keys; user-held backups.
+## Practice
+Least privilege on key use; audit logs; field-level encryption for most sensitive fields; never roll your own crypto.
+
+--- doubts
+Q: If the cloud provider encrypts everything at rest anyway, why does it matter in a design?
+A: Default encryption protects against stolen disks and many infrastructure risks. Designs add **who can use the keys** (separate keys per tenant or data class, least privilege, audit), **application-level or field-level encryption** for the most sensitive data (so a compromised database user or a leaked query result still yields ciphertext), and key-based deletion.
+
+Q: What happens if the KMS is down?
+A: New reads that need DEKs unwrapped fail, so services cache unwrapped DEKs in memory for a limited time and KMS services are themselves highly replicated. It's a critical dependency: design for its availability and latency like any other.
+
+Q: Why "never roll your own crypto"?
+A: Cryptography fails in subtle ways (nonce reuse, timing leaks, padding oracles) that look fine in tests. Use well-reviewed libraries (Tink at Google, libsodium) and standard protocols (TLS, Signal), and keep your design work in key management and access control.
+
+--- exercises
+[design] Store users' government ID numbers for a fintech app so that a leaked database backup or an over-privileged analyst can't read them.
+A: Field-level envelope encryption: the service encrypts the ID with a DEK (AES-GCM) before writing; DEKs are wrapped by a KEK in KMS that only the identity-verification service may use; store a separate keyed hash (HMAC) of the ID for exact-match lookups without decryption. Analysts and backups see ciphertext. Key usage is audited; KEK rotated yearly; deleting a user's DEK crypto-shreds their ID.
+
+[break] An engineer encrypts files with a single AES key hard-coded in the application config, committed to the repository. What's wrong and how to fix it?
+A: The key is exposed to anyone with repository or config access, can't be rotated without redeploying and re-encrypting everything, has no audit trail, and one leak exposes all data. Fix: envelope encryption with a KMS-held KEK, per-object or per-tenant DEKs, IAM-restricted and audited key use, and rotation.
+
+[choose] A messaging startup wants E2EE but also server-side spam filtering of message content. Can it have both?
+A: Not by reading content on the server: with E2EE the server can't see plaintext. Options: client-side filtering on devices, user reporting (the reporting user forwards decrypted messages), and metadata-based signals (rates, account age, graph patterns) on the server. The product must accept that trade-off explicitly.
+
+--- pitfalls
+- Hard-coded or shared encryption keys
+- Encrypting with a master key directly instead of envelope encryption
+- Fast hashes (MD5/SHA-1) for passwords
+- Assuming internal networks are safe (no mTLS)
+- Designing your own cryptographic algorithms
+
+--- quiz
+Q: In envelope encryption, what does the KMS encrypt?
+- All the data
+- *The data encryption key
+- The password hashes
+- The TLS certificate
+W: Data is encrypted locally with a DEK; the KMS wraps the DEK.
+Q: Which is right for storing passwords?
+- AES encryption
+- SHA-256
+- *A slow, salted hash like Argon2 or bcrypt
+- Base64
+W: Passwords should not be reversible, and hashing should be slow to resist guessing.
+Q: A signature provides…
+- Secrecy
+- *Authenticity and integrity
+- Compression
+- Key rotation
+W: Anyone can read signed data; tampering is detectable.
+Q: End-to-end encryption means…
+- TLS between services
+- *Only the users' devices can decrypt; the server relays ciphertext
+- Encryption at rest
+- Signed tokens
+W: The service operator can't read the content.
+
+--- sources
+- article :: Google Cloud: default encryption at rest and envelope encryption :: Google Cloud :: https://cloud.google.com/docs/security/encryption/default-encryption
+- article :: Cloud KMS: envelope encryption :: Google Cloud :: https://cloud.google.com/kms/docs/envelope-encryption
+- tool :: Tink cryptographic library :: Google :: https://developers.google.com/tink
+- article :: The Signal Protocol: technical documentation :: Signal :: https://signal.org/docs/
+- paper :: RFC 8446: TLS 1.3 :: IETF :: https://www.rfc-editor.org/rfc/rfc8446
+
+=== multi-tenancy
+blurb: Serving many customers from shared infrastructure safely: isolation models from shared tables to dedicated stacks, tenant IDs and data isolation, the noisy-neighbour problem with quotas and fair scheduling, tenant-aware sharding, and per-tenant keys and residency.
+signals: Designing a SaaS product (Slack, Shopify, Google Workspace) | One big customer slows everyone | Enterprise customers asking for isolation | Per-customer limits and billing
+prereq: authz
+
+--- lesson
+:::words
+- **Tenant**: one customer organisation using a shared product (a company on Slack, a shop on Shopify).
+- **Multi-tenancy**: serving many tenants from one system while keeping their data and performance separate.
+- **Isolation model**: how much infrastructure tenants share: everything (pooled), some parts, or nothing (siloed).
+- **Noisy neighbour**: one tenant's heavy usage degrading others.
+- **Quota**: a per-tenant limit on resource use.
+- **Cell**: an independent copy of the whole stack serving a subset of tenants.
+:::
+
+## The problem in plain words
+
+A SaaS product serves thousands of organisations from shared servers and databases, which is what makes it cheap. But tenants must never see each other's data, one huge tenant mustn't slow down everyone else, some enterprise customers demand their own isolated environment or their own encryption keys, and costs must be attributable per tenant. Multi-tenancy is the set of choices that balance sharing (efficiency) against separation (safety and fairness).
+
+:::eli5
+An apartment building: everyone shares the walls, plumbing and lifts (cheap), but each flat has its own locked door, and the building limits how much water one flat can use at once so the shower upstairs doesn't go cold. A very wealthy tenant might rent a whole separate house instead.
+:::
+
+## Isolation models
+
+| Model | What's shared | Pros | Cons |
+|---|---|---|---|
+| **Pooled** (shared tables with a tenant_id column) | Everything | Cheapest, simplest ops, easy onboarding | Strongest risk of data leaks (a missing WHERE tenant_id) and noisy neighbours |
+| **Bridge** (schema or database per tenant, shared servers) | Compute, maybe clusters | Clearer data separation, per-tenant backup/restore | More objects to manage; migrations across many schemas |
+| **Siloed** (dedicated stack or cell per tenant) | Nothing (or control plane only) | Strongest isolation, custom versions, compliance | Most expensive; operational overhead at scale |
+
+Real products mix them: pooled for small tenants, dedicated cells for the largest or most regulated.
+
+## Data isolation in a pooled model
+
+- Every row carries a `tenant_id`; every query filters on it. Enforce it **structurally**, not by remembering: database row-level security policies, a data-access layer that injects the tenant from the authenticated context, or partition/shard keys starting with tenant_id.
+- Authentication tokens carry the tenant; services never accept tenant IDs from request bodies without checking them against the token.
+- Caches, search indexes, object storage paths and message topics are keyed or prefixed by tenant too.
+- Tests that try cross-tenant access are part of the build.
+
+## Performance isolation (noisy neighbours)
+
+- **Per-tenant rate limits and quotas** at the gateway and in expensive services.
+- **Fair scheduling**: per-tenant queues for background jobs so one tenant's 10-million-row import doesn't block everyone's emails (weighted fair queueing).
+- **Shard by tenant** so heavy tenants can be moved to their own shards; watch for a single giant tenant outgrowing one shard (sub-partition it).
+- **Cell-based architecture**: many independent stacks ("cells"), each serving a set of tenants; a bad deploy or overload is contained to one cell's tenants (blast radius), and capacity grows by adding cells.
+
+## Enterprise requirements
+
+Customer-managed encryption keys (per-tenant KEKs; revoking the key makes the data unreadable), data residency (the tenant's data stays in a region: place its cell or shard there), audit logs per tenant, per-tenant SSO configuration, and usage metering for billing.
+
+## Interview angles
+
+- "Design a multi-tenant SaaS backend." Pooled by default with tenant_id everywhere (enforced by the data layer/RLS), tenant-keyed sharding, per-tenant quotas and fair queues, cells for blast radius, dedicated cells for large/regulated tenants.
+- "How do you prevent one tenant reading another's data?" Tenant from the auth token, mandatory tenant filtering enforced structurally, keyed caches and storage, tests.
+- "One customer's import makes the app slow for everyone." Noisy neighbour: per-tenant limits, separate queues, isolation of that tenant's workload.
+
+--- revise
+### Models
+? Pooled, bridge, siloed? :: Shared tables with tenant_id; separate schema/database on shared servers; dedicated stack per tenant.
+? Main risk of pooled? :: Cross-tenant leaks and noisy neighbours.
+? Why mix models? :: Pooled for the many small tenants; dedicated cells for the largest or regulated ones.
+
+### Isolation
+? How to enforce tenant filtering? :: Structurally: row-level security, a data layer injecting tenant from the auth context, tenant-prefixed keys.
+? Where must tenant scoping also apply? :: Caches, search indexes, object paths, topics, logs.
+? Noisy-neighbour defences? :: Per-tenant rate limits/quotas, fair per-tenant job queues, tenant-keyed sharding, cells.
+? Cell-based architecture? :: Independent full stacks each serving a subset of tenants, limiting blast radius.
+
+### Enterprise
+? Customer-managed keys? :: A per-tenant KEK the customer controls; revoking it makes their data unreadable.
+
+--- notes
+## Models
+Pooled (tenant_id): cheapest; leak and noisy-neighbour risk.
+Bridge (schema/DB per tenant): clearer separation; many objects to migrate.
+Siloed (dedicated stack/cell): strongest; most expensive.
+Mix: pool small tenants, silo big/regulated ones.
+## Data isolation
+Tenant from token, never trusted from body.
+RLS / data-access layer / tenant-first keys.
+Tenant-scoped caches, indexes, storage paths, topics.
+Cross-tenant tests in CI.
+## Performance isolation
+Per-tenant quotas and rate limits.
+Weighted fair queues for background work.
+Shard by tenant; move or sub-partition giants.
+Cells limit blast radius; scale by adding cells.
+## Enterprise
+CMEK per tenant · data residency via cell/shard placement · per-tenant audit logs and SSO · usage metering.
+
+--- doubts
+Q: Is pooled multi-tenancy safe enough for enterprise customers?
+A: It can be, with structural enforcement (row-level security, tenant-scoped keys), per-tenant encryption keys, audits and strong testing; many large SaaS products pool most data. Some customers (government, finance) still contractually require dedicated infrastructure, which is why products offer a siloed tier.
+
+Q: What's the difference between a shard and a cell?
+A: A shard splits one database's data; a cell is a complete, independent copy of the whole stack (services, databases, queues) for a set of tenants. Cells limit the blast radius of bugs, bad deploys and overloads to the tenants in that cell, and let you scale out by adding cells.
+
+Q: How do you handle a tenant that's bigger than one shard?
+A: Sub-partition its data by a second key (tenant_id, user_id or tenant_id, time), give it a dedicated cell, or both. Design keys so tenant_id leads (for co-location and routing) but isn't the only partitioning dimension for the giants.
+
+--- exercises
+[design] A project-management SaaS with 50,000 small companies and 20 enterprises (one with 300,000 users). Choose the isolation model and sharding.
+A: Pooled cells for small companies (each cell serving a few thousand tenants, data sharded by tenant_id inside the cell). Enterprises in dedicated cells (the 300k-user one sub-partitioned by (tenant_id, project_id)), optionally with customer-managed keys and residency. A global directory maps tenant → cell; the gateway routes by tenant from the token. Per-tenant quotas and fair background queues everywhere.
+
+[break] A support engineer's admin tool queries "SELECT * FROM invoices WHERE id = ?" with an ID typed by a customer, and the customer sees another company's invoice. What failed and how do you prevent the class of bug?
+A: The query trusted a client-supplied ID without tenant scoping. Prevent structurally: every query goes through a data layer that adds tenant_id from the authenticated context (or database row-level security policies keyed to the session's tenant), IDs are checked against the caller's tenant, admin tools act "as tenant X" explicitly with audit logs, and automated tests try cross-tenant access.
+
+[choose] A tenant's nightly export job saturates the shared job workers, delaying password-reset emails for all tenants. Fix?
+A: Separate queues by job class (interactive emails vs bulk exports) with reserved worker capacity for interactive work, and per-tenant fair scheduling (or concurrency caps) within the bulk queue so one tenant can't take all workers. Optionally rate-limit exports per tenant.
+
+--- pitfalls
+- Tenant IDs taken from request bodies
+- Relying on developers to remember WHERE tenant_id
+- Shared caches or storage paths without tenant keys
+- One global queue for all tenants' background work
+- No plan for the giant tenant
+
+--- quiz
+Q: The biggest risk of the pooled model is…
+- High cost
+- *Cross-tenant data leaks and noisy neighbours
+- Too many databases
+- Slow onboarding
+W: Everything is shared, so isolation must be enforced carefully.
+Q: Where should the tenant ID for a request come from?
+- The request body
+- *The authenticated identity (token/session)
+- A query parameter
+- A cookie the client sets
+W: Never trust a client-supplied tenant.
+Q: A cell-based architecture limits…
+- Storage costs
+- *The blast radius of failures and bad deploys to the tenants in one cell
+- The number of tenants
+- Encryption
+W: Cells are independent full stacks.
+Q: Fair per-tenant job queues prevent…
+- Data leaks
+- *One tenant's heavy jobs from delaying everyone else's
+- Authentication failures
+- Key rotation
+W: A classic noisy-neighbour defence.
+
+--- sources
+- article :: SaaS Tenant Isolation Strategies (whitepaper) :: AWS :: https://docs.aws.amazon.com/whitepapers/latest/saas-tenant-isolation-strategies/saas-tenant-isolation-strategies.html
+- article :: Reducing the scope of impact with cell-based architecture :: AWS Well-Architected :: https://docs.aws.amazon.com/wellarchitected/latest/reducing-scope-of-impact-with-cell-based-architecture/reducing-scope-of-impact-with-cell-based-architecture.html
+- article :: PostgreSQL row security policies :: PostgreSQL Global Development Group :: https://www.postgresql.org/docs/current/ddl-rowsecurity.html
+- article :: Multi-tenant SaaS patterns (Azure Architecture Center) :: Microsoft :: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/overview
+
+=== abuse-ddos
+blurb: Keeping a public service up and fair under attack and abuse: volumetric and application-layer DDoS, anycast and edge absorption, WAFs, bot detection and proof-of-work-style challenges, account-level abuse (credential stuffing, spam) and layered defences.
+signals: Public endpoints that attackers can reach | Login, sign-up and checkout abuse | "What if someone floods your API?" | Scraping and fake accounts
+prereq: rl-algorithms
+
+--- lesson
+:::words
+- **DDoS (distributed denial of service)**: many machines (often a botnet) flooding a service to make it unavailable.
+- **Volumetric attack**: overwhelming network bandwidth (hundreds of Gbit/s or more).
+- **Application-layer (L7) attack**: many legitimate-looking requests that are expensive to serve (search queries, logins).
+- **WAF (web application firewall)**: rules at the edge that block known attack patterns.
+- **Bot**: automated client; some good (search crawlers), many bad (scrapers, credential stuffers).
+- **Credential stuffing**: trying leaked username/password pairs from other sites against your login.
+:::
+
+## The problem in plain words
+
+Anything on the public internet will be attacked: floods of traffic meant to knock it over, bots scraping data or creating fake accounts, attackers trying stolen passwords by the million. No single control stops all of it. The design answer is **layers**: absorb raw floods at a huge edge network, filter bad patterns before they reach your servers, rate-limit per identity, make expensive operations hard to abuse, and detect abuse from behaviour.
+
+:::eli5
+A popular shop protects itself in layers: the shopping centre's security handles stampedes at the entrance, a doorman turns away known troublemakers, each shopper may only take a few free samples, and staff watch for anyone behaving oddly. No single guard could do it all.
+:::
+
+## Volumetric and protocol attacks
+
+Hundreds of Gbit/s to multiple Tbit/s of junk traffic (UDP floods, reflection/amplification via DNS or memcached) can't be absorbed by your data centre's links. Defences live at the **edge**: anycast networks spread the flood across hundreds of sites (Google Cloud Armor and Google's front end, Cloudflare, Akamai), with filtering at the network level. Google reported mitigating an HTTP/2 "Rapid Reset" attack peaking at 398 million requests per second in 2023, which shows the scale these edges are built for.
+
+## Application-layer attacks
+
+Requests that look legitimate but are expensive: searching with random terms (cache misses), repeated logins, heavy GraphQL queries. Defences:
+- **Rate limits per IP, per account, per API key**, and **cost-weighted** limits for expensive endpoints.
+- **Caching** so repeated requests are cheap; **request validation** and query-cost limits.
+- **WAF rules** for known patterns (injection, bad bots), adaptive rules learned during attacks.
+- **Load shedding and prioritisation** so authenticated users and critical paths keep working.
+
+## Bots and account abuse
+
+- **Bot detection**: signals like IP reputation, request patterns, TLS/browser fingerprints, behaviour; challenges (CAPTCHA, invisible challenges like reCAPTCHA scores, proof-of-work) for suspicious traffic only, so real users aren't punished.
+- **Credential stuffing**: rate-limit by account and by IP, detect many-accounts-from-one-source patterns, check passwords against breach lists, require MFA or step-up verification on risky logins, prefer passkeys.
+- **Fake accounts and spam**: verification at sign-up (phone/email), friction for new accounts (lower limits), reputation systems, graph signals (many accounts sharing devices or payment methods), ML classifiers and human review queues.
+- **Scraping**: rate limits, authentication for full data, anomaly detection, and accepting that public data can be scraped slowly.
+
+## Layered defence summary
+
+Edge network (anycast, volumetric filtering) → WAF and bot management → per-identity rate limits → service-level quotas, query-cost limits, caching → load shedding with priorities → abuse detection on accounts and behaviour → incident response playbooks.
+
+## Interview angles
+
+- "How do you protect your API from DDoS?" Anycast edge/CDN absorbs volume; WAF and bot management; per-identity and cost-weighted rate limits; caching; shedding with priorities.
+- "How do you stop credential stuffing?" Per-account and per-IP limits, breach-password checks, risk-based MFA/step-up, passkeys, monitoring login success ratios.
+- "How do you limit spam from new accounts?" Lower limits and friction for new accounts, reputation, graph signals, ML with human review.
+
+--- revise
+### Attack types
+? Volumetric vs application-layer DDoS? :: Bandwidth floods vs legitimate-looking expensive requests.
+? Where are volumetric attacks absorbed? :: At large anycast edge networks with network-level filtering.
+? Application-layer defences? :: Per-identity and cost-weighted rate limits, caching, validation/query-cost limits, WAF rules, shedding with priorities.
+
+### Abuse
+? Bot detection signals? :: IP reputation, request patterns, TLS/browser fingerprints, behaviour; challenge only suspicious traffic.
+? Credential stuffing defences? :: Per-account and per-IP limits, breach-password checks, risk-based MFA/step-up, passkeys.
+? Fake account defences? :: Verification and friction for new accounts, reputation, graph signals, ML + human review.
+
+### Overall
+? Layered defence order? :: Edge (anycast) → WAF/bots → rate limits → service quotas/caching → shedding → behavioural abuse detection.
+
+--- notes
+## Volumetric
+Gbit–Tbit floods, reflection/amplification; absorb at anycast edge (Cloud Armor, Cloudflare, Akamai); network filtering.
+Google mitigated HTTP/2 Rapid Reset at 398M req/s (2023).
+## Application layer
+Expensive legit-looking requests; per-IP/account/key limits; cost-weighted limits; caching; validation; query cost limits; WAF; shedding with priorities.
+## Bots
+IP reputation, fingerprints, behaviour; challenges (CAPTCHA, reCAPTCHA scores, proof-of-work) only when suspicious.
+## Accounts
+Credential stuffing: per-account/IP limits, breached-password checks, risk-based MFA, passkeys, monitor login success ratio.
+Spam/fake accounts: verification, new-account friction, reputation, graph signals, ML + review.
+Scraping: limits, auth for full data, anomaly detection.
+## Layers
+Edge → WAF/bot → rate limits → quotas/caching → shedding → abuse detection → playbooks.
+
+--- doubts
+Q: Can autoscaling defeat a DDoS?
+A: Not reliably: attackers can generate traffic far cheaper than you can serve it, and autoscaling just multiplies your bill. Absorb and filter at an edge built for it, and make each request as cheap as possible (caching), rather than scaling backends to serve attack traffic.
+
+Q: Doesn't rate limiting by IP fail against botnets?
+A: Partly: botnets spread requests across thousands of IPs, each under the limit. Combine IP limits with per-account limits, cost-based limits, behavioural detection and challenges; for unauthenticated expensive endpoints, consider requiring a challenge or login.
+
+Q: How do you avoid hurting real users with anti-abuse measures?
+A: Apply friction in proportion to risk: invisible signals for most users, challenges only for suspicious traffic, step-up verification only for risky logins; measure false-positive rates and provide recovery paths.
+
+--- exercises
+[design] Protect a public search API (unauthenticated, expensive queries) from abuse.
+A: Front it with an anycast CDN/edge (Cloud Armor) for volumetric protection and WAF rules; cache popular query results; require an API key for high volume, with per-key and per-IP token buckets; cost-weighted limits (long or wildcard queries cost more); invisible bot scoring with challenges for suspicious clients; query validation (length, complexity); load shedding that prioritises keyed, reputable clients during attacks.
+
+[break] Overnight, login success rate drops from 85% to 3% while login volume rises 40×, mostly failures across many accounts from many IPs. What's happening and what do you do?
+A: Credential stuffing: bots trying leaked username/password lists. Respond with per-account and per-IP/subnet rate limits, bot challenges on login, breached-password checks forcing resets for matched accounts, step-up MFA for risky logins, blocking known-bad infrastructure at the WAF, and alerting on login-success-ratio anomalies in future.
+
+--- pitfalls
+- Trying to out-scale a DDoS with autoscaling
+- Only per-IP limits against distributed bots
+- Expensive endpoints open to anonymous clients without cost limits
+- Challenging every user instead of suspicious ones
+- No monitoring of login success ratios and sign-up patterns
+
+--- quiz
+Q: Where should a 1 Tbit/s volumetric flood be handled?
+- In your application servers
+- *At a large anycast edge network before it reaches your data centre
+- With autoscaling
+- In the database
+W: Only a huge distributed edge has the capacity.
+Q: An application-layer attack is…
+- Pure bandwidth flooding
+- *Legitimate-looking requests that are expensive to serve
+- A certificate problem
+- A DNS failure
+W: It targets your most expensive endpoints.
+Q: Credential stuffing uses…
+- Brute-forcing one password
+- *Username/password pairs leaked from other sites
+- Session hijacking
+- SQL injection
+W: Defend with account-level limits, breach checks and MFA.
+Q: Good anti-bot practice is to…
+- CAPTCHA every request
+- *Challenge only traffic that scores as suspicious
+- Block all cloud IPs
+- Disable APIs
+W: Friction proportional to risk.
+
+--- sources
+- article :: How Google mitigated the largest DDoS attack to date (HTTP/2 Rapid Reset, 2023) :: Google Cloud :: https://cloud.google.com/blog/products/identity-security/google-cloud-mitigated-largest-ddos-attack-peaking-above-398-million-rps
+- article :: Google Cloud Armor overview :: Google Cloud :: https://cloud.google.com/armor/docs/cloud-armor-overview
+- article :: OWASP Credential Stuffing Prevention Cheat Sheet :: OWASP :: https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html
+- article :: reCAPTCHA Enterprise: how it works :: Google Cloud :: https://cloud.google.com/recaptcha/docs/overview
