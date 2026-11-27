@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { AlertTriangle, ArrowLeft, ArrowRight, Check, Compass, Eye, Sparkles, TimerReset, TrendingUp } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, Compass, Eye, GitBranch, ListOrdered, Sparkles, TimerReset, TrendingUp } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useItems, useStopwatch, useTrackTime } from "@/lib/hooks";
 import { aiReady, gradeStage } from "@/lib/ai";
@@ -38,12 +38,14 @@ export default function DesignPage() {
   const [err, setErr] = useState("");
   const [conf, setConf] = useState<number | undefined>();
   const [steerN, setSteerN] = useState(0);
+  const [varN, setVarN] = useState(0);
+  const [showFlow, setShowFlow] = useState(false);
   const [showDiagram, setShowDiagram] = useState(false);
   const [sec, setSec] = useStopwatch(true);
   useTrackTime();
 
   useEffect(() => {
-    setStep(0); setDrafts({}); setRevealed({}); setFbs({}); setErr(""); setConf(undefined); setSteerN(0); setShowDiagram(false); setSec(0);
+    setStep(0); setDrafts({}); setRevealed({}); setFbs({}); setErr(""); setConf(undefined); setSteerN(0); setVarN(0); setShowFlow(false); setShowDiagram(false); setSec(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -104,6 +106,26 @@ export default function DesignPage() {
         <p className="mt-3 max-w-3xl text-[15.5px] leading-relaxed text-[#d5d8e6]">{d.prompt}</p>
         <div className="mt-4"><ConfidencePick value={conf} onChange={setConf} /></div>
       </header>
+
+      {(d.words || d.flow) && (
+        <div className="grid gap-5 lg:grid-cols-2 items-start">
+          {d.words && (
+            <section className="card p-5" data-read-block>
+              <div className="eyebrow flex items-center gap-1.5" style={{ color: a.color }}><BookOpen size={13} />Words you&apos;ll meet</div>
+              <Md className="mt-2 text-[13.5px]">{d.words}</Md>
+            </section>
+          )}
+          {d.flow && (
+            <section className="card overflow-hidden">
+              <button onClick={() => setShowFlow((x) => !x)} aria-expanded={showFlow} className="flex w-full items-center justify-between gap-3 p-5 text-left">
+                <span><span className="eyebrow flex items-center gap-1.5 text-hld"><ListOrdered size={13} />How the 45 minutes go</span><span className="mt-1 block text-[13px] text-mute">What a strong candidate covers, minute by minute. Read it before you start, or after as a check.</span></span>
+                <ChevronDown size={17} className={cn("shrink-0 text-mute transition", showFlow && "rotate-180")} />
+              </button>
+              {showFlow && <div className="border-t border-line px-5 pb-5 pt-3"><Md className="text-[13.5px]">{d.flow}</Md></div>}
+            </section>
+          )}
+        </div>
+      )}
 
       {/* stage stepper */}
       <nav aria-label="Stages" className="flex gap-1.5 overflow-x-auto pb-1">
@@ -185,9 +207,25 @@ export default function DesignPage() {
             </ul>
           </section>
 
+          {!!d.variants?.length && (
+            <section className="card p-5">
+              <div className="eyebrow flex items-center gap-1.5 text-ai"><GitBranch size={13} />Variations the interviewer can switch to</div>
+              <p className="mt-1.5 text-[13px] text-mute">The same question often arrives in a different form. Say what changes before you reveal it.</p>
+              <ul className="mt-3 space-y-2.5">
+                {d.variants.map(([v, change], i) => (
+                  <li key={v} className="rounded-xl border border-line bg-panel2 p-3.5">
+                    <div className="text-[14px] font-medium leading-snug">{v}</div>
+                    {i < varN ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}><Md className="mt-1.5 text-[13px] text-mute">{change}</Md></motion.div>
+                      : i === varN ? <button onClick={() => setVarN((n) => n + 1)} className="mt-1.5 text-[12.5px] font-medium text-accent hover:underline">I have thought it through: show what changes</button> : null}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           {d.level && (
             <section className="card p-5">
-              <div className="eyebrow flex items-center gap-1.5 text-hld"><TrendingUp size={13} />L4 versus L5 on this question</div>
+              <div className="eyebrow flex items-center gap-1.5 text-hld"><TrendingUp size={13} />What each level looks like on this question</div>
               <Md className="mt-2 text-[13.5px]">{d.level}</Md>
             </section>
           )}

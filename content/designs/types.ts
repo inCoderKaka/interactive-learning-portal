@@ -1,0 +1,20 @@
+import type { ArchEdge, ArchNode, Ref, Tier } from "@/lib/types";
+
+/** A compiled design from content/designs/src: deepens an existing exercise or defines a new one. */
+export interface DesignPatch {
+  id: string;
+  title?: string;
+  topic?: string;
+  tier?: Tier;
+  est?: number;
+  prompt?: string;
+  words?: string;
+  flow?: string;
+  models?: Partial<Record<"req" | "est" | "api" | "hl" | "deep" | "wrap", string>>;
+  variants?: [string, string][];
+  steer?: [string, string][];
+  pitfalls?: string[];
+  level?: string;
+  arch?: { nodes: ArchNode[]; edges: ArchEdge[] };
+  refs?: Ref[];
+}

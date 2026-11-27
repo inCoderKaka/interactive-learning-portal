@@ -131,6 +131,9 @@ export interface Design {
   classes?: { boxes: ClassBox[]; rels: ClassRel[] };
   level?: string; // what separates L4 from L5 on this question
   refs?: Ref[];
+  words?: string; // markdown "Words you'll meet" for first-time learners
+  flow?: string; // markdown: how the 45 minutes of the interview go
+  variants?: [string, string][]; // [a variation the interviewer may switch to, what changes]
 }
 
 export type ItemKind = "topic" | "problem" | "design" | "mock";
