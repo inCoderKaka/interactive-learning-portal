@@ -33,7 +33,6 @@ W7XUnZBMsts	Deep Dive into Git Lifecycle | How git add and git commit Actually W
 Qu9Sb1TISSM	AWS Account Setup & Cloud Computing Models (IaaS, PaaS, CaaS, FaaS, SaaS)
 U8cSIqoc3DI	Git Architecture | How Git works internally
 Kx3RTaMe8L8	Git Fundamentals: Setup, Git Configurations Levels & DVCS Explained
-wasBpF2fhwg	Mockito: Different Ways of Verification
 vocQoMkHJ78	Java NIO Deep Dive (Part3): FileChannel and Complete Code Examples
 wZ3b--utf1s	Java NIO Deep Dive (Part2): ByteBuffer, HeapByteBuffer, DirectByteBuffer, MappedByteBuffer
 pqEqj58bnxc	Java NIO Deep Dive (Part-1): Advantages of NIO over Traditional File I/O
@@ -41,63 +40,18 @@ e_S2yJKpTaw	Java File Handling Explained | Streams, Buffers, Readers & Writers
 f8lYPOvNGrU	Kafka Consumer Setup - Part1 | Basic Setup and Internal working of Kafka Consumer with Demo
 yLMCnIpgllM	Kafka Producer Setup
 IUWvzjvqkXw	Kafka Cluster Setup | 2 Broker and 2 Controller with KRaft Setup
-wnFjZFh99YA	Mockito: Different Ways of Stubbing (Matchers, Static and Dynamic Stubbing)
-f1wjaOF6fl4	@Mock as Method/Constructor Parameter (JUnit 5 + MockitoExtension)
-7hshy19_Zl4	Mockito: @InjectMocks, @Mock, @Spy Annotations in-depth
-7MIGMe5YYnw	Distributed Scheduler (Part 4) - ShedLock
-JvRQT7qjlJE	Distributed Schedulers (Part 3) - 8 Common Pitfalls and their solutions
-uU-55imZN4g	Mockito: Architecture | How internally Mock, Stub and Spy works?
-DdT4JB82Bqc	Distributed Scheduler (Part 2) – Cron Job, FixedRate, FixedDelay use in application
-P_sQoOOaRr8	Mockito: Mock vs Stub vs Spy
-t2gKUkjwKfU	LLD of BookMyShow (English) | Design MovieTicketBooking
-Vzsh-Vxs_tI	@TestFactory : Dynamic Tests in JUnit5
-g8AVGr_0Wko	Design Parking Lot with Complete Implementation (English)
-78_e5hygwm8	JUnit 5: Test Suites in-depth | Difference between Test Suite vs Tags
-25qIaCJRBhU	Distributed Logging (Part-3) | Async Appender and Logging | Structured Logging (JSON)
-09NcVHU5OJM	Distributed Logging (Part-2) | Appenders in-depth | Console, File, Rolling File Appenders
-YwRotNcfZZY	Distributed Logging in-depth ( Part1 ) | SLF4J, Logback, Log4j2, Levels, Parent–Child Loggers
-4ZxIOwi4r_g	Master Java Optional from Java 8 to 11 | All Methods with Real Examples
-dKXx5lw_n7Q	LLD of Car Rental System (English) with Concurrency handling
-P3IrxFUxzzE	JUnit 5: Tagging and Filtering
-xOcJZk2lyIA	LLD of Elevator System with Complete Implementation (English)
-C9Dt3wVzQEg	LLD of Snake and Ladder game (English)
-VHKz_SIgB4Y	Design Tic Tac Toe game (English)
 ais9i16sAjg	Spring Cloud Bus in-depth | SpringBoot Microservices
-DQwbm1h89E4	Design Vending Machine (State Design Pattern) (English)
-DxN6MxByDto	Proxy Design Pattern (English)
-CL1HYob5svc	LLD of NULL Object Pattern (English)
-6BB8RC9-W5U	Factory Pattern Vs Abstract Factory Pattern (English)
 z04mr_i2SO8	Java 15: Text Blocks
-sozY4eAnivU	JUnit 5: Assumptions
-48MyHEB4qqM	Observer Design Pattern Explanation (English)
-NKstObePjL4	JUnit 5: Parameterized tests (Part-2)
-UZ4nZZrtDSs	JUnit 5: Parameterized tests (Part-1)
-AfXamPmQfuc	SOLID Principles (English)
-RrdNBdkTrcs	Strategy Design Pattern (English)
-mQM3V8E13yc	What is LLD (Low Level Design)
 6yhGlQPS7CQ	@RefreshScope Deep Dive | Auto-Reload Config Without Restart
 8IoR4AGf8xc	Spring Boot: ConfigurationProperties in-depth
 dZqa_9H803w	Building a Text Conversation with AI (Part-2) | ChatModel | Integrating with Multiple AI Providers
 4MIJjBhBXEE	Building a Text Conversation with AI (Part-3) | ChatResponse, Generation and Structured Output
 atk8T1YTDV4	Building a Text Conversation with AI (Part-1) | Message, ChatOptions, Prompt
-64l7_AVYwrg	Chain of Responsibility Design Pattern (English)
-OsRVypK57JM	Decorator Design Pattern (English)
-j7hCFDqx_m8	JUnit 5: RepeatedTest in depth
-CVE9kVF7U20	JUnit 5 : Extensions in depth
 7Gaqtzv-TNw	Spring AI | Project Setup
 mnISCe3HL2E	Spring Boot Actuator in depth
 C8Vd9VgkTFw	Centralized Configuration | Why its popular with microservices | Spring Cloud Config
 lJ6kOIK4Fd0	Spring AI | What is LLM and GPT
-w7ZyscLnaM4	Java 16: Record class
-IwoidRDGEb8	Java 21: Pattern Matching for switch
-KmX4uHi-KY0	Java 16: Pattern Matching for instanceof
-blb1guXuVxA	Java 14: Switch Expressions Deep Dive
 qCCIk5vkqyY	API Gateway in Microservices - Part1 | Spring Cloud API Gateway | Routing and Load Balancing
-KygVoryzpgg	JUnit 5 Assertions deep dive and Exception Handling
-BgBDbc8F4A8	Java 17 : Sealed Classes and Interfaces
-O4eVaRTbXOE	JUnit 5: Tests Lifecycle @TestInstance | Parallel Execution| AAA pattern
-IFvtSRpr6MA	JUnit 5 Architecture : JUnit Platform, JUnit Jupiter  and JUnit Vintage
-DoGkJkDedcI	JUnit 5: Unit Testing Introduction | Unit vs Integration vs Functional Testing
 F-JVyTAffp8	Client Side Load Balancer in Microservices | LoadBalancer and its SpringBoot Implementation
 h1mrflwF6Lc	Service Discovery in Microservices | Eureka & its SpringBoot Implementation
 H6CdV_ZBx8s	FeignClient in Spring Boot Microservices | Synchronous Communication using Declarative HTTP Client
@@ -131,112 +85,43 @@ agts012X8h4	Spring boot HATEOAS Restful API | Advantage, Disadvantage with Examp
 H6Xi0UlHjh0	Spring boot: Filters vs Interceptors | Filters and Interceptors Advantage and UseCases for both
 hkuq4fv43eU	Spring boot: Custom Interceptors | How to Intercept Incoming HTTP Request and Custom Annotations
 xADtTuyLyYM	Spring boot @Async Annotation - Part2 | Async Annotation Important Interview questions
-1qf5yqfInzY	Spring boot @Async Annotation - Part1 | ThreadPoolExecutor
 W1YSG-MrX1c	Spring boot @Transactional Annotation - Part3 | Isolation Level and its different types
 u4kRFypRmHA	Spring boot @Transactional Annotation - Part2 | Declarative, Programmatic Approach and Propagation
 Kf-gAW8hGQA	Spring boot @Transactional Annotation - Part1
 HhsAw8GVogQ	Spring boot AOP (Aspect Oriented Programming)
 GTRlOGDgEiw	SDE2 Interview Preparation Strategy | SDE from Startup to Google | DSA, System Design, Mock Resource
-obmc24IHqew	43. LLD: Object Pool Design Pattern | Creational Design Pattern | Low Level Design
 czkTdFHHz_4	Spring boot @Profile annotation | How Profiling works in Spring boot
 HN-IX8Rl8Do	Spring boot @ConditionalOnProperty Annotation
-Qcr3FhS2vDQ	42. LLD of Payment Gateway | Low Level Design of Payments App
 eZfT5yKm2Xg	Spring boot: Dynamically Initialized Beans | Value Annotation
 JGFNn6Eqp64	Spring boot : Bean Scopes | Singleton, Prototype, Request, Session Scopes with Examples in Java
 W-TgmKAnGG0	Dependency Injection in Spring boot | With Advantages and Disadvantages
 Wd15hxveyME	Spring boot: Bean and its Lifecycle | Inversion of Control (IOC)
-DBDnUkTobaE	41. All Behavioral Design Patterns | Strategy, Observer, State, Template, Command, Visitor, Memento
 ndSUJYNa8T8	Spring boot Annotations (Controller Layer) | Controller, RestController, RequestMapping etc.
 1e4jNP8iKLo	Introduction to Maven and its Lifecycle | Spring boot Maven project
 4QWW4v2u_ZI	Spring boot Project setup and Layered Architecture Introduction
 TMX1kQ4W4hI	Introduction to Spring boot | Its Advantage over Spring MVC and Servlets based Web applications
-PR1YkZWAH1E	37. Java ScheduledThreadPoolExecutor || Shutdown Vs AwaitTermination || Multithreading in Java
-fFlPm0pzQYI	40. Interpreter Design Pattern | LLD System Design | Design pattern explanation in Java
-pXVEEfYMwws	38. Java VirtualThreads vs Normal Threads || ThreadLocal in Java
-VlfVyz-QG60	36. Java ForkJoinPool || WorkStealingPool || FixedThreadPool || CachedThreadPool || SingleThreadPool
-kwy-G1DEm0M	39. Template Method Design Pattern Explanation in Java | Concept and Coding LLD | Low Level Design
-SFwCiYwr3yQ	35. Java8 CompletableFuture |  Future and Callable in Java | Multithreading in Java - Part7
-nTo7e2lpGZ4	38. Memento Design Pattern explanation | LLD System Design | Design pattern explanation in Java
-ZUWs2U71vvk	34. Thread Pools in Java | ThreadPoolExecutor Framework | Multithreading Part6
-lJBbvb7p__o	37. MVC Design Pattern | MVC Architecture Overview | Low Level System Design
-SqDbZOjW1uM	13. Java Singleton and Immutable Class Explained with Examples | Java Classes in Depth - Part4
-YXRBBOjgrFU	16. Functional Interface and Lambda Expression - Java8 features | Java Interfaces Part3
-JGb4qNEBW6Q	33. Lock-Free Concurrency | Compare-and-Swap | Atomic & Volatile Variables | Multithreading Part5
-tw4wWCsGNe4	19. Exception Handling in Java with Examples
-DPob5NLzKFI	32. Locks and Condition | Java Multithreading Part4 | Reentrant, ReadWrite, Stamped & Semaphore Lock
-pDsz-AuFO0g	36. Visitor Design Pattern | Double Dispatch | Low Level Design
 nEno48RpDR4	28. Streams in Java8 | Collections in Java - Part7
-cdsFwGDVzpg	31. Thread Joining, Daemon Thread, Thread Priority | Multithreading in Java: Part3
 TT1-qsuHMXs	22. Collections in Java - Part1 | Java Collections Framework in depth
-TpYIcJN9EV8	29. Multithreading and Concurrency in Java: Part1 | Threads, Process and their Memory Model in depth
-EfQesfKZ3Jw	35. LLD: Apply Coupons on Shopping Cart products | Low level design
-bKM2lFPPmmY	34. Design Online Auction System with Mediator Design Pattern | Low Level System Design
-AYiE7_loIsE	30. Thread Creation, Thread Lifecycle and Inter-Thread Communication | Multithreading in Java: Part2
-X7shKHOaYtU	33. Iterator Design Pattern Explained with Example | Low Level Design
 vz6vSZRuS2M	9. Java Memory Management and Garbage Collection in Depth
 NZ3qAfM8Ztw	5. How FLOAT and DOUBLE  Number Stored in Memory?  |  IEEE 754 Representation
 gikFgvzFuwo	27. Collections in Java - Part6 | SET
 ijEJJuIQdzY	3. Quiz Question: Why only 1 Public Class in JAVA file
 IoireaKRRFo	2. How Java Program Works and its 3 Important Components (JVM, JRE and JDK) with Example
-MIYbPZCk34k	1. OOPs Concept in Java with Examples | 4 Pillars of Object Oriented Programming (OOPs)
-WxGtmIBZszk	32. All Structural Design Patterns | Decorator, Proxy, Composite, Adapter, Bridge, Facade, FlyWeight
 AnptMksNw9Y	Switched from Rakuten to Paytm - Senior Software Engineer | Complete Interview Preparation Strategy
-E1lce5CWhE0	31. Design Undo, Redo feature with Command Pattern | Command Design Pattern| Low Level System Design
 Z2B5CYMEWfc	21. Control Flow Statements in Java | Decision Making, Looping and Branching Statements
 ZsyUkt0v-ko	20. Operators in Java | Different Types of Operators in JAVA
 D3XhDu--uoI	System Design: Concurrency Control in Distributed System | Optimistic & Pessimistic Concurrency Lock
 KKByv7JyzOw	GIT 3 Branching Strategy | Github and GitLab Branching Strategy | Must know for all engineers
 H5WYze-FL50	18. Java Annotations with Examples
 P4UAoYiaHg4	17. Java Reflection in Depth (Using Examples)
-ZFPajbsXIwM	15. Default, Static & Private Method in Interface - Java8 and Java9 features | Java Interfaces Part2
-aj3SLuDkGWg	14. Java Interface in Depth - Part1
-Mwm6tB3x1do	30. Design Word Processor using Flyweight Design Pattern | Low Level System Design FlyWeight Pattern
-upfrQvOgC24	28. BUG in Double-Checked Locking of Singleton Pattern & its Fix | Low Level System Design Question
-zNCtAAqxjT0	12. Java Enum, POJO and Final Classes Explained with Examples | Java Classes in Depth - Part3
-NCx_ABybp2o	11. Java Generic Classes | Java Classes in Depth - Part2
-DDKdMTFNvxc	29. LLD of Inventory Management System | Low Level System Design of Inventory Management System
 he3P9TiZ6_c	After 4 Years of Gap he became Software Engineer | UPSC to Software Developer | Truth of EdTech
-aecJeZgl__4	10. Java Classes in Depth - Part1 | Nested Class, Concrete, Abstract, Object, Super and Sub Class
-129QkkXUHeQ	1.1 Liskov Substitution Principle (LSP) with Solution in Java - SOLID Principles of Low Level Design
-OuNOyFg942M	27. All Creational Design Patterns | Prototype, Singleton, Factory, AbstractFactory, Builder Pattern
-_hHtmSt5dSg	8. Java Constructor in Depth | Different Types of Constructor with Examples
 Lqan4AF9wzA	7. Java Methods in Depth | Different Types of Methods with Examples
 1Ox0fyJuUVY	6. Java Variables - Part2 | Reference/Non-Primitive Data Types in Depth
 Q6_jrvz-R7w	4. Java Variables - Part1 | Primitive Data Types in Depth
 ahqFp9Ly9zs	LinkedIn Cold Msg for SDE Referral: ✅ Right and ❌ Wrong way  of sending referral msg for SDE job
-SOw1_W0taBg	26. Bridge Design Pattern | LLD of Bridge Pattern with Example | Low Level Design of Bridge Pattern
-GYaBXK54eLo	25. Facade Design Pattern with Example | Facade Low Level Design Pattern | Facade Pattern LLD Java
-mI73eTlSqeU	14. Design Idempotent POST API | System Design to Handle Duplicate Request by Idempotency Handler
-ZagqfI3biq0	ChatGPT Mock LLD Interview | ChatGPT Solves Low Level Design Question | Cricbuzz LLD by ChatGPT
-P0TJIONZi8E	24. LLD of Cricbuzz/CricInfo | Cricbuzz Low Level System Design | Design Cricbuzz | Low Level Design
 qEo6npkQE9I	Gadgets I use for YouTube Videos and Online Teaching | Equipments for YouTube Video Creation
-qOLRxN5eVC0	23. Builder Design Pattern with Examples, LLD | Low Level Design Interview Question | System Design
-6UeDb7ORVPI	22. Splitwise Simplify Debt Algorithm | LLD of Splitwise | Optimal Account Balancing | LLD Splitwise
-I4xf4STXgmU	21. LLD of Splitwise | Low Level Design of Splitwise | Design Expense Sharing App like Splitwise
 ZrSt4ahsaFQ	Tips for Work Life Balance as Software Engineer | SDE Work Life Balance | Achieve Work Life Balance
-8wrg7IsILhQ	20. Adapter Design Pattern with Examples, LLD | Low Level Design Interview Question | System Design
-MNjz8gve40M	3. Live LLD, Observer Design Pattern & 10 Real World Use-cases | Low Level Design Interview Question
-FLkCkUY7Wu0	19. Design File System using Composite Design Pattern | Low Level Design Interview Question | LLD
-whGn5d97d7I	2. Live LLD Session on Pattern Classification and LLD of Strategy and Singleton Design Pattern
-JH7gcXeR3ds	17. LLD of ATM | ATM Low Level System Design | Design an ATM | Low Level Design Interview question
--UjjfzJ574w	1. Live LLD session | SOLID principles and Approach to solve Low Level Design Interview questions
 rExh5cPMZcI	5. Scale from ZERO to MILLION Users (Hindi) | System design interview: Scale to 1million users
-wOXs5Z_z0Ew	16. Design Vending Machine (Hindi) | LLD of Vending Machine | State Design Pattern |  LLD question
-MRx40JVmmF4	Mock Low Level System Design Interview with Qualcomm Sr. Engineer - Design Meeting Scheduler
-iDPhxhamuTo	15. LLD of NULL Object Pattern (Hindi) | Design Null Object Pattern | Design Patterns
 TL5ytIlkKuU	Git Merge Vs Rebase with Example | Differences Between Git Merge and Rebase and which one to choose?
-wCyzvDn3Pp8	14. LLD of BookMyShow (Hindi) | Design MovieTicketBooking | Low Level System Design & Concurrency
 qGlUKtjqaEQ	4. SAGA Pattern | Strangler Pattern | CQRS | Microservices Design Patterns | System Design
 l1OCmsBnQ3g	3. Microservices Design Patterns | Part1: Introduction and Decomposition Pattern | HLD
-9MxHKlVc6ZM	13. Proxy Design Pattern Explanation (Hindi) | LLD | System Design Interview Question | Java
-x8N3fINNdTE	7. Design Tic Tac Toe game (Hindi) | Tic-Tac-Toe LLD Java | Low Level Design, System Design
-gvIn5QBdGDk	10. Design Logging System (Hindi) | Chain of Responsibility Design Pattern | System Design interview
-J4GO6hmR6TA	9. LLD of Car Rental System (Hindi) | ZoomCar Low Level Design | System Design Interview Question
-9ORcPv_Tbz8	8. Elevator System, Low Level Design (Hindi) | SDE LLD interview question | Design Elevator System
-88bcV-XV0wo	11. LLD of Snake and Ladder game (Hindi) | SDE system design interview question, Java implementation
-MtjZf7291zc	6. Parking Lot, Low Level Design (Hindi) | SDE2 Design interview question | Design Parking Lot
-XI7zep97c-Y	1. SOLID Principles with Easy Examples (Hindi) | OOPs SOLID Principles - Low Level Design
-7g9S371qzwM	5. Factory Pattern Vs Abstract Factory Pattern Explanation (Hindi) | Low Level System Design
-w6a9MXUwcfY	4. Decorator Design Pattern Explanation with Java Coding (Hindi) | LLD System Design
-Ep9_Zcgst3U	3. Observer Design Pattern Explanation (Hindi) | Design Interview Question | LLD System Design
-u8DttUrXtEw	2. Strategy Design Pattern explanation (Hindi) | LLD System Design  | Design pattern in Java

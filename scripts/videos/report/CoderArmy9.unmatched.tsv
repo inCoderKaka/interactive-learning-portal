@@ -23,7 +23,6 @@ b55entyKoms	Vectors & Embeddings Explained | How AI Understands Meaning | FDE Fu
 ZxCcYHL96x8	Building a Production-Grade API Gateway in Spring Boot | GateKeeper Project | #2
 r4x3Zm4WIWA	Build ChatGPT-Style Streaming  | How AI Streaming Works | FDE Full Course #6
 jS3cHV43Uxs	Introduction to AI Agents | Build Your First AI Agent | FDE Full Course #5
-JssMI0T0W28	5 Diagrams Every Software Developer Should Know
 URucTTDWgI0	Build Your First AI Chatbot: Context Window, Memory & Hallucinations | FDE Full Course #4
 SFD22DT0wCI	Integrating LLM with Your Application | LLM to GenAI Application | FDE Full Course #3
 vZRE_jhA3Qc	How LLMs Actually Work? | Tokens, Attention & Transformers | FDE Full Course #2
@@ -82,50 +81,23 @@ PVreyET_Q6I	Build Your First Spring Boot Application | REST API | Spring Boot Fu
 Q04sTEwC7Kg	Spring Boot & Spring Framework Full Course | Spring Boot Full Course #1
 i1ReLb9xrJw	Spring Framework & SpringBoot Full Course FREE in 2026 | Java Full Stack
 6_NrgoEkjnE	JavaScript Full Course 2026 | Master Javascript in 22 Hours
-FGN225TiXaE	CompletableFuture, Fork-Join Pool, ThreadLocal & Virtual Threads | Java Full Course #57
-VPtaTUSaBOM	Executor Framework Deep Dive | ThreadPool, Future & Callable | Java Full Course #56
-2nBJPpERul4	Lock-Free Concurrency in Java - 2 | CAS Retry, Compare-and-Swap & ABA Problem | Java Full Course #55
-ujF2gNsCfBE	Lock-Free Concurrency in Java | AtomicVariables & CAS Explained | Java Full Course #54
-JW6-TCU0iS4	Java Locks | ReentrantLock, ReadWriteLock, StampedLock, Semaphore & Condition | Java Full Course #53
-EZS19NLnsvc	Inter Thread Communication in Java | wait(), notify(), notifyAll() Deep Dive | Java Full Course #52
-k9sURAu0xT8	Monitor Locks in Java | Synchronized Keyword, Static Sync & Custom Locks | Java Full Course #51
-lrrdN_c0HQ4	Problems in Multithreading | Race Condition, Visibility, Ordering Explained | Java Full Course #50
-ZPxJby0GeOQ	Thread Methods | sleep, join, yield, interrupt, isAlive, priority & more | Java Full Course #49
-cVRdeQFP5IM	Java Thread Creation & Lifecycle Explained from Scratch | Java Full Course #48
-fyAW0W526RM	Introduction to Multithreading in Java | Process vs Thread  | Java Full Course #47
 b2HSqC0RGsM	Java Heap Memory Deep Dive | Garbage Collection Algorithms Explained | Java Full Course #46
 kjETbH63Pco	Java Memory Management Explained in Depth | Stack, Heap, Method Area & PC | Java Full Course #45
-xTxscoajikw	Exception Hierarchy Deep Dive | throw vs throws | Custom Exceptions | Java Full Course #44
-mJg9iQZJEpw	Java Exception Handling from Scratch | Exceptions vs Errors | Java Full Course #43
 ANTxCCkHKRs	The Global Era Begins
 zrtVQ1ev_0w	Parallel Streams in Java Explained | Primitive Optional Classes | Java Full Course #42
-Q75kCaNa35Y	Java Optional Explained from Scratch | All Methods + Streams Integration | Java Full Course #41
 xqfOH5EA8xo	Java Stream Methods Deep Dive | All Intermediate & Terminal Operations | Java Full Course #40
 -jHyDEXHr_U	Introduction to Java Streams | Creation & Architecture | Java Full Course #39
-IsC0Ms2iFi8	Lambdas & Functional Interface Deep Dive | Method References & Composition | Java Full Course #38
 uUo7AV02vJM	Comparable Interface in Java | Collections class | Comparing Objects | Java Full Course #36
 zj0-JIc5oPw	Java Queue Interface Deep Dive | PriorityQueue & Heap Explained | Java Full Course #35
 OfNtIOGDqzY	Java List Interface Deep Dive | ArrayList, LinkedList, Vector, Stack | Java Full Course #32
-cazzzwdLAkQ	Java Collection Interface Deep Dive | Methods & Internals | Java Full Course #31
 LVwpxEZ6uMQ	Iterable Interface in Java | Why Iterator Exists? | For-Each Loop | Java Full Course #30
 mW2OO6d6_BE	Java Collection Framework Explained | Data Structures + Complete Hierarchy | Java Full Course #29
-Opb2q2WSyes	Wildcards in Generics | ?, ? extends, ? super  | Java Full Course #28
-Y7X_ReDF3x8	Java Generics Deep Dive | Bounded Types using extends | Java Full Course #27
 JcAD9a22Rks	Java Strings Part 2 | All String Methods + StringBuilder vs StringBuffer | Java Full Course #26
 N0b8lRXtK_Y	Java Strings | String Pool, Immutability, Internals | Java Full Course #25
-YLLFHuStkW8	Java Interfaces Deep Dive | Default Methods, Functional, Marker Interfaces | Java Full Course #24
-oXhy5dT-0Qs	Java Enums | Why Not Use int/String for Constants? | Java Full Course #23
 541Zpv6sOKo	Most Important Class in Java | Object Class (equals, hashCode, toString) | Java Full Course #22
-vgQVz5OdFws	Immutable Classes in Java | How to Create Immutable Objects | Java Full Course #21
 yfMWLZGEPwo	Java I/O Deep Dive | InputStreams, System.in, Scanner vs BufferedReader | Java Full Course #20
 0LaBK28_470	Java Nested Classes | Static Nested, Inner, Local & Anonymous Classes | Java Full Course #19
-crVwHNW-fX8	AutoBoxing, Abstract classes & POJOs | Why only one public class in java file | Java Full Course #18
--L9BcU6Xk2c	Abstraction & Polymorphism in Depth | Abstract Class vs Interfaces | Java Full Course #17
-jfLpzL1VW7Q	Encapsulation & Inheritance in Java | Java Packages & Super Keyword | Java Full Course #16
 Lyg4ZcrjUBw	Static & Final in Java | Static Methods, Blocks & String[] args | Java Full Course #15
-7yd5qO2TPr0	Objects Deep Dive | Size, Call by Value vs Reference | Shallow vs Deep Copy | Java Full Course #14
-RADpqk79IzQ	Constructors in Java | Constructor Chaining, Overloading & this | Java Full Course #13
-tmXD7Kzun54	Object Oriented Programming  in Java | Classes, Objects, new Keyword | Java Full Course #12
 IhtjMWXwNCc	Java Functions Deep Dive | Recursion | Method Overloading | Java Full Course #11
 Qg73uiG9b6A	How Arrays work in Java | Heap, Contiguous Storage, Random Access | Java Full Course #10
 ajNs-dylWIM	Introduction to Arrays | Declaration, Initialization, Traversal | String Intro | Java Full Course #9
@@ -150,11 +122,7 @@ ctks8tizcco	React useState Hook | The Complete Guide for Beginners | What is hoo
 JdFUNKGwWLw	React JSX , Babel, React Components & Props Explained from Scratch | ReactJS Full Course #2
 TkHH-IHsEKQ	ReactJS Full Course | What is ReactJS | React JS Tutorial for Beginners | ReactJS Full Course #1
 7tRyccjYgF0	JavaScript this Keyword Explained | Call, apply, bind | Javascript Full Course #22
-9KwCG9aVwvQ	Prototypes and class in Javascript| Javascript Full Course #21
-AyBpssNYB6g	Async Await in Javascript | Javascript Full Course #20
 LYe1my0KkPo	Promises in Javascript | JSON vs JS Object| Javascript Full Course #19
-CTJLBCYod9E	Callback Hell in JavaScript | Async Programming Tutorial | Javascript Full Course #18
-rsepF1ugeC8	Event Loop in Javascript | Why JS is Single threaded and synchronous| Javascript Full Course #17
 dQDteO0RXrc	10 JavaScript Projects for Beginners | Learn JS by Building Real Apps | Javascript Full Course #16
 CGjHpnm8TeE	Events in Javascript | Even and Event handler in Javascript | Javascript Full Course #15
 2jVOkYiAl2s	CRUD Operation in DOM | The Document Object Model (DOM) Explained | Javascript Full Course #14
@@ -188,42 +156,11 @@ GkZN_-HMCJ8	What is HTML | Heading | Paragraph | Anchor tag | Image element | HT
 lIHE9NVpBoI	The Illusion of Thinking: What Apple’s New AI Research Reveals
 C6QYjZI5E_U	Get Ready for Biggest Launch (DEFENSE)
 XQ-wmwv7fQU	Amazon’s Kiro – An Agentic IDE for Smarter Development!
-iXHlc_S3Ae4	Null Object Pattern | Anti-Patterns in System Design
-p8-ile_nWnY	Memento Design Pattern | UML + Code | System Design
-DnmsxnlCyl0	Visitor Design Pattern | UML + Code | System Design
-eULHvaMZUks	Build Chess Game | UML + Code | System Design
-KMQFNV8LFec	Prototype Design Pattern | UML + Code | System Design
-3lGIICzgyQQ	Mediator Design Pattern | Build Chat Room | UML + Code | System Design
-1NJB54UB8nE	Build Snake and Ladder Game | UML + Code | System Design
-BGFzYjGtRP4	Build Tic Tac Toe Game | UML + Code | System Design
-bJPmvie_p4w	State Design Pattern | Build Vending Machine (UML & Code) | System Design
-cWtBZUAQpcc	Build Splitwise Clone | Expense Splitting App | System Design
-vNSRcegCO8E	Flyweight Design Pattern | UML + Code | System Design
-30fveBRLqMw	Iterator Design Pattern | UML + Code | System Design
-G4Ntl9KzIxY	Builder Design Pattern | Classic Builder | Step Builder | UML + Code | System Design
-KVf8dwgTbiM	Bridge Pattern | Real-world use case + Code | System Design
 jbVevoGN_pM	Build Discount Coupon Engine | System Design
-LXVKB6deQMo	Chain of Responsibility Pattern | Build Cash Dispenser(UML & Code) | System Design
-xuT6OOYVJTQ	Proxy Design Pattern | Virtual Proxy | Protection Proxy | Remote Proxy
-8-vE_bmEt18	Template Method Pattern | Step-by-Step Example (UML + Code)
-xaaiMGmyDJk	Composite Design Pattern | Build File System (UML & Code) | System Design
 DkLwFqbCsu8	Build Spotify, Music Player App | System Design
-0KlnSdvsojc	Facade Design Pattern | Real-world use case + Code | Design patterns in LLD
-FV3x69rpwm0	Adapter Design Pattern | Real-world use case + Code | Design patterns in LLD
 bfwKBCSbBZY	First Hackathon for System Design
-cnQZsN0jxEY	Command Design Pattern | Real-world use case + Code | Design patterns in LLD
-Z9rFlZClYNI	Decorator Pattern Explained | Real-world use case + Code | Design patterns in LLD
-Jpmp4GY8r3Q	Observer Design Pattern Explained | Real-Life Use Case + Code Example
 2SAUqTn3TrU	Build Zomato Food Delivery App | System Design
-CD3meit-WDc	Singleton Design Pattern | Thread-Safe, Lazy & Eager Initialization + Real Use Cases
-dMK4TbG29fk	Factory Design Pattern | Simple, Factory Method & Abstract Factory with Real-Life Examples
-PpKvPrl_gRg	Strategy Design Pattern Explained with Real-World Example | Design Patterns in LLD
 MT9qZFGQXOU	Build Google Docs | A Real-World LLD Project | Document Editor LLD |
-hU9koy6A2I0	SOLID Design Principles | part 2
-UsNl8kcU4UA	SOLID Design Principles | Complete Guide with Code Examples
-nPJyyO9pb5s	What is UML Diagrams | Class & Sequence Diagrams with Real Examples
-KGOEK0-XBIg	Inheritance & Polymorphism in OOPs
-QbGoqAgP_zg	OOPs Real-World Examples | OOPs Pillars | Abstraction | Encapsulation
 AK0hu0Zxua4	Introduction To System Design
 y1dLs_Yz_kA	Time to Level UP Your Development Journey
 4uf8BDbMTdE	House Robber | House Robber 2
@@ -236,13 +173,7 @@ HH2stqx6kbA	My Journey from Zero To One
 WOmK_jvqtkM	How To Become Number One In Your Field
 fZ6CWul4m2g	8 Day Engineering
 NBsmPHXjLfg	Lecture 77: File Handling in C++
-essQiHKRmrc	Lecture 76: Exception Handling in C++
-p2h8rGnkD0o	Lecture 75: Polymorphism and Virtual Function in C++
-ww02EpE4DZo	Lecture 74: Type of Inheritance in C++ | Single Inheritance | Multiple | Hybrid | Multipath
-qq3BY4viEB4	Lecture 73: Inheritance | Access Modifier | Real Life Example
-ZIL8t5AoGmQ	Lecture 72: Object Oriented Programming: Static data Member and Function | Encapsulation
 sNiiJ16dLz0	Lecture 71: Constructor and Destructor in C++
-iw1Xf_33YM0	Lecture 70: Object Oriented Programming in C++
 ToeKmnMbXaE	How To Make 2024 the GREATEST Year of Your Life
 WoLrGKbxR-M	Lecture 67: Josephus Problem || Predict the winner
 tFCc2ESnG4w	Lecture 50: Dynamic Memory Allocation of 2D and 3D Arrays in C++

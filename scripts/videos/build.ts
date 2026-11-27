@@ -13,7 +13,7 @@ import { resolve } from "node:path";
 import { CHANNELS } from "./channels";
 import { lcIndex, questionsIn } from "./questions";
 import { homeOf, type LcRow } from "./rules";
-import { BROAD_NO, BROAD_OK, DSA_CONCEPTS, DSA_FALLBACK, HLD_CONCEPTS, HLD_DESIGNS, HLD_SKIP, SKIP, type ConceptRule } from "./concepts";
+import { BROAD_NO, BROAD_OK, DSA_CONCEPTS, DSA_FALLBACK, HLD_CONCEPTS, HLD_DESIGNS, HLD_SKIP, LLD_ALLOW, LLD_CONCEPTS, LLD_DESIGNS, LLD_SKIP, SKIP, type ConceptRule } from "./concepts";
 import { DESIGNS } from "../../content";
 import { OVERRIDES } from "./overrides";
 import { cfIndex, contestHome, type CfRow } from "./contests";
@@ -91,6 +91,11 @@ CHANNELS.forEach((c, ci) => {
       if (!broad) to.push(...HLD_DESIGNS.filter(([re]) => re.test(raw)).map(([, t]) => t));
       to = [...new Set(to)];
       }
+    }
+    if (c.areas.includes("lld") && (!LLD_SKIP.test(raw) || LLD_ALLOW.test(raw))) {
+      to.push(...LLD_CONCEPTS.filter(([re]) => re.test(raw)).map(([, t]) => t));
+      to.push(...LLD_DESIGNS.filter(([re, t]) => re.test(raw) && PAGES.has(t)).map(([, t]) => t));
+      to = [...new Set(to)];
     }
     if (!to.length) to = DSA_FALLBACK.filter(([re]) => re.test(raw)).map(([, t]) => t).slice(0, 2);
     if (to.length) {

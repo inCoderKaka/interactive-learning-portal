@@ -1,23 +1,11 @@
 f_0TFCNvCC4	Accidentally Used Design Patterns When Rebuilding Pokémon
-CyRtTwKeulE	Rebuilding Pokémon with Object Oriented Programming
 anbdaVBQT14	Nothing Wrong With Procedural Programming?
 rV0a-b_VhBg	Working Software Is Not The Primary Measure of Progress
 QeQ62E-1GeA	Rules Have Reasons (Always Ask Why)
-3dya1VI_zp8	When Microsoft Violated Liskov Substitution Principle in .NET
-7hXi0N1oWFU	Liskov Substitution Principle
 hnR03T9Hujw	8 Wastes of Lean (for Software Developers)
-C3B5IIlt4-0	Only Use Inheritance If You Want Both of These
 sFo6Za1L-aI	7 Tips to Grow as a Developer
-SeN1s65tRHY	Depend on Abstractions not Concretions (Framework)
 yhwaisT0VTM	3 Reasons WHY Waterfall Doesn't Work
 ZESZ6pr0J1E	They Knew Waterfall Didn't Work
-TkUhAbbRCAE	Always Use Interfaces
-FdFBYUQCuHQ	Covariance and Contravariance
-u8Da6k5IKPI	3 Ideas on Refactoring by Martin Fowler
-J9WZ4xs4Tkc	The Square-Rectangle Problem
-YaSMkzmc_sA	The Only Time You Should Use Polymorphism
-4SBGeBzgnfI	Object Oriented Programming – Lecture 2 – Paradigms, Types, Compilation, Purity, Programs
-VH8A-RuUi-0	Object Oriented Programming – Lecture 1 – Overview of contents
 SEa9YOXk6MQ	My Vim Setup #2 (Mappings / Custom shortcuts)
 Scp0rhN3usU	My Vim Setup #1 (Job Control)
 QiUm6ZiepPc	Reactive Programming from Scratch (JavaScript) - Ep3
@@ -44,7 +32,6 @@ ubbQI4uxQxM	Vue.js – The Hard Way (Ep9)
 9_zx9uy0iIM	Vue.js – The Hard Way (Ep8)
 as52Hoj1Cto	Kilimanjaro Packing List
 mXp-SqFTxDg	Ramda JS Tutorial – Part 36 (empty + Monoid + Semigroup)
-2DntD7kPgF8	Observer Pattern (in C#.NET) Screencast – OO Design Patterns Screencasts (Ep5)
 PK3p9Ko5y_g	Vue.js – The Hard Way (Ep7)
 bwh7BNyskCg	Vue.js – The Hard Way (Ep6)
 BTmgo7njZxU	Ramda JS Tutorial – Part 35 (either, or, both, and) (2/2)
@@ -58,23 +45,19 @@ OX7-XLilM-M	Ramda JS Tutorial – Part 33 (dropRepeats, dropRepeatsWith)
 1y87ror3YaU	Vue.js – The Hard Way (Ep3)
 kNf7yJ2suFA	Practice vs Theory? Books vs Tutorials? Become a Web Dev. Questions & Answers #9
 T7qwypYnH8g	Vue.js – The Hard Way (Ep2)
-mD3JBeAvZ6s	Observer Pattern (in C#.NET) Screencast – OO Design Patterns Screencasts (ep 4)
 gw615e-jc3w	Ramda JS Tutorial – Part 32 (drop, take)
 KYcYCdA5PM8	Vue.js – The Hard Way (Ep1)
 89XMJYO_CTA	Ramda JS Tutorial – Part 31 (divide, multiply)
 YarKddtkKlg	Ramda JS Tutorial – Part 30 (difference, intersection, union, symmetric difference)
 eZyR7zNd3nk	Ramda JS Tutorial – Part 29 (defaultTo)
-xU3oPZUf4Uw	Observer Pattern Screencast – OO Design Patterns Screencasts (ep 3)
 8DA1mi1fWe0	Collaborate with Interfaces and Contracts? Questions & Answers #8
 Fcfw4HKrmXo	Politics or Programming (for making the world better)? Questions & Answers #7
 iEhnjZV5JYs	Ramda JS Tutorial – Part 28 (inc, dec)
-slfeCvztnT4	Strategy Pattern (in real life) Screencast – OO Design Patterns Screencasts (ep 2)
 iTih2nHwpYQ	Build IoT apps with OO Design Patterns? Questions & Answers #6
 yuhpsPB0IJo	Ramda JS Tutorial – Part 27 (curry)
 bkNG-ArMb5A	Ramda JS Tutorial – Part 26 (countBy)
 xMchMnIHWc4	Ramda JS Tutorial – Part 25 (converge)
 b9YtR_QksdA	Ramda JS Tutorial – Part 24 (contains)
-13nftsQUUE0	Strategy Pattern Screencast – OO Design Patterns Screencasts (ep 1)
 dYVFsepxU4Q	No Math, No Money – Can I Become a programer? Questions & Answers #5
 T2Xn3_I4T1o	Ramda JS Tutorial – Part 23 (construct, constructN)
 vLdldKrNRww	Ramda JS Tutorial – Part 22 (cond / switch case)
@@ -110,40 +93,22 @@ oy74s3w-Y5M	Currying & Parameter Ordering  | Code Walks 064
 qZo-VWjC7es	ReasonML – An introduction to
 lbP-W91CHm8	🎓  Is University Worth It? (For Programmers) — Interviews #2
 EoYbASRRgVw	Make The World Better | Code Walks 063
-rQ7BzfRz7OY	Null Object Pattern – Design Patterns (ep 18)
-N12L5D78MAA	State Pattern – Design Patterns (ep 17)
 Xjp9589nE2w	Best Books 2017
-uNTNEfwYXhI	Iterator Pattern – Design Patterns (ep 16)
-EECfgFQ44Kg	Difference Between Composite and Decorator Pattern – Design Patterns (ep 15)
-EWDmWbJ4wRA	Composite Pattern – Design Patterns (ep 14)
-7ocpwK9uesw	Template Method Pattern – Design Patterns (ep 13)
 rnAPhC7kx4Q	Highlights from Uppstart 2017 (tech conference)
 ka15YhRRaFg	Interview Tips For Programmers (from IT consultant Markus Ånöstam) — Interviews #1
-ObHQHszbIcE	Liskov's Substitution Principle | SOLID Design Principles (ep 1 part 1)
 x3UiiRddnxg	DWIM vs Robustness Principle | Code Walks 062
 1B4KjAhQJoQ	Robustness Principle Is WRONG? | Code Walks 061
 lPsSL6_7NBg	Structural Patterns (comparison) – Design Patterns (ep 12)
 -_gPx1jvmVI	Questions & Answers #2
-F1YQ7YRjttI	Bridge Pattern – Design Patterns (ep 11)
 kSSprWdnzfU	Top 3 Ideas in Programming | Code Walks 060
-NwaabHqPHeM	Proxy Pattern – Design Patterns (ep 10)
 Cxn_Su41mfc	Questions & Answers #1
-K4FkHVO5iac	Facade Pattern – Design Patterns (ep 9)
 SlJlLrpkLtA	Go Full Circle | Code Walks 059
-2PKQtcJjYvc	Adapter Pattern – Design Patterns (ep 8)
 OghGKp3QhK4	Don't Fear Deleting code | Code Walks 058
-9qA5kw8dcSU	Command Pattern – Design Patterns (ep 7)
-hUE_j6q0LTQ	Singleton Pattern – Design Patterns (ep 6)
-v-GiuMmsXj4	Abstract Factory Pattern – Design Patterns (ep 5)
-EcFVTgRHJLM	Factory Method Pattern – Design Patterns (ep 4)
 BtZiSH07lAU	First Job As A Programmer? How To
-GCraGHx6gso	Decorator Pattern – Design Patterns (ep 3)
-_BpmfnqjgzQ	Observer Pattern – Design Patterns (ep 2)
 o3eEAx65euc	VR Programming & The Desk Generation | Code Walks 057
 jsAPRAjdiuc	Message Obsession | Code Walks 056
 wKtooLW8GDc	Primitive Obsession | Code Walks 055
 n9A9H-eEG4A	Bash Programming & The UNIX Chainsaw | Code Walks 054
-v9ejT8FO-7I	Strategy Pattern – Design Patterns (ep 1)
 c3kUElWSu5Y	Perfect Software & Time Value of Money | Code Walks 053
 DpD520BQhsQ	Agile Manifesto 4/4 – Responding To Change Over Following A Plan | Code Walks 052
 U0mQ18aefaA	Agile Manifesto 3/4 – Customer Collaboration Over Contract Negotiation | Code Walks 051
@@ -152,9 +117,7 @@ NQwoBc7NIBg	Agile Manifesto 1/4 – Individuals & Interactions Over Processes & 
 twrxBCRHIDo	FIXED PRICE Software Development | Code Walks 048
 aJqmsq7UvQI	Diagrams Aren't Evil | Code Walks 047
 s87Hj5PAj-4	Minimum Viable Product (MVP) | Code Walks 046
-os6ssw1qylU	Replace Conditional With Polymorphism & Primitive Obsession | Code Walks 045
 xyjfCeHSkY0	Emergence Necessitates Mocking | Code Walks 044
-ECTyHSZUv0c	Downcasting Is A Code Smell | Code Walks 043
 vmZMnIbMTvM	LICENSE TO CODE (The future of programming) | Code Walks 042
 gp4Rd62PUrg	Static/Dynamic & Explicit/Implicit | Code Walks 041
 08ZUNsekFdY	E-type, P-type, S-type Systems (Lehman) | Code Walks 040
@@ -166,34 +129,25 @@ Pmxb9su2wNM	High Level Iterators replace Foreach | Code Walks 035
 ED8uijgc_Ak	Smallest possible change | Code Walks 033
 NebPJZ993Jw	Vague Requirements | Code Walks 032
 4UEL3fxUhdU	Replace foreach with map | Code Walks 031
-3JetCjy5TRY	Code Smells vs Anti-patterns | Code Walks 030
 LAMhPwVwMUo	Don't mix CONSTRUCTION with USE | Code Walks 029
 0LXVmzzqllY	Data Clumps | Code Walks 028
 nZhB8gkTcBE	Type Checking and Coupling to Concretions | Code Walks 027
 2pwpSU0c_TA	The SCAM part of Integration tests | Code Walks 026
 zXJORh8K4Bw	Command Query Separation (CQS) | Code Walks 025
 PhiXo5CWjYU	Sliming in TDD (Fake it 'til you make it) | Code Walks 024
-xahwVmf8itI	Interface Segregation Principle (SOLID) | Code Walks 023
-Qd5G0DUDjSg	Iterator Pattern Example in C# | Code Walks 022
 1KGfQXBByeQ	The BEST Code Comments | Code Walks 021
 fj7mLQWd-X0	Map: Functional Programming in JavaScript
 qKX-FIEU9Gw	VIM was so amazing! | Why VIM? 001
 rIP1itEOGgI	Better than a TERMINAL in a TEXT EDITOR | Why Vim? 002
-AEnePs2Evg0	Single Responsibility Principle (SOLID) | A single reason to change — Code Walks 006
 0I_7dyhYKyw	Why functional programs parallelise better | Code Walks 007
 uCxL7NGEohI	Unit vs Integration testing — what's the difference? | Code Walks 005
-S9awxA1wNNY	Dependency Inversion - how, what, why? (examples in C#) | Code Walks 004
 oaIxRQSAZXE	DUCK TYPING | Code Walks 009
 kgLS0NGLCHo	Are static functions like functional programming? | Code Walks 008
 SWnIikyd32E	PREMATURE abstraction is NOT premature | Code Walks 010
-hTC3rmRBIxs	Proxy vs Adapter vs Facade Pattern | Code Walks 012
 URyh0CHjH_w	Code like prose | Code Walks 013
 -wnt-UH5VBw	Tell Don't Ask | Code Walks 011
 wiwHk0khPSY	Tell Don't Ask and Control Coupling | Code Walks 015
 jdoxhbIVMBQ	Statics are Globals | Code Walks 002
-FyJhALHmFXU	Law of Demeter | Code Walks 014
-nuMTUrt3JcU	Type Checking is a Code Smell | Code Walks 017
-bVwZquRH1Vk	Liskov Substitution Principle (SOLID), The Robustness Principle, and DbC | Code Walks 018
 IlmOokWznyI	Design Patterns in Dynamic Languages | Code Walks 016
 tbSml2iyDt4	INTEGRATION TESTS ARE A SCAM | Code Walks 019
 zatcvoNqSaI	Verification and Validation | Code Walks 020
