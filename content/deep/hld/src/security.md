@@ -1,6 +1,7 @@
 === authn
 blurb: Proving who a user or service is: sessions vs tokens, what a JWT is and what it isn't, OAuth 2.0 authorisation code flow with PKCE, OpenID Connect for login, refresh tokens and revocation, and service-to-service identity with mTLS.
 signals: Login for a web or mobile app | "Sign in with Google" | Stateless API authentication | Services calling each other securely | Token revocation and logout
+widgets: jwt, seq-oauth
 
 --- lesson
 :::words
@@ -30,6 +31,8 @@ At a festival you show your ID once at the gate and get a wristband. Staff insid
 
 Edit a JWT and see why tampering fails:
 
+[[widget:jwt]]
+
 
 A JWT is **signed, not encrypted**: anyone can read its contents (base64), so never put secrets in it.
 
@@ -43,6 +46,8 @@ The standard for "let this app access my Google Drive" and, with OIDC, for "Sign
 5. The app calls the API with the access token.
 
 PKCE ensures that an attacker who intercepts the code (a malicious app on the same phone, a leaked redirect) can't exchange it, because they don't have the verifier. It's recommended for all clients today. Step through the flow and the stolen-code attack:
+
+[[widget:seq-oauth]]
 
 
 ## Service-to-service identity
@@ -160,6 +165,7 @@ W: Bounded exposure with good usability.
 blurb: Deciding what an authenticated user may do: role-based (RBAC), attribute-based (ABAC) and relationship-based access control, Google's Zanzibar model of relation tuples behind Drive and YouTube sharing, and where authorisation checks belong in a design.
 signals: Sharing documents with users and groups | Admin, editor and viewer roles | Multi-tenant permissions | "Can user X see resource Y?" at scale
 prereq: authn
+widgets: zanzibar, seq-new-enemy
 
 --- lesson
 :::words
@@ -200,8 +206,14 @@ A **namespace configuration** defines how relations combine: an editor is also a
 
 Try checks against a small set of tuples:
 
+[[widget:zanzibar]]
+
 
 Scale and consistency matter: Zanzibar stores trillions of tuples in Spanner and answers millions of checks per second with low latency (caching, a denormalised group index called Leopard). It uses **zookies** (consistency tokens) to avoid the "new enemy problem": after you remove someone's access and then add sensitive content, the check for that content must see the removal. Open-source descendants include SpiceDB, OpenFGA and Ory Keto.
+
+Watch the new enemy problem happen, and how a zookie prevents it:
+
+[[widget:seq-new-enemy]]
 
 ## Where checks belong
 
@@ -314,6 +326,7 @@ W: The owning service knows the resource.
 blurb: Protecting data in transit and at rest: TLS everywhere, encryption at rest with envelope encryption and a key management service, key rotation, end-to-end encryption, and hashing vs encryption vs signing, explained without cryptography maths.
 signals: "How do you protect user data?" | Storing sensitive data (payments, health, messages) | Key rotation and compromise | End-to-end encrypted messaging
 prereq: authn
+widgets: seq-envelope
 
 --- lesson
 :::words
@@ -346,6 +359,8 @@ Encrypting terabytes directly with a master key held in a KMS would mean sending
 4. To read: send the encrypted DEK to the KMS (which checks permissions and logs the request), get the plain DEK back, decrypt the data.
 
 Step through it:
+
+[[widget:seq-envelope]]
 
 
 Benefits: master keys never leave hardware security modules; every key use is permission-checked and **audited**; **rotation** of the KEK means re-encrypting only small DEKs, not all the data; deleting a key "crypto-shreds" all data encrypted under it (useful for deletion requirements). Google Cloud encrypts all data at rest by default this way, with customer-managed keys (CMEK) as an option.
@@ -387,19 +402,30 @@ In E2EE messaging (Signal protocol, used by WhatsApp and Google Messages RCS cha
 
 --- notes
 ## In transit
-HTTPS to users; mTLS internally; TLS 1.3; automated short-lived certificates.
-## At rest: envelope
-DEK (AES-GCM, local) encrypts data; KEK in KMS/HSM encrypts DEK; store wrapped DEK with data.
-Read: KMS unwraps DEK (IAM-checked, audited) → decrypt.
-Rotate KEK cheaply; crypto-shred by deleting keys.
-GCP: default at-rest encryption; CMEK for customer-managed keys.
-## Tools
-SHA-256: integrity. Argon2/bcrypt/scrypt: passwords. AES-GCM: bulk. Asymmetric: key exchange, small secrets. Signatures: authenticity.
-## E2EE
-Signal protocol (WhatsApp, Google Messages); keys on devices; server sees ciphertext; no server search/moderation of content; multi-device keys; user-held backups.
+Encrypt every hop: HTTPS (TLS 1.3) from users, mTLS between internal services.
+The internal network is not trusted (zero trust).
+Certificates are short-lived and issued and rotated automatically.
+## At rest: envelope encryption
+A fresh data key (DEK) encrypts the data locally with AES-GCM: fast, no big data leaves the machine.
+The KMS encrypts (wraps) the DEK with a master key (KEK) that never leaves its HSM.
+Store the wrapped DEK next to the data; forget the plain DEK.
+To read: send the wrapped DEK to the KMS, which checks permission, logs the use and returns the plain DEK.
+Rotating the KEK re-wraps tiny DEKs, never re-encrypts the data.
+Destroying a key makes all data under it unreadable, backups included (crypto-shredding).
+Google Cloud encrypts all data at rest by default; CMEK lets the customer hold and revoke the master key.
+## Which tool for which job
+Integrity check or content address: a fast hash (SHA-256).
+Storing passwords: a slow salted hash (Argon2, bcrypt, scrypt), never encryption.
+Bulk data: symmetric encryption (AES-GCM).
+Key exchange and small secrets: asymmetric encryption.
+Proving who wrote something and that it wasn't changed: a signature.
+## End-to-end encryption
+Keys live only on users' devices (Signal protocol: WhatsApp, Google Messages); the server relays ciphertext.
+Cost: the server can't search, scan or restore content; each device needs its own keys; backups need user-held keys.
 ## Practice
-Least privilege on key use; audit logs; field-level encryption for most sensitive fields; never roll your own crypto.
-
+Least privilege on who may use each key; audit every use.
+Encrypt the most sensitive fields separately (field-level encryption).
+Never invent your own cryptography; use vetted libraries and a managed KMS.
 --- doubts
 Q: If the cloud provider encrypts everything at rest anyway, why does it matter in a design?
 A: Default encryption protects against stolen disks and many infrastructure risks. Designs add **who can use the keys** (separate keys per tenant or data class, least privilege, audit), **application-level or field-level encryption** for the most sensitive data (so a compromised database user or a leaked query result still yields ciphertext), and key-based deletion.
@@ -464,6 +490,7 @@ W: The service operator can't read the content.
 blurb: Serving many customers from shared infrastructure safely: isolation models from shared tables to dedicated stacks, tenant IDs and data isolation, the noisy-neighbour problem with quotas and fair scheduling, tenant-aware sharding, and per-tenant keys and residency.
 signals: Designing a SaaS product (Slack, Shopify, Google Workspace) | One big customer slows everyone | Enterprise customers asking for isolation | Per-customer limits and billing
 prereq: authz
+widgets: tenant-queue
 
 --- lesson
 :::words
@@ -506,6 +533,10 @@ Real products mix them: pooled for small tenants, dedicated cells for the larges
 - **Fair scheduling**: per-tenant queues for background jobs so one tenant's 10-million-row import doesn't block everyone's emails (weighted fair queueing).
 - **Shard by tenant** so heavy tenants can be moved to their own shards; watch for a single giant tenant outgrowing one shard (sub-partition it).
 - **Cell-based architecture**: many independent stacks ("cells"), each serving a set of tenants; a bad deploy or overload is contained to one cell's tenants (blast radius), and capacity grows by adding cells.
+
+See what a shared queue does when one tenant floods it, and what fair queueing and caps change:
+
+[[widget:tenant-queue]]
 
 ## Enterprise requirements
 
@@ -614,6 +645,7 @@ W: A classic noisy-neighbour defence.
 blurb: Keeping a public service up and fair under attack and abuse: volumetric and application-layer DDoS, anycast and edge absorption, WAFs, bot detection and proof-of-work-style challenges, account-level abuse (credential stuffing, spam) and layered defences.
 signals: Public endpoints that attackers can reach | Login, sign-up and checkout abuse | "What if someone floods your API?" | Scraping and fake accounts
 prereq: rl-algorithms
+widgets: defence-layers
 
 --- lesson
 :::words
@@ -654,6 +686,10 @@ Requests that look legitimate but are expensive: searching with random terms (ca
 
 ## Layered defence summary
 
+Turn layers on and off against three different attacks:
+
+[[widget:defence-layers]]
+
 Edge network (anycast, volumetric filtering) → WAF and bot management → per-identity rate limits → service-level quotas, query-cost limits, caching → load shedding with priorities → abuse detection on accounts and behaviour → incident response playbooks.
 
 ## Interview angles
@@ -677,20 +713,27 @@ Edge network (anycast, volumetric filtering) → WAF and bot management → per-
 ? Layered defence order? :: Edge (anycast) → WAF/bots → rate limits → service quotas/caching → shedding → behavioural abuse detection.
 
 --- notes
-## Volumetric
-Gbit–Tbit floods, reflection/amplification; absorb at anycast edge (Cloud Armor, Cloudflare, Akamai); network filtering.
-Google mitigated HTTP/2 Rapid Reset at 398M req/s (2023).
-## Application layer
-Expensive legit-looking requests; per-IP/account/key limits; cost-weighted limits; caching; validation; query cost limits; WAF; shedding with priorities.
+## Network floods
+Floods of Gbit/s to Tbit/s of junk (UDP floods, reflection/amplification) are bigger than any one data centre's link.
+Absorb them at an anycast edge with hundreds of sites (Google Cloud Armor and front end, Cloudflare, Akamai).
+Non-web traffic is dropped at the edge before it reaches you.
+Scale: Google mitigated the HTTP/2 Rapid Reset attack at 398 million requests per second (2023).
+## Application-layer attacks
+Requests that look real but are expensive: random searches that miss the cache, heavy queries, login floods.
+Rate-limit per IP, per account and per API key; weight expensive endpoints more.
+Cache what you can; validate requests; cap query cost.
+A WAF blocks known attack patterns and bad bots, with rules tightened during an attack.
+When overloaded, shed anonymous and low-priority traffic first so signed-in users keep working.
 ## Bots
-IP reputation, fingerprints, behaviour; challenges (CAPTCHA, reCAPTCHA scores, proof-of-work) only when suspicious.
-## Accounts
-Credential stuffing: per-account/IP limits, breached-password checks, risk-based MFA, passkeys, monitor login success ratio.
-Spam/fake accounts: verification, new-account friction, reputation, graph signals, ML + review.
-Scraping: limits, auth for full data, anomaly detection.
-## Layers
-Edge → WAF/bot → rate limits → quotas/caching → shedding → abuse detection → playbooks.
-
+Score traffic with IP reputation, browser and TLS fingerprints and behaviour.
+Challenge only suspicious traffic (CAPTCHA, invisible score, proof-of-work), so real users aren't punished.
+## Account abuse
+Credential stuffing tries leaked passwords; rate limits barely help because each account is tried once from many IPs.
+What stops it: breached-password checks, MFA on risky logins, passkeys, watching the login success ratio.
+Fake accounts and spam: verify at sign-up, limit new accounts, reputation, shared-device and payment signals, ML plus human review.
+Scraping: limits, login for full data, anomaly detection; slow scraping of public data can't be fully stopped.
+## Layers, outside in
+Anycast edge → WAF and bot scoring → per-identity rate limits → quotas, caching, query cost limits → priority shedding → abuse detection → incident playbooks.
 --- doubts
 Q: Can autoscaling defeat a DDoS?
 A: Not reliably: attackers can generate traffic far cheaper than you can serve it, and autoscaling just multiplies your bill. Absorb and filter at an edge built for it, and make each request as cheap as possible (caching), rather than scaling backends to serve attack traffic.

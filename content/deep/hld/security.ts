@@ -7,6 +7,7 @@ export const security: Record<string, Deep> = {
   "authn": {
     blurb: "Proving who a user or service is: sessions vs tokens, what a JWT is and what it isn't, OAuth 2.0 authorisation code flow with PKCE, OpenID Connect for login, refresh tokens and revocation, and service-to-service identity with mTLS.",
     signals: ["Login for a web or mobile app", "\"Sign in with Google\"", "Stateless API authentication", "Services calling each other securely", "Token revocation and logout"],
+    widgets: ["jwt", "seq-oauth"],
     lesson: md`
 :::words
 - **Authentication (authn)**: proving who you are. **Authorisation (authz)**: what you're allowed to do (next page).
@@ -35,6 +36,8 @@ At a festival you show your ID once at the gate and get a wristband. Staff insid
 
 Edit a JWT and see why tampering fails:
 
+[[widget:jwt]]
+
 
 A JWT is **signed, not encrypted**: anyone can read its contents (base64), so never put secrets in it.
 
@@ -48,6 +51,8 @@ The standard for "let this app access my Google Drive" and, with OIDC, for "Sign
 5. The app calls the API with the access token.
 
 PKCE ensures that an attacker who intercepts the code (a malicious app on the same phone, a leaked redirect) can't exchange it, because they don't have the verifier. It's recommended for all clients today. Step through the flow and the stolen-code attack:
+
+[[widget:seq-oauth]]
 
 
 ## Service-to-service identity
@@ -113,6 +118,7 @@ Inside a system, services authenticate each other with **mTLS** (each workload h
   "authz": {
     blurb: "Deciding what an authenticated user may do: role-based (RBAC), attribute-based (ABAC) and relationship-based access control, Google's Zanzibar model of relation tuples behind Drive and YouTube sharing, and where authorisation checks belong in a design.",
     signals: ["Sharing documents with users and groups", "Admin, editor and viewer roles", "Multi-tenant permissions", "\"Can user X see resource Y?\" at scale"],
+    widgets: ["zanzibar", "seq-new-enemy"],
     prereq: ["authn"],
     lesson: md`
 :::words
@@ -153,8 +159,14 @@ A **namespace configuration** defines how relations combine: an editor is also a
 
 Try checks against a small set of tuples:
 
+[[widget:zanzibar]]
+
 
 Scale and consistency matter: Zanzibar stores trillions of tuples in Spanner and answers millions of checks per second with low latency (caching, a denormalised group index called Leopard). It uses **zookies** (consistency tokens) to avoid the "new enemy problem": after you remove someone's access and then add sensitive content, the check for that content must see the removal. Open-source descendants include SpiceDB, OpenFGA and Ory Keto.
+
+Watch the new enemy problem happen, and how a zookie prevents it:
+
+[[widget:seq-new-enemy]]
 
 ## Where checks belong
 
@@ -213,6 +225,7 @@ Scale and consistency matter: Zanzibar stores trillions of tuples in Spanner and
   "encryption": {
     blurb: "Protecting data in transit and at rest: TLS everywhere, encryption at rest with envelope encryption and a key management service, key rotation, end-to-end encryption, and hashing vs encryption vs signing, explained without cryptography maths.",
     signals: ["\"How do you protect user data?\"", "Storing sensitive data (payments, health, messages)", "Key rotation and compromise", "End-to-end encrypted messaging"],
+    widgets: ["seq-envelope"],
     prereq: ["authn"],
     lesson: md`
 :::words
@@ -245,6 +258,8 @@ Encrypting terabytes directly with a master key held in a KMS would mean sending
 4. To read: send the encrypted DEK to the KMS (which checks permissions and logs the request), get the plain DEK back, decrypt the data.
 
 Step through it:
+
+[[widget:seq-envelope]]
 
 
 Benefits: master keys never leave hardware security modules; every key use is permission-checked and **audited**; **rotation** of the KEK means re-encrypting only small DEKs, not all the data; deleting a key "crypto-shreds" all data encrypted under it (useful for deletion requirements). Google Cloud encrypts all data at rest by default this way, with customer-managed keys (CMEK) as an option.
@@ -312,6 +327,7 @@ In E2EE messaging (Signal protocol, used by WhatsApp and Google Messages RCS cha
   "multi-tenancy": {
     blurb: "Serving many customers from shared infrastructure safely: isolation models from shared tables to dedicated stacks, tenant IDs and data isolation, the noisy-neighbour problem with quotas and fair scheduling, tenant-aware sharding, and per-tenant keys and residency.",
     signals: ["Designing a SaaS product (Slack, Shopify, Google Workspace)", "One big customer slows everyone", "Enterprise customers asking for isolation", "Per-customer limits and billing"],
+    widgets: ["tenant-queue"],
     prereq: ["authz"],
     lesson: md`
 :::words
@@ -354,6 +370,10 @@ Real products mix them: pooled for small tenants, dedicated cells for the larges
 - **Fair scheduling**: per-tenant queues for background jobs so one tenant's 10-million-row import doesn't block everyone's emails (weighted fair queueing).
 - **Shard by tenant** so heavy tenants can be moved to their own shards; watch for a single giant tenant outgrowing one shard (sub-partition it).
 - **Cell-based architecture**: many independent stacks ("cells"), each serving a set of tenants; a bad deploy or overload is contained to one cell's tenants (blast radius), and capacity grows by adding cells.
+
+See what a shared queue does when one tenant floods it, and what fair queueing and caps change:
+
+[[widget:tenant-queue]]
 
 ## Enterprise requirements
 
@@ -407,6 +427,7 @@ Customer-managed encryption keys (per-tenant KEKs; revoking the key makes the da
   "abuse-ddos": {
     blurb: "Keeping a public service up and fair under attack and abuse: volumetric and application-layer DDoS, anycast and edge absorption, WAFs, bot detection and proof-of-work-style challenges, account-level abuse (credential stuffing, spam) and layered defences.",
     signals: ["Public endpoints that attackers can reach", "Login, sign-up and checkout abuse", "\"What if someone floods your API?\"", "Scraping and fake accounts"],
+    widgets: ["defence-layers"],
     prereq: ["rl-algorithms"],
     lesson: md`
 :::words
@@ -446,6 +467,10 @@ Requests that look legitimate but are expensive: searching with random terms (ca
 - **Scraping**: rate limits, authentication for full data, anomaly detection, and accepting that public data can be scraped slowly.
 
 ## Layered defence summary
+
+Turn layers on and off against three different attacks:
+
+[[widget:defence-layers]]
 
 Edge network (anycast, volumetric filtering) → WAF and bot management → per-identity rate limits → service-level quotas, query-cost limits, caching → load shedding with priorities → abuse detection on accounts and behaviour → incident response playbooks.
 

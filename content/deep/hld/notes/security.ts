@@ -46,21 +46,36 @@ Deny by default; audit logs; prompt revocation.
 `,
   "encryption": `
 ## In transit
-HTTPS to users; mTLS internally; TLS 1.3; automated short-lived certificates.
-## At rest: envelope
-DEK (AES-GCM, local) encrypts data
-KEK in KMS/HSM encrypts DEK
-store wrapped DEK with data.
-Read: KMS unwraps DEK (IAM-checked, audited) → decrypt.
-Rotate KEK cheaply; crypto-shred by deleting keys.
-GCP: default at-rest encryption
-CMEK for customer-managed keys.
-## Tools
-SHA-256: integrity. Argon2/bcrypt/scrypt: passwords. AES-GCM: bulk. Asymmetric: key exchange, small secrets. Signatures: authenticity.
-## E2EE
-Signal protocol (WhatsApp, Google Messages); keys on devices; server sees ciphertext; no server search/moderation of content; multi-device keys; user-held backups.
+Encrypt every hop: HTTPS (TLS 1.3) from users, mTLS between internal services.
+The internal network is not trusted (zero trust).
+Certificates are short-lived and issued and rotated automatically.
+## At rest: envelope encryption
+A fresh data key (DEK) encrypts the data locally with AES-GCM: fast, no big data leaves the machine.
+The KMS encrypts (wraps) the DEK with a master key (KEK) that never leaves its HSM.
+Store the wrapped DEK next to the data
+forget the plain DEK.
+To read: send the wrapped DEK to the KMS, which checks permission, logs the use and returns the plain DEK.
+Rotating the KEK re-wraps tiny DEKs, never re-encrypts the data.
+Destroying a key makes all data under it unreadable, backups included (crypto-shredding).
+Google Cloud encrypts all data at rest by default
+CMEK lets the customer hold and revoke the master key.
+## Which tool for which job
+Integrity check or content address: a fast hash (SHA-256).
+Storing passwords: a slow salted hash (Argon2, bcrypt, scrypt), never encryption.
+Bulk data: symmetric encryption (AES-GCM).
+Key exchange and small secrets: asymmetric encryption.
+Proving who wrote something and that it wasn't changed: a signature.
+## End-to-end encryption
+Keys live only on users' devices (Signal protocol: WhatsApp, Google Messages)
+the server relays ciphertext.
+Cost: the server can't search, scan or restore content
+each device needs its own keys
+backups need user-held keys.
 ## Practice
-Least privilege on key use; audit logs; field-level encryption for most sensitive fields; never roll your own crypto.
+Least privilege on who may use each key; audit every use.
+Encrypt the most sensitive fields separately (field-level encryption).
+Never invent your own cryptography
+use vetted libraries and a managed KMS.
 `,
   "multi-tenancy": `
 ## Models
@@ -88,19 +103,29 @@ per-tenant audit logs and SSO
 usage metering.
 `,
   "abuse-ddos": `
-## Volumetric
-Gbit–Tbit floods, reflection/amplification; absorb at anycast edge (Cloud Armor, Cloudflare, Akamai); network filtering.
-Google mitigated HTTP/2 Rapid Reset at 398M req/s (2023).
-## Application layer
-Expensive legit-looking requests; per-IP/account/key limits; cost-weighted limits; caching; validation; query cost limits; WAF; shedding with priorities.
+## Network floods
+Floods of Gbit/s to Tbit/s of junk (UDP floods, reflection/amplification) are bigger than any one data centre's link.
+Absorb them at an anycast edge with hundreds of sites (Google Cloud Armor and front end, Cloudflare, Akamai).
+Non-web traffic is dropped at the edge before it reaches you.
+Scale: Google mitigated the HTTP/2 Rapid Reset attack at 398 million requests per second (2023).
+## Application-layer attacks
+Requests that look real but are expensive: random searches that miss the cache, heavy queries, login floods.
+Rate-limit per IP, per account and per API key
+weight expensive endpoints more.
+Cache what you can; validate requests; cap query cost.
+A WAF blocks known attack patterns and bad bots, with rules tightened during an attack.
+When overloaded, shed anonymous and low-priority traffic first so signed-in users keep working.
 ## Bots
-IP reputation, fingerprints, behaviour
-challenges (CAPTCHA, reCAPTCHA scores, proof-of-work) only when suspicious.
-## Accounts
-Credential stuffing: per-account/IP limits, breached-password checks, risk-based MFA, passkeys, monitor login success ratio.
-Spam/fake accounts: verification, new-account friction, reputation, graph signals, ML + review.
-Scraping: limits, auth for full data, anomaly detection.
-## Layers
-Edge → WAF/bot → rate limits → quotas/caching → shedding → abuse detection → playbooks.
+Score traffic with IP reputation, browser and TLS fingerprints and behaviour.
+Challenge only suspicious traffic (CAPTCHA, invisible score, proof-of-work), so real users aren't punished.
+## Account abuse
+Credential stuffing tries leaked passwords
+rate limits barely help because each account is tried once from many IPs.
+What stops it: breached-password checks, MFA on risky logins, passkeys, watching the login success ratio.
+Fake accounts and spam: verify at sign-up, limit new accounts, reputation, shared-device and payment signals, ML plus human review.
+Scraping: limits, login for full data, anomaly detection
+slow scraping of public data can't be fully stopped.
+## Layers, outside in
+Anycast edge → WAF and bot scoring → per-identity rate limits → quotas, caching, query cost limits → priority shedding → abuse detection → incident playbooks.
 `,
 };

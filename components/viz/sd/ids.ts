@@ -12,4 +12,5 @@ export const HLD_WIDGET_IDS = new Set<string>([
   "rl-race", "retry-storm", "seq-rl-distributed",
   "erasure", "abr", "inverted-index", "geohash", "hll",
   "error-budget", "breaker", "gossip", "seq-trace", "seq-canary",
+  "jwt", "seq-oauth", "zanzibar", "seq-new-enemy", "seq-envelope", "tenant-queue", "defence-layers",
 ]);

@@ -226,4 +226,19 @@ Everything fails eventually: machines, networks, dependencies and, most often, o
 Expect every part to fail; design so each failure stays small, is noticed quickly, and can be undone.
 :::
 `,
+  security: md`
+## What this chapter is about
+
+Every request a system receives raises two questions: **who is this?** and **are they allowed to do this?** Around those sit two more: how do we keep data secret even if someone steals a disk or listens on the wire, and how do we keep working when someone attacks on purpose? Interviewers rarely want cryptography maths; they want to see that you put the right protection in the right place.
+
+1. **Authentication.** Proving who a user or service is: sessions versus signed tokens (JWTs), and how "Sign in with Google" works (OAuth with PKCE, OpenID Connect) without the app ever seeing your password. Tamper with a real token and watch it fail.
+2. **Authorisation.** Deciding what someone may do: roles (RBAC), rules over attributes (ABAC), and relationships, as in Google's Zanzibar, which answers "can Bob view this doc?" by following who-belongs-to-what. Run checks yourself.
+3. **Encryption and keys.** Encrypting everything in transit and at rest, and the trick (envelope encryption) that lets a key service protect petabytes while the master key never leaves its vault.
+4. **Multi-tenancy.** Serving many customers on shared machines without one seeing another's data or slowing everyone down. Watch one customer's import swamp a shared queue, then fix it.
+5. **Abuse and DDoS.** Floods of junk traffic, bot armies and stolen-password attacks, and the layers of defence that stop each one.
+
+:::tip The one idea to keep
+Never trust where a request comes from: check identity and permission on every call, deny by default, and give every secret a short life and an owner who can revoke it.
+:::
+`,
 };
