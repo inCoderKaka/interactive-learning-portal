@@ -6,8 +6,10 @@ export const notes: Record<string, string> = {
 0–5 requirements: features, non-goals, scale, latency, availability, consistency.
 5–10 estimation: only numbers that change a decision.
 10–15 API and data model: operations, records, access patterns.
-15–25 high-level design; walk one read and one write through it.
-25–40 deep dives on the 2–3 hardest parts; this decides the level.
+15–25 high-level design
+walk one read and one write through it.
+25–40 deep dives on the 2–3 hardest parts
+this decides the level.
 40–45 bottlenecks, failure modes, monitoring, 10× growth.
 ## Scored dimensions
 Problem navigation
@@ -35,12 +37,15 @@ consistency
 durability
 size and retention
 geography and residency.
-State them per feature: a post must be durable but can appear in feeds late; likes can be approximate; payments exactly once.
+State them per feature: a post must be durable but can appear in feeds late
+likes can be approximate
+payments exactly once.
 ## Percentiles
 Targets use p99 or p99.9: averages hide the slow tail, and pages fan out to many requests.
 ## Nines
 99.9% ≈ 43 min/month, 8.8 h/year. 99.99% ≈ 4.3 min/month, 53 min/year. 99.999% ≈ 5 min/year.
-Each nine is ~10× harder; ≥ four nines means multi-zone redundancy and automated failover.
+Each nine is ~10× harder
+≥ four nines means multi-zone redundancy and automated failover.
 ## Use them
 Write requirements on the board and justify each later choice by pointing at one.
 `,
@@ -54,13 +59,17 @@ Pick the transport per operation: request–response, long-lived push (WebSocket
 List each entity with its key and key fields.
 Choose keys so the most common read is a single lookup or one contiguous range.
 ## Access patterns → storage
-Write each core operation as a read or write pattern; mark the frequent ones.
+Write each core operation as a read or write pattern
+mark the frequent ones.
 Relational: many relationships, multi-record transactions, unpredictable queries.
 Key-value / wide-column: dominant key lookups or ranges, very high write rate or size.
 Special stores: search index (full text), object storage (big files), cache (hot reads).
 Denormalise when a frequent read needs data organised another way (per-user inbox vs per-chat log).
 ## Traps
-Global auto-increment IDs; blobs in the database; counting by scanning; unbounded lists inside one record.
+Global auto-increment IDs
+blobs in the database
+counting by scanning
+unbounded lists inside one record.
 `,
   "sd-deep-dives": `
 ## Hard parts
@@ -74,7 +83,8 @@ Propose them yourself, with a reason, in order.
 ## Two levels down
 L0 "a cache" → L1 what/key/size/expiry/fill → L2 fan-out, node loss, stampede.
 ## Peak load
-Peaks are 2–3× average daily, 10×+ for events. Bursts are absorbed by queues and headroom; autoscaling takes minutes.
+Peaks are 2–3× average daily, 10×+ for events. Bursts are absorbed by queues and headroom
+autoscaling takes minutes.
 Decide what to shed first.
 ## Failure walk
 Per component: user impact, detection, mitigation, data loss.
@@ -113,17 +123,24 @@ Text ~100s of bytes
 photo ~0.2–2 MB
 1 min 1080p video ~50–100 MB.
 ## Use
-Count sequential hops on the critical path; precompute what would need many random reads; batch writes sequentially; check targets against the speed of light.
+Count sequential hops on the critical path
+precompute what would need many random reads
+batch writes sequentially
+check targets against the speed of light.
 `,
   "capacity-math": `
 ## Recipe
 DAU → actions/day (reads and writes separately) → avg QPS (÷ 10⁵) → peak (× 2–3) → storage/day → × retention × replication → bandwidth = QPS × size.
 ## Habits
-Round to powers of ten; use scientific notation; say each assumption before the number.
-Estimate the hot set for caches; total size for storage.
+Round to powers of ten
+use scientific notation
+say each assumption before the number.
+Estimate the hot set for caches
+total size for storage.
 Sanity-check against the real world.
 ## Recurring estimates
-Concurrent connections = DAU × online share; ~100k–1M idle connections per server.
+Concurrent connections = DAU × online share
+~100k–1M idle connections per server.
 Servers = peak QPS ÷ per-server QPS (+ zone-failure headroom).
 Partitions = max(peak writes ÷ per-partition writes, total size ÷ per-machine size).
 ## Photo app example
@@ -136,7 +153,8 @@ Partitions = max(peak writes ÷ per-partition writes, total size ÷ per-machine 
 ~60 Gbit/s read.
 Decisions: direct-to-object-storage uploads; CDN for reads; storage tiering; metadata-only servers.
 ## Stop when
-The numbers classify the problem; compute more precise figures only inside a deep dive.
+The numbers classify the problem
+compute more precise figures only inside a deep dive.
 `,
   "capacity-planning": `
 ## Limits per component
@@ -160,7 +178,9 @@ multi-region: each region absorbs a failed one.
 180k writes/s ÷ 10k = 18 partitions
 2.6 PB ÷ 5 TB = 520 machines: size dominates.
 ## Check the rest
-Fan-out multiplies deliveries; per-node QPS on caches; hot keys break averages.
+Fan-out multiplies deliveries
+per-node QPS on caches
+hot keys break averages.
 ## Over time
 Load-test real capacity; forecast with lead time; autoscale stateless tiers; plan degradation.
 `,
@@ -173,7 +193,8 @@ Response ≈ service ÷ (1 − ρ): 50% → 2×, 80% → 5×, 90% → 10×, 95% 
 Variability (bursty arrivals, mixed request sizes) moves the wall earlier (Kingman).
 Keep headroom; isolate heavy requests in their own queues or pools.
 ## Tail at scale (Dean & Barroso 2013)
-Fan-out to N: P(slow) = 1 − (1 − p)ᴺ; 1% × 100 servers ≈ 63%.
+Fan-out to N: P(slow) = 1 − (1 − p)ᴺ
+1% × 100 servers ≈ 63%.
 Causes: GC pauses, compaction, noisy neighbours, network blips, head-of-line queueing.
 Hedged requests (after ~p95 delay): 99.9th pct 1,800 → 74 ms for ~2% extra load.
 Tied requests, micro-partitioning, good-enough partial results.

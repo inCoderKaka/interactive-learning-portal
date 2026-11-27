@@ -3,7 +3,8 @@
 export const notes: Record<string, string> = {
   "partition-schemes": `
 ## Range
-Contiguous sorted key ranges per partition; efficient range scans and prefixes.
+Contiguous sorted key ranges per partition
+efficient range scans and prefixes.
 Hot spots: monotonic keys (time, auto-increment) and popular ranges.
 Boundaries split automatically as data grows (Bigtable tablets, Spanner splits, HBase regions).
 ## Hash
@@ -26,7 +27,8 @@ Queries without the key → scatter-gather or a secondary index.
 ## Problem
 hash % N: changing N remaps ~N/(N+1) of keys → cache stampede or mass data movement.
 ## Ring
-Hash servers and keys onto a circle; key → first server clockwise.
+Hash servers and keys onto a circle
+key → first server clockwise.
 Add/remove one server → ~1/N of keys move.
 ## Virtual nodes
 100–256 points per server; even ownership; departing load spreads to many; weights by point count.
@@ -53,13 +55,17 @@ key#1..key#k replicas
 read replicas
 CDN.
 ## Hot writes
-Split counters: key:0..k-1; random shard per increment; sum (cached) on read.
-In-memory batching per server; flush every second.
+Split counters: key:0..k-1
+random shard per increment
+sum (cached) on read.
+In-memory batching per server
+flush every second.
 Log events; aggregate asynchronously.
 ## Celebrity fan-out
 Fan-out on write: post → every follower's feed (100M writes for a celebrity).
 Fan-out on read: merge followees at read time (expensive for heavy followers).
-Hybrid: write fan-out for normal users; read-time merge for celebrities above a threshold (Twitter).
+Hybrid: write fan-out for normal users
+read-time merge for celebrities above a threshold (Twitter).
 ## Giant keys/tenants
 Dedicated shard (directory)
 sub-partition by (tenant, user|month)
@@ -67,36 +73,52 @@ archive.
 `,
   "partitioned-indexes": `
 ## Local (document-partitioned)
-Index lives with the data; one-partition writes.
+Index lives with the data
+one-partition writes.
 Reads by indexed value: scatter-gather to every partition; latency = slowest.
 MongoDB sharded indexes, Cassandra 2i, Elasticsearch shards.
 ## Global (term-partitioned)
-Index partitioned by indexed value; one-partition reads (+ record fetches).
+Index partitioned by indexed value
+one-partition reads (+ record fetches).
 Writes hit a second partition: async (DynamoDB GSI, lag) or transactional (Spanner, slower).
 ## Second table
-orders_by_customer(customer_id, created_at, order_id): hand-built global index; dual writes or stream.
+orders_by_customer(customer_id, created_at, order_id): hand-built global index
+dual writes or stream.
 ## Choose
 Rare indexed reads / few partitions → local. Frequent indexed reads → global or second table.
 Main access path → make it the partition key.
+## Remember
+Global index lag → show the user's own new item from the client until the index catches up.
+Scatter-gather over 64 partitions at 1% tail each → ~47% of queries hit a slow partition.
+Search engines are document-partitioned, so they keep shard counts moderate and add replicas for throughput.
+If one query dominates, make its field the partition key instead of indexing it.
 `,
   "rebalancing": `
 ## Avoid
 hash % N (moves almost every key).
 ## Strategies
-Fixed partitions (≫ nodes): move whole partitions; Riak, Elasticsearch shards, Couchbase, Redis Cluster 16,384 slots. Pick the count carefully.
+Fixed partitions (≫ nodes): move whole partitions
+Riak, Elasticsearch shards, Couchbase, Redis Cluster 16,384 slots. Pick the count carefully.
 Dynamic: split at a size threshold, merge small (Bigtable, HBase).
 Per-node partitions: Cassandra vnodes.
 ## Live move
 Snapshot (throttled) → log catch-up → brief pause + routing switch → clients redirected (Redis MOVED) → delayed cleanup.
 Or: add as replica, catch up, drop old replica.
 ## Manual reshard (SQL)
-New shards → dual writes or CDC → backfill → verify → reads → writes → retire; end with a directory/slot map. Vitess automates for MySQL.
+New shards → dual writes or CDC → backfill → verify → reads → writes → retire
+end with a directory/slot map. Vitess automates for MySQL.
 ## Control
 Automatic moves can cascade under false failure detection: throttle, require approval.
+## Remember
+Pick fixed partition counts ~10–100× the maximum machine count you expect.
+Throttle data movement so live traffic keeps its I/O.
+Pre-split new tables before bulk loads (dynamic partitioning starts with one partition).
+Verify (counts, checksums) before cutting over a migration.
 `,
   "unique-ids": `
 ## Options
-Auto-increment: simple, ordered; single DB only (offset/step hack across shards).
+Auto-increment: simple, ordered
+single DB only (offset/step hack across shards).
 UUIDv4: 128-bit random; no coordination; unordered → index churn.
 UUIDv7 (RFC 9562): 48-bit ms timestamp + random; time-ordered; no coordination.
 Snowflake (Twitter 2010): 1 | 41 ms (~69 y) | 10 machine (1,024) | 12 seq (4,096/ms) = 64 bits; sortable; machine IDs assigned at startup.

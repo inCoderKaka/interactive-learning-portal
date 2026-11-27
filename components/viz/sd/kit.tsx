@@ -94,7 +94,9 @@ export function useSim<S>(make: () => S, tick: (s: S) => void, deps: unknown[], 
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
   }, [playing, speed, perFrame, advance]);
-  return { s: ref.current, ticks, playing, setPlaying, speed, setSpeed, reset, step: (n = 1) => advance(n) };
+  /** Apply an external change (a button press) to the live state, then re-render. */
+  const act = useCallback((fn: (s: S) => void) => { fn(ref.current); bump((x) => x + 1); }, []);
+  return { s: ref.current, ticks, playing, setPlaying, speed, setSpeed, reset, step: (n = 1) => advance(n), act };
 }
 
 export function SimControls({ sim, stepLabel = "Step", stepN = 1, extra }: { sim: { playing: boolean; setPlaying: (p: boolean) => void; speed: number; setSpeed: (n: number) => void; reset: () => void; step: (n?: number) => void }; stepLabel?: string; stepN?: number; extra?: ReactNode }) {

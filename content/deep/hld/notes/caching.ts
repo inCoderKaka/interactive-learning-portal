@@ -3,8 +3,10 @@
 export const notes: Record<string, string> = {
   "cache-patterns": `
 ## Patterns
-Cache-aside: app reads cache → miss → DB → fill with TTL; writes DB then delete key.
-Read-through: cache loads on miss; same semantics, cleaner code.
+Cache-aside: app reads cache → miss → DB → fill with TTL
+writes DB then delete key.
+Read-through: cache loads on miss
+same semantics, cleaner code.
 Write-through: write both before ack; fresh reads; slower writes; caches unread data.
 Write-back: ack from cache, flush later in batches; fast; loss risk unless cache is durable.
 Write-around: writes bypass cache.
@@ -15,10 +17,12 @@ write-heavy and loss-tolerant: write-back
 write-once-read-later: write-around.
 ## Keys and TTLs
 Key includes everything that changes the value (user, locale, version).
-TTL by tolerable staleness; always set one as a safety net.
+TTL by tolerable staleness
+always set one as a safety net.
 ## Numbers
 Avg latency ≈ hit × cache + miss × (cache + DB).
-Misses dominate latency and DB load; 95% → 99% hits = 5× fewer DB reads.
+Misses dominate latency and DB load
+95% → 99% hits = 5× fewer DB reads.
 ## Breakage
 Cold start → warm or ramp.
 DB sized only for the happy hit rate → outage on cache loss.
@@ -34,7 +38,8 @@ LFU: frequency; scan-resistant; needs decay; new items struggle.
 ARC: adapts recency vs frequency.
 W-TinyLFU (Caffeine): admission by frequency sketch + LRU window; near-optimal.
 ## Real systems
-Redis: sampled LRU/LFU (maxmemory-samples 5); policies allkeys-lru, allkeys-lfu, volatile-*, noeviction.
+Redis: sampled LRU/LFU (maxmemory-samples 5)
+policies allkeys-lru, allkeys-lfu, volatile-*, noeviction.
 Memcached: slab classes, per-class segmented LRU; slab rebalancing.
 Buffer pools and CDNs: LRU variants with scan protection.
 ## Sizing
@@ -49,13 +54,16 @@ low reuse.
 `,
   "cache-invalidation": `
 ## The race
-Read miss → read DB (v1) → … → set cache v1; meanwhile write DB v2 → delete key. Result: v1 cached until TTL.
+Read miss → read DB (v1) → … → set cache v1
+meanwhile write DB v2 → delete key. Result: v1 cached until TTL.
 Delete-then-write has the mirror race.
 ## Fixes
 Always TTL (bounds staleness).
 Delete on write, never update from the writer.
 Delayed double delete (pragmatic, timing-based).
-Leases (Facebook memcache): miss gets a token; invalidation cancels; also throttles stampedes.
+Leases (Facebook memcache): miss gets a token
+invalidation cancels
+also throttles stampedes.
 Versions / compare-and-set: older never overwrites newer.
 CDC-driven invalidation (McSqueal from the MySQL binlog): every write path, ordered, retried.
 ## Replicas and regions
@@ -90,13 +98,17 @@ Hot write counters → sharded counters or in-memory aggregation.
 `,
   "redis-memcached": `
 ## Memcached
-get/set/delete/incr/CAS; opaque values (1 MB default).
+get/set/delete/incr/CAS
+opaque values (1 MB default).
 Multithreaded; slab classes with per-class LRU; slab rebalancing.
-No persistence or replication; client-side consistent hashing; mcrouter for pools and replication.
+No persistence or replication
+client-side consistent hashing
+mcrouter for pools and replication.
 ## Redis
 Strings, lists, hashes, sets, sorted sets, bitmaps, HyperLogLog, streams, geo.
 Single-threaded command execution (I/O threads since 6.0): atomic commands, Lua, MULTI/EXEC.
-One slow command blocks all; scale with more instances.
+One slow command blocks all
+scale with more instances.
 Persistence: RDB snapshots, AOF (fsync every second typical), both, or none.
 Async replicas; Sentinel failover; recent writes can be lost.
 Cluster: 16,384 hash slots; CRC16 mod 16384; clients route directly; hash tags {…} co-locate keys.
@@ -112,17 +124,24 @@ SCAN not KEYS.
 ## Flow
 User → nearest PoP (DNS or anycast) → hit, or miss → origin shield → origin.
 ## Control
-Cache-Control: public / private / no-store; max-age (all caches) vs s-maxage (shared caches).
-Cache key = URL (normalise; drop tracking params; vary only on needed headers).
+Cache-Control: public / private / no-store
+max-age (all caches) vs s-maxage (shared caches).
+Cache key = URL (normalise
+drop tracking params
+vary only on needed headers).
 Versioned asset URLs + 1-year TTL = no purges needed.
-Purges (by URL or tag) for unversionable content; seconds to propagate.
+Purges (by URL or tag) for unversionable content
+seconds to propagate.
 stale-while-revalidate, stale-if-error.
 ## Origin shield
-Tiered caching: PoP misses funnel through regional shields; ~1 origin fetch per object per TTL.
+Tiered caching: PoP misses funnel through regional shields
+~1 origin fetch per object per TTL.
 ## Private content
-Signed URLs/cookies with short expiry; personalised responses stay private.
+Signed URLs/cookies with short expiry
+personalised responses stay private.
 ## Numbers
-Origin traffic = total × miss rate; at 1 Tbit/s each 1% of hit rate = 10 Gbit/s.
+Origin traffic = total × miss rate
+at 1 Tbit/s each 1% of hit rate = 10 Gbit/s.
 ## Beyond static
 Dynamic acceleration (edge TLS + backbone)
 edge compute

@@ -134,4 +134,111 @@ When data grows too big, or writes too many, for one machine, you split it: each
 Choose the split key from your most frequent query, check it spreads load evenly, and plan from day one for the one key that will be far hotter than the rest.
 :::
 `,
+  transactions: md`
+## What this chapter is about
+
+Whenever several changes must happen together (move money, book the last seat, place an order across services), you need guarantees about what happens when things run at the same time or crash halfway. This chapter goes from a single database's transactions to agreement among many machines.
+
+1. **ACID and the write-ahead log.** What a transaction promises, and how logging every change before making it lets a database survive a power cut mid-transaction. Crash one yourself and watch recovery.
+2. **Isolation anomalies.** What goes wrong when transactions overlap (lost updates, dirty reads, write skew, phantoms), which isolation level stops which, and the practical fixes. A lab lets you run each anomaly at each level.
+3. **MVCC and locking.** How databases implement isolation: making transactions wait (locks), or giving each a snapshot of versions so readers never block writers.
+4. **Two-phase commit.** Committing one transaction across several machines, and why it can get stuck if the coordinator fails.
+5. **Sagas and the outbox.** Keeping several services correct without one big transaction: step-by-step processes with undo actions, and publishing events reliably.
+6. **Consensus with Raft.** How a group of machines agrees on one leader and one ordered log despite crashes and network splits. A live simulator lets you kill leaders and partition the cluster.
+7. **Clocks and ordering.** Why timestamps from different machines can't be trusted to order events, and the alternatives: logical clocks, vector clocks and Google's TrueTime.
+8. **Leases and fencing.** Making sure only one worker acts at a time, even when a worker freezes and wakes up after losing its lock.
+
+:::tip The one idea to keep
+Atomicity, isolation and agreement all cost coordination; use them where a mistake would be expensive, and make everything else idempotent.
+:::
+`,
+  messaging: md`
+## What this chapter is about
+
+Not every piece of work should happen while the user waits. Sending emails, resizing photos, updating search indexes and notifying other services can happen a moment later, elsewhere. Message systems carry that work and those events between services, absorb traffic bursts, and keep services independent of each other. This chapter explains how they behave and how to use them without losing or duplicating anything.
+
+1. **Queues vs logs.** Task queues hand each job to one worker and forget it; logs like Kafka keep an ordered history that many systems read at their own pace and can replay.
+2. **Kafka internals.** Partitions and keys, why appending to files is fast, replication settings that prevent data loss, consumer groups, and keeping only the latest value per key.
+3. **Delivery guarantees.** Why messages are either sometimes lost or sometimes duplicated, and how "exactly once" is really built from duplicates made harmless.
+4. **Event patterns.** Publishing business events, storing every change as an event (event sourcing), and separating write and read models (CQRS).
+5. **Retries and dead-letter queues.** Handling messages that keep failing, consumers that fall behind, and events that arrive out of order.
+
+:::tip The one idea to keep
+Assume every message can arrive twice and late; make consumers idempotent and decide what happens to messages that keep failing.
+:::
+`,
+  "stream-processing": md`
+## What this chapter is about
+
+Some questions need all of the data (last year's logs); others need answers continuously as data arrives (orders per minute, right now). This chapter covers both: processing huge finished datasets across many machines, and processing never-ending streams where events arrive late and out of order.
+
+1. **Batch processing.** Google's MapReduce model (map, shuffle, reduce), why it scales and survives failures, and its successors Spark and Beam.
+2. **Windows and watermarks.** Grouping a stream by time, the difference between when something happened and when you heard about it, and deciding when a window's answer is ready.
+3. **Stateful streams.** Keeping counts and joins in a stream processor, and recovering after a crash without losing or double-counting events.
+4. **Lambda vs Kappa.** Two architectures for combining fresh and complete answers, and why the industry moved to a single streaming pipeline.
+5. **Change data capture.** Streaming a database's own log of changes so search indexes, caches and warehouses stay in sync without fragile dual writes.
+
+:::tip The one idea to keep
+Process by when things happened, not when you saw them, and design outputs that can be corrected when late data arrives.
+:::
+`,
+  "rate-limiting-concept": md`
+## What this chapter is about
+
+Every service has a limit on how much work it can do. Rate limiting stops any single client from using more than its fair share; overload protection keeps the service working when total demand exceeds capacity. Without both, one buggy client or one traffic spike can take everything down.
+
+1. **Rate-limiting algorithms.** Fixed windows, sliding windows, token buckets and leaky buckets, raced on the same bursty traffic so you can see which let a burst slip through at a window boundary.
+2. **Distributed rate limiting.** Enforcing a per-user limit when that user's requests land on hundreds of servers: a shared atomic counter, or local counts synced periodically.
+3. **Load shedding and backpressure.** Why overloaded systems collapse instead of slowing down, how naive retries keep them collapsed, and how rejecting early, retrying carefully and dropping low-priority work keeps the important things running.
+
+:::tip The one idea to keep
+Under overload, rejecting some requests quickly serves more users than trying to serve everyone slowly.
+:::
+`,
+  "storage-search": md`
+## What this chapter is about
+
+Beyond tables of records, large systems store files, video, text to search, locations, and endless streams of measurements, each with its own specialised storage. This chapter covers the ones that appear in design interviews again and again.
+
+1. **Object storage.** Where photos, videos and backups live: how services like Google Cloud Storage keep billions of files safe with far less than three full copies, and how clients upload directly.
+2. **Media pipelines.** Turning an uploaded video into many sizes and short segments so every viewer gets smooth playback on any network.
+3. **Search.** How an inverted index finds documents containing your words in milliseconds, how results are ranked, and how the index is split across machines.
+4. **Geospatial indexes.** Answering "what's near me?" with geohashes, quadtrees and Google's S2 cells.
+5. **Sketches.** Bloom filters, HyperLogLog and Count-Min: tiny structures that answer "seen it?", "how many distinct?" and "how often?" approximately, at huge scale.
+6. **Time-series storage.** Storing millions of metric points per second with heavy compression and automatic summarising of old data.
+
+:::tip The one idea to keep
+Match the storage to the shape of the data and its queries: immutable blobs, text, places, approximate counts and time series each have a structure built for them.
+:::
+`,
+  reliability: md`
+## What this chapter is about
+
+Everything fails eventually: machines, networks, dependencies and, most often, our own changes. Reliability engineering is about deciding how reliable a service needs to be, keeping one failure from spreading, seeing what's happening inside the system, changing it safely, and noticing quickly when parts die.
+
+1. **SLOs and error budgets.** Turning "reliable" into a number users care about, and treating the allowed failure as a budget you spend on change. A chart shows which incidents should wake someone up.
+2. **Resilience patterns.** Timeouts, careful retries, circuit breakers, bulkheads and fallbacks that keep a slow dependency from taking down everything. Watch a breaker protect its caller.
+3. **Observability.** Metrics, logs and traces: which question each answers, and how to follow one request across many services.
+4. **Safe deploys.** Canary releases, feature flags and backward-compatible changes, so a bad release reaches few users and is rolled back in minutes.
+5. **Failure detection.** Deciding that a machine is dead when dead and slow look the same, and spreading that news through thousands of machines with gossip.
+
+:::tip The one idea to keep
+Expect every part to fail; design so each failure stays small, is noticed quickly, and can be undone.
+:::
+`,
+  security: md`
+## What this chapter is about
+
+Every request a system receives raises two questions: **who is this?** and **are they allowed to do this?** Around those sit two more: how do we keep data secret even if someone steals a disk or listens on the wire, and how do we keep working when someone attacks on purpose? Interviewers rarely want cryptography maths; they want to see that you put the right protection in the right place.
+
+1. **Authentication.** Proving who a user or service is: sessions versus signed tokens (JWTs), and how "Sign in with Google" works (OAuth with PKCE, OpenID Connect) without the app ever seeing your password. Tamper with a real token and watch it fail.
+2. **Authorisation.** Deciding what someone may do: roles (RBAC), rules over attributes (ABAC), and relationships, as in Google's Zanzibar, which answers "can Bob view this doc?" by following who-belongs-to-what. Run checks yourself.
+3. **Encryption and keys.** Encrypting everything in transit and at rest, and the trick (envelope encryption) that lets a key service protect petabytes while the master key never leaves its vault.
+4. **Multi-tenancy.** Serving many customers on shared machines without one seeing another's data or slowing everyone down. Watch one customer's import swamp a shared queue, then fix it.
+5. **Abuse and DDoS.** Floods of junk traffic, bot armies and stolen-password attacks, and the layers of defence that stop each one.
+
+:::tip The one idea to keep
+Never trust where a request comes from: check identity and permission on every call, deny by default, and give every secret a short life and an owner who can revoke it.
+:::
+`,
 };
