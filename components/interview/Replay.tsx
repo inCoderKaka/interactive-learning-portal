@@ -74,7 +74,7 @@ export function Replay({ record, media, onRedo }: { record: SessionRecord; media
   };
 
   const hasBoard = record.cfg.kind === "hld" || record.cfg.kind === "lld";
-  const tabs = ([hasBoard && "board", record.cfg.kind === "coding" && "code", hasBoard && "notes"].filter(Boolean)) as ("board" | "code" | "notes")[];
+  const tabs = ([hasBoard && "board", (record.cfg.kind === "coding" || record.cfg.kind === "lld") && "code", hasBoard && "notes"].filter(Boolean)) as ("board" | "code" | "notes")[];
 
   return (
     <section className="card overflow-hidden" aria-label="Replay">

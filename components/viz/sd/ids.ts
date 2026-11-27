@@ -15,4 +15,10 @@ export const HLD_WIDGET_IDS = new Set<string>([
   "jwt", "seq-oauth", "zanzibar", "seq-new-enemy", "seq-envelope", "tenant-queue", "defence-layers",
   "region-failover", "crdt-lab", "rpo-rto", "seq-residency",
   "seq-gfs", "bigtable-keys", "truetime", "seq-chubby", "seq-dynamo", "borg-sched",
+  // LLD (same player and kit)
+  "noun-verb", "rel-lab", "seq-park", "state-lab", "vending-state",
+  "invariant-guard", "combo-explosion", "dispatch-lab", "ocp-lab", "lsp-lab", "di-swap",
+  "seq-factory", "seq-singleton", "seq-facade", "seq-proxy", "decorator-onion", "composite-tree",
+  "seq-observer", "seq-chain", "undo-redo",
+  "doubles-lab", "seq-layers",
 ]);

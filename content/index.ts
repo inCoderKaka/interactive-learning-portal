@@ -16,6 +16,9 @@ import { CARDS } from "./cards";
 import { AI_REFS, aiDesigns, aiTopics } from "./ai";
 import { OUTLINE, CHAPTER_OF } from "./outline";
 import { HLD_OVERVIEWS } from "./deep/hld/overviews";
+import { LLD_OVERVIEWS } from "./deep/lld/overviews";
+
+const OVERVIEWS: Record<string, string> = { ...HLD_OVERVIEWS, ...LLD_OVERVIEWS };
 import DEEP_META from "./deep/meta.json";
 import LC_EXTRA from "./lc-extra.json";
 
@@ -31,7 +34,7 @@ export const areaOf = (id: Area) => AREAS.find((a) => a.id === id)!;
 const EXTRA: Record<string, Extra> = { ...dsaExtra, ...designExtra };
 
 function withExtra(t: Topic): Topic {
-  if (HLD_OVERVIEWS[t.id]) return { ...t, lesson: HLD_OVERVIEWS[t.id], prereq: [...new Set([...(t.prereq ?? []), ...(EXTRA[t.id]?.pre ?? [])])] };
+  if (OVERVIEWS[t.id]) return { ...t, lesson: OVERVIEWS[t.id], prereq: [...new Set([...(t.prereq ?? []), ...(EXTRA[t.id]?.pre ?? [])])] };
   const x = EXTRA[t.id];
   if (!x) return t;
   return {
@@ -139,7 +142,7 @@ export function problemItem(p: Problem): Item {
  */
 const COURSE_ORDER = TOPICS.flatMap((t) => { const subs = subsOf(t.id); return subs.length ? subs.map((s) => s.id) : [t.id]; });
 const COURSE_POS = new Map(COURSE_ORDER.map((p, i) => [p, i]));
-const CHECKPOINT_AREAS = new Set<Area>(["hld"]);
+const CHECKPOINT_AREAS = new Set<Area>(["hld", "lld"]);
 const unlockAt = (d: Design) => (CHECKPOINT_AREAS.has(d.area) && d.prereqs?.length ? [...d.prereqs].sort((a, b) => (COURSE_POS.get(a) ?? -1) - (COURSE_POS.get(b) ?? -1)).at(-1) : undefined);
 const tierOfPage = (id: string) => (SUBTOPICS.find((s) => s.id === id) ?? TOPICS.find((t) => t.id === id))?.tier ?? 2;
 

@@ -38,10 +38,10 @@ export const STAGES: Record<Kind, { key: string; title: string; share: number }[
     { key: "scaling", title: "bottlenecks and scaling", share: 0.14 },
   ],
   lld: [
-    { key: "requirements", title: "use cases and requirements", share: 0.15 },
-    { key: "entities", title: "core classes and relationships", share: 0.3 },
-    { key: "behaviour", title: "key methods and flows", share: 0.3 },
-    { key: "extension", title: "extending the design", share: 0.25 },
+    { key: "requirements", title: "use cases and requirements", share: 0.12 },
+    { key: "entities", title: "core classes and relationships", share: 0.25 },
+    { key: "behaviour", title: "core code for the key flows (in the Code tab)", share: 0.38 },
+    { key: "extension", title: "extensions, edge cases and thread safety", share: 0.25 },
   ],
   behavioral: [
     { key: "story", title: "the main story", share: 0.5 },

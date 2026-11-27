@@ -2,6 +2,34 @@ import { Q, T } from "./h";
 import type { ClassBox, ClassRel, Design, Tier, Topic } from "@/lib/types";
 
 export const lldTopics: Topic[] = [
+  T("lld", "lld-framework", "The LLD interview framework & API design", 1, 30, "From vague prompt to classes, relationships and working core logic in 45 minutes.", {
+    signals: ["'Design a parking lot / elevator / library…'", "'Design the classes for…'"],
+    lesson: `**Flow**
+1. **Clarify (3–5 min):** actors, core use cases, scale of the object model (one lot or many?), what is out of scope (payments, UI, persistence).
+2. **Use cases → entities:** underline nouns (entities) and verbs (operations).
+3. **Class diagram:** attributes, methods, relationships (association, aggregation, composition, inheritance), multiplicities. Enums for fixed sets.
+4. **Identify variation points:** apply a pattern only where behaviour varies (strategy for pricing, state for lifecycle, observer for notifications).
+5. **Walk through a main flow** (sequence): e.g. vehicle enters → spot assigned → ticket → exit → fee.
+6. **Write the core code:** the 2–3 most interesting methods fully; stubs for the rest.
+7. **Extensions & concurrency:** what changes for new requirement X? Where are the races?
+
+**API design principles:** small surface, intention-revealing names, no leaking internals, validate at boundaries, return values over output parameters, consistent error strategy (exceptions vs result types), idempotent operations where retries happen, immutability for value types.
+
+**Relationships cheat sheet**
+- *Composition (filled diamond):* part cannot outlive whole (Floor–ParkingSpot).
+- *Aggregation (hollow):* shared lifetime (Team–Player).
+- *Association:* uses/knows.
+- *Dependency (dashed):* transient use.
+
+**What Google looks for:** clean decomposition, reasonable abstractions (not over-engineered), correct core logic, testability (interfaces + injection), handling of edge cases and extensibility questions without rewrites.
+
+**Testing talk track:** unit tests around pure logic (fee calculation), fakes for clocks and repositories, concurrency tests for shared state.`,
+    pitfalls: ["Starting to code before agreeing on use cases", "One giant class named System/Manager", "Patterns for their own sake", "Ignoring concurrency until asked and then bolting on a global lock without discussion"],
+    quiz: [
+      Q("First step when asked to 'design an elevator system'?", ["Draw classes", "*Clarify actors, use cases and scope (one car or many? scheduling goals?)", "Pick patterns", "Write the scheduler"], "Scope drives the model."),
+      Q("ParkingFloor and ParkingSpot: which relationship?", ["Inheritance", "*Composition", "Dependency", "None"], "Spots do not exist without their floor."),
+    ],
+  }),
   T("lld", "oop-solid", "OOP & SOLID in practice", 1, 35, "Encapsulation, composition over inheritance, and the five principles with concrete smells.", {
     signals: ["Any object-oriented design round", "Code review style questions: 'what is wrong with this class?'"],
     lesson: `**The four pillars, as design tools**
@@ -127,33 +155,12 @@ public:
       Q("`if (!map.containsKey(k)) map.put(k, v)` on a ConcurrentHashMap is…", ["Thread-safe", "*A check-then-act race; use putIfAbsent/computeIfAbsent", "A deadlock", "A compile error"], "Each call is atomic; the pair is not."),
     ],
   }),
-  T("lld", "lld-framework", "The LLD interview framework & API design", 1, 30, "From vague prompt to classes, relationships and working core logic in 45 minutes.", {
-    signals: ["'Design a parking lot / elevator / library…'", "'Design the classes for…'"],
-    lesson: `**Flow**
-1. **Clarify (3–5 min):** actors, core use cases, scale of the object model (one lot or many?), what is out of scope (payments, UI, persistence).
-2. **Use cases → entities:** underline nouns (entities) and verbs (operations).
-3. **Class diagram:** attributes, methods, relationships (association, aggregation, composition, inheritance), multiplicities. Enums for fixed sets.
-4. **Identify variation points:** apply a pattern only where behaviour varies (strategy for pricing, state for lifecycle, observer for notifications).
-5. **Walk through a main flow** (sequence): e.g. vehicle enters → spot assigned → ticket → exit → fee.
-6. **Write the core code:** the 2–3 most interesting methods fully; stubs for the rest.
-7. **Extensions & concurrency:** what changes for new requirement X? Where are the races?
-
-**API design principles:** small surface, intention-revealing names, no leaking internals, validate at boundaries, return values over output parameters, consistent error strategy (exceptions vs result types), idempotent operations where retries happen, immutability for value types.
-
-**Relationships cheat sheet**
-- *Composition (filled diamond):* part cannot outlive whole (Floor–ParkingSpot).
-- *Aggregation (hollow):* shared lifetime (Team–Player).
-- *Association:* uses/knows.
-- *Dependency (dashed):* transient use.
-
-**What Google looks for:** clean decomposition, reasonable abstractions (not over-engineered), correct core logic, testability (interfaces + injection), handling of edge cases and extensibility questions without rewrites.
-
-**Testing talk track:** unit tests around pure logic (fee calculation), fakes for clocks and repositories, concurrency tests for shared state.`,
-    pitfalls: ["Starting to code before agreeing on use cases", "One giant class named System/Manager", "Patterns for their own sake", "Ignoring concurrency until asked and then bolting on a global lock without discussion"],
-    quiz: [
-      Q("First step when asked to 'design an elevator system'?", ["Draw classes", "*Clarify actors, use cases and scope (one car or many? scheduling goals?)", "Pick patterns", "Write the scheduler"], "Scope drives the model."),
-      Q("ParkingFloor and ParkingSpot: which relationship?", ["Inheritance", "*Composition", "Dependency", "None"], "Spots do not exist without their floor."),
-    ],
+  T("lld", "concurrency-practice", "Concurrency in practice", 2, 40, "The tools you build thread-safe components from: blocking queues, semaphores, thread pools, futures, concurrent maps, timers, and the classic puzzles.", {
+    signals: ["'Make this component thread-safe'", "'Implement a bounded blocking queue / a scheduler / a connection pool'", "'Print in order with three threads'"],
+    lesson: "Building thread-safe components from standard tools: blocking queues for producer–consumer hand-offs, semaphores, latches and barriers for coordination, thread pools and futures for running work, concurrent maps for shared state, timers for scheduled work, and the classic interview puzzles that combine them.",
+    pitfalls: ["Unbounded queues and pools that hide overload until memory runs out", "Blocking a pool thread on a task submitted to the same pool", "Using check-then-act on a ConcurrentHashMap instead of its atomic compute methods"],
+    quiz: [],
+    prereq: ["concurrency"],
   }),
 ];
 

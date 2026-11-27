@@ -16,6 +16,7 @@ import { Breaker, ErrorBudget, Gossip } from "./ops";
 import { DefenceLayers, JwtLab, TenantQueue, Zanzibar } from "./sec";
 import { CrdtLab, RegionFailover, RpoRto } from "./geo";
 import { BigtableKeys, BorgSched, TrueTime } from "./papers";
+import { LLD_SIMS } from "./oo-sims";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -62,6 +63,7 @@ const SIMS: Record<string, ComponentType> = {
   "bigtable-keys": BigtableKeys,
   truetime: TrueTime,
   "borg-sched": BorgSched,
+  ...LLD_SIMS,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */

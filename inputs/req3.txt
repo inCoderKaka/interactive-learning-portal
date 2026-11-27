@@ -99,3 +99,34 @@ I'm able to see excercises in the HLD articles, but its nots like simulating rea
 "What should count as 'solving' a question, so its checkpoint is marked finished?"="Completing a full mock"
 "How should interview questions sit in the study plan?"="Checkpoint = one plan item"
 "What should one 'interview path' be in the paths map? My proposal: per question, a tree of branches the interviewer can take: each requirement variation (e.g. 'Now make it Slack with 50k-member channels'), each deep-dive direction ('How do you order messages?'), and each failure/curveball scenario ('a gateway with 500k users crashes'). An attempt usually covers 2–4 branches; the map shows explored vs left, and the next attempt steers into unexplored ones."="Deeper tree, but checkpoint is achieved when any one path end to end is completed. others are the additional things users can still explore or choose to ignore."
+
+[2026-11-27, session 5]
+check the req3's requirements I gave, the researches you did, and what you implemented to get context on what to continue. the last chat ended with "
+
+Mock-interview checkpoints are now live through the whole HLD course (PR #10, deployed; /interviews returns 200). Your requirement and all three rounds of your answers are in inputs/req3.txt, word for word.
+
+How it works
+- Unlocking: every HLD design question lists the pages it needs. It unlocks once you've marked all of them done, and sits right after the last one.
+- Checkpoints: a page that unlocks new questions gets a checkpoint. It appears in three places:
+  - a card at the end of the lesson ("You can now be interviewed on…");
+  - a "Interview checkpoint" folder in the topic tree, with its questions inside;
+  - a ~60-minute item in your plan.
+- Clearing a checkpoint: pick any unlocked question you haven't done. One full mock that covers at least one interview path from top to bottom clears it. The other questions stay available as optional practice, outside the plan.
+- Interviews page (/interviews): shows the open checkpoint, everything unlocked and not yet done, done questions with how many paths you've explored, upcoming questions with the pages you still need, and a timeline of every checkpoint.
+- The interview: it opens the existing whiteboard and AI interviewer on that exact question, at the L5 bar. The interviewer is told to steer into a path you haven't explored yet.
+- After the round: the debrief shows which paths you covered and a "Back to the course" button.
+- Paths map: each question has a tree of directions the interviewer can take: deep dives, variations and failure scenarios, each with follow-ups. It stays hidden until your first mock on that question, then shows explored vs. left.
+- Design pages: "Start mock interview" is the main action; stage-by-stage practice is still there.
+
+Content: all 45 HLD questions have prerequisites and a path tree. I added six early questions (load balancer, API gateway, distributed cache, CDN, pastebin, comments system), so checkpoints start in the load-balancing chapter. The first three chapters have none, because nothing can be designed with only those concepts yet.
+
+Not yet tested: a real interview with your AI key, so neither the interviewer's steering nor the step that tags covered paths has run against a live model. I checked the UI flow in your local browser by marking three pages done and simulating one finished mock. Your progress data was backed up first and restored after; I confirmed it's back to empty.
+
+Next: the same checkpoints for LLD during its deep pass, then AI and Craft.
+
+"... check the previous exact instructions I gave and incorporate those as well... continue that work.
+
+[2026-11-27, session 5, answers to clarifying questions on the LLD pass]
+"LLD outline for the deep pass: 7 chapters, 44 pages. The 5 existing chapters are kept, and concurrency and clean code get chapters of their own. That is in addition to ~20 visuals (thread-interleaving race stepper, deadlock, producer-consumer buffer, CAS retry, decorator layers, observer fan-out, clickable state machines, undo/redo stacks…), LLD videos, hover glossary and exercises. Is this outline right?"="Approve outline (Recommended)"
+"Which language should the LLD lessons and model answers use for code? Existing LLD content is Java, as are most of your LLD channels (Concept && Coding, codeWithAryan). Your editor setting can be C++, Java, Python or JavaScript."="Java only (Recommended)"
+"LLD mock interviews currently get a whiteboard and a notes tab, but no code editor. Real OOD rounds finish with you writing the core classes and logic. Add a Code tab to the LLD interview room?"="Add a Code tab (Recommended)"

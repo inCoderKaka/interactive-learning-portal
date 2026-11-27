@@ -1,4 +1,4 @@
-import type { ArchEdge, ArchNode, PathNode, Ref, Tier } from "@/lib/types";
+import type { ArchEdge, ArchNode, ClassBox, ClassRel, PathNode, Ref, Tier } from "@/lib/types";
 
 /** A compiled design from content/designs/src: deepens an existing exercise or defines a new one. */
 export interface DesignPatch {
@@ -10,12 +10,13 @@ export interface DesignPatch {
   prompt?: string;
   words?: string;
   flow?: string;
-  models?: Partial<Record<"req" | "est" | "api" | "hl" | "deep" | "wrap", string>>;
+  models?: Partial<Record<"req" | "est" | "api" | "hl" | "deep" | "wrap" | "model" | "patterns" | "code" | "ext", string>>;
   variants?: [string, string][];
   steer?: [string, string][];
   pitfalls?: string[];
   level?: string;
   arch?: { nodes: ArchNode[]; edges: ArchEdge[] };
+  classes?: { boxes: ClassBox[]; rels: ClassRel[] };
   refs?: Ref[];
   prereqs?: string[];
   paths?: PathNode[];
