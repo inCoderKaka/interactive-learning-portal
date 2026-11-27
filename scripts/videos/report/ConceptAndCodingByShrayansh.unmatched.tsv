@@ -1,95 +1,57 @@
 EQyGqHedaWc	AWS Lambda Part 3 | Sync, Async & SQS Polling | Spring Boot, S3 Integration
 4RvtcRhQGE8	AWS Lambda Part 2 | Create, Deploy & Test Lambda Function Using Java
 bLOEnNnrKXc	AWS Lambda Introduction
-vg71BKWJQdw	Redis Strings Explained | Redis DataTypes
-bAwkMB5t3Q8	Redis Sorted Sets Explained | Redis DataTypes
-NPzhPOaZKng	Redis Sets Explained | Redis DataTypes
-GJJVan2STDU	Redis Lists Explained | Redis DataTypes
-_ErEkaP15Uo	Redis Hashes Explained | Redis DataTypes
 NmGjgH4-V1w	AWS SNS (Simple Notification Service)
-wk-y80KNIzs	AWS SQS (Simple Queue Service)
 jP_zW7DDP7k	AWS CDN (CloudFront) Setup - Part2
 yoymphMbpBg	AWS CDN (CloudFront) Setup - Part1
 VCGbemsD9vE	RedisTemplate Explained: How Spring Boot Communicates with Redis
 EuGH0FYU9_M	REDIS Installation and Running
-9gb13OWxjRQ	AWS S3 Part4: Presigned URLs Explained | Secure Upload & Download
-JqICN-thUsc	AWS S3 Part3: Upload, MultiPartUpload, Download APIs
-Ul804CR9xUo	REDIS Architecture - Part1 | Event Loop, I/O Multiplexing, RESP
 aF9QmJUq2AY	AWS S3 Part2: Spring Boot Integration | AWS S3 Authentication Flow Explained
-ghdaGUWdLGc	What is REDIS and Why it exist?
-_ytg3khXcpQ	AWS S3(Simple Storage Service) Part1 - Architecture
 vZdHhaF-Bj4	AWS: Elastic Block Store (EBS)
 m_3CQdwo8Uk	AWS Application Load Balancer (ALB) Explained & Complete Hands-On Setup | EC2 + ASG
 O8tVez5n6uA	AWS Auto Scaling Group (ASG) Explained | Automatically Scale EC2 Instances
 2enRiVLeYFI	Git Merge Conflicts Explained | Resolve Conflicts in Merge, Rebase & Cherry-Pick
-SbDUUX0s_zk	Kafka Streams Windowing Explained (Tumbling, Hopping & Session Windows)
-T7jbYISbGk4	Kafka Streams STATEFUL Processing Nodes
-sxZvrhQfJ5w	Kafka Streams STATELESS Processing Nodes
 n0cZMWBmyIs	Git Remote Repository (Part 4) | Git Pull and Git Fetch
 vHFUFm7meQc	Git Remote Repository (Part 3) | Collaboration Models | Shared Repository Workflow | Fork Workflow
 I-iu4USYHl0	Git Remote Repository (Part 2) | Git Clone
-XDpXkrCp3sQ	Git Remote Repository (Part 1) | Connect Existing Local Project to GitHub (HTTPS & SSH) | Git Push
 w2HvYOskA8M	AWS: Deploy Spring Boot Application on EC2
 iOzZos13-aw	AWS: EC2 for Beginners | AMI, Instance Types, vCPU, Key Pair & Launch EC2
 W-xmFGxsv2A	Terraform Hands-on | Build Complete AWS Networking Infrastructure using Terraform
 1Q9SBeqAF2Q	AWS: Terraform Architecture & Core Blocks Explained
-8I7O6oFWy9g	Kafka Streams SerDes Deep Dive | Serialization, Deserialization & Error Handling
-rWGwCu7P4-g	Kafka Streams | KStream vs KTable vs GlobalKTable
 CwSEB0LoB74	Git different Branching Strategies | Git flow, Github flow, GitLab flow and Trunk-based Strategy
 aXLqJPmLy04	Git Merge Vs Rebase with Example | Differences Between Git Merge and Rebase and which one to choose?
 PBeE2k5LEBs	Kafka Streams Setup
-es1tHLQhgTE	Kafka Streams Architecture Explained | Topology, Sub-Topology, Tasks etc
 YbAkglgDuhg	AWS Networking (Part-3): Security Groups and NACL
 A5tDuJVAVEA	AWS Networking (Part-2): VPC, Subnet, NAT Gateway, Internet Gateway, Route Table
 d7WdXmP9uuQ	AWS Networking (Part-1): Fundamentals
 93scgfbLEFA	Git Branches Explained with Demo and Internals Working
-vFXn0RBmxsQ	Kafka Streams Introduction: Problems It Solves in Real Systems
 Y759sLI_Dag	AWS IAM Role Explained with Demo
 Hpkb88J7b9o	AWS IAM Policies (Identity & Resource-Based Policies) & User Groups Explained
 828UCyXjkL8	AWS IAM Users Explained with Demo
 W7XUnZBMsts	Deep Dive into Git Lifecycle | How git add and git commit Actually Work
-rO8_VZahMdo	AWS Global Infrastructure (Part-2): Disaster Recovery Strategies
 8nKB8Q877XI	AWS Global Infrastructure (Part-1): Region, Availability Zones, Local Zone, Edge
 Qu9Sb1TISSM	AWS Account Setup & Cloud Computing Models (IaaS, PaaS, CaaS, FaaS, SaaS)
 U8cSIqoc3DI	Git Architecture | How Git works internally
 Kx3RTaMe8L8	Git Fundamentals: Setup, Git Configurations Levels & DVCS Explained
-OQRv228F9Dc	Kafka: Outbox Pattern (Part2) - CDC(Debezium) Strategy
-sgWmFGzHpdU	Kafka: Outbox Pattern (Part1) - Polling Strategy
-Sdcpne8833U	Kafka Schema Registry with Avro | Complete Guide with Demo
 wasBpF2fhwg	Mockito: Different Ways of Verification
 vocQoMkHJ78	Java NIO Deep Dive (Part3): FileChannel and Complete Code Examples
 wZ3b--utf1s	Java NIO Deep Dive (Part2): ByteBuffer, HeapByteBuffer, DirectByteBuffer, MappedByteBuffer
 pqEqj58bnxc	Java NIO Deep Dive (Part-1): Advantages of NIO over Traditional File I/O
-QqKzDe5NB5E	Kafka Consumer Transaction Handling | EOS, LSO, Read Committed & Abort Handling
-3IR7JSag5JY	Kafka Producer Transaction Handling | Coordinator, Epoch, PID, Zombie Fencing & 2PC
 e_S2yJKpTaw	Java File Handling Explained | Streams, Buffers, Readers & Writers
-Jwgh9h44h7s	Kafka Consumer Advanced Configurations and Properties (Edge Cases) | Part-3
-b61vljmLVLY	Kafka Consumer Exception Handling & Dead Letter Topic (DLT) | Complete Guide with Retries
-b8MI-P_GClc	Kafka Consumers (Part-2): Multi-Topic & Multi-Consumer Patterns Made Easy (Full Guide)
 f8lYPOvNGrU	Kafka Consumer Setup - Part1 | Basic Setup and Internal working of Kafka Consumer with Demo
-oNlds6FQym0	Kafka Producer Idempotency Internals | PID, Sequence Numbers & Duplicate Prevention
 yLMCnIpgllM	Kafka Producer Setup
-eR_BYV-8WOQ	How Kafka Producer Works Internally | Complete Architecture Explained
-75iKJ0sISKU	Kafka Architecture - Part2 | Event Driven Architecture
 IUWvzjvqkXw	Kafka Cluster Setup | 2 Broker and 2 Controller with KRaft Setup
 wnFjZFh99YA	Mockito: Different Ways of Stubbing (Matchers, Static and Dynamic Stubbing)
-OaBkjyqS7jU	Kafka Architecture - Part5 | Event Driven Architecture
-5phy_mbrOBw	Kafka Architecture - Part4 | Event Driven Architecture
-TQLGDfJdXrQ	Kafka Architecture - Part3 | Event Driven Architecture
-fsmhYmzU-2M	Kafka Architecture - Part1 | Event Driven Architecture
-QNfIUIZQ9Vo	Event Driven Architecture (EDA) Introduction
 f1wjaOF6fl4	@Mock as Method/Constructor Parameter (JUnit 5 + MockitoExtension)
 7hshy19_Zl4	Mockito: @InjectMocks, @Mock, @Spy Annotations in-depth
 7MIGMe5YYnw	Distributed Scheduler (Part 4) - ShedLock
 JvRQT7qjlJE	Distributed Schedulers (Part 3) - 8 Common Pitfalls and their solutions
 uU-55imZN4g	Mockito: Architecture | How internally Mock, Stub and Spy works?
 DdT4JB82Bqc	Distributed Scheduler (Part 2) – Cron Job, FixedRate, FixedDelay use in application
-o-zqC8GHOJI	Distributed Scheduler (Part 1) – Internal working of Scheduler : Leader-Follower Pattern
 P_sQoOOaRr8	Mockito: Mock vs Stub vs Spy
 t2gKUkjwKfU	LLD of BookMyShow (English) | Design MovieTicketBooking
 Vzsh-Vxs_tI	@TestFactory : Dynamic Tests in JUnit5
 g8AVGr_0Wko	Design Parking Lot with Complete Implementation (English)
-ySXZ60R_2_M	Distributed Logging (Part-4) | End-to-End Distributed Logging with MDC + Correlation ID + Trace ID
 78_e5hygwm8	JUnit 5: Test Suites in-depth | Difference between Test Suite vs Tags
 25qIaCJRBhU	Distributed Logging (Part-3) | Async Appender and Logging | Structured Logging (JSON)
 09NcVHU5OJM	Distributed Logging (Part-2) | Appenders in-depth | Console, File, Rolling File Appenders
@@ -98,7 +60,6 @@ YwRotNcfZZY	Distributed Logging in-depth ( Part1 ) | SLF4J, Logback, Log4j2, Lev
 dKXx5lw_n7Q	LLD of Car Rental System (English) with Concurrency handling
 P3IrxFUxzzE	JUnit 5: Tagging and Filtering
 xOcJZk2lyIA	LLD of Elevator System with Complete Implementation (English)
-nf-kyselLHs	Distributed Tracing in-depth | Micrometer and Open Telemetry
 C9Dt3wVzQEg	LLD of Snake and Ladder game (English)
 VHKz_SIgB4Y	Design Tic Tac Toe game (English)
 ais9i16sAjg	Spring Cloud Bus in-depth | SpringBoot Microservices
@@ -131,17 +92,11 @@ w7ZyscLnaM4	Java 16: Record class
 IwoidRDGEb8	Java 21: Pattern Matching for switch
 KmX4uHi-KY0	Java 16: Pattern Matching for instanceof
 blb1guXuVxA	Java 14: Switch Expressions Deep Dive
-Fsf8y9oaSrs	API Gateway in Microservices - Part2 |  Authentication in Gateway | Global and RouteSpecific filters
 qCCIk5vkqyY	API Gateway in Microservices - Part1 | Spring Cloud API Gateway | Routing and Load Balancing
 KygVoryzpgg	JUnit 5 Assertions deep dive and Exception Handling
 BgBDbc8F4A8	Java 17 : Sealed Classes and Interfaces
 O4eVaRTbXOE	JUnit 5: Tests Lifecycle @TestInstance | Parallel Execution| AAA pattern
-S6KQkIxNm_k	Network Protocols (English Dubbed) | Better with 1.25x playback speed
-Ax0ycLJvvfc	Bulkhead Pattern: Fault Tolerance in Distributed Microservices
-_kCWAf8kEYI	Circuit Breaker : Fault Tolerance in Distributed Microservices
-oOFnyUpUDtg	Retry Pattern: Fault Tolerance in Distributed Microservices
 IFvtSRpr6MA	JUnit 5 Architecture : JUnit Platform, JUnit Jupiter  and JUnit Vintage
-o9uCQHdh4DU	Rate Limiter: Fault Tolerance in Distributed Microservices | Rate Limiter Implementation
 DoGkJkDedcI	JUnit 5: Unit Testing Introduction | Unit vs Integration vs Functional Testing
 F-JVyTAffp8	Client Side Load Balancer in Microservices | LoadBalancer and its SpringBoot Implementation
 h1mrflwF6Lc	Service Discovery in Microservices | Eureka & its SpringBoot Implementation
@@ -155,7 +110,6 @@ jBgPkOiZ6rk	Spring boot: Security (Part-8) | OAUTH2 Authentication Implementatio
 j0T1loqQzHw	Spring boot: Security (Part-6) | JWT Authentication Implementation | JSON Web Token Implementation
 F0OanpXM3aQ	Spring boot: Security (Part-4) | Basic Authentication & Authorization | Stateless Authentication
 CceqMR-NAOE	Spring boot: Security (Part-3) | Form Based Authentication & Authorization | Stateful Authentication
-QaH7r4V4RmE	Dual Write Problem | Designing Event-Driven Microservices
 koWPxSy-2_A	Spring boot: Security (Part-2) | Multiple User Creation & Storing Username & Password | inMemory, DB
 HdnST4ObRIg	Spring boot: Security (Part-1) | Architecture and SetUp
 3pYioNIPj84	Understand Attacks: CSRF, XSS, CORS, SQL Injection with DEMO | Spring Security
@@ -172,10 +126,6 @@ dJqeWNqmcOs	Spring boot : JPA (Part-2) | Setup, JPA Architecture, Entity Lifecyc
 p0zuY_OeEh0	Spring boot : JPA (Part-1) | JDBC Template
 xfUspC01iDM	Spring boot - Exception Handling | @ControllerAdvice | @ResponseStatus | @ExceptionHandler
 14OAcX0kHWg	Transitioned from DevOps Engineer to Java Developer
-QVdX34quUgU	How DNS works? | System Design of Domain Name System
-eIxdHepOeHw	Service Mesh and its Architecture | How Microservices Communicate?
-dkgxvnk8cWw	API GATEWAY and Microservices Architecture | How API Gateway act as a Single Entry Point?
-1aamH7sA8FY	27. Thundering Herd Effect on Ticket Booking App | System Design
 Cv2HKUscPqQ	Spring boot ResponseEntity and Response Codes | 1xx, 2xx, 3xx, 4xx and 5xx Return Codes
 agts012X8h4	Spring boot HATEOAS Restful API | Advantage, Disadvantage with Example
 H6Xi0UlHjh0	Spring boot: Filters vs Interceptors | Filters and Interceptors Advantage and UseCases for both
@@ -197,12 +147,9 @@ W-TgmKAnGG0	Dependency Injection in Spring boot | With Advantages and Disadvanta
 Wd15hxveyME	Spring boot: Bean and its Lifecycle | Inversion of Control (IOC)
 DBDnUkTobaE	41. All Behavioral Design Patterns | Strategy, Observer, State, Template, Command, Visitor, Memento
 ndSUJYNa8T8	Spring boot Annotations (Controller Layer) | Controller, RestController, RequestMapping etc.
-gjVYRl167RQ	JWT Explained | JWT vs SessionID | JSON Web Token | Security Challenges with JWT & its Handling
 1e4jNP8iKLo	Introduction to Maven and its Lifecycle | Spring boot Maven project
 4QWW4v2u_ZI	Spring boot Project setup and Layered Architecture Introduction
 TMX1kQ4W4hI	Introduction to Spring boot | Its Advantage over Spring MVC and Servlets based Web applications
-GtSUeAkPEP0	25. Symmetric & Asymmetric Encryption with Explanation of AES, Diffie-Hellman and Digital Signature
-3Gx3e3eLKrg	OAuth 2.0: Explained with API Request and Response Sample | High Level System Design
 PR1YkZWAH1E	37. Java ScheduledThreadPoolExecutor || Shutdown Vs AwaitTermination || Multithreading in Java
 fFlPm0pzQYI	40. Interpreter Design Pattern | LLD System Design | Design pattern explanation in Java
 pXVEEfYMwws	38. Java VirtualThreads vs Normal Threads || ThreadLocal in Java
@@ -227,13 +174,11 @@ bKM2lFPPmmY	34. Design Online Auction System with Mediator Design Pattern | Low 
 AYiE7_loIsE	30. Thread Creation, Thread Lifecycle and Inter-Thread Communication | Multithreading in Java: Part2
 X7shKHOaYtU	33. Iterator Design Pattern Explained with Example | Low Level Design
 vz6vSZRuS2M	9. Java Memory Management and Garbage Collection in Depth
-6ZquiVH8AGU	21. Database Indexing: How DBMS Indexing done to improve search query performance? Explained
 NZ3qAfM8Ztw	5. How FLOAT and DOUBLE  Number Stored in Memory?  |  IEEE 754 Representation
 gikFgvzFuwo	27. Collections in Java - Part6 | SET
 ijEJJuIQdzY	3. Quiz Question: Why only 1 Public Class in JAVA file
 IoireaKRRFo	2. How Java Program Works and its 3 Important Components (JVM, JRE and JDK) with Example
 MIYbPZCk34k	1. OOPs Concept in Java with Examples | 4 Pillars of Object Oriented Programming (OOPs)
-lceenm34m-w	23. Two Phase Locking (2PL) | System Design
 WxGtmIBZszk	32. All Structural Design Patterns | Decorator, Proxy, Composite, Adapter, Bridge, Facade, FlyWeight
 AnptMksNw9Y	Switched from Rakuten to Paytm - Senior Software Engineer | Complete Interview Preparation Strategy
 E1lce5CWhE0	31. Design Undo, Redo feature with Command Pattern | Command Design Pattern| Low Level System Design
@@ -242,9 +187,7 @@ ZsyUkt0v-ko	20. Operators in Java | Different Types of Operators in JAVA
 D3XhDu--uoI	System Design: Concurrency Control in Distributed System | Optimistic & Pessimistic Concurrency Lock
 KKByv7JyzOw	GIT 3 Branching Strategy | Github and GitLab Branching Strategy | Must know for all engineers
 H5WYze-FL50	18. Java Annotations with Examples
-ET_DnJgfplY	20. Handle Distributed Transactions | Two-Phase Commit (2PC), Three-Phase Commit (3PC), SAGA Pattern
 P4UAoYiaHg4	17. Java Reflection in Depth (Using Examples)
-RtOyBwBICRs	19. System Design: Distributed Cache and Caching Strategies | Cache-Aside, Write-Through, Write-Back
 ZFPajbsXIwM	15. Default, Static & Private Method in Interface - Java8 and Java9 features | Java Interfaces Part2
 aj3SLuDkGWg	14. Java Interface in Depth - Part1
 Mwm6tB3x1do	30. Design Word Processor using Flyweight Design Pattern | Low Level System Design FlyWeight Pattern
@@ -258,15 +201,10 @@ aecJeZgl__4	10. Java Classes in Depth - Part1 | Nested Class, Concrete, Abstract
 OuNOyFg942M	27. All Creational Design Patterns | Prototype, Singleton, Factory, AbstractFactory, Builder Pattern
 _hHtmSt5dSg	8. Java Constructor in Depth | Different Types of Constructor with Examples
 Lqan4AF9wzA	7. Java Methods in Depth | Different Types of Methods with Examples
-vJYycNWAYZU	18. Load Balancer & Different Algorithms - System Design | Static & Dynamic Load Balancing Algorithm
 1Ox0fyJuUVY	6. Java Variables - Part2 | Reference/Non-Primitive Data Types in Depth
-yeaPUFaXgdA	17. Proxy vs Reverse Proxy (Example) | How Proxy differs from VPN, LoadBalancer | SystemDesign
-jaIk9StYtfk	Twitter Recommendation Algorithm | Twitter Recommendation Algorithm Open Source | System Design
 Q6_jrvz-R7w	4. Java Variables - Part1 | Primitive Data Types in Depth
 ahqFp9Ly9zs	LinkedIn Cold Msg for SDE Referral: ✅ Right and ❌ Wrong way  of sending referral msg for SDE job
 SOw1_W0taBg	26. Bridge Design Pattern | LLD of Bridge Pattern with Example | Low Level Design of Bridge Pattern
-oVZtzZVe9Dg	16. System Design - Distributed Messaging Queue | Design Messaging Queue like Kafka, RabbitMQ
-iL7_8TmrePM	15. Design High Availability & Resilience System, HLD | Active Passive & Active Active Architecture
 GYaBXK54eLo	25. Facade Design Pattern with Example | Facade Low Level Design Pattern | Facade Pattern LLD Java
 mI73eTlSqeU	14. Design Idempotent POST API | System Design to Handle Duplicate Request by Idempotency Handler
 ZagqfI3biq0	ChatGPT Mock LLD Interview | ChatGPT Solves Low Level Design Question | Cricbuzz LLD by ChatGPT
@@ -274,21 +212,14 @@ P0TJIONZi8E	24. LLD of Cricbuzz/CricInfo | Cricbuzz Low Level System Design | De
 qEo6npkQE9I	Gadgets I use for YouTube Videos and Online Teaching | Equipments for YouTube Video Creation
 qOLRxN5eVC0	23. Builder Design Pattern with Examples, LLD | Low Level Design Interview Question | System Design
 6UeDb7ORVPI	22. Splitwise Simplify Debt Algorithm | LLD of Splitwise | Optimal Account Balancing | LLD Splitwise
-X5daFTDfy2g	12. Design Rate Limiter | API Rate Limiter System Design | Rate Limiting Algorithms | Rate Limiter
 I4xf4STXgmU	21. LLD of Splitwise | Low Level Design of Splitwise | Design Expense Sharing App like Splitwise
 ZrSt4ahsaFQ	Tips for Work Life Balance as Software Engineer | SDE Work Life Balance | Achieve Work Life Balance
-a8KUKOh3YXk	11. Whatsapp System Design | System Design Chat application | System design of Whatsapp application
-fG8c-huFt70	10. SQL vs NoSQL | Difference between SQL & NoSQL | SQL Vs NoSQL Tutorial | SQL, NoSQL system design
-VKNIhztQnbY	9. DESIGN A KEY-VALUE STORE | Amazon System Design Interview Quest. | HLD of Key-Value DB & DynamoDB
 8wrg7IsILhQ	20. Adapter Design Pattern with Examples, LLD | Low Level Design Interview Question | System Design
 MNjz8gve40M	3. Live LLD, Observer Design Pattern & 10 Real World Use-cases | Low Level Design Interview Question
 FLkCkUY7Wu0	19. Design File System using Composite Design Pattern | Low Level Design Interview Question | LLD
-WZjSFNPS9Lo	8. Back-Of-The-Envelope Estimation for System Design Interview | Capacity Planning of Facebook | HLD
 whGn5d97d7I	2. Live LLD Session on Pattern Classification and LLD of Strategy and Singleton Design Pattern
 JH7gcXeR3ds	17. LLD of ATM | ATM Low Level System Design | Design an ATM | Low Level Design Interview question
-C7_--hAhiaM	7. Design URL Shortening Service like TinyURL | Design URL Shortener | System design interview quest
 -UjjfzJ574w	1. Live LLD session | SOLID principles and Approach to solve Low Level Design Interview questions
-jqUNbqfsnuw	6. Consistent Hashing in Hindi with Example | System Design - Consistent Hashing | High Level design
 rExh5cPMZcI	5. Scale from ZERO to MILLION Users (Hindi) | System design interview: Scale to 1million users
 wOXs5Z_z0Ew	16. Design Vending Machine (Hindi) | LLD of Vending Machine | State Design Pattern |  LLD question
 MRx40JVmmF4	Mock Low Level System Design Interview with Qualcomm Sr. Engineer - Design Meeting Scheduler
@@ -299,8 +230,6 @@ qGlUKtjqaEQ	4. SAGA Pattern | Strangler Pattern | CQRS | Microservices Design Pa
 l1OCmsBnQ3g	3. Microservices Design Patterns | Part1: Introduction and Decomposition Pattern | HLD
 9MxHKlVc6ZM	13. Proxy Design Pattern Explanation (Hindi) | LLD | System Design Interview Question | Java
 x8N3fINNdTE	7. Design Tic Tac Toe game (Hindi) | Tic-Tac-Toe LLD Java | Low Level Design, System Design
-3qRBeZsUa18	2. CAP Theorem (Hindi) | High Level Design for Beginners | CAP Partition Tolerance explained
-JwTiZ9ENquI	1. Network Protocols (Hindi), High Level Design | Client Server vs P2P Model |  webSocket vs WebRTC
 gvIn5QBdGDk	10. Design Logging System (Hindi) | Chain of Responsibility Design Pattern | System Design interview
 J4GO6hmR6TA	9. LLD of Car Rental System (Hindi) | ZoomCar Low Level Design | System Design Interview Question
 9ORcPv_Tbz8	8. Elevator System, Low Level Design (Hindi) | SDE LLD interview question | Design Elevator System

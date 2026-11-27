@@ -10,6 +10,7 @@ import { useItems, useStopwatch, useTrackTime } from "@/lib/hooks";
 import { aiReady, gradeStage } from "@/lib/ai";
 import { areaOf, designById, topicById } from "@/content";
 import { References } from "@/components/References";
+import { DesignVideos } from "@/components/VideoLibrary";
 import { ConfidencePick, FeedbackView, NeedAI, RatingBar, Spinner } from "@/components/Work";
 import { AreaPill, Button, Empty, Md, Pill, cn, fmtClock, fmtMin } from "@/components/ui";
 import type { Feedback } from "@/lib/types";
@@ -165,6 +166,8 @@ export default function DesignPage() {
               {showDiagram && <div className="border-t border-line">{d.arch ? <ArchCanvas arch={d.arch} /> : <ClassDiagram boxes={d.classes!.boxes} rels={d.classes!.rels} />}</div>}
             </section>
           )}
+
+          <DesignVideos key={"dv" + id} id={id} color={a.color} />
         </div>
 
         <aside className="space-y-5">

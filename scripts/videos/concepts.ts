@@ -176,3 +176,174 @@ export const DSA_FALLBACK: ConceptRule[] = [
   [/sorting|sort a/i, "sorting"],
   [/competitive programming|leetcode|dsa\b|coding interview|interview problems?/i, "complexity"],
 ].map(([re, to]) => [new RegExp(`^(?!.*(${NOT_DSA.source})).*(${(re as RegExp).source})`, "i"), to] as ConceptRule);
+
+/**
+ * HLD concept videos → HLD outline pages. Applied only to channels tagged "hld" (channels.ts). Broad product channels
+ * (Google Cloud Tech, Google for Developers) only get the rules marked strict, so product demos don't flood pages.
+ */
+const H = (re: RegExp, to: string, strict = false) => [re, to, strict] as [RegExp, string, boolean];
+export const HLD_CONCEPTS: [RegExp, string, boolean][] = [
+  // the interview
+  H(/system design (interview|round)s?\b.*(guide|framework|step|tips|mistakes|prepare|approach|delivery)|how to (answer|crack|approach|prepare for) (any )?system design|patterns to pass your system design|delivery framework|system design (mock|interview walkthrough)|why is system design interview important/i, "sd-round"),
+  H(/functional (and|&|vs) non[- ]functional|requirements (gathering|clarification)|clarifying requirements/i, "sd-requirements"),
+  H(/api design in system design|data model(l)?ing in system design/i, "sd-api-data"),
+  H(/trade[- ]offs?\b.*system design|system design.*trade[- ]offs?|deep dives? in system design/i, "sd-deep-dives"),
+  // estimation
+  H(/latency numbers/i, "latency-numbers"),
+  H(/back[- ]of[- ](the[- ])?envelope|capacity estimation|estimation (in|for) system design/i, "capacity-math"),
+  H(/capacity planning|scalability (simply )?explained|vertical (and|vs\.?) horizontal scal|horizontal (and|vs\.?) vertical scal|^scalability\b/i, "capacity-planning"),
+  H(/queu(e)?ing theory|little'?s law/i, "queueing"),
+  // networking
+  H(/\btcp\b|\budp\b|osi model|three[- ]way handshake|how the internet works|network protocols|computer networking/i, "tcp-udp"),
+  H(/\bhttps?\b|\btls\b|\bssl\b|http ?\/? ?[123]\b|\bquic\b|status codes/i, "http-tls"),
+  H(/\bdns\b|domain name system|type a url/i, "dns"),
+  H(/\brest(ful)? api|rest vs|graphql|\bgrpc\b|\brpc\b|remote procedure call|api (protocols|architecture styles)|webhooks?|api vs sdk|apis explained/i, "api-styles"),
+  H(/api (design|pagination|versioning|security|performance)|good apis|idempoten(t|cy) (api|key)|pagination/i, "api-design"),
+  H(/websockets?|long[- ]polling|server[- ]sent events|push vs pull|live comments|real[- ]time (updates|notifications)/i, "realtime-push"),
+  // load balancing
+  H(/layer ?[47]\b|\bl[47]\b load|reverse proxy|forward proxy|proxy vs/i, "l4-l7"),
+  H(/load balanc(er|ing|ers)\b/i, "lb-algorithms"),
+  H(/health ?checks?/i, "lb-health"),
+  H(/api gateways?/i, "api-gateway"),
+  H(/anycast|geo ?dns|global (load balanc|traffic)|edge network/i, "global-lb"),
+  // caching
+  H(/^(?!.*(stampede|penetration|avalanche|invalidat|eviction|\blru\b|\blfu\b|cache hits)).*(cach(e|ing)\b(?! pitfalls)|write[- ]through|write[- ]back|cache[- ]aside|read[- ]through)/i, "cache-patterns"),
+  H(/eviction|\blru\b|\blfu\b/i, "cache-eviction"),
+  H(/cache (invalidation|consistency|coherence)|memcache at facebook|cache consistency/i, "cache-invalidation"),
+  H(/cache (stampede|penetration|avalanche|pitfalls|breakdown)|thundering herd|caching pitfalls/i, "cache-failures"),
+  H(/\bredis\b|memcached?/i, "redis-memcached"),
+  H(/\bcdns?\b|content delivery network/i, "cdn", true),
+  // databases
+  H(/sql vs\.? nosql|nosql vs\.? sql|(choose|choosing|pick) (the right|a) database|which database|database (selection|types)|types of databases/i, "sql-nosql"),
+  H(/data model(l)?ing|normali[sz]ation|denormali[sz]/i, "data-modeling"),
+  H(/database index|\bindex(es|ing)?\b.*(database|sql|postgres|mysql)|clustered index|composite index|covering index/i, "db-indexes"),
+  H(/\blsm\b|lsm[- ]tree|b[- ]?\+?[- ]?trees?|storage engines?|sstables?/i, "btree-lsm"),
+  H(/\bolap\b|column(ar)?[- ](store|database|storage)|data warehouse|bigquery|data lake(house)?|clickhouse|parquet/i, "olap-columnar", true),
+  H(/cassandra|dynamodb|mongodb|nosql|wide[- ]column|document (database|store)|graph database|key[- ]value (store|database)s?/i, "nosql-families"),
+  // replication
+  H(/replication(?! factor)|master[- ]slave|leader[- ]follower|primary[- ]backup|read replicas?|failover|split[- ]brain/i, "leader-replication"),
+  H(/multi[- ](leader|master)|leaderless/i, "multi-leader-leaderless"),
+  H(/quorums?/i, "quorums"),
+  H(/consistency (models?|levels|patterns)|linearizab|eventual(ly)? consisten|strong consistency|causal consistency|^consistency\b/i, "consistency-models"),
+  H(/read[- ]your[- ](own[- ])?writes|monotonic reads|session guarantees|stale reads|replication lag/i, "session-guarantees"),
+  H(/\bcap\b theorem|\bcap\b,|pacelc|base vs acid/i, "cap-pacelc"),
+  // partitioning
+  H(/shard(ing|s)?\b|database partition|data partition|partitioning (strateg|in)/i, "partition-schemes"),
+  H(/consistent hash/i, "consistent-hashing"),
+  H(/hot (key|partition|spot|shard)s?|celebrity problem/i, "hot-keys"),
+  H(/secondary index(es)?|global index/i, "partitioned-indexes"),
+  H(/rebalanc|re-?sharding|dynamic partitioning/i, "rebalancing"),
+  H(/unique ids?|snowflake id|id generat|uuids?|ticket server/i, "unique-ids"),
+  // transactions
+  H(/\bacid\b|write[- ]ahead log|\bwal\b|^atomicity|^durability/i, "acid-wal"),
+  H(/isolation levels?|dirty (read|write)|phantom|read committed|serializab|repeatable read|^isolation\b/i, "isolation-anomalies"),
+  H(/\bmvcc\b|two[- ]phase locking|\b2pl\b|optimistic (lock|concurrency)|pessimistic lock/i, "mvcc-2pl"),
+  H(/two[- ]phase commit|\b2pc\b|distributed transactions?/i, "two-phase-commit"),
+  H(/\bsagas?\b(?! of)|outbox|compensating transaction/i, "sagas-outbox"),
+  H(/\braft\b|paxos|consensus|leader election|byzantine|two generals|state machine replication/i, "consensus-raft"),
+  H(/(vector|logical|physical|lamport|hybrid) (clocks?|time)|happens[- ]before|truetime|clock synchroni[sz]ation|which clock counts|event time/i, "clocks-ordering"),
+  H(/distributed locks?|redlock|fencing tokens?/i, "distributed-locks"),
+  // messaging
+  H(/message (queue|broker)s?|rabbitmq|\bsqs\b|pub[- ]?sub|queue vs|messaging middleware/i, "queue-vs-log"),
+  H(/kafka/i, "kafka-internals"),
+  H(/exactly[- ]once|at[- ]least[- ]once|at[- ]most[- ]once|delivery (semantics|guarantees)/i, "delivery-semantics"),
+  H(/event sourcing|\bcqrs\b|event[- ]driven/i, "event-patterns"),
+  H(/dead[- ]letter|\bdlq\b|message ordering|retry (queue|topic)/i, "retries-dlq"),
+  // streams
+  H(/mapreduce|map[- ]reduce|hadoop|\bspark\b|batch processing|data pipelines?/i, "batch-processing"),
+  H(/stream processing|windowing|watermarks?|event vs arrival|\bflink\b|real[- ]time (data )?processing|real[- ]time analytics/i, "stream-windows"),
+  H(/stateful (and|vs) stateless processing|stateful stream|checkpointing/i, "stateful-streams"),
+  H(/lambda architecture|kappa architecture/i, "lambda-kappa"),
+  H(/change data capture|\bcdc\b|debezium/i, "cdc"),
+  // protection
+  H(/rate[- ]limit|token bucket|leaky bucket|sliding (window )?(log|counter)/i, "rl-algorithms"),
+  H(/distributed rate limit/i, "rl-distributed"),
+  H(/load shedding|back[- ]?pressure|admission control|fail[- ](open|closed)|millions of checkout/i, "load-shedding"),
+  // storage and search
+  H(/object storage|blob storage|\bs3\b|erasure cod|where does google store/i, "object-storage", true),
+  H(/video (streaming|transcod|encod|processing)|adaptive bit ?rate|\bhls\b|transcod/i, "media-delivery"),
+  H(/inverted index|elasticsearch|search engine|full[- ]text search|lucene|how search (really )?works|post search|searches one document/i, "inverted-index"),
+  H(/geohash|quad[- ]?trees?|geospatial|proximity search|location[- ]based service/i, "geo-indexes", true),
+  H(/bloom filters?|hyperloglog|count[- ]min|probabilistic data structures|data structures for big data/i, "sketches"),
+  H(/time[- ]series/i, "time-series"),
+  // reliability
+  H(/\bsl[aoi]s?\b|service level (agreement|objective|indicator)|error budget/i, "slos", true),
+  H(/circuit breaker|bulkhead|resilien(ce|cy)|fault[- ]toleran(t|ce)|cascading failure|single point of failure|\bspof\b|timeouts?,? retries|retries (and|with) backoff|exponential backoff/i, "resilience-patterns"),
+  H(/observability|distributed tracing|opentelemetry|why logging|logging (is|in) system design|monitoring (system|and alerting)/i, "observability"),
+  H(/canary (release|deploy)|blue[- ]green|feature flags?|deployment strateg|ci ?\/ ?cd|ships code to production|mobile apps are released/i, "safe-deploys"),
+  H(/failure detection|heartbeats?|gossip protocol|phi accrual/i, "failure-detection"),
+  // security
+  H(/authenticat|\bjwt\b|session vs|oauth|openid|\bsso\b|single sign[- ]on|store passwords|passkeys?/i, "authn", true),
+  H(/authori[sz]ation|\brbac\b|\babac\b|access control|zanzibar|permissions? system/i, "authz", true),
+  H(/encrypt|key management|\bkms\b|ssl, tls|end[- ]to[- ]end/i, "encryption"),
+  H(/multi[- ]tenan/i, "multi-tenancy", true),
+  H(/\bddos\b|bot detection|captcha|abuse|content moderation/i, "abuse-ddos"),
+  // multi-region
+  H(/active[- ](passive|active)|multi[- ]region|geo[- ]replication|replication at global scale/i, "region-topologies", true),
+  H(/\bcrdts?\b|conflict resolution|automerge|last[- ]write[- ]wins|collaboration software|peritext/i, "conflict-resolution"),
+  H(/disaster recovery|backups? (and|&) restore|\brpo\b|\brto\b/i, "disaster-recovery", true),
+  H(/data residency|gdpr|data sovereignty/i, "data-residency", true),
+  // manual pass over unmatched titles
+  H(/\bdapper\b|monitoring basics/i, "observability"),
+  H(/\bdremel\b/i, "olap-columnar"),
+  H(/merkle trees?/i, "dynamo"),
+  H(/\baurora\b/i, "quorums"),
+  H(/high availability|99\.9+%|nines of|^reliability\b/i, "slos"),
+  H(/power of the log|data structures that power (modern )?databases/i, "btree-lsm"),
+  H(/data consistency and trade[- ]?offs/i, "consistency-models"),
+  H(/publisher[- ]subscriber|^synchronous vs\.? asynchronous/i, "queue-vs-log"),
+  H(/what is an api and how|how do you design (an|the) api/i, "api-design"),
+  H(/code search/i, "inverted-index"),
+  H(/broadcast (algorithms|ordering)/i, "consensus-raft"),
+  H(/system models|faults? (and|&) failures?/i, "resilience-patterns"),
+  H(/^proxies\b/i, "l4-l7"),
+  H(/service discovery/i, "chubby-zookeeper"),
+  H(/side ?car pattern|service mesh/i, "api-gateway"),
+  H(/event[- ]based communication|communication (&|and) coupling/i, "event-patterns"),
+  H(/performance metrics/i, "capacity-planning"),
+  H(/^cap\b/i, "cap-pacelc"),
+  H(/^latency\b/i, "latency-numbers"),
+  H(/scale (your )?databases?|scaling databases?/i, "partition-schemes"),
+  // papers
+  H(/\bgfs\b|google file system|colossus|distributed file systems?|\bhdfs\b/i, "gfs-colossus", true),
+  H(/bigtable|\bhbase\b/i, "bigtable", true),
+  H(/spanner|truetime/i, "spanner", true),
+  H(/chubby|zookeeper|\betcd\b/i, "chubby-zookeeper", true),
+  H(/\bdynamo\b|dynamodb/i, "dynamo"),
+  H(/\bborg\b|why is kubernetes|kubernetes explained|what is kubernetes|k8s architecture/i, "borg-kubernetes", true),
+];
+
+/** HLD-only noise: setup tutorials, framework how-tos, contest problems, LLD and AI videos. */
+export const HLD_SKIP = /\b(install(ing|ation)?|set ?up\b|setup|spring ?boot|spring (security|data|cloud|propagation|transactions)|\bjpa\b|hibernate|mongotemplate|node ?js|windows 1[01]|ubuntu|kibana console|step[- ]by[- ]step tutorial|\$project|date queries|aktu|blockchain|codeforces|codechef|leetcode|\bdiv ?\d\b|\blld\b|low[- ]level design|\brag\b|llm|agentic|langchain|chain of responsibility|design patterns?\b)/i;
+/** Product channels must also look explanatory, and not be news round-ups or very old talks. */
+export const BROAD_OK = /what is|what'?s|how\b|explained|deep dive|internals|architecture|under the hood|introduction|overview|in a minute|at scale|\b101\b|why\b|behind/i;
+export const BROAD_NO = /google i\/o 20(0\d|1[0-5])|dev news|, and more|this week|in this episode|gdd-|hackathon|codelab/i;
+
+/** "Design X" videos → HLD design exercises (always shown on the design page). Title must look like a design video. */
+const DESIGNISH = /design|architecture|system|how\b|explained|works|working|internals?|breakdown|interview|deep dive|scaled|built/i;
+export const HLD_DESIGNS: ConceptRule[] = ([
+  [/url shorten|tiny ?url|\bbit\.?ly\b/i, "d-url-shortener"],
+  [/rate limiter|rate limiting (system|service)/i, "d-rate-limiter"],
+  [/^(?!.*(messenger|whatsapp|search)).*(news ?feed|(twitter|instagram|facebook|fb)\b.*(design|feed|timeline)|design (twitter|instagram)|twitter (system|software))/i, "d-news-feed"],
+  [/whatsapp|chat (system|app|application|service)|messenger|discord stores|slack (system|architecture)/i, "d-chat"],
+  [/^(?!.*recommend).*((design|rebuilds?) youtube|youtube (system|architecture)|netflix.{0,4}youtube|youtube.{0,4}netflix|netflix (system|api|architecture)|video streaming (system|platform|service)|prime video|live stream(ing)? (platform|events)|video processing at scale)/i, "d-youtube"],
+  [/dropbox|google drive|file (sync|sharing|share) (system|service)/i, "d-drive"],
+  [/web crawler|crawl(ing|er)? billions/i, "d-web-crawler"],
+  [/type[- ]?ahead|auto[- ]?complete|auto[- ]?suggest|search suggestions/i, "d-typeahead"],
+  [/design (an? )?(uber|lyft|ola)\b|uber\/lyft|uber\/google maps|(uber|ola|lyft) (system design|architecture)|\buber\b.*\bola\b|ride[- ]hailing|ride[- ]sharing|cab booking/i, "d-ride-hailing"],
+  [/^(?!.*\baws\b).*notifications? (system|service|engine)/i, "d-notification"],
+  [/ticketmaster|bookmyshow|ticket booking|movie ticket|fandango|seat (booking|reservation)|booking system/i, "d-ticketing"],
+  [/key[- ]value stores?|distributed (cache|kv)|design (a )?(distributed )?cache|redis system design/i, "d-kv-store"],
+  [/google docs|collaborative (edit|document)|real[- ]time collaboration|operational transformation/i, "d-collab-docs"],
+  [/\byelp\b|proximity|nearby (places|friends)|location based service|google maps|places search|tinder/i, "d-proximity"],
+  [/job scheduler|task scheduler|\bcron\b|distributed scheduler/i, "d-job-scheduler"],
+  [/metrics (and )?monitoring|monitoring system|logging system|time[- ]series database|log collection/i, "d-metrics"],
+  [/ad click|click aggregat/i, "d-ad-click"],
+  [/^(?!.*crypto).*(payments? (system|gateway|service)|payments at|processing payments|apple ?\/? ?google pay|scan to pay|\bupi\b)/i, "d-payment"],
+  [/top[- ]k\b.*(system|leaderboard|design)|trending|heavy hitters|leaderboard|hashtags ordered by count/i, "d-trending"],
+  [/fraud|bot detection/i, "d-fraud-detection"],
+  [/single sign[- ]on|\bsso\b|oauth/i, "d-auth-sso"],
+  [/zanzibar|authori[sz]ation (system|service)|permission(s)? system/i, "d-authz"],
+  [/e-?commerce (platform|system|design)|amazon\/flipkart|flipkart like e-?commerce|shopping cart|inventory reservation|checkout requests/i, "d-global-cart"],
+  [/\bledger\b|double[- ]entry/i, "d-dr-ledger"],
+] as ConceptRule[]).map(([re, to]) => [new RegExp(`^(?=.*(${DESIGNISH.source}))(?=.*(${re.source}))`, "i"), to] as ConceptRule);
