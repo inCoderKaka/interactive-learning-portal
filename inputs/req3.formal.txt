@@ -43,3 +43,70 @@ These websites have strong visuals, but may stay at a basic level instead of exp
 
 - Add a hierarchy pane with a collapsible, nested-folder structure that shows all topics in every area as an additional option alongside the existing Map, List only, and Flashcards views on the Learn page.
 - Deeply research the best way to implement this navigation and the large number of embedded YouTube videos. One possible video interaction is a two-click flow: one click to expand and another to view the video.
+
+
+==========================================================================
+FOLLOW-UP INSTRUCTIONS (verbatim, copied word for word from the chats)
+Labels in [brackets] are added for context only; everything else is the user's exact wording.
+==========================================================================
+
+[2026-11-26, session 1, when handing over req3]
+requirements in my words in inputs/req3.txt, rewritten in inputs/req3.formal.txt. DO NOT ASSUME ANYTHING, IF YOU HAVE ANY QUESTIONS, ASK THEM FIRST. comprehensive research before implementation.
+
+[2026-11-26, session 1, answers to clarifying questions]
+"Turning ~90 short topics into book-depth subtopic pages (each with a separate Learn page and Revise sheet, visuals and all channel videos) is a very large job. How should I sequence it?"="Area by area, no pilot"
+"Your channels have ~3,000 numbered LeetCode solution videos, but the portal has only 178 problems. What should happen to question videos for problems the portal doesn't have?"="Create a problem page for each"
+"On a problem page in non-blind mode, when should all channels' videos for that question be shown?"="Behind 'I have tried' (Recommended)"
+"Which of these should also count as 'your channels', where every related video gets added?"="NeetCodeIO, Techdose Engineering, Hindi channels in my picks, Keep existing one-offs"
+"Where should the collapsible nested-folder topic tree appear?"="Learn tab + lesson sidebar (Recommended)"
+"How should Learn and Revise be separated for each subtopic?"="Toggle on page + Revise hub (Recommended)"
+"The ~1,500 new problem pages (video-backed, no hand-written approaches): should they count in the study plan, roadmap and progress totals?"="Extra practice, outside plan (Recommended)"
+"How should finished work be shipped?"="Branch + PR per area, deploy each (Recommended)"
+"Your request names DSA, HLD, LLD and AI. The portal also has a 5th area, Interview Craft (4 topics: Google loop, coding round, biases, behavioural). Should it get the same deep Learn/Revise split, visuals and channel videos?"="Yes, same treatment, done last"
+
+[2026-11-26, session 2, feedback on what was built]
+my opinions on what's built: move the topic tree slightly to the left (aim to use full width of the page). remove the problem, practice problem things from the topic tree. in the revise page, after the recall questions, add a by default collapsed revision cheat sheet notes containing plain lines of everything that will be enough for any human to revise that topic such that all concepts come back to memory. in the topic tree heading add a small collpse all button. instead of the learn and revise toggle on top of the topic tree, show the revise on hover over the folder/topic names in the topic tree. regarding the question I have to answer, deepen the DSA before moving to the next topics HLD, LLD... etc. after all that merge and mainline the changes and deploy the main branch. the last chat exactly ended up using 90% of the 5 hr session token usage using the opus 5.5 model which you also are. so do just that amount of work in this session as well. and also add the inputs to git.
+
+is there anything else you need to ask me before starting your work ?
+
+[2026-11-26, session 2, answers to clarifying questions]
+""Add the inputs to git": the repo is public, and inputs/*.md is gitignored on purpose. That covers 'Google Qs Practise.md' (2 MB of your practice notes) and 'course_knowledge_base.md' (520 KB). Which files should I commit?"="Only the untracked text (Recommended)"
+"Removing problems from the topic tree: should the HLD 'Design exercises' folders also go, or only the DSA Problems / More practice folders?"="Remove them too"
+"Deepening 142 DSA pages to roughly 10k characters each is about 1M characters of writing, which may not fit in one session. How should I order it so that what gets done is what matters most to you?"="Cheat sheets first, then deepen (Recommended)"
+"When should I merge PR #2 to main and deploy production?"="Midway and at the end (Recommended)"
+
+[2026-11-26, session 2]
+finish the rest as well.
+
+[2026-11-27, session 3]
+for the HLD, LLD and AI areas, only add to the depth of what's important and expected of a Google senior engineer. deep research on what's expected. its not entirely necessary to reach 10k characters like a rule. but dont be shy to reach that if its required to give the full intuition. add video library for these too. Add more and more exercises big or small for all the required topics. you can add more pages if at all required (to separate out individual topics). videos like design whatsapp go on the matching design page always being visible. deepen all pages in this pass. for the hld visualisation (animations and interactive UI elements) is key to retain everything learnt by the user in this page. so use sensible, genuine and reliable visualisations for each of the topics. check the currently visuals as well and check if they make sense at all. for example, if you see the animation in Load balancing and API gateways, the animation in the page is not at all intuitive. everything just seems random there. deep research on how each visualisation can be best implemented to intuitively convey the HLD conept/topic (big/small) into the learners brains. its not neccessary for 1 page to have only 1 visualisation, it can have more than 1 or not even 1 depending on the topic. suggested order and shipping is ok.
+
+[2026-11-27, session 3]
+also, reading the currently existing content like this: "
+Request path: DNS → (Anycast/GeoDNS) → CDN/edge → L4/L7 load balancer → API gateway (auth, rate limit, routing) → service.
+
+TCP vs UDP: TCP = reliable, ordered, congestion-controlled; UDP = no guarantees, low latency (media, DNS, QUIC builds reliability on top). HTTP/2 multiplexes streams over one TCP connection; HTTP/3 uses QUIC to avoid head-of-line blocking.
+
+API styles
+
+REST/JSON: public APIs, cacheable, human-friendly.
+gRPC/Protobuf: internal services, strong schemas, streaming, lower overhead.
+GraphQL: client-shaped queries; watch N+1 and caching.
+API hygiene: resource-oriented names, versioning, idempotency keys on writes (safe retries), cursor pagination (stable under inserts, unlike offset), consistent errors, auth via OAuth2/JWT, rate-limit headers.
+" is not at all understandable and intuitive for a first time learner. i dont believe its good for the revision as well since I dont understand a lot of the words in this as a first time learner of HLD myself. Make the content of these pages more intuitive and understandable for a first time learner.
+
+[2026-11-27, session 3]
+Also, add a description for words or a group of words which come up on hover (with just a small underline to denote that word has the hover functionality). use this wherever and everywhere possible while still keeping the UI very elegant and pleasant.
+
+[2026-11-27, session 4]
+check the previous exact instructions I gave and incorporate those as well...
+
+Ask whatever questions you have right now.
+
+[2026-11-27, session 4, answers to clarifying questions]
+"7 finished HLD chapters (37 pages, ~30 visuals) are committed but not live. When should they ship?"="Ship after security (Recommended)"
+"Which new HLD design exercises should I add, on top of deepening the 24 that exist?"="You research the list yourself and every possibilities that you can think of related to Google (be it workspace, docs, security, applications, ads everything) and add them yourself. not required to show me. you can also yourself search actual interview experiences and additionally add those as well."
+"How should design exercises be structured when I deepen them?"="both... full interview flow, potential variations it can go to etc and also add more content and videos related to that."
+
+[2026-11-27, session 4]
+also, write my instructions exact word by word to req files
