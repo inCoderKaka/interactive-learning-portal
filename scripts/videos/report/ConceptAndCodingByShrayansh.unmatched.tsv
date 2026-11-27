@@ -40,9 +40,6 @@ e_S2yJKpTaw	Java File Handling Explained | Streams, Buffers, Readers & Writers
 f8lYPOvNGrU	Kafka Consumer Setup - Part1 | Basic Setup and Internal working of Kafka Consumer with Demo
 yLMCnIpgllM	Kafka Producer Setup
 IUWvzjvqkXw	Kafka Cluster Setup | 2 Broker and 2 Controller with KRaft Setup
-t2gKUkjwKfU	LLD of BookMyShow (English) | Design MovieTicketBooking
-dKXx5lw_n7Q	LLD of Car Rental System (English) with Concurrency handling
-C9Dt3wVzQEg	LLD of Snake and Ladder game (English)
 ais9i16sAjg	Spring Cloud Bus in-depth | SpringBoot Microservices
 z04mr_i2SO8	Java 15: Text Blocks
 6yhGlQPS7CQ	@RefreshScope Deep Dive | Auto-Reload Config Without Restart
@@ -54,11 +51,7 @@ atk8T1YTDV4	Building a Text Conversation with AI (Part-1) | Message, ChatOptions
 mnISCe3HL2E	Spring Boot Actuator in depth
 C8Vd9VgkTFw	Centralized Configuration | Why its popular with microservices | Spring Cloud Config
 lJ6kOIK4Fd0	Spring AI | What is LLM and GPT
-IwoidRDGEb8	Java 21: Pattern Matching for switch
-KmX4uHi-KY0	Java 16: Pattern Matching for instanceof
-blb1guXuVxA	Java 14: Switch Expressions Deep Dive
 qCCIk5vkqyY	API Gateway in Microservices - Part1 | Spring Cloud API Gateway | Routing and Load Balancing
-BgBDbc8F4A8	Java 17 : Sealed Classes and Interfaces
 F-JVyTAffp8	Client Side Load Balancer in Microservices | LoadBalancer and its SpringBoot Implementation
 h1mrflwF6Lc	Service Discovery in Microservices | Eureka & its SpringBoot Implementation
 H6CdV_ZBx8s	FeignClient in Spring Boot Microservices | Synchronous Communication using Declarative HTTP Client
@@ -92,7 +85,6 @@ agts012X8h4	Spring boot HATEOAS Restful API | Advantage, Disadvantage with Examp
 H6Xi0UlHjh0	Spring boot: Filters vs Interceptors | Filters and Interceptors Advantage and UseCases for both
 hkuq4fv43eU	Spring boot: Custom Interceptors | How to Intercept Incoming HTTP Request and Custom Annotations
 xADtTuyLyYM	Spring boot @Async Annotation - Part2 | Async Annotation Important Interview questions
-1qf5yqfInzY	Spring boot @Async Annotation - Part1 | ThreadPoolExecutor
 W1YSG-MrX1c	Spring boot @Transactional Annotation - Part3 | Isolation Level and its different types
 u4kRFypRmHA	Spring boot @Transactional Annotation - Part2 | Declarative, Programmatic Approach and Propagation
 Kf-gAW8hGQA	Spring boot @Transactional Annotation - Part1
@@ -100,7 +92,6 @@ HhsAw8GVogQ	Spring boot AOP (Aspect Oriented Programming)
 GTRlOGDgEiw	SDE2 Interview Preparation Strategy | SDE from Startup to Google | DSA, System Design, Mock Resource
 czkTdFHHz_4	Spring boot @Profile annotation | How Profiling works in Spring boot
 HN-IX8Rl8Do	Spring boot @ConditionalOnProperty Annotation
-Qcr3FhS2vDQ	42. LLD of Payment Gateway | Low Level Design of Payments App
 eZfT5yKm2Xg	Spring boot: Dynamically Initialized Beans | Value Annotation
 JGFNn6Eqp64	Spring boot : Bean Scopes | Singleton, Prototype, Request, Session Scopes with Examples in Java
 W-TgmKAnGG0	Dependency Injection in Spring boot | With Advantages and Disadvantages
@@ -111,7 +102,6 @@ ndSUJYNa8T8	Spring boot Annotations (Controller Layer) | Controller, RestControl
 TMX1kQ4W4hI	Introduction to Spring boot | Its Advantage over Spring MVC and Servlets based Web applications
 nEno48RpDR4	28. Streams in Java8 | Collections in Java - Part7
 TT1-qsuHMXs	22. Collections in Java - Part1 | Java Collections Framework in depth
-EfQesfKZ3Jw	35. LLD: Apply Coupons on Shopping Cart products | Low level design
 vz6vSZRuS2M	9. Java Memory Management and Garbage Collection in Depth
 NZ3qAfM8Ztw	5. How FLOAT and DOUBLE  Number Stored in Memory?  |  IEEE 754 Representation
 gikFgvzFuwo	27. Collections in Java - Part6 | SET
@@ -124,21 +114,14 @@ D3XhDu--uoI	System Design: Concurrency Control in Distributed System | Optimisti
 KKByv7JyzOw	GIT 3 Branching Strategy | Github and GitLab Branching Strategy | Must know for all engineers
 H5WYze-FL50	18. Java Annotations with Examples
 P4UAoYiaHg4	17. Java Reflection in Depth (Using Examples)
-DDKdMTFNvxc	29. LLD of Inventory Management System | Low Level System Design of Inventory Management System
 he3P9TiZ6_c	After 4 Years of Gap he became Software Engineer | UPSC to Software Developer | Truth of EdTech
 Lqan4AF9wzA	7. Java Methods in Depth | Different Types of Methods with Examples
 1Ox0fyJuUVY	6. Java Variables - Part2 | Reference/Non-Primitive Data Types in Depth
 Q6_jrvz-R7w	4. Java Variables - Part1 | Primitive Data Types in Depth
 ahqFp9Ly9zs	LinkedIn Cold Msg for SDE Referral: ✅ Right and ❌ Wrong way  of sending referral msg for SDE job
-mI73eTlSqeU	14. Design Idempotent POST API | System Design to Handle Duplicate Request by Idempotency Handler
-P0TJIONZi8E	24. LLD of Cricbuzz/CricInfo | Cricbuzz Low Level System Design | Design Cricbuzz | Low Level Design
 qEo6npkQE9I	Gadgets I use for YouTube Videos and Online Teaching | Equipments for YouTube Video Creation
 ZrSt4ahsaFQ	Tips for Work Life Balance as Software Engineer | SDE Work Life Balance | Achieve Work Life Balance
-JH7gcXeR3ds	17. LLD of ATM | ATM Low Level System Design | Design an ATM | Low Level Design Interview question
 rExh5cPMZcI	5. Scale from ZERO to MILLION Users (Hindi) | System design interview: Scale to 1million users
 TL5ytIlkKuU	Git Merge Vs Rebase with Example | Differences Between Git Merge and Rebase and which one to choose?
-wCyzvDn3Pp8	14. LLD of BookMyShow (Hindi) | Design MovieTicketBooking | Low Level System Design & Concurrency
 qGlUKtjqaEQ	4. SAGA Pattern | Strangler Pattern | CQRS | Microservices Design Patterns | System Design
 l1OCmsBnQ3g	3. Microservices Design Patterns | Part1: Introduction and Decomposition Pattern | HLD
-J4GO6hmR6TA	9. LLD of Car Rental System (Hindi) | ZoomCar Low Level Design | System Design Interview Question
-88bcV-XV0wo	11. LLD of Snake and Ladder game (Hindi) | SDE system design interview question, Java implementation

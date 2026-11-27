@@ -375,11 +375,11 @@ export const HLD_DESIGNS: ConceptRule[] = ([
 export const LLD_SKIP = /spring ?boot|spring (security|data|cloud|ai|bean)|\bjpa\b|hibernate|\baws\b|terraform|\bgit\b|github|kafka|redis|elasticsearch|react(js)?\b|vue\.?js|ramda|\bvim\b|blockchain|leetcode|\bdsa\b|dynamic programming|binary search|\bgraph|linked ?list|\bheap\b|\bbst\b|maven|lombok|devops|docker|kubernetes|forward deployed|genai|\brag\b|\bllm\b|interview experience|cracked|laid ?off|resume|referral|work life|studio tour|kilimanjaro|questions? (&|and) answers/i;
 
 /** Titles that are LLD despite matching LLD_SKIP (e.g. "Pub-Sub like Kafka | LLD + Multithreading"). */
-export const LLD_ALLOW = /\blld\b|low[- ]level|multi[- ]?thread|concurrency/i;
+export const LLD_ALLOW = /\blld\b|low[- ]level|multi[- ]?thread|concurrency|threadpoolexecutor/i;
 const L = (re: RegExp, to: string) => [re, to] as ConceptRule;
 export const LLD_CONCEPTS: ConceptRule[] = [
   // the interview
-  L(/what is (lld|low level design)|introduction to (lld|low level design)|lld (roadmap|crash course|101)|low[- ]level (system )?design (interviews? )?roadmap|approach (to solve )?(lld|low level design)|types of low level designs|machine coding|do we have to create each and every class|chatgpt mock lld|mock low level system design interview/i, "ood-at-google"),
+  L(/lld vs hld|what is (lld|low level design)|introduction to (lld|low level design)|lld (roadmap|crash course|101)|low[- ]level (system )?design (interviews? )?roadmap|approach (to solve )?(lld|low level design)|types of low level designs|machine coding|do we have to create each and every class|chatgpt mock lld|mock low level system design interview/i, "ood-at-google"),
   L(/approach (to solve )?(lld|low level design)|requirements? (gathering|clarif)|use case diagram/i, "ood-requirements"),
   L(/class diagram|\buml\b|association,? aggregation|composition vs aggregation|aggregation vs composition/i, "class-diagrams"),
   L(/sequence diagram|state (machine|diagram)|diagrams every software developer/i, "behaviour-diagrams"),
@@ -401,14 +401,14 @@ export const LLD_CONCEPTS: ConceptRule[] = [
   L(/composite|bridge (design )?pattern|flyweight|structural design patterns?/i, "composite-bridge-flyweight"),
   // patterns II
   L(/strategy (design )?pattern|template (method )?(design )?pattern|behavio(u)?ral design patterns?/i, "strategy-template"),
-  L(/observer|behavio(u)?ral design patterns?/i, "observer-pattern"),
+  L(/observer|behavio(u)?ral design patterns?|cricbuzz|cricinfo/i, "observer-pattern"),
   L(/state (design )?pattern|behavio(u)?ral design patterns?/i, "state-pattern"),
   L(/command (design )?pattern|memento|undo,? redo/i, "command-memento"),
   L(/chain of responsibility/i, "chain-of-responsibility"),
   L(/iterator (design )?pattern|visitor/i, "iterator-visitor"),
   L(/mediator|null object|interpreter (design )?pattern/i, "mediator-null-object"),
   // clean code
-  L(/api design|java optional|exception handling|exceptions? vs errors|custom exceptions/i, "library-api"),
+  L(/api design|java optional|exception handling|exceptions? vs errors|custom exceptions|idempotent (post )?api/i, "library-api"),
   L(/\benums?\b|pojo|record class|immutable (class|objects)|value objects?|sealed classes/i, "modelling-data"),
   L(/unit test|junit|mockito|mock vs stub|test doubles?|write just enough tests/i, "testability"),
   L(/code smells?|refactor/i, "smells-refactoring"),
@@ -423,7 +423,7 @@ export const LLD_CONCEPTS: ConceptRule[] = [
   L(/atomic|compare[- ]and[- ]swap|\bcas\b|lock[- ]free/i, "atomics-cas"),
   L(/producer[- ]consumer|blocking ?queue|bounded buffer|multi[- ]threaded message queue|pub[- ]?sub model like kafka/i, "producer-consumer"),
   L(/semaphore|count ?down ?latch|cyclic ?barrier|phaser/i, "sync-primitives"),
-  L(/thread ?pools?|executor|fork ?join|work ?stealing|future and callable|cachedthreadpool|fixedthreadpool/i, "thread-pools"),
+  L(/thread ?pools?|executor|threadpoolexecutor|fork ?join|work ?stealing|future and callable|cachedthreadpool|fixedthreadpool/i, "thread-pools"),
   L(/concurrent ?hash ?map|concurrent ?skip ?list|copy ?on ?write|concurrent collections|hashtable explained/i, "concurrent-collections"),
   L(/completable ?future|virtual ?threads?|async(hronous)? (programming|await)|event loop|threadlocal/i, "async-virtual-threads"),
   L(/scheduled ?thread ?pool|scheduled ?executor|\bscheduler\b|cron job|fixed ?rate|fixed ?delay|timing wheel/i, "timers-scheduling"),
@@ -441,7 +441,7 @@ export const LLD_DESIGNS: ConceptRule[] = ([
   [/logging (system|framework)|design logging|distributed logging|logger/i, "d-lld-logger"],
   [/file system/i, "d-lld-file-system"],
   [/pub[- ]?sub|message queue like kafka|messaging queue/i, "d-lld-pub-sub"],
-  [/tic[- ]?tac[- ]?toe|chess|battleship|board game/i, "d-lld-board-game"],
+  [/tic[- ]?tac[- ]?toe|chess|battleship|board game|snake (and|&) food|snake game/i, "d-lld-board-game"],
   [/text editor|undo,? redo|word processor/i, "d-lld-text-editor"],
   [/key[- ]value store/i, "d-lld-kv-transactions"],
   [/meeting (scheduler|room)|calendar/i, "d-lld-meeting-scheduler"],

@@ -171,8 +171,8 @@ for (const t of SUBTOPICS) {
 for (const p of EXTRA_PROBLEMS) if (!topicById.has(p.topic) || (p.sub && !topicById.has(p.sub))) err(`extra problem ${p.id}: unknown placement ${p.topic}/${p.sub}`);
 
 (async () => {
-  // interview checkpoints (req3): every HLD design is placed by prerequisites and has an interview-path tree
-  for (const d of DESIGNS.filter((x) => x.area === "hld")) {
+  // interview checkpoints (req3): every HLD and LLD design is placed by prerequisites and has an interview-path tree
+  for (const d of DESIGNS.filter((x) => x.area === "hld" || x.area === "lld")) {
     if (!d.prereqs?.length) { err(`${d.id}: no prereqs, so it has no checkpoint`); continue; }
     for (const p of d.prereqs) if (!topicById.has(p)) err(`${d.id}: prereq ${p} is not a page`);
     if (!d.paths?.length) err(`${d.id}: no interview paths`);

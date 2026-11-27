@@ -11,6 +11,8 @@ import { designs as infra } from "./infra";
 import { designs as interview } from "./interview";
 import { designs as lld_a1 } from "./lld-a1";
 import { designs as lld_a2 } from "./lld-a2";
+import { designs as lld_b1 } from "./lld-b1";
+import { designs as lld_b2 } from "./lld-b2";
 import { designs as paths_a } from "./paths-a";
 import { designs as paths_b } from "./paths-b";
 import { designs as paths_c } from "./paths-c";
@@ -19,4 +21,4 @@ import { designs as realtime } from "./realtime";
 import { designs as search } from "./search";
 
 import type { DesignPatch } from "./types";
-export const PATCHES: DesignPatch[] = [...classics, ...data, ...early, ...extras, ...feeds, ...google, ...google2, ...google3, ...infra, ...interview, ...lld_a1, ...lld_a2, ...paths_a, ...paths_b, ...paths_c, ...platform, ...realtime, ...search];
+export const PATCHES: DesignPatch[] = [...classics, ...data, ...early, ...extras, ...feeds, ...google, ...google2, ...google3, ...infra, ...interview, ...lld_a1, ...lld_a2, ...lld_b1, ...lld_b2, ...paths_a, ...paths_b, ...paths_c, ...platform, ...realtime, ...search];
