@@ -7,8 +7,9 @@ import { designs as google } from "./google";
 import { designs as google2 } from "./google2";
 import { designs as google3 } from "./google3";
 import { designs as infra } from "./infra";
+import { designs as interview } from "./interview";
 import { designs as realtime } from "./realtime";
 import { designs as search } from "./search";
 
 import type { DesignPatch } from "./types";
-export const PATCHES: DesignPatch[] = [...classics, ...data, ...extras, ...feeds, ...google, ...google2, ...google3, ...infra, ...realtime, ...search];
+export const PATCHES: DesignPatch[] = [...classics, ...data, ...extras, ...feeds, ...google, ...google2, ...google3, ...infra, ...interview, ...realtime, ...search];
