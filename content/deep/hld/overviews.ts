@@ -86,4 +86,20 @@ Reading from memory is about a thousand times faster than reading from disk, and
 A cache makes the database depend on the hit rate, so design for the moments when the hit rate drops: expiry, restarts and failures.
 :::
 `,
+  databases: md`
+## What this chapter is about
+
+Almost every design question comes down to "where does the data live, and how is it found again?" This chapter builds that judgement from the ground up: how databases store data on disk, how they find it quickly, and how to choose and shape a database for each kind of data in a design.
+
+1. **Choosing a database by access pattern.** Relational, key-value, document, wide-column, graph, search, time-series and object storage: what each is good and bad at, and a step-by-step way to choose per kind of data.
+2. **Data modelling.** Tables, keys and relationships; when to store a fact once and when to copy it on purpose; how to design keys for stores without joins.
+3. **Indexes.** How a B-tree finds one row among billions in a few reads, why the order of columns in an index matters, and what every index costs on writes. An explorer shows which rows each query reads.
+4. **B-trees vs LSM trees.** The two storage-engine designs behind nearly every database: update in place, or append and merge later. Step through both with the same writes.
+5. **Column stores and analytics.** Why reports over billions of rows need a separate, column-oriented copy of the data, and how data flows there.
+6. **Inside the NoSQL families.** Partition keys, sort keys, documents, wide-column rows and graphs, with the design rules for each.
+
+:::tip The one idea to keep
+Start from how the data is read and written, how much of it there is and what must never go wrong; the database follows from those answers.
+:::
+`,
 };

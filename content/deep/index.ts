@@ -32,9 +32,13 @@ import { notes as n_hld_traffic } from "./hld/notes/traffic";
 import { caching } from "./hld/caching";
 import { notes as n_hld_caching } from "./hld/notes/caching";
 
-const NOTES: Record<string, string> = { ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
+import { databases } from "./hld/databases";
+import { notes as n_hld_databases } from "./hld/notes/databases";
+
+const NOTES: Record<string, string> = { ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
 
 const BODIES: Record<string, Deep> = {
+  ...databases,
   ...caching,
   ...traffic,
   ...networking,

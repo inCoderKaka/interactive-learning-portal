@@ -5,6 +5,7 @@ import { LatencyLadder, Queueing } from "./basics";
 import { HolBlocking, PushCompare } from "./net";
 import { HealthTimeline, L4L7 } from "./traffic";
 import { EvictionRace, Stampede } from "./caching";
+import { BtreeLsm, IndexExplorer, RowColumn } from "./db";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -18,6 +19,9 @@ const SIMS: Record<string, ComponentType> = {
   "health-timeline": HealthTimeline,
   "eviction-race": EvictionRace,
   stampede: Stampede,
+  "index-explorer": IndexExplorer,
+  "btree-lsm": BtreeLsm,
+  "row-column": RowColumn,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */
