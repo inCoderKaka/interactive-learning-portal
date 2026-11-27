@@ -4,6 +4,7 @@ import { TRAFFIC } from "./traffic";
 import { CACHING } from "./caching";
 import { REPLICATION } from "./replication";
 import { PARTITIONING } from "./partitioning";
+import { TRANSACTIONS } from "./transactions";
 
 /** Sequence scenarios by widget id. Each file holds one chapter's scenarios. */
 export const SCENARIOS: Record<string, Scenario> = {
@@ -12,4 +13,5 @@ export const SCENARIOS: Record<string, Scenario> = {
   ...CACHING,
   ...REPLICATION,
   ...PARTITIONING,
+  ...TRANSACTIONS,
 };

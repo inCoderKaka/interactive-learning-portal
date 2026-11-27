@@ -134,4 +134,22 @@ When data grows too big, or writes too many, for one machine, you split it: each
 Choose the split key from your most frequent query, check it spreads load evenly, and plan from day one for the one key that will be far hotter than the rest.
 :::
 `,
+  transactions: md`
+## What this chapter is about
+
+Whenever several changes must happen together (move money, book the last seat, place an order across services), you need guarantees about what happens when things run at the same time or crash halfway. This chapter goes from a single database's transactions to agreement among many machines.
+
+1. **ACID and the write-ahead log.** What a transaction promises, and how logging every change before making it lets a database survive a power cut mid-transaction. Crash one yourself and watch recovery.
+2. **Isolation anomalies.** What goes wrong when transactions overlap (lost updates, dirty reads, write skew, phantoms), which isolation level stops which, and the practical fixes. A lab lets you run each anomaly at each level.
+3. **MVCC and locking.** How databases implement isolation: making transactions wait (locks), or giving each a snapshot of versions so readers never block writers.
+4. **Two-phase commit.** Committing one transaction across several machines, and why it can get stuck if the coordinator fails.
+5. **Sagas and the outbox.** Keeping several services correct without one big transaction: step-by-step processes with undo actions, and publishing events reliably.
+6. **Consensus with Raft.** How a group of machines agrees on one leader and one ordered log despite crashes and network splits. A live simulator lets you kill leaders and partition the cluster.
+7. **Clocks and ordering.** Why timestamps from different machines can't be trusted to order events, and the alternatives: logical clocks, vector clocks and Google's TrueTime.
+8. **Leases and fencing.** Making sure only one worker acts at a time, even when a worker freezes and wakes up after losing its lock.
+
+:::tip The one idea to keep
+Atomicity, isolation and agreement all cost coordination; use them where a mistake would be expensive, and make everything else idempotent.
+:::
+`,
 };
