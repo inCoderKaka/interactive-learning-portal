@@ -13,6 +13,8 @@ import { RatingBar } from "@/components/Work";
 import { Flashcards } from "@/components/Flashcards";
 import { RefLink, References } from "@/components/References";
 import { VideoLibrary, type LibProblem } from "@/components/VideoLibrary";
+import { Exercises } from "@/components/Exercises";
+import { GlossaryArea } from "@/components/Glossary";
 import { ReviseView } from "@/components/Revise";
 import { useDeepTopic } from "@/lib/deep";
 import { TreeLayout } from "@/components/tree/TreeRail";
@@ -208,6 +210,7 @@ function TopicBody({ id, t }: { id: string; t: Topic | undefined }) {
   const canRevise = isSub ? !!t.revise : !subs.length;
 
   return (
+    <GlossaryArea area={t.area}>
     <TreeLayout current={id}>
     <article>
      <ReadingProgress color={a.color} />
@@ -263,6 +266,8 @@ function TopicBody({ id, t }: { id: string; t: Topic | undefined }) {
       </section>
 
       {!!t.doubts?.length && <Doubts doubts={t.doubts} math={math} color={a.color} />}
+
+      {!!t.exercises?.length && <Exercises key={"x" + t.id} list={t.exercises} color={a.color} />}
 
       {t.template && (
         <section ref={templateRead} data-read-block data-template className="card overflow-hidden">
@@ -320,5 +325,6 @@ function TopicBody({ id, t }: { id: string; t: Topic | undefined }) {
      </ReadScope>
     </article>
     </TreeLayout>
+    </GlossaryArea>
   );
 }

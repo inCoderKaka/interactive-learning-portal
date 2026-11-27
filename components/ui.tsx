@@ -4,19 +4,29 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { useMemo, type ButtonHTMLAttributes, type ReactNode } from "react";
+import type { Components } from "react-markdown";
+import { Term, rehypeGlossary, useGlossaryArea, useGlossaryOn } from "./Glossary";
 import type { Area } from "@/lib/types";
 import { areaOf } from "@/content";
 
 export const cn = clsx;
 
-/** Markdown. `math` turns on $inline$ and $$display$$ TeX (off by default so prices like "$5" stay text). */
-export function Md({ children, className, math }: { children: string; className?: string; math?: boolean }) {
+/**
+ * Markdown. `math` turns on $inline$ and $$display$$ TeX (off by default so prices like "$5" stay text).
+ * Glossary terms get a hover definition (see components/Glossary.tsx) unless `plain` is set or the learner turned it off.
+ */
+export function Md({ children, className, math, plain }: { children: string; className?: string; math?: boolean; plain?: boolean }) {
+  const area = useGlossaryArea();
+  const on = useGlossaryOn() && !plain;
+  const gl = useMemo(() => (on ? rehypeGlossary(area) : null), [on, area]);
+  const components = useMemo<Components>(() => ({
+    dfn: ({ node, children: c, ...p }) => { void node; const k = (p as Record<string, unknown>)["data-k"] as string | undefined; return k ? <Term k={k} area={area}>{c}</Term> : <dfn>{c}</dfn>; },
+  }), [area]);
+  const rehype = [...(math ? [[rehypeKatex, { throwOnError: false, strict: "ignore" }]] : []), ...(gl ? [gl] : [])] as never[];
   return (
     <div className={cn("md", className)}>
-      {math
-        ? <ReactMarkdown remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: true }]]} rehypePlugins={[[rehypeKatex, { throwOnError: false, strict: "ignore" }]]}>{children}</ReactMarkdown>
-        : <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>}
+      <ReactMarkdown remarkPlugins={math ? [remarkGfm, [remarkMath, { singleDollarTextMath: true }]] : [remarkGfm]} rehypePlugins={rehype} components={components}>{children}</ReactMarkdown>
     </div>
   );
 }

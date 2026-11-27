@@ -1,13 +1,13 @@
 "use client";
 import "katex/dist/katex.min.css";
-import { AlertTriangle, BookOpen, Lightbulb, MousePointerClick, Newspaper, Quote, Sparkles, Target, type LucideIcon } from "lucide-react";
+import { AlertTriangle, BookOpen, Lightbulb, MousePointerClick, Newspaper, Quote, Sparkles, Target, type LucideIcon, BookA } from "lucide-react";
 import Viz from "@/components/viz";
 import { VideoEmbed } from "./References";
 import { Md, cn } from "./ui";
 
 /**
  * A lesson body: markdown with optional maths, plus two extensions used by the AI lessons.
- *   :::dyk Optional title        a callout (dyk, story, news, tip, warn, quote, eli5, try), closed by a line ":::"
+ *   :::dyk Optional title        a callout (dyk, story, news, tip, warn, quote, eli5, words, try), closed by a line ":::"
  *   [[widget:attention]]          an interactive widget, inline in the reading flow
  *   [[yt:VIDEOID|Title|Channel]]  a YouTube video that plays in place
  */
@@ -47,6 +47,7 @@ const CALLOUT: Record<string, { label: string; icon: LucideIcon; color: string; 
   warn: { label: "Gotcha", icon: AlertTriangle, color: "var(--color-bad)", say: (t) => (t ? `Watch out: ${t}.` : "Watch out.") },
   quote: { label: "Quote", icon: Quote, color: "var(--color-craft)", say: (t) => (t ? `A quote from ${t}.` : "A quote.") },
   eli5: { label: "Explain like I'm five", icon: Sparkles, color: "var(--color-craft)", say: () => "Explain like I'm five." },
+  words: { label: "Words you'll meet", icon: BookA, color: "var(--color-hld)", say: () => "First, the words you'll meet on this page." },
   try: { label: "Try it", icon: MousePointerClick, color: "var(--color-dsa)", say: (t) => (t ? `Try it: ${t}.` : "Try it.") },
 };
 
@@ -60,7 +61,7 @@ function Callout({ type, title, body, math }: { type: string; title: string; bod
       <div data-read-block data-read-text={c.say(title)} className="eyebrow flex flex-wrap items-center gap-x-1.5 gap-y-0.5" style={{ color: c.color }}>
         <Icon size={13} />{c.label}{title && <span className="font-medium normal-case tracking-normal text-mute">· {title}</span>}
       </div>
-      <Md math={math} className={cn("mt-2 text-[14.5px]", type === "quote" && "italic")}>{body}</Md>
+      <Md math={math} plain={type === "words"} className={cn("mt-2 text-[14.5px]", type === "quote" && "italic")}>{body}</Md>
     </aside>
   );
 }

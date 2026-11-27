@@ -20,4 +20,5 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "dsa/greedy-math": () => Promise.all([import("./dsa/greedy-math"), import("./dsa/notes/greedy-math")]).then(([m, n]) => withNotes(m.greedyMath, n.notes)),
   "dsa/strings-structures": () => Promise.all([import("./dsa/strings-structures"), import("./dsa/notes/strings-structures")]).then(([m, n]) => withNotes(m.stringsStructures, n.notes)),
   "dsa/advanced-graphs": () => Promise.all([import("./dsa/advanced-graphs"), import("./dsa/notes/advanced-graphs")]).then(([m, n]) => withNotes(m.advancedGraphs, n.notes)),
+  "hld/foundations": () => Promise.all([import("./hld/foundations"), import("./hld/notes/foundations")]).then(([m, n]) => withNotes(m.foundations, n.notes)),
 };

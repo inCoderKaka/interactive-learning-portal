@@ -20,9 +20,13 @@ import { notes as n_dp } from "./dsa/notes/dp";
 import { notes as n_greedy_math } from "./dsa/notes/greedy-math";
 import { notes as n_strings_structures } from "./dsa/notes/strings-structures";
 
-const NOTES: Record<string, string> = { ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
+import { foundations } from "./hld/foundations";
+import { notes as n_hld_foundations } from "./hld/notes/foundations";
+
+const NOTES: Record<string, string> = { ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
 
 const BODIES: Record<string, Deep> = {
+  ...foundations,
   ...complexity,
   ...arraysHashing,
   ...linear,

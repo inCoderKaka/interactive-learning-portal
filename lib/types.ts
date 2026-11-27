@@ -46,7 +46,12 @@ export interface Topic {
   widgets?: string[]; // visuals shown on the page (also usable inline as [[widget:id]])
   featured?: number[]; // LeetCode numbers the page discusses (some live on other pages)
   deepFile?: string; // subtopic pages: content file holding the body (loaded on demand)
+  exercises?: Exercise[]; // write-then-reveal practice prompts (estimates, failure scenarios, trade-offs, mini designs)
 }
+
+/** estimate: work out numbers · break: what fails and why · choose: a trade-off under a constraint · design: a 5–10 minute component design */
+export type ExerciseKind = "estimate" | "break" | "choose" | "design";
+export type Exercise = [kind: ExerciseKind, prompt: string, answer: string];
 
 export interface Approach {
   name: string;
@@ -180,6 +185,7 @@ export interface Settings {
   breakMin: number;
   blind: boolean; // hide topic tags while practising
   visuals?: VisualPrefs; // which visuals, animations and interactions to show
+  glossary?: boolean; // hover definitions on technical words (default on)
   areas: Record<Area, boolean>;
   ai?: AiSettingsPatch; // developer mode and voice; merged with defaults by getAi()
   mockBookings?: MockBooking[]; // scheduled mocks (MI-X-4); synced with the profile
