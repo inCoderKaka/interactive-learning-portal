@@ -21,4 +21,6 @@ export const HLD_WIDGET_IDS = new Set<string>([
   "seq-factory", "seq-singleton", "seq-facade", "seq-proxy", "decorator-onion", "composite-tree",
   "seq-observer", "seq-chain", "undo-redo",
   "doubles-lab", "seq-layers",
+  "cores-lab", "interleave", "seq-visibility", "lock-lab", "seq-wait-notify", "deadlock-lab", "cas-lab",
+  "buffer-lab", "pool-lab", "timing-wheel", "seq-latch", "seq-async", "seq-print-order",
 ]);

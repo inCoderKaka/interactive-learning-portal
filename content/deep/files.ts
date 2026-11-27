@@ -41,4 +41,6 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "lld/patterns1": () => Promise.all([import("./lld/patterns1"), import("./lld/notes/patterns1")]).then(([m, n]) => withNotes(m.patterns1, n.notes)),
   "lld/patterns2": () => Promise.all([import("./lld/patterns2"), import("./lld/notes/patterns2")]).then(([m, n]) => withNotes(m.patterns2, n.notes)),
   "lld/quality": () => Promise.all([import("./lld/quality"), import("./lld/notes/quality")]).then(([m, n]) => withNotes(m.quality, n.notes)),
+  "lld/concurrency": () => Promise.all([import("./lld/concurrency"), import("./lld/notes/concurrency")]).then(([m, n]) => withNotes(m.concurrency, n.notes)),
+  "lld/concurrency2": () => Promise.all([import("./lld/concurrency2"), import("./lld/notes/concurrency2")]).then(([m, n]) => withNotes(m.concurrency2, n.notes)),
 };

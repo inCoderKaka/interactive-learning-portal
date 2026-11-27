@@ -99,4 +99,42 @@ Five pages:
 Good design and testable design are the same thing. If you can't easily test a piece of code, its dependencies are hidden or its responsibilities are mixed.
 :::
 `,
+  concurrency: md`
+## What this chapter is about
+
+Most real components are used by many threads at once: request threads in a server, several gates in a parking lot, background workers. When threads share data that changes, things go wrong in ways that are rare in testing and common in production: lost updates, double bookings, values that are never seen, programs that freeze. "Now make it thread-safe" is the follow-up an L5 candidate must handle without being led.
+
+Seven pages, from what threads are to the tools that tame them:
+
+1. **Threads.** Processes versus threads, concurrency versus parallelism, and how many threads actually help.
+2. **Race conditions.** Why count++ loses updates, the two shapes every race takes (read-modify-write and check-then-act), and the four ways to fix them.
+3. **Visibility and the memory model.** Why a thread may never see another's write, and the happens-before rules that guarantee it does.
+4. **Locks.** synchronized, ReentrantLock, read-write locks, how much each lock should cover, and the rules for holding them.
+5. **Condition variables.** Sleeping until something becomes true, the "always wait in a while loop" rule, and building a blocking queue.
+6. **Deadlock.** Threads waiting for each other forever, the four conditions behind it and how lock ordering prevents it.
+7. **Atomics and compare-and-set.** Lock-free updates of single values, hot counters, and the ABA problem.
+
+:::tip The one idea to keep
+First list the shared mutable state. Then for each piece: don't share it, make it immutable, or protect every access, including reads, with the same lock or an atomic operation.
+:::
+`,
+  "concurrency-practice": md`
+## What this chapter is about
+
+The previous chapter explained the dangers and the basic tools. This one is about the ready-made building blocks you assemble thread-safe components from, and the interview questions built on them: "implement a blocking queue", "design a thread pool", "design a task scheduler", "print in order with three threads".
+
+Seven pages:
+
+1. **Producer–consumer.** Handing work between threads through a bounded queue, what to do when it's full, and writing a blocking queue yourself.
+2. **Semaphores, latches and barriers.** "At most N at a time", "wait until N things have happened", and "everyone meets here before continuing".
+3. **Thread pools.** How a ThreadPoolExecutor decides between threads, queueing and rejection, futures, shutdown, and the deadlock that needs no locks.
+4. **Concurrent collections.** ConcurrentHashMap and its atomic compound operations, copy-on-write lists, concurrent queues and sorted maps.
+5. **Asynchronous code and virtual threads.** Waiting cheaply: CompletableFuture composition, event loops, and Java 21's virtual threads.
+6. **Timers and scheduling.** Fixed rate versus fixed delay, delay queues, timing wheels for millions of timeouts, and designing a scheduler.
+7. **Classic puzzles.** The shapes behind the well-known concurrency coding questions and the primitive that fits each.
+
+:::tip The one idea to keep
+Reach for the library first (blocking queues, executors, concurrent maps, semaphores, latches). Write your own wait/notify only when the interviewer asks you to build one, and then use while loops, finally blocks and bounded queues.
+:::
+`,
 };
