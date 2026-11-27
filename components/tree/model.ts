@@ -1,4 +1,5 @@
 import { AREAS, EXTRA_PROBLEMS, PROBLEMS, TOPICS, subsOf } from "@/content";
+import { checkpointByPage, interviewById } from "@/lib/interviews";
 import type { Area } from "@/lib/types";
 
 /**
@@ -7,14 +8,25 @@ import type { Area } from "@/lib/types";
  */
 export type TNode = {
   id: string; // unique node id
-  kind: "area" | "chapter" | "page";
+  kind: "area" | "chapter" | "page" | "checkpoint" | "interview";
   label: string;
   href?: string;
   area: Area;
   page?: string; // topic / subtopic id for page nodes (progress key t-<page>)
   revisable?: boolean;
+  key?: string; // progress key when it isn't t-<page> (checkpoints, interview questions)
   children?: TNode[];
 };
+
+/** An interview checkpoint after a page: the questions it unlocks (req3). */
+function checkpointAfter(page: string, area: Area): TNode[] {
+  const ck = checkpointByPage.get(page);
+  if (!ck) return [];
+  return [{
+    id: `k:${page}`, kind: "checkpoint", label: "Interview checkpoint", href: `/interviews?at=${page}`, area, key: ck.id,
+    children: ck.opens.map((id): TNode => ({ id: `i:${id}`, kind: "interview", label: interviewById.get(id)!.title, href: `/design/${id}`, area, key: id })),
+  }];
+}
 
 export function buildTree(): TNode[] {
   return AREAS.map((a) => ({
@@ -23,7 +35,7 @@ export function buildTree(): TNode[] {
       const subs = subsOf(ch.id);
       return {
         id: `c:${ch.id}`, kind: "chapter", label: ch.title, href: `/learn/${ch.id}`, area: a.id, page: ch.id, revisable: !subs.length,
-        children: subs.length ? subs.map((s): TNode => ({ id: `p:${s.id}`, kind: "page", label: s.title, href: `/learn/${s.id}`, area: a.id, page: s.id, revisable: !!s.deepFile || !!s.revise })) : undefined,
+        children: subs.length ? subs.flatMap((s): TNode[] => [{ id: `p:${s.id}`, kind: "page", label: s.title, href: `/learn/${s.id}`, area: a.id, page: s.id, revisable: !!s.deepFile || !!s.revise }, ...checkpointAfter(s.id, a.id)]) : checkpointAfter(ch.id, a.id).length ? checkpointAfter(ch.id, a.id) : undefined,
       };
     }),
   }));

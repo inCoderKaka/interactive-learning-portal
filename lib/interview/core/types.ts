@@ -54,6 +54,7 @@ export interface SessionConfig {
   prompts?: Overrides; // developer-mode prompt overrides in force for this round (MI-DEV-4)
   privacy?: boolean; // MI-X-6: only on-device speech and a local model
   redo?: { atMs: number; context: string; prompt: string }; // MI-FB-4: a micro-drill from a replay moment
+  steer?: string; // course checkpoints: the interview path to take after the high-level design (req3)
 }
 
 export interface InterviewQuestion {

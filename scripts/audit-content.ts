@@ -171,6 +171,15 @@ for (const t of SUBTOPICS) {
 for (const p of EXTRA_PROBLEMS) if (!topicById.has(p.topic) || (p.sub && !topicById.has(p.sub))) err(`extra problem ${p.id}: unknown placement ${p.topic}/${p.sub}`);
 
 (async () => {
+  // interview checkpoints (req3): every HLD design is placed by prerequisites and has an interview-path tree
+  for (const d of DESIGNS.filter((x) => x.area === "hld")) {
+    if (!d.prereqs?.length) { err(`${d.id}: no prereqs, so it has no checkpoint`); continue; }
+    for (const p of d.prereqs) if (!topicById.has(p)) err(`${d.id}: prereq ${p} is not a page`);
+    if (!d.paths?.length) err(`${d.id}: no interview paths`);
+    const ids = new Set<string>();
+    const walk = (ns: NonNullable<typeof d.paths>) => { for (const n of ns) { if (ids.has(n.id)) err(`${d.id}: duplicate path node ${n.id}`); ids.add(n.id); if (n.children) walk(n.children); } };
+    walk(d.paths ?? []);
+  }
   const fresh = JSON.stringify(await buildMeta()), stored = JSON.stringify(JSON.parse(readFileSync("content/deep/meta.json", "utf8")));
   if (fresh !== stored) err("content/deep/meta.json is stale: run npm run deep:meta");
   let checked = 0;

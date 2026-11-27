@@ -1,4 +1,4 @@
-import type { ArchEdge, ArchNode, Ref, Tier } from "@/lib/types";
+import type { ArchEdge, ArchNode, PathNode, Ref, Tier } from "@/lib/types";
 
 /** A compiled design from content/designs/src: deepens an existing exercise or defines a new one. */
 export interface DesignPatch {
@@ -17,4 +17,6 @@ export interface DesignPatch {
   level?: string;
   arch?: { nodes: ArchNode[]; edges: ArchEdge[] };
   refs?: Ref[];
+  prereqs?: string[];
+  paths?: PathNode[];
 }

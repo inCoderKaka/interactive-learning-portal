@@ -13,6 +13,7 @@ import { RatingBar } from "@/components/Work";
 import { Flashcards } from "@/components/Flashcards";
 import { RefLink, References } from "@/components/References";
 import { VideoLibrary, type LibProblem } from "@/components/VideoLibrary";
+import { CheckpointCard } from "@/components/interview/CheckpointCard";
 import { Exercises } from "@/components/Exercises";
 import { GlossaryArea } from "@/components/Glossary";
 import { ReviseView } from "@/components/Revise";
@@ -279,6 +280,8 @@ function TopicBody({ id, t }: { id: string; t: Topic | undefined }) {
       <ImportedNotes key={"n" + t.id} topicId={t.id} color={a.color} />
 
       {!isSub && <TopicPlay key={"p" + t.id} topicId={t.id} color={a.color} />}
+
+      <CheckpointCard page={t.id} />
 
       <VideoLibrary key={"v" + t.id} pages={[t.id]} problems={libOf(mine)} color={a.color} />
 

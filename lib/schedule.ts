@@ -52,7 +52,7 @@ export function buildPlan(items: Item[], progress: Record<string, Progress>, s: 
   for (const it of items) if (it.kind !== "topic") minChildTier.set(it.topic, Math.min(minChildTier.get(it.topic) ?? 3, it.tier));
   const eff = (it: Item) => (it.kind === "topic" ? Math.min(it.tier, minChildTier.get(it.topic) ?? it.tier) : it.tier);
 
-  const pending = items.filter((it) => s.areas[it.area] && progress[it.id]?.status !== "done");
+  const pending = items.filter((it) => !it.optional && s.areas[it.area] && progress[it.id]?.status !== "done");
   const queues: Record<Area, Item[]> = { dsa: [], hld: [], lld: [], craft: [], ai: [] };
   pending
     .map((it, i) => ({ it, i, t: eff(it) }))

@@ -12,7 +12,8 @@ export type TaskId =
   | "interviewer.turn" | "interviewer.judge" | "summarise" | "vision.describe" | "question.generate" | "scorecard"
   | "code.review" | "stage.grade" | "recall.grade" | "twists" | "hint"
   | "candidate.turn" | "reverse.grade" | "committee" | "reader.explain"
-  | "notes.map" | "notes.extract" | "notes.dedup" | "notes.verify" | "notes.enrich" | "notes.coverage";
+  | "notes.map" | "notes.extract" | "notes.dedup" | "notes.verify" | "notes.enrich" | "notes.coverage"
+  | "paths.tag";
 
 export const TASKS: { id: TaskId; label: string; what: string; latency: "high" | "medium" | "low" }[] = [
   { id: "interviewer.turn", label: "Interviewer reply", what: "Each interviewer turn in text and Ascent Voice rounds.", latency: "high" },
@@ -28,6 +29,7 @@ export const TASKS: { id: TaskId; label: string; what: string; latency: "high" |
   { id: "hint", label: "Hints", what: "Smallest useful nudge on problem pages.", latency: "medium" },
   { id: "candidate.turn", label: "AI candidate (reverse mode)", what: "Each reply of the AI candidate you interview in reverse mode.", latency: "high" },
   { id: "reverse.grade", label: "Reverse-mode grading", what: "Compares your interviewer feedback with the planted mistakes.", latency: "low" },
+  { id: "paths.tag", label: "Interview paths", what: "After a design mock, marks which interview paths the round covered.", latency: "low" },
   { id: "committee", label: "Loop committee", what: "Reads every scorecard of a loop day and writes the final decision.", latency: "low" },
   { id: "reader.explain", label: "Article reader", what: "Explains code, tables and formulas aloud when the reader reaches them.", latency: "medium" },
   { id: "notes.map", label: "Import: map sections", what: "Files each section of an imported document under a topic page and suggests what to skip.", latency: "low" },
@@ -82,6 +84,7 @@ const RECOMMENDED: Record<TaskId, TaskProfile> = {
   "notes.verify": P("", "", { temperature: 0, maxOutputTokens: 6000, json: true, reasoning: "off" }, { timeoutMs: 180000, retries: 2 }),
   "notes.enrich": P("", "", { temperature: 0.3, maxOutputTokens: 3000, reasoning: "off" }, { timeoutMs: 180000 }),
   "notes.coverage": P("", "tier:small", { temperature: 0, maxOutputTokens: 4000, json: true, reasoning: "off" }, { timeoutMs: 120000 }),
+  "paths.tag": P("", "", { temperature: 0, maxOutputTokens: 1200, json: true, reasoning: "off" }, { timeoutMs: 90000 }),
 };
 
 function presetProfiles(id: PresetId): Record<TaskId, TaskProfile> {

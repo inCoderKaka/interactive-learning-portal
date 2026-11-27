@@ -134,9 +134,20 @@ export interface Design {
   words?: string; // markdown "Words you'll meet" for first-time learners
   flow?: string; // markdown: how the 45 minutes of the interview go
   variants?: [string, string][]; // [a variation the interviewer may switch to, what changes]
+  prereqs?: string[]; // course pages whose concepts this interview needs; it unlocks after the last one
+  paths?: PathNode[]; // every direction the interviewer can steer into, as a tree
 }
 
-export type ItemKind = "topic" | "problem" | "design" | "mock";
+/** One branch of an interview: a variation, a deep-dive direction or a failure scenario, with follow-ups below it. */
+export interface PathNode {
+  id: string;
+  kind: "deep" | "variation" | "failure";
+  label: string; // what the interviewer asks or changes
+  expect: string; // what a strong answer covers
+  children?: PathNode[];
+}
+
+export type ItemKind = "topic" | "problem" | "design" | "mock" | "checkpoint";
 export interface Item {
   id: string;
   kind: ItemKind;
@@ -146,6 +157,7 @@ export interface Item {
   tier: Tier;
   est: number;
   href: string;
+  optional?: boolean; // reachable and tracked, but outside the study plan (e.g. interview questions beyond a checkpoint's one)
 }
 
 export type Rating = 0 | 1 | 2 | 3; // again, hard, good, easy
@@ -160,6 +172,8 @@ export interface Progress {
   reps?: number;
   lapses?: number;
   time?: number; // seconds spent
+  paths?: string[]; // interview questions: ids of interview-path nodes covered across mock attempts
+  mocks?: number; // interview questions: completed mock interviews
   updated: number;
 }
 export interface Note {
