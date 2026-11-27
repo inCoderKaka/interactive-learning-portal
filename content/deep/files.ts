@@ -32,4 +32,5 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "hld/streams": () => Promise.all([import("./hld/streams"), import("./hld/notes/streams")]).then(([m, n]) => withNotes(m.streams, n.notes)),
   "hld/protection": () => Promise.all([import("./hld/protection"), import("./hld/notes/protection")]).then(([m, n]) => withNotes(m.protection, n.notes)),
   "hld/storage": () => Promise.all([import("./hld/storage"), import("./hld/notes/storage")]).then(([m, n]) => withNotes(m.storage, n.notes)),
+  "hld/ops": () => Promise.all([import("./hld/ops"), import("./hld/notes/ops")]).then(([m, n]) => withNotes(m.ops, n.notes)),
 };

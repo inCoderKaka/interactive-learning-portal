@@ -12,6 +12,7 @@ import { IsolationLab, Raft } from "./txn";
 import { ConsumerGroups, MapReduce, QueueLog, Watermarks } from "./msg";
 import { RetryStorm, RlRace } from "./protect";
 import { Abr, Erasure, Geohash, Hll, InvertedIndex } from "./store";
+import { Breaker, ErrorBudget, Gossip } from "./ops";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -45,6 +46,9 @@ const SIMS: Record<string, ComponentType> = {
   "inverted-index": InvertedIndex,
   geohash: Geohash,
   hll: Hll,
+  "error-budget": ErrorBudget,
+  breaker: Breaker,
+  gossip: Gossip,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */

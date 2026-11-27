@@ -211,4 +211,19 @@ Beyond tables of records, large systems store files, video, text to search, loca
 Match the storage to the shape of the data and its queries: immutable blobs, text, places, approximate counts and time series each have a structure built for them.
 :::
 `,
+  reliability: md`
+## What this chapter is about
+
+Everything fails eventually: machines, networks, dependencies and, most often, our own changes. Reliability engineering is about deciding how reliable a service needs to be, keeping one failure from spreading, seeing what's happening inside the system, changing it safely, and noticing quickly when parts die.
+
+1. **SLOs and error budgets.** Turning "reliable" into a number users care about, and treating the allowed failure as a budget you spend on change. A chart shows which incidents should wake someone up.
+2. **Resilience patterns.** Timeouts, careful retries, circuit breakers, bulkheads and fallbacks that keep a slow dependency from taking down everything. Watch a breaker protect its caller.
+3. **Observability.** Metrics, logs and traces: which question each answers, and how to follow one request across many services.
+4. **Safe deploys.** Canary releases, feature flags and backward-compatible changes, so a bad release reaches few users and is rolled back in minutes.
+5. **Failure detection.** Deciding that a machine is dead when dead and slow look the same, and spreading that news through thousands of machines with gossip.
+
+:::tip The one idea to keep
+Expect every part to fail; design so each failure stays small, is noticed quickly, and can be undone.
+:::
+`,
 };
