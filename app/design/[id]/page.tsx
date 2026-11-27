@@ -11,8 +11,11 @@ import { aiReady, gradeStage } from "@/lib/ai";
 import { areaOf, designById, topicById } from "@/content";
 import { References } from "@/components/References";
 import { DesignVideos } from "@/components/VideoLibrary";
+import { PathsMap } from "@/components/interview/PathsMap";
+import { interviewById, isUnlocked, missing, mockHref } from "@/lib/interviews";
+import { Mic } from "lucide-react";
 import { ConfidencePick, FeedbackView, NeedAI, RatingBar, Spinner } from "@/components/Work";
-import { AreaPill, Button, Empty, Md, Pill, cn, fmtClock, fmtMin } from "@/components/ui";
+import { AreaPill, Button, Empty, Md, Pill, btnClass, cn, fmtClock, fmtMin } from "@/components/ui";
 import type { Feedback } from "@/lib/types";
 
 const Loading = () => <div className="grid h-[420px] place-items-center text-sm text-faint animate-pulse-soft">Drawing the diagram…</div>;
@@ -42,6 +45,9 @@ export default function DesignPage() {
   const [showFlow, setShowFlow] = useState(false);
   const [showDiagram, setShowDiagram] = useState(false);
   const [sec, setSec] = useStopwatch(true);
+  const [from, setFrom] = useState<string | undefined>(undefined);
+  useEffect(() => { setFrom(new URLSearchParams(window.location.search).get("from") ?? undefined); }, []);
+  const progressAll = useStore((s) => s.progress);
   useTrackTime();
 
   useEffect(() => {
@@ -86,7 +92,7 @@ export default function DesignPage() {
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link href={topic ? `/learn/${topic.id}` : "/learn"} className="inline-flex items-center gap-1.5 text-[13px] text-mute hover:text-text"><ArrowLeft size={14} />{topic?.title ?? "Curriculum"}</Link>
+        <Link href={from ?? (topic ? `/learn/${topic.id}` : "/learn")} className="inline-flex items-center gap-1.5 text-[13px] text-mute hover:text-text"><ArrowLeft size={14} />{from ? "Back to the course" : topic?.title ?? "Curriculum"}</Link>
         <div className={cn("num flex h-9 items-center gap-2 rounded-xl border px-3 font-mono text-[13px]", sec > limit ? "border-bad/50 bg-bad/10 text-bad" : sec > limit * 0.75 ? "border-warn/50 text-warn" : "border-line text-mute")} title={`A real round gives you about ${d.est} minutes`}>
           <TimerReset size={14} />{fmtClock(sec)}<span className="text-faint">/ {fmtClock(limit)}</span>
           <button onClick={() => setSec(0)} className="text-faint hover:text-text" aria-label="Reset timer">↺</button>
@@ -104,6 +110,12 @@ export default function DesignPage() {
         </div>
         <h1 className="display text-2xl font-semibold sm:text-3xl">{d.title}</h1>
         <p className="mt-3 max-w-3xl text-[15.5px] leading-relaxed text-[#d5d8e6]">{d.prompt}</p>
+        {interviewById.get(d.id) && (
+          <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-accent/25 bg-accent/[0.04] p-3">
+            <Link href={mockHref(d, from)} className={btnClass("primary", "md")}><Mic size={15} />{(progressAll[d.id]?.mocks ?? 0) > 0 ? "Mock interview: explore another path" : "Start mock interview"}</Link>
+            <span className="min-w-0 flex-1 text-[13px] text-mute">{isUnlocked(d, progressAll) ? "The real thing: an AI interviewer, a whiteboard and a 45-minute clock. Or practise stage by stage below." : `You haven't finished ${missing(d, progressAll).length} page${missing(d, progressAll).length > 1 ? "s" : ""} this question needs yet. You can still try it, or practise stage by stage below.`}</span>
+          </div>
+        )}
         <div className="mt-4"><ConfidencePick value={conf} onChange={setConf} /></div>
       </header>
 
@@ -206,6 +218,8 @@ export default function DesignPage() {
               ))}
             </ul>
           </section>
+
+          {interviewById.get(d.id) && <PathsMap d={d} progress={progressAll} attempted={(progressAll[d.id]?.mocks ?? 0) > 0} />}
 
           {!!d.variants?.length && (
             <section className="card p-5">

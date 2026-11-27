@@ -31,22 +31,20 @@ export function Md({ children, className, math, plain }: { children: string; cla
   );
 }
 
-type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "ghost" | "soft" | "danger"; size?: "sm" | "md" };
+type BtnVariant = "primary" | "ghost" | "soft" | "danger";
+type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: BtnVariant; size?: "sm" | "md" };
+/** Button styling, also for links that should look like buttons. */
+export const btnClass = (variant: BtnVariant = "soft", size: "sm" | "md" = "md", className?: string) => cn(
+  "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition active:scale-[0.97] disabled:opacity-40 whitespace-nowrap",
+  size === "sm" ? "h-8 px-3 text-[13px]" : "h-10 px-4 text-sm",
+  variant === "primary" && "bg-accent text-ink hover:brightness-110 shadow-[0_0_24px_-6px_var(--color-accent)]",
+  variant === "soft" && "bg-panel2 border border-line hover:border-[#3a4160] text-text",
+  variant === "ghost" && "text-mute hover:text-text hover:bg-white/5",
+  variant === "danger" && "bg-bad/10 text-bad border border-bad/30 hover:bg-bad/20",
+  className,
+);
 export function Button({ variant = "soft", size = "md", className, ...p }: BtnProps) {
-  return (
-    <button
-      {...p}
-      className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition active:scale-[0.97] disabled:opacity-40 whitespace-nowrap",
-        size === "sm" ? "h-8 px-3 text-[13px]" : "h-10 px-4 text-sm",
-        variant === "primary" && "bg-accent text-ink hover:brightness-110 shadow-[0_0_24px_-6px_var(--color-accent)]",
-        variant === "soft" && "bg-panel2 border border-line hover:border-[#3a4160] text-text",
-        variant === "ghost" && "text-mute hover:text-text hover:bg-white/5",
-        variant === "danger" && "bg-bad/10 text-bad border border-bad/30 hover:bg-bad/20",
-        className,
-      )}
-    />
-  );
+  return <button {...p} className={btnClass(variant, size, className)} />;
 }
 
 export function Pill({ children, color, className }: { children: ReactNode; color?: string; className?: string }) {

@@ -30,6 +30,11 @@ import { loadMedia, pruneMedia, saveMedia, type RoundMedia } from "@/lib/intervi
 import { CloudLog, downloadMedia, loadRemoteLog, syncInterviews, uploadMedia, uploadRecord, uploadScorecard } from "@/lib/interview/sync";
 import { getAi, providerReady, runTask } from "@/lib/interview/tasks";
 import { privateSettings } from "@/lib/interview/privacy";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { CHECKPOINTS, chains, checkpointById, coverage, interviewById, questionsAt, steerText } from "@/lib/interviews";
+import { tagPaths } from "@/lib/interview/paths";
+import { PathsMap } from "@/components/interview/PathsMap";
 
 type Stage = "setup" | "live" | "predict" | "review" | "drill-review" | "reverse" | "peer" | "loop-break" | "loop-debrief" | "lobby";
 
@@ -69,6 +74,8 @@ export default function Mock() {
   const [media, setMedia] = useState<RoundMedia | undefined>(undefined);
   const [predicted, setPredicted] = useState<Decision | undefined | null>(null); // null = not answered yet
   const [scoringN, setScoringN] = useState(0); // several loop-day scorecards can run at once
+  const [ret, setRet] = useState<{ from?: string; ck?: string; q?: string }>({}); // course checkpoint: where to go back to
+  const [tagging, setTagging] = useState(false);
   const scoring = scoringN > 0;
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -101,6 +108,10 @@ export default function Mock() {
     const kind = q.get("kind") as Kind | null;
     const topics = q.get("topics")?.split(",").filter(Boolean);
     if (kind && ["coding", "hld", "lld", "behavioral"].includes(kind)) setInitial({ kind, ...(topics?.length ? { selection: { mode: "random-pool", pool: { topics } } } : {}) });
+    // course checkpoints link straight to one design question and remember where to return
+    const qid = q.get("q"), d = qid ? interviewById.get(qid) : undefined;
+    if (d) setInitial({ kind: d.area === "lld" ? "lld" : "hld", level: "L5", selection: { mode: "exact", questionId: d.id } });
+    setRet({ from: q.get("from") ?? undefined, ck: q.get("ck") ?? undefined, q: d?.id });
     setReady(true);
     return () => { void sessionRef.current?.stop("error"); void recorderRef.current?.stop(); };
   }, []);
@@ -154,7 +165,8 @@ export default function Mock() {
       const within = engineWithinBudget(cfg, eff);
       if (within.note) setNotice(within.note);
       const q = fixed ?? (await pickQuestion(cfg, outOfCurriculum));
-      const full = { ...cfg, engine: within.engine, coachNotes: cfg.mode === "coach" ? coachNotes(cfg.kind, history) : undefined };
+      const design = interviewById.get(q.id);
+      const full = { ...cfg, engine: within.engine, coachNotes: cfg.mode === "coach" ? coachNotes(cfg.kind, history) : undefined, steer: design && !cfg.redo ? steerText(design, coverage(design, useStore.getState().progress).covered) : undefined };
       const s = new InterviewSession(full, q, eff);
       sessionRef.current = s;
       s.onEnded(() => void finish(s));
@@ -227,6 +239,33 @@ export default function Mock() {
     if (!canScore) { setStage(candidateTurns < 2 ? "review" : "predict"); return; }
     setStage("predict");
     score(r, s);
+    void recordPaths(r, s, eff);
+  };
+
+  /** Course checkpoints: tag which interview paths this round covered, and clear the checkpoint once one path is complete. */
+  const recordPaths = async (r: SessionRecord, s: InterviewSession, eff: typeof settings) => {
+    const d = interviewById.get(r.question.id);
+    if (!d?.paths?.length) return;
+    setTagging(true);
+    try {
+      const ids = await tagPaths(eff, d, s.log);
+      const st = useStore.getState();
+      const prev = st.progress[d.id];
+      const all = new Set([...(prev?.paths ?? []), ...ids]);
+      const solved = chains(d.paths).some((c) => c.every((n) => all.has(n.id)));
+      st.patch(d.id, { paths: [...all], mocks: (prev?.mocks ?? 0) + 1, ...(solved ? { status: "done" as const } : { status: prev?.status === "done" ? "done" as const : "doing" as const }) });
+      if (solved) {
+        // credit the checkpoint the learner came from, else the earliest open one this question belongs to
+        const pr = useStore.getState().progress;
+        const from = ret.ck ? checkpointById.get(ret.ck) : undefined;
+        const ck = from && pr[from.id]?.status !== "done" && questionsAt(from).includes(d) ? from
+          : CHECKPOINTS.find((c) => pr[c.id]?.status !== "done" && pr[`t-${c.page}`]?.status === "done" && questionsAt(c).includes(d));
+        if (ck) st.patch(ck.id, { status: "done" });
+      }
+      setRecord((cur) => { if (!cur || cur.id !== r.id) return cur; const next = { ...cur, extra: { ...cur.extra, paths: ids } }; saveRecord(next); return next; });
+    } catch (e) {
+      setErr(`Couldn't work out which interview paths this round covered: ${e instanceof Error ? e.message : e}`);
+    } finally { setTagging(false); }
   };
 
   // ---- loop day ----
@@ -447,6 +486,9 @@ export default function Mock() {
         {stage === "review" && !rev && (scoring ? <div className="card p-5 text-[14px] text-mute"><Spinner label="The committee is reading the transcript" /></div>
           : card ? <ScorecardView r={{ ...record, predicted: predicted ?? undefined }} />
           : <div className="card p-5 text-[13.5px] text-mute">{record.log.filter((x) => x.e.type === "turn.candidate").length < 2 ? "Too short to score: the interviewer needs at least two of your replies." : "No AI provider is connected, so there is no scorecard."} Rate yourself below, at least as strictly as an interviewer would.</div>)}
+        {stage === "review" && interviewById.get(record.question.id) && (tagging ? <div className="card p-5 text-[14px] text-mute"><Spinner label="Working out which interview paths this round covered" /></div>
+          : <PathsMap d={interviewById.get(record.question.id)!} progress={progress} attempted recent={new Set((record.extra?.paths as string[] | undefined) ?? [])} />)}
+        {stage === "review" && ret.from && <Link href={ret.from} className="inline-flex items-center gap-1.5 rounded-xl border border-line px-4 py-2 text-[13.5px] hover:border-accent/50"><ArrowLeft size={14} />Back to the course</Link>}
         {stage === "review" && record.log.length > 0 && <Replay record={record} media={media} onRedo={record.cfg.redo || rev || record.cfg.format === "peer" ? undefined : (seq) => redo(record, seq)} />}
         {stage === "review" && !scoring && !viewing && !rev && <RatingBar suggested={card ? (d >= 5 ? 3 : d >= 4 ? 2 : d >= 3 ? 1 : 0) : undefined} onRate={rate} />}
         {(viewing || rev) && <Button onClick={back}>Back to setup</Button>}
@@ -471,6 +513,12 @@ export default function Mock() {
             {lost.map((b) => <li key={b.id} className="flex items-center gap-3 px-5 py-2.5 text-[13px] text-faint"><span className="min-w-0 flex-1">Missed: {b.title}, {new Date(b.at).toLocaleString()}</span><button onClick={() => cancelBooking(b.id)} className="hover:text-text">Dismiss</button></li>)}
           </ul>
         </section>
+      )}
+      {ready && ret.q && interviewById.get(ret.q) && (
+        <div className="mb-5 flex flex-wrap items-center gap-3 rounded-xl border border-accent/30 bg-accent/[0.05] p-4">
+          <div className="min-w-0 flex-1"><div className="eyebrow text-accent">{ret.ck ? "Course checkpoint" : "Interview question"}</div><div className="mt-0.5 text-[15px] font-semibold">{interviewById.get(ret.q)!.title}</div><p className="mt-0.5 text-[12.5px] text-mute">Choose voice or text below and start when ready. Afterwards you&apos;ll see which interview paths you covered{ret.from ? " and can go straight back to the course" : ""}.</p></div>
+          {ret.from && <Link href={ret.from} className="inline-flex items-center gap-1.5 text-[13px] text-mute hover:text-text"><ArrowLeft size={14} />Back to the course</Link>}
+        </div>
       )}
       {ready && <Setup key={JSON.stringify(initial ?? {})} settings={settings} progress={progress} custom={custom} attempts={attempts} items={items} initial={initial} onStart={(c, o, x) => void launch(c, o, x)} onBook={book} busy={busy} />}
       {all.length > 0 && (

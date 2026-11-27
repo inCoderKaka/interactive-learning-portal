@@ -150,7 +150,7 @@ export default function Today() {
                     <span className={cn("grid h-8 w-8 shrink-0 place-items-center rounded-full border text-[12px] font-semibold num", done ? "border-ok bg-ok text-ink" : it === next ? "border-accent text-accent" : "border-line text-faint")}>{done ? <Check size={15} /> : i + 1}</span>
                     <div className="min-w-0 flex-1">
                       <div className={cn("truncate text-[15px] font-medium", done && "text-mute line-through decoration-faint")}>{ml?.title ?? it.title}</div>
-                      <div className="mt-0.5 flex items-center gap-2 text-[12px] text-faint"><span className="h-1.5 w-1.5 rounded-full" style={{ background: a.color }} />{a.short} · {it.kind === "topic" ? "concept lesson" : it.kind === "mock" ? "mock interview" : it.kind === "design" ? "design exercise" : "problem"} · {fmtMin(it.est)}</div>
+                      <div className="mt-0.5 flex items-center gap-2 text-[12px] text-faint"><span className="h-1.5 w-1.5 rounded-full" style={{ background: a.color }} />{a.short} · {it.kind === "topic" ? "concept lesson" : it.kind === "mock" ? "mock interview" : it.kind === "checkpoint" ? "interview checkpoint" : it.kind === "design" ? "design exercise" : "problem"} · {fmtMin(it.est)}</div>
                     </div>
                     <ArrowRight size={16} className="shrink-0 text-faint transition group-hover:translate-x-1 group-hover:text-accent" />
                   </Link>

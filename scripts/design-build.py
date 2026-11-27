@@ -25,6 +25,9 @@ Format, any number of designs:
     --- nodes               id|label|kind|x|y|note per line
     --- edges               a>b|label (sync) or a~b|label (async) per line
     --- refs                - kind :: title :: by :: url
+    --- prereqs             course page ids this interview needs (comma or space separated)
+    --- paths               - [deep|variation|failure] what the interviewer asks :: what a strong answer covers
+                              (indent two spaces per level for follow-ups; children inherit the kind)
 """
 import json, re, sys
 from pathlib import Path
@@ -45,6 +48,26 @@ def qa(body):
     if q is not None: out.append([q, a.strip()])
     return out
 
+def slug(t):
+    return re.sub(r"[^a-z0-9]+", "-", t.lower()).strip("-")[:40]
+
+def paths(body, did):
+    """Nested '- [kind] label :: expect' lines, two spaces per level, into a PathNode tree."""
+    roots, stack = [], []
+    for line in body.split("\n"):
+        if not line.strip(): continue
+        m = re.match(r"^( *)- (?:\[(deep|variation|failure)\] )?(.+?) :: (.+)$", line)
+        if not m: raise SystemExit(f"{did}: bad path line: {line!r}")
+        depth = len(m.group(1)) // 2
+        while len(stack) > depth: stack.pop()
+        parent = stack[-1] if stack else None
+        kind = m.group(2) or (parent["kind"] if parent else None)
+        if not kind: raise SystemExit(f"{did}: top-level path needs [deep|variation|failure]: {line!r}")
+        node = {"id": (parent["id"] + "/" if parent else "") + slug(m.group(3)), "kind": kind, "label": m.group(3).strip(), "expect": m.group(4).strip()}
+        (parent.setdefault("children", []) if parent else roots).append(node)
+        stack.append(node)
+    return roots
+
 def parse(src):
     designs = []
     for block in re.split(r"^=== ", src, flags=re.M)[1:]:
@@ -63,6 +86,10 @@ def parse(src):
             elif name == "pitfalls": d[name] = [l[2:].strip() for l in body.split("\n") if l.startswith("- ")]
             elif name == "nodes": d[name] = [l.strip() for l in body.split("\n") if l.strip()]
             elif name == "edges": d[name] = [l.strip() for l in body.split("\n") if l.strip()]
+            elif name == "prereqs":
+                d[name] = [x.strip() for x in re.split(r"[,\s]+", body) if x.strip()]
+            elif name == "paths":
+                d[name] = paths(body, d["id"])
             elif name == "refs":
                 d[name] = []
                 for l in body.split("\n"):

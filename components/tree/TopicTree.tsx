@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { Check, ChevronRight, ChevronsDownUp, FileText, Folder, FolderOpen, NotebookPen, Search, Shapes, X } from "lucide-react";
+import { Check, ChevronRight, ChevronsDownUp, FileText, Flag, Folder, FolderOpen, Mic, NotebookPen, Search, Shapes, X } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { areaOf } from "@/content";
 import { cn } from "../ui";
@@ -77,12 +77,13 @@ export function TopicTree({ current, compact = false, onNavigate, heading, actio
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleTree, open, query]);
 
-  const status = (n: TNode) => (n.page ? progress[`t-${n.page}`]?.status : undefined);
+  const status = (n: TNode) => (n.key ? progress[n.key]?.status : n.page ? progress[`t-${n.page}`]?.status : undefined);
+  const isInterview = (n: TNode) => n.kind === "checkpoint" || n.kind === "interview";
   const counts = useMemo(() => {
     const m = new Map<string, [number, number]>();
     const walk = (n: TNode): [number, number] => {
       let d = 0, t = 0;
-      if (n.kind !== "area" && !n.children?.length) { t = 1; d = status(n) === "done" ? 1 : 0; }
+      if (n.kind !== "area" && !isInterview(n) && !n.children?.length) { t = 1; d = status(n) === "done" ? 1 : 0; }
       for (const c of n.children ?? []) { const [cd, ct] = walk(c); d += cd; t += ct; }
       m.set(n.id, [d, t]);
       return [d, t];
@@ -153,8 +154,8 @@ export function TopicTree({ current, compact = false, onNavigate, heading, actio
           const st = status(n);
           const here = current && n.page === current;
           const color = areaOf(n.area).color;
-          const Icon = n.kind === "area" ? Shapes : kids ? (opened ? FolderOpen : Folder) : FileText;
-          const label = <span className={cn("min-w-0 flex-1 truncate", n.kind === "area" && "font-semibold", here && "text-accent")}>{n.label}</span>;
+          const Icon = n.kind === "area" ? Shapes : n.kind === "checkpoint" ? Flag : n.kind === "interview" ? Mic : kids ? (opened ? FolderOpen : Folder) : FileText;
+          const label = <span className={cn("min-w-0 flex-1 truncate", n.kind === "area" && "font-semibold", n.kind === "checkpoint" && "text-accent/90", here && "text-accent")}>{n.label}</span>;
           return (
             <li key={n.id} role="treeitem" aria-level={depth} aria-expanded={kids ? opened : undefined} aria-selected={!!here} aria-current={here ? "page" : undefined}
               data-node={n.id} tabIndex={(focus ? n.id === focus : i === 0) ? 0 : -1} onFocus={() => setFocus(n.id)}
@@ -175,7 +176,7 @@ export function TopicTree({ current, compact = false, onNavigate, heading, actio
                   </button>
                 )}
                 {kids && t > 0 && <span className="num shrink-0 text-[10.5px] text-faint group-hover:hidden">{d}/{t}</span>}
-                {!kids && st === "done" && <Check size={12} className="shrink-0 text-ok group-hover:hidden" />}
+                {(!kids || n.kind === "checkpoint") && st === "done" && <Check size={12} className="shrink-0 text-ok group-hover:hidden" />}
               </div>
             </li>
           );

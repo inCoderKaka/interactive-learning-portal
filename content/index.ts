@@ -1,4 +1,4 @@
-import type { Area, Design, Item, Problem, Topic } from "@/lib/types";
+import type { Area, Design, Item, Problem, Tier, Topic } from "@/lib/types";
 import { topics1, problems1 } from "./dsa1";
 import { topics2, problems2 } from "./dsa2";
 import { topics3, problems3 } from "./dsa3";
@@ -132,15 +132,37 @@ export function problemItem(p: Problem): Item {
 }
 
 /** Curriculum order: each chapter, its subtopic pages, then its problems / designs. Extra problems join once started. */
+/**
+ * Interview checkpoints (lib/interviews.ts has the full model; kept here too to avoid an import cycle): a design
+ * question with prerequisites unlocks after its last prerequisite page in course order. That page gets a checkpoint
+ * plan item ("pick one unlocked question and do a mock"); the questions themselves are optional items.
+ */
+const COURSE_ORDER = TOPICS.flatMap((t) => { const subs = subsOf(t.id); return subs.length ? subs.map((s) => s.id) : [t.id]; });
+const COURSE_POS = new Map(COURSE_ORDER.map((p, i) => [p, i]));
+const CHECKPOINT_AREAS = new Set<Area>(["hld"]);
+const unlockAt = (d: Design) => (CHECKPOINT_AREAS.has(d.area) && d.prereqs?.length ? [...d.prereqs].sort((a, b) => (COURSE_POS.get(a) ?? -1) - (COURSE_POS.get(b) ?? -1)).at(-1) : undefined);
+const tierOfPage = (id: string) => (SUBTOPICS.find((s) => s.id === id) ?? TOPICS.find((t) => t.id === id))?.tier ?? 2;
+
 export function buildItems(custom: Problem[] = [], started: Problem[] = []): Item[] {
   const out: Item[] = [];
+  const opensAt = new Map<string, Design[]>();
+  for (const d of DESIGNS) { const p = unlockAt(d); if (p) opensAt.set(p, [...(opensAt.get(p) ?? []), d]); }
+  const afterPage = (page: string, chapter: string, area: Area) => {
+    const ds = opensAt.get(page);
+    if (!ds) return;
+    const tier = Math.max(...ds.flatMap((d) => d.prereqs!.map(tierOfPage))) as Tier;
+    out.push({ id: `ck-${page}`, kind: "checkpoint", area, topic: chapter, title: `Interview checkpoint: ${ds.length} new question${ds.length > 1 ? "s" : ""}`, tier, est: 60, href: `/interviews?at=${page}` });
+    for (const d of ds) out.push({ id: d.id, kind: "design", area: d.area, topic: chapter, title: d.title, tier: d.tier, est: d.est, href: `/design/${d.id}`, optional: true });
+  };
   for (const t of TOPICS) {
     out.push({ id: `t-${t.id}`, kind: "topic", area: t.area, topic: t.id, title: t.title, tier: t.tier, est: t.est, href: `/learn/${t.id}` });
-    for (const s of subsOf(t.id)) out.push({ id: `t-${s.id}`, kind: "topic", area: s.area, topic: t.id, title: s.title, tier: s.tier, est: s.est, href: `/learn/${s.id}` });
+    const subs = subsOf(t.id);
+    if (!subs.length) afterPage(t.id, t.id, t.area);
+    for (const s of subs) { out.push({ id: `t-${s.id}`, kind: "topic", area: s.area, topic: t.id, title: s.title, tier: s.tier, est: s.est, href: `/learn/${s.id}` }); afterPage(s.id, t.id, s.area); }
     for (const p of started) if (p.topic === t.id) out.push(problemItem(p));
     for (const p of PROBLEMS) if (p.topic === t.id) out.push(problemItem(p));
     for (const p of custom) if (p.topic === t.id) out.push(problemItem(p));
-    for (const d of DESIGNS) if (d.topic === t.id) out.push({ id: d.id, kind: "design", area: d.area, topic: t.id, title: d.title, tier: d.tier, est: d.est, href: `/design/${d.id}` });
+    for (const d of DESIGNS) if (d.topic === t.id && !unlockAt(d)) out.push({ id: d.id, kind: "design", area: d.area, topic: t.id, title: d.title, tier: d.tier, est: d.est, href: `/design/${d.id}` });
   }
   return out;
 }
