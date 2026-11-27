@@ -17,7 +17,10 @@ Format, any number of designs:
     prompt: ...             (new designs; optional otherwise)
     --- words               markdown: "Words you'll meet" list
     --- flow                markdown: how the 45 minutes go
-    --- req | est | api | hl | deep | wrap     markdown model answer per stage
+    --- req | est | api | hl | deep | wrap     markdown model answer per stage (HLD)
+    --- req | model | patterns | code | ext    markdown model answer per stage (LLD: ids d-lld-*)
+    --- boxes               LLD class diagram: "Name:kind|field;field|method;method" per line
+    --- rels                LLD relations: "A>B:extends|implements|has|uses:label" per line
     --- variants            Q: the variation / A: what changes (A may continue)
     --- steer               Q: interviewer push / A: what a strong answer covers
     --- pitfalls            - one per line
@@ -33,7 +36,7 @@ import json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-STAGES = ["req", "est", "api", "hl", "deep", "wrap"]
+STAGES = ["req", "est", "api", "hl", "deep", "wrap", "model", "patterns", "code", "ext"]
 
 def qa(body):
     out, q, a = [], None, None
@@ -86,6 +89,25 @@ def parse(src):
             elif name == "pitfalls": d[name] = [l[2:].strip() for l in body.split("\n") if l.startswith("- ")]
             elif name == "nodes": d[name] = [l.strip() for l in body.split("\n") if l.strip()]
             elif name == "edges": d[name] = [l.strip() for l in body.split("\n") if l.strip()]
+            elif name == "boxes":
+                bx = []
+                for l in body.split("\n"):
+                    if not l.strip(): continue
+                    head, f, m = (l.strip().split("|") + ["", ""])[:3]
+                    nm, _, kind = head.partition(":")
+                    bx.append({"name": nm.strip(), "kind": (kind.strip() or "class"), "fields": [x.strip() for x in f.split(";") if x.strip()], "methods": [x.strip() for x in m.split(";") if x.strip()]})
+                d.setdefault("classes", {"boxes": [], "rels": []})["boxes"] = bx
+            elif name == "rels":
+                rs = []
+                for l in body.split("\n"):
+                    if not l.strip(): continue
+                    path, typ, *lab = l.strip().split(":")
+                    a, b = path.split(">")
+                    if typ not in ("extends", "implements", "has", "uses"): raise SystemExit(f"{d['id']}: bad rel type {typ!r}")
+                    r = {"a": a.strip(), "b": b.strip(), "type": typ}
+                    if lab and lab[0].strip(): r["label"] = ":".join(lab).strip()
+                    rs.append(r)
+                d.setdefault("classes", {"boxes": [], "rels": []})["rels"] = rs
             elif name == "prereqs":
                 d[name] = [x.strip() for x in re.split(r"[,\s]+", body) if x.strip()]
             elif name == "paths":

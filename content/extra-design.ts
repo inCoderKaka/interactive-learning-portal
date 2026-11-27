@@ -226,7 +226,7 @@ export const designExtra: Record<string, Extra> = {
 - **Bar raiser:** identify the invariant each lock protects, compound actions (putIfAbsent, computeIfAbsent), idempotent retry under CAS failure, false sharing, and testing with stress + deterministic schedulers or injected clocks.`,
   },
   "lld-framework": {
-    pre: ["patterns-behavioral", "concurrency"],
+    pre: [],
     deep: `- **Time budget (45 min):** clarify 3–5, entities and relationships 8–10, core APIs and flows 5, code the heart 15–20, extensions and concurrency 5. Say the plan aloud.
 - **Finding classes:** nouns → entities, verbs → methods, adjectives / "types of" → enums or strategies, rules that change → policies behind interfaces. Then delete every class that has no behaviour or state you need now.
 - **Layering:** entities (state + invariants) → services / managers (orchestration) → strategies (variation) → repositories (storage). Keep I/O at the edges.
@@ -239,7 +239,7 @@ export const designExtra: Record<string, Extra> = {
 - **Bar raiser:** persistence mapping (which entities are tables, what are the keys), scaling the design to a service (what becomes an API, what state moves to a database, which operations need idempotency), and trade-offs you consciously left out.`,
   },
   "lld-quality": {
-    pre: ["oop-solid", "lld-framework"],
+    pre: ["oop-solid", "patterns-behavioral"],
   },
 
   // ───────────────────────── Craft ─────────────────────────
@@ -420,7 +420,7 @@ export const designNewTopics: { after: string; topic: Topic }[] = [
     }),
   },
   {
-    after: "lld-framework",
+    after: "patterns-behavioral",
     topic: T("lld", "lld-quality", "Code quality: errors, testability & API evolution", 2, 25, "The engineering judgement graded alongside the class diagram: failure handling, tests, immutability and contracts.", {
       signals: [
         "Interviewer asks 'how would you test this?' or 'what if this call fails?'",
