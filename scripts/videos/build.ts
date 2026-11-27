@@ -13,7 +13,8 @@ import { resolve } from "node:path";
 import { CHANNELS } from "./channels";
 import { lcIndex, questionsIn } from "./questions";
 import { homeOf, type LcRow } from "./rules";
-import { DSA_CONCEPTS, DSA_FALLBACK, SKIP, type ConceptRule } from "./concepts";
+import { BROAD_NO, BROAD_OK, DSA_CONCEPTS, DSA_FALLBACK, HLD_CONCEPTS, HLD_DESIGNS, HLD_SKIP, SKIP, type ConceptRule } from "./concepts";
+import { DESIGNS } from "../../content";
 import { OVERRIDES } from "./overrides";
 import { cfIndex, contestHome, type CfRow } from "./contests";
 import { CHAPTER_OF, OUTLINE } from "../../content/outline";
@@ -25,7 +26,9 @@ const rows: LcRow[] = JSON.parse(readFileSync(resolve(here, "leetcode.json"), "u
 const ix = lcIndex(rows);
 const cf = cfIndex(JSON.parse(readFileSync(resolve(here, "codeforces.json"), "utf8")) as CfRow[]);
 const RULES: ConceptRule[] = [...DSA_CONCEPTS];
-const PAGES = new Set([...Object.keys(OUTLINE), ...Object.keys(CHAPTER_OF), ...TOPICS.map((t) => t.id)]);
+const PAGES = new Set([...Object.keys(OUTLINE), ...Object.keys(CHAPTER_OF), ...TOPICS.map((t) => t.id), ...DESIGNS.map((d) => d.id)]);
+/** Product-heavy channels: only strict HLD rules apply, and no design rules. */
+const BROAD = new Set(["GoogleCloudTech", "GoogleDevelopers"]);
 
 /** Display title: drop channel tags, emoji and filler so the library reads cleanly. */
 export function clean(t: string, channel: string) {
@@ -81,6 +84,14 @@ CHANNELS.forEach((c, ci) => {
     const contest = contestHome(raw, cf);
     if (contest) { (pages[contest] ??= []).push(v); nc++; continue; }
     let to = [...new Set(RULES.filter(([re]) => re.test(raw)).map(([, t]) => t))];
+    if (c.areas.includes("hld") && !HLD_SKIP.test(raw)) {
+      const broad = BROAD.has(c.file);
+      if (broad && (!BROAD_OK.test(raw) || BROAD_NO.test(raw))) { /* product news or demos: no HLD match */ } else {
+      to.push(...HLD_CONCEPTS.filter(([re, , strict]) => (!broad || strict) && re.test(raw)).map(([, t]) => t));
+      if (!broad) to.push(...HLD_DESIGNS.filter(([re]) => re.test(raw)).map(([, t]) => t));
+      to = [...new Set(to)];
+      }
+    }
     if (!to.length) to = DSA_FALLBACK.filter(([re]) => re.test(raw)).map(([, t]) => t).slice(0, 2);
     if (to.length) {
       for (const t of to) (pages[t] ??= []).push(v);

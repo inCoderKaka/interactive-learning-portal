@@ -4,6 +4,7 @@ import { topics2, problems2 } from "./dsa2";
 import { topics3, problems3 } from "./dsa3";
 import { hldTopics } from "./hld-concepts";
 import { hldDesigns } from "./hld-problems";
+import { applyDesignPatches } from "./designs";
 import { lldTopics, lldDesigns } from "./lld";
 import { craftTopics, behavioralPrompts } from "./craft";
 import { dsaExtra, dsaNewTopics } from "./extra-dsa";
@@ -118,7 +119,7 @@ export const EXTRA_PROBLEMS: Problem[] = (LC_EXTRA as [number, string, string, "
     url: `https://leetcode.com/problems/${slug}/`, premium: !!premium,
   } satisfies Problem];
 });
-export const DESIGNS: Design[] = [...hldDesigns, ...lldDesigns, ...behavioralPrompts, ...extraDesigns, ...aiDesigns].map((d) => ({ ...d, refs: DESIGN_REFS[d.id] }));
+export const DESIGNS: Design[] = applyDesignPatches([...hldDesigns, ...lldDesigns, ...behavioralPrompts, ...extraDesigns, ...aiDesigns].map((d) => ({ ...d, refs: DESIGN_REFS[d.id] })));
 
 export const topicById = new Map([...TOPICS, ...SUBTOPICS].map((t) => [t.id, t]));
 export const problemById = new Map([...PROBLEMS, ...EXTRA_PROBLEMS].map((p) => [p.id, p]));

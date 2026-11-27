@@ -23,73 +23,44 @@ uBL0siiliGo	Model Context Protocol: A Deep Dive into the future of AI systems
 I94LF4IdhyU	How LLMs use VECTORS to build multimodal outputs
 _Y3BfN9v3sA	The latest LLM research shows how they are getting SMARTER and FASTER.
 LZljPiftqyo	OpenAI THRASHES 99.8% of competitive programmers with their new model
-l35hqwTY5W0	Google Borg: Billions of Distributed Linux Containers
-cU01EnyBwQI	Amazon DynamoDB: A Scalable, Predictably Performant, and Fully Managed NoSQL Database Service
-I-PwfcNurWo	Apache Spark: Cluster Computing with Working Sets
-hNDjd9I_VGA	Apache Kafka: a Distributed Messaging System for Log Processing
 Z3uWleYwOQA	How I built an AI Teacher with Vector Databases and ChatGPT
-AZhIjNHzURQ	Google Dapper, a Large-Scale Distributed Systems Tracing Infrastructure
-NxPTVhc1tFA	Monarch: Google's Planet-Scale In-Memory Time Series Database
-9gvJHf9FqmM	Zanzibar: Google’s Consistent, Global Authorization System
-u8lKJWWVE0M	Google Dremel: Interactive Analysis of Web-Scale Datasets
-uS8f5SSYDck	Scaling Memcache at Facebook
 RxprFQberss	5 questions in 4 minutes: Gaurav Sen interviews Hemant Pandey
 c1fJ0kKRNe4	Algorithm Deep Dive: Realtime Audio Matching In Shazam
-NwR9Lq8qn8c	Software Systems: What is a load balancer?
 erIWQL4zMZY	Interview Question: Tell me about yourself
-zw7VwIlkPPc	Caching in distributed systems: A friendly introduction
-b4_6thkYZXs	What is a CDN (Content Delivery Network)?
 _ayi1qsAo3o	How to get promoted to Senior Software Engineer roles
 qYuW0xuX2YY	This is why Senior Software Engineers aren't clearing interviews
 kVP1qM9zgaA	30 [Software Engineering] research papers you should read
 OXLDI8gibPw	Find the distance between friends/connections - LinkedIn System Design with @KeertiPurswani
 nHh3DnjnPig	System Design of a Delivery System like Zomato with @Keerti Purswani
-hI4_jVFiqes	System Design of GitHub Code Search - SDC Episode 1 with @KeertiPurswani
-4JSN0VpEv2I	Latency Numbers Every Programmer Should Know - 1000x slow-down
 w8sTGFKLf24	The Most Advanced Multiplication Algorithms: Why Karatsuba and FFT beat high-school mathematics
 Pu46rRtd1MQ	The painfully outdated practice of software interviews
-57gdH1n0yg0	How ANOMALY DETECTION works in time series using the Holt-Winters Algorithm
 tNbMyQGGyYM	20 AWS services you should know [as a Software Engineer]
 M3PWvOETU4g	System Design of a Startup: How to host a website with AWS
 WWGM4hY34pI	20 Whitepapers that changed the world [For Senior Software Engineers]
 LdvduBxZRLs	Design Patterns for High Availability: What gets you 99.999% uptime?
 AkQ9YVp21C8	Tech that DOESN'T WORK for Start-ups and Mid-sized companies
-65-6asTjuB8	Authorization across Distributed Systems: The OAuth Protocol
 AYUnaErhdS8	How Stored Procedures make databases FAST
-cX8cgAC4ZAc	Garbage Collection Algorithms in Java: Concurrent Updates with Optimistic Locking - Part III
 I8FeITQvLAk	How 100 milliseconds cost Amazon 3 BILLION DOLLARS: Latency, Concurrency and Parallelism
-FqljO9B5grM	Impeccable API Design: What you MUST CONSIDER before deploying APIs to production
-RbMxB_Cyx6A	What is an API Gateway?
-SmIyIHIYtSY	How custom banners are shown INSTANTANEOUSLY: Contextual Advertising at Scale
 MgeQ8YDEFck	Running a bootstrapped startup for 3 Years: The story of InterviewReady!
 VqAsl-UgoPo	Dark Mode: Pilot Launch at InterviewReady
-DH2-vDPFiE4	Zerodha Stock Broker System Design with @KeertiPurswani
 2qpPilvfnko	Task Management - The one thing you must know as a software engineer
 AB80bDOX-uU	Front-End to Full-Stack: 9 Different Types of Software Engineers
 Gr861i8aB3k	8 Rules for Offer Negotiations by Gaurav Sen
 2O7Vva0btwA	Let's get InterviewReady!
 g4Y-CRS_QRI	What happens inside a software interview? Algorithms, Data Structures, System Design and Behavioral
-07jkn4jUtso	System Design of an Online Code Editor with @CS Dojo
 DC0CHU34dms	The Cost of Free Education
 k1oS6NUZkMk	Behavioural Interview Questions: Conflict with your Manager
 tplMbG5VpYo	Behavioral Interviews Product Launch - InterviewReady
 n5BSpsfSJ4s	What is low-level design?
-QpLy0_c_RXk	UPI System Design Mock Interview with Gaurav Sen & @sudoCODE
 _M6s8l72qEI	The Startup Attitude: Scaling a Bootstrapped Business
-iRhSAR3ldTw	System Design of Doordash: Geo-Hashing and WebSockets for Location Based Services
 k-a5YjTsv-M	System Design for Freshers? Really? - with Aman Barnwal
 CC-AxHIgBSM	System Design Walkthrough at InterviewReady - Designed for SDE 1 to SDE 3 Interview Preparation
-QzLhb1WBFjQ	SQL vs NoSQL - Tradeoffs
 F3ZL3k6n1UY	High level Design Interview: #Practo System Design with Shreyansh Goyal (SDE2).
 Vj_JEI3yMe4	Mobile System Design best practices by Arnav Gupta
 W0KNQuMka-Q	Introduction to Mobile System Design
 TAUXI057Hg4	Engineering Leadership Lessons from Sharad Bajaj - Drive to Thrive
 e83a5bjrSMM	Starting with data science and ML -  @codebasics
 F13kHddazzo	Low level Design interview: Zomato System Design with @Keerti Purswani with InterviewReady
-m4q7VkgDWrM	Data Consistency and Tradeoffs in Distributed Systems
-z_YuqLmGZuo	Five common system design interview mistakes 😅
-eg0nlYcbLpo	System Design: Online Judge for coding contests
-07BVxmVFDGY	System Design Interview: TikTok architecture with @sudoCODE
 5NF_Lu0X6eM	Developer to Entrepreneur: My journey to InterviewReady
 rckfN7xFig0	Moving from MONOLITHS to MICROSERVICES 🎂 → 🍰🍰🍰
 b2UNMZkXAh0	#AlgoWorkout: @RachitJain challenges Gaurav 😱 S02 E01
@@ -98,50 +69,24 @@ gZMdOiqchDk	Codingame Spring Challenge 2021 - Competitive programming with artif
 trkYGEGT6_w	Garbage Collection Algorithms: Concurrent Mark Sweep, Fragmentation and Compaction, Lost Writes
 ZhbIReLe-r8	Garbage Collection Algorithms: Mark Sweep, Generation Hypothesis and JIT code injection
 GOuVeZmMee0	Containers and Virtualisation in Cloud Computing ☁️
--mbMqPVzPjc	Machine Coding of a Cache: New addition to the System Design Course!
-OcUKFIjhKu0	Designing a location database: QuadTrees and Hilbert Curves
 mIcCBrZsj2E	Low Level Design: A Video Course
 OnEcXU2_Q9s	How Unified Lending Interface is powered by Account Aggregators
 beUzxZK6aKw	System Design Course Overview
-_5vrfuwhvlQ	How databases scale writes: The power of the log ✍️🗒️
 QyjFPqLL9GA	Work from home - Tips to maximise productivity 📚
-0myM0k1mjZw	Capacity Planning and Estimation: How much data does YouTube store daily?
 SqcXvc3ZmRU	System Design Primer ⭐️: How to start with distributed systems?
-x9Hrn0oNmJM	How NETFLIX onboards new content: Video Processing at scale 🎥
-eV1haPUt0NU	Hyperloglog: Facebook's algorithm to count distinct elements
-qHMLy5JjbjQ	Merkle Tree with real world examples
-mTNkqMDCasI	Relational database index vs. NoSQL index
 smiu01pLosI	Detecting anomalies using Isolation Trees: Practical Machine Learning
-lWE_UIbm8NA	Service discovery and heartbeats in micro-services 👍📈
-U3RkDLtS7uY	What are Distributed CACHES and how do they manage DATA CONSISTENCY?
-_YlYuNMTCc8	What is an API and how do you design it? 🗒️✅
-GeGxgmPTe4c	Distributed Consensus and Data Replication strategies on the server
-xQnIN9bW0og	Introduction to NoSQL databases
-vvhC64hQZMk	WHATSAPP System Design: Chat Messaging Systems for Interviews
-QmX2NPkJTKg	Designing INSTAGRAM: System Design of News Feed
 1PZWL3W6dpc	The Best and Worst HR interviews - 5 Questions to keep in mind
 IG9OtI54zPk	Episode 6: Balance the Array - Rachit Challenges Gaurav - Amortization
 1u0UFFK-rZs	Rachit challenges Gaurav - Episode 3 | Poisoned bottle amongst 1000
-xrizarXJgC8	How to avoid cascading failures in a distributed system 💣💥🔥
 TANimxJJ4JE	Rachit Challenges Gaurav - Episode 2 | Red and Blue
 5WOQSVJEt_g	Myths every Competitive Programmer should know
 quLrc3PbuIw	What is System Design and how is it useful?
-5faMjKuB9bc	What is DATABASE SHARDING?
-xpDnVSmNFX0	System Design BASICS: Horizontal vs. Vertical Scaling
 nrHvxDeiXtc	Interview Preparation - BITS Pilani Hyderabad
-tndzLznxq40	System Design: TINDER as a microservice architecture
--BOysyYErLY	How to avoid a single point of failure in distributed systems ✅
 CtmBGH8MkX4	5 Tips for System Design Interviews
-rJHTK2TfZ1I	What's an Event Driven System?
-FMhbR_kQeHw	What is the Publisher Subscriber Model?
 qYhRvH9tJKw	What is a MICROSERVICE ARCHITECTURE and what are its advantages?
 9T-gNZ5bGCw	Why do Databases fail? AntiPatterns to avoid!
 OJBRB9Rtnzc	Codeforces 560E - Solution with code
-oUJbuFMyBDk	What is a MESSAGE QUEUE and Where is it used?
 7GCSA4u5ynw	Ukkonen's algorithm for approximate string matching
-zaRkONvyGr8	What is CONSISTENT HASHING and Where is it used?
-K0Ta65OqQkY	What is LOAD BALANCING? ⚖️
-bgzUdBVr5tE	What are Bloom Filters? - Hashing
 Xe9aq1WLpjU	Why does log(N) appear so frequently in Complexity Analysis?
 Lku8_9Ipp9s	Merry Christmas!
 hmQogtp6-fs	What is Monte Carlo Tree Search? - Artificial Intelligence

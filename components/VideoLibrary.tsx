@@ -182,3 +182,40 @@ export function ProblemVideos({ lc }: { lc: number }) {
     </div>
   );
 }
+
+/**
+ * Walkthroughs of one design exercise ("Design WhatsApp" from every tracked channel). Always visible, as the user
+ * asked: a player for the chosen video plus a strip of thumbnails; the user's own channels come first.
+ */
+export function DesignVideos({ id, color }: { id: string; color: string }) {
+  const data = useVideoData(true);
+  const [playing, setPlaying] = useState<Vid | null>(null);
+  if (!data) return <section className="card h-[72px] animate-pulse-soft" aria-busy />;
+  const vids = byChannel(data.pages[id] ?? [], data.channels);
+  if (!vids.length) return null;
+  const ch = data.channels;
+  const play = (v: Vid) => { if (v[3]) { window.open(`https://www.youtube.com/watch?v=${v[0]}`, "_blank", "noopener"); return; } setPlaying(v); };
+  const chans = [...new Set(vids.map((v) => ch[v[2]][0]))];
+  return (
+    <section className="card overflow-hidden" data-read-block data-read-text={`There are ${vids.length} walkthrough videos of this design, from ${chans.length} channels.`}>
+      <div className="flex items-center gap-4 px-5 py-4">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line" style={{ color }}><Clapperboard size={18} /></span>
+        <span className="min-w-0">
+          <span className="eyebrow block">Walkthrough videos</span>
+          <span className="block truncate text-[13px] text-mute">{vids.length} video{vids.length > 1 ? "s" : ""} · {chans.slice(0, 5).join(", ")}{chans.length > 5 ? "…" : ""}. Try the stages first, then compare how others approach it.</span>
+        </span>
+      </div>
+      <div className="space-y-3 border-t border-line p-4">
+        {playing && (
+          <div className="space-y-2">
+            <VideoEmbed key={playing[0]} r={ref(playing, ch)} autoplay />
+            <div className="flex items-center justify-between text-[12px] text-mute"><span className="truncate">{playing[1]} · {ch[playing[2]][0]}</span><button onClick={() => setPlaying(null)} className="flex items-center gap-1 hover:text-text"><X size={13} />Close</button></div>
+          </div>
+        )}
+        <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          {vids.map((v) => <Thumb key={v[0]} v={v} ch={ch} active={playing?.[0] === v[0]} onPlay={play} />)}
+        </div>
+      </div>
+    </section>
+  );
+}

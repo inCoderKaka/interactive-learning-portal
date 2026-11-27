@@ -1,10 +1,6 @@
 yxonE_TxLA4	You're Using Only 5% of Claude Code | Commands Every Developer Should Know
-HLVGo5lfk7o	Load Balancing By NGINX | Live Demonstration
-RawBHiwVR5c	System Design Interview Question 004: Understanding Kafka
 eZrIrYWF5Uc	System Design Interview Question 003: Connection Pooling
 ggODipeOBXA	System Design Interview Question 002: VM vs Container
-amYLUBD7kWQ	System Design Interview Question 001: Bloom Filter
-QcT9-OuNTDI	Rate Limiting: Fixed window vs Token Bucket Algorithm
 w4sG4RiP-ps	How Does a Program Actually Get RAM? malloc & mmap Explained
 ATnED4grplY	The Only AI Tool You Need in 2026 (It's Not What You Think)
 z3QfDu7cQ98	Claude Accounts Drained By Laptop Malware
@@ -39,7 +35,6 @@ m_x9JGO1OZA	The Only ONE Thing That Actually Matters in Your Job Search
 QZWCbxm9G28	Install Java & IntelliJ on Windows 11
 xYEfkyoNBDU	Mastering MySQL Subqueries: Real-World Online Store Database Tutorial
 lQBhzBhkGww	JOIN Masterclass: INNER, LEFT, RIGHT, CROSS, SELF JOIN, UNION & UNION ALL Tutorial
-suKHq3ZLPmU	Database Normalization Explained: 1NF, 2NF & 3NF With SQL Examples
 0DhykMld5Mk	SQL Foreign Keys: Master Database Relationships in 15 Mins
 YrF8QEL-xuc	SQL Primary Keys Mastery: Database Design Fundamentals | Complete Tutorial
 xIqMC4CjGvY	MySQL GROUP BY & HAVING: Advanced SQL Filtering Techniques
@@ -104,7 +99,6 @@ f_LiIOytYE4	Kusho AI: Testing with AI Automation – Faster, Smarter API Tests
 Q0Rhup_Vjlk	Deploy Spring Boot App on Heroku: Easy Guide for Beginners
 WDn_Bax0UFo	Volatile vs Atomic in Java: Thread Safety Explained
 4aYvLz4E1Ts	Java Multithreading: Synchronization, Locks, Executors, Deadlock, CountdownLatch & CompletableFuture
-OG9vXOQsi5k	Kafka Fallback: What if Kafka doesn't work ?
 rAlplrI8Y3Q	Understanding Enums in Java: Internal working, toString, values, ordinal, valueOf & much more !
 suBZpy8Z2VY	Mastering Wrapper Classes in Java: Autoboxing, Autounboxing, Methods Explained
 q_mEmB6YW_A	Master Math in Java: Min, Max, Ceil, Floor, Round, Random, Pi, Log, Sin, Cos & More!
@@ -207,7 +201,6 @@ n11XtXnHUgw	Understanding the skeleton of a Java Program | What is main method i
 0vvCgTM-tLI	What is JDK, JVM, JRE, javac, Byte code, JIT ? Complete Execution Process !
 LndqWC4yIU4	Role Based Authorization in Spring Boot Project
 oveyab6lO_E	How to Install Java OpenJDK on Windows 11
-QrCVj8ek83k	Adding Authentication to Journal Endpoints
 02WP1FbiNSQ	Spring Security in Spring Boot in Hindi | @EnableWebSecurity Annotation
 HjDyv7gL4Wg	Connecting Spring Boot to MongoDB Atlas: A Step-by-Step Tutorial
 6oxyNgZSz9s	@Transactional Annotation in Spring Boot Example in Hindi | @Enabletransactionmanagement
@@ -218,7 +211,6 @@ LtnVqa5dYLA	One-Stop Solution: Installing MongoDB on Mac, Lubuntu, Fedora, Windo
 tWBhE1Cn8D0	ResponseEntity in Spring Boot in Hindi | Handling HttpStatus while creating REST API
 jvSicVdHKT8	Step-by-Step Tutorial: How to Integrate MongoDB in Your Spring Boot Application
 ddrCOI0buBA	Understanding ORM, JPA, and Spring Data JPA: A Step-by-Step Tutorial
-3Dc8YxC0p-s	A Beginner's Walkthrough to MongoDB: Key Concepts Simplified
 rxT5RFYxjSg	Creating REST API using Spring Boot in Hindi | A Step-by-Step Tutorial
 99M7TJvijUk	@SpringBootApplication Internal Working | IOC Container & Dependency Injection in Spring Boot
 8D5k5gpyPTo	The Psychology of App Addiction: Why You Shouldn't Feel Guilty
@@ -226,39 +218,17 @@ JNzVOpNCcfw	Structure of Spring Boot Application | What's Inside Your Spring Boo
 zAmMPM8dIXc	What is Maven in Java in Hindi | How Maven Works with Java & Spring Boot: Step-by-Step Explanation
 d4dcV7Kt3SI	Create Spring Boot Project in Intellij | Create Spring Boot Project with Spring Initializr
 1993zSY5UBI	What is Spring Boot in Hindi | The Whys and Hows of this Java Marvel!
-maODaNAZLG8	How to Use Fuzziness for Better Searches in Elasticsearch
-5WZOvuMQlC4	How to Use Aggregations in Elasticsearch: Everything You Need to Know
 ONuidcrE34g	Busy Lives, Empty Achievements: A Reality Check
 FOk_7KdySV8	How to Use Joins in Elasticsearch: Step-by-Step Tutorial
-33wm_uEYBOo	From Match to Nested: Master Elasticsearch Query Types in One Video
 MZ25R-w9MG0	The Unpopular Opinion: Money Equals Happiness
-rnLNLUts0t4	How to Use Aliases in Elasticsearch: A Beginner's Guide
-splccAXjHBM	Elasticsearch Common Schema (ECS): Enhancing Elasticsearch with Common Schema
-cAAZNbWZpgg	Mastering Index Templates in Elasticsearch: A Comprehensive Guide
 M8lMbAtLk_8	From Zero to 2590
-KUYuXHJTGUc	Mastering Data Types in Elasticsearch: Complete Overview
-PlX2r054oIQ	Understanding Elasticsearch Coercion: Exploring Key Concepts
-7gj629THDCk	Reindex API in Elasticsearch: Complete Guide & Examples
-8BWqRFr2Pj0	Mapping API In Elasticsearch
 IVnYv_cdIjw	Elasticsearch Index Mapping: Step-by-Step Tutorial for Beginners
-6PmR0OnC9Q4	How does doc_values work in ElasticSearch ?
-9oeqoC_i2ZI	Understanding Inverted Index for High-Performance Searches
-9OGyVzUGh1o	What is analyser in elasticsearch ( _analyze API )
 SKY_oYz6628	Learn How To Use Bulk Api In Elasticsearch (step-by-step Tutorial)
-m9nQM6QH4J4	Elasticsearch update_by_query and delete_by_query explained with examples
-j7Ke_tvOtgE	Managed & Unmanaged Database: An Introduction to Mongodb Atlas
 ZFhLaufhxYg	Mastering Date Queries in MongoDB: $year, $month, $dateToString, and More!
-9sUBVbQY4b8	$project in MongoDB: Practical Examples and Use Cases
-ErszXERETr0	Transactions in MongoDB: Complete Walkthrough
-zzVa5cvQK6w	$lookup in MongoDB: How to Join Collections in MongoDB
 LqCEp1PmfgY	Replicate MongoDB Database Like a Pro: Complete Step-by-Step Tutorial
-bSulWZtc2n8	MongoDB Replication & Sharding: Scaling Your Database for Performance
 U-IaE2h-2LM	install Intellij on fedora  - Ultimate Guide for Java Developers!
-1HBp3WYhx8Y	Mastering MongoDB: The Complete Guide to Authentication ( RBAC )
 1xL6Msd1kz0	Crypto Payment Gateway : Embrace Cryptocurrency on Your Website with Cryptomus
-khq2wvnWo5M	Capped Collection in MongoDB in Hindi
 P0PbaTKm3Ok	How to install MongoDB on fedora
-ga8LeVRmtG0	$bucket operator in MongoDB in Hindi
 Se-YmI1v4f0	Java 8 Crash Course: Everything You Need to Know in a Single Video Tutorial
 -PBOA_u743I	Master Optional in Java 8: Complete Guide for Beginners
 hPhpsC4kFdI	Master the New Java 8 Date & Time API: In-Depth Tutorial
@@ -275,101 +245,34 @@ Mjb5cTzPzwg	How to create thread using lambda expression in Java
 ZmWBxXc0WSA	How to use lambda expression in Java 8 ?
 vmuZaT6JpCM	Kafka Producer And Consumer Example In Java Spring Boot
 WmE9hapebOc	IntelliJ IDEA Shortcuts You Can't Afford to Miss
-JWrVRILzoQs	ISR in Kafka ( In Sync Replica )
-m9AOYW2GF00	How to Make a Kafka Cluster with 3 Brokers: Understand Replication Factor
-imVH0TXVkm8	Kafka Fundamentals: Understanding Segments, Commit Log, and Retention Policy
-Ej0QC9GVziY	Master the Art of Kafka: A Step-by-Step Consumer Offset and Consumer Group Demonstration on Console
-xgIXpUCzScc	Understanding Consumer Offset, Consumer Groups, and Message Consumption in Apache Kafka
-MWmMvudBgFU	The Ultimate MongoDB Aggregation Guide: Make Your Queries Soar in One Video
-yo6ZXsgsyBA	Master MongoDB Indexing in One Video: Boost Your Database Performance Instantly!
-N2vaL3Oz--E	MongoDB - Update Nested Arrays and Use $pop, $pull, $push and $addToSet Operators
-yNQ20_RfwUk	Advanced Update ( $inc, $min, $max, $mul, $unset, $rename & Upsert in MongoDB )
-eYE3vkR1mGA	Effortlessly Sort Your MongoDB Documents with These Tips and Tricks
-wPL2i8KHKTI	From Beginner to Pro: Querying Arrays in MongoDB
-Hs8AM57BlVc	Take Your MongoDB Queries to the Next Level with Evaluation Operators
-2ur6Cs8OPSU	Mastering MongoDB: Understanding the $exists and $type Operators
-FAInqdJlu2k	Logical Operators in MongoDB in Hindi ( $not, $and, $or & $nor)
-OjMJgW4hby8	Comparison operators in MongoDB in Hindi ( $eq, $ne, $lt, $gt, $lte, $gte, $in & $nin )
-I0fxhB81nqc	MongoImport in MongoDB ( Import json in MongoDB )
-k5KuDcsp39k	Atomicity in MongoDB
-3slJKBYEgbU	Write concern in MongoDB in Hindi
-6Cv7ihA4388	Schema Validation in MongoDB in Hindi ( Complete Explanation )
-UaLiC6z1JIU	Ordered option in insert command in MongoDB ( In Hindi ) #mongodb
-Eemjm6H2dGk	How to delete database in MongoDB ( How to delete collection in MongoDB )
--mYB6Ym8ZIc	Datatypes in MongoDB ( In Hindi )
-7D17DVmMrpE	Is MongoDB really Schemaless ?
-W_1zgvqwx80	Select Column Query in MongoDB ( Projection In MongoDB)
-Llllssq-3g8	Embedded documents in MongoDB ( Nested documents limit)
-Cjr-gkQSii8	How to delete documents in MongoDB ( DeleteOne vs DeleteMany in MongoDB )
-WC5Q2IpKtCQ	How To Update Document In MongoDB ( UpdateOne vs UpdateMany in MongoDB )
-cA917b2wxvE	How to Insert Document in Collection in MongoDB ( Insert vs InsertOne vs InsertMany in MongoDB )
-IFMfHhhq0ls	Find vs FindOne in MongoDB in Hindi
-2Qj33fkKRo0	CRUD Operations in MongoDB in Hindi ( All methods )
-Hvju9iIpGDM	How to create database in MongoDB in Hindi
 f43Q7SoxPl4	Install MongoDB on windows 11 in Hindi ( Step by step )
-4EjKroJCpFA	What is MongoDB ?
 B3u4k38NVQQ	Shell Scripting in Hindi | Complete Shell Scripting Tutorial in Hindi
 82AIhq28wYU	How To Prevent Cyber Attacks in Hindi
 pOWmAx10fWA	Types of Cyber threats in Hindi
 NDFCrpTICWk	What is Ethical hacking in Hindi | Steps of Ethical Hacking
 LT9GPUMPDos	Cyber security goals in Hindi | Confidentiality, Integrity, Availability in Hindi
-k8AObcX8azM	Dropbox system design in Hindi | Google drive system design in Hindi
-9csfoQK2T8g	URL shortener system design in Hindi | Tinyurl system design in Hindi | Bitly system design in Hindi
-Q5jPD2ECEgM	Reverse proxy server in Hindi
-dBtpV7aN_20	Forward proxy and reverse proxy Explained in Hindi
-EYQijvnyYp0	OAuth Authentication in Hindi
-VPnYuwwg0rU	Token Based Authentication in Hindi
-2x1L563nTlU	Basic Authentication in Hindi
-B76BhEq1FN8	Difference between Authentication and Authorization in Hindi
-SvBnrJKzH8k	REST API | SOA | Microservices architecture | Tier architecture
 1_8a8-__6ts	What is web server in Hindi
 zaArcSrLPa8	What is communication protocol in computer network in Hindi
 6HKwwJOFHOY	What is message based communication in Hindi ?
 MyiLxH8St0U	What is synchronous and asynchronous communication in Hindi
 W7ppbYgrhwg	What is Synchronous communication in Hindi
-xXtig5uLQS4	How does indexing work in Databases in Hindi ( How to optimize SQL Queries in Hindi )
-o8HgXxqsYBc	What is denormalization in RDBMS in Hindi
 z7wB95TXB8M	What is Polyglot Persistence in Hindi ?
-qxFj8X8n6CE	Types of NoSQL Databases in Hindi ( Which one to use  and where ? )
 VOrpRnE24KI	Can RDBMS scale horizontally in Hindi ? ( Why is it hard to scale relational database ? )
 ZtpIzSZbuh0	File based storage system in Hindi ( File Based Database Management System in Hindi )
-xBTGln828Ps	What is Caching in Hindi (Complete Explanation)
-bIBC_RQtS2E	What is load balancer and How it works in Hindi ( Load Balancing Algorithms in Hindi)
-d9kA8CW8Cns	Difference between Redundancy and Replication in Hindi ( Master - Slave Replication )
-dHjHXis1r24	Difference between horizontal and vertical scaling in Hindi
 nB7zi88DB1Y	How to install Redis on Windows 11 in Hindi
-27wYlcIYAO8	What is Lamport Logical Clock ?
-rb2R5I9S5d8	What is CAP theorem in Hindi ?
-2GKay0Mwk4U	What is Consistency in System Design in Hindi ( Strong vs Eventual Consistency )
-Cdh9qAwFNNk	What is availability ? ( replication vs redundancy)
 IhemzDuCwgU	What is throughput in Hindi  ? ( How to improve throughput ? )
-cG3LMd2hIXY	What is latency in networking in Hindi | How to reduce latency in network | CDN vs Caching
 MPxr1q8ORuA	Difference between monolithic and microservices architecture in Hindi
 z4AUhxIWKSM	Monolithic Architecture In Hindi  ( Complete Explanation )
 uDBIscVIuTw	Components of operating system in Hindi ( kernel space and user space in OS )
 43-X22tdxiI	What is system design process in software engineering ?
 7ZO5T1TIUoo	TCS NQT  preparation 2023 Hindi
 Z8MOXPtmLJc	What is Operating System and its function in Hindi
-cbAAMFjIaSw	How to send Kafka message from command line ( With Key )
-bIaxc14te7U	Kafka Topic and Partition in Hindi ( Simple Explanation )
 u4CoGMyPKR0	Merge Two Sorted Lists Java Solution in Hindi ( EASIEST EXPALANATION )
 nGGEh0aHLwQ	Static Method In Interface Java 8 ( Main Method Inside Interface )
 b4paTLGsJjE	Default Methods In Interface JAVA 8 In Hindi
 m3inFZSQO54	Inheritance in Function Interface - What's This Thing?
-bCo8MZ3Ms-I	The Optimistic Concurrency Control in Elasticsearch
-ifr0uxteQNM	What are seq_no and primary_term in Elasticsearch?
-Zei4mlPatpY	A Beginner's Guide to How Elasticsearch Writes Data
-oz9PecSxE74	How Does Elasticsearch Read Data?
-hP6i_lh3A60	Elasticsearch Routing: From Basics to Advanced
-HccmjuofMNs	The CRUD Operations in Elasticsearch
-NBD2ThufUiU	Elasticsearch Node Roles - What are they and How do they work?
-3ozvWStqXao	Here's How to Create Two Nodes of Elasticsearch in a Single System
-prOv-cV3p0s	The Complete Explanation Of Replication In Elasticsearch
 6Sz5rtL1oOk	Elasticsearch REST API from Kibana console - the easy way
 EG-o5t1wN2Y	Infosys Java Developer Interview Questions For 2 years Experience
-6nrszHfcO38	Sharding in Elasticsearch - What It Is and How It Works
-Bdt8M_RwHVs	Elasticsearch Architecture - How data is stored?
-kNroXUm-N8k	The Elasticsearch API - Accessing It From the Command Line
 kYXx0sq74Tc	How to Install Elasticsearch and Kibana on Windows 11 - Complete Setup
 bcsII2dGnDU	What is Elastic Stack in Hindi ? Elastic Search, Kibana, Logstash, X-pack and Beats
 WXIoT8z4bNY	Functional Interface in Java 8 in Hindi (Step by Step Explanation)
@@ -384,7 +287,6 @@ xYyGA5hKMIQ	Create spring MVC project in eclipse using maven
 GYd0u-qEaKU	Spring MVC architecture in Java in Hindi ( Easiest explanation )
 HRAaAhb5Ucc	@bean annotation in spring boot in Hindi | @propertysource annotation in spring boot
 Ey5uNTTdjNk	@componentscan annotation in spring boot | @configuration annotation in spring
-DQFmUXSM-fA	What are Kafka Cluster, Kafka Broker, Producer, Consumer, Stream, Connect?
 rWEK20EMyZ8	@Scope annotation in Spring (Singleton and prototype)
 wXsifghAb30	How to use application.properties in Spring and spring boot (@value annotation spring example)
 tU_UNn90VcM	@Qualifier Annotation with Autowiring | Spring Framework Tutorial
@@ -407,15 +309,12 @@ _dhQjN75Cp4	Write a java program to check whether given number is perfect square
 ODE4S75WD8s	Search an element in a Sorted & Rotated Array
 1N38hM3DV-Y	Array data structure (Complete explanation with Search algorithms)
 TYcBONpCb2o	How to solve pattern problems (Easiest explanation)
-B4Be8ZVqXik	Distributed File Systems | Architecture of distributed File | Distributed Resource Management
-ex3j9b53oXc	Types of agreement problem in distributed system | Byzantine | consensus | Interactve
 M0InTzIByQo	Agreement protocol | Lamport shostak pease algorithm in distributed system
 58yI6Tp1coc	Edge chasing algorithm in distributed system (with example)
 SGuwwBgncI8	Ho ramamoorthy algorithm in distributed system (with example)
 1-EM55DfqCw	Control organisation for distributed deadlock detection (2021)
 OQ-XTXHIelI	Path pushing algorithm in distributed system |Obermarck path pushing algorithm in distributed system
 h111QQCF8V4	Deadlock handling strategies in distributed system(in hindi)
-jhHu7SbIRnM	Performance metrics for distributed mutual exclusion algorithms
 ju5Cjquox6U	Mutual exclusion in distributed system
 FT_BdS_djI0	Blockchain in government
 xmZatDM8MTc	Blockchain in Supply Chain
@@ -439,8 +338,6 @@ vcreOrrkDSY	Causal ordering of messages in distributed system
 r5xIXpzcmH4	Global state in distributed system
 2YeTnRtljzE	Merkle tree in blockchain
 phXIgW_PrBI	Huang's termination detection algorithm
-2iwRBncBDuM	Vector clock in distributed system in Hindi (Easiest explanation)
-sG5SnMwBSLk	Lamport logical clock in distributed system in hindi
 8mfPdH1Tk_4	Limitations of distributed system
 QVjGRxvzQqM	Types of transparencies in distributed system
 v8jv_6FaqTM	Distributed systems tutorial

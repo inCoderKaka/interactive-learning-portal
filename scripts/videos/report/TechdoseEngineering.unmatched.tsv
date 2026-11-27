@@ -1,51 +1,11 @@
 n8INj9rsj_Y	How AI Agents Actually Work — From LLMs to Agents (With Code)
-mPysy_WJAXc	Why Do Distributed Systems Need a Leader? | Leader Election Explained
-U1K1k9aXtp8	How to Handle Millions of Checkout Requests Without Bringing Down Your System
-p-fV6ZFSvj0	Kafka Dynamic Partitioning: How to Scale Without Breaking Message Ordering
-vOS0Ttila2o	Kafka Hot Key Problem: Scale Throughput Without Breaking Ordering
 L4x7BJ78rrE	AI Interview #1: If the Answer Is in the Context, Why Does the LLM Fail?
 8hwOdCew2gg	RAG Explained: From LLMs to Enterprise AI | Vanilla RAG vs Agentic RAG
-0xbH5zUFaPk	How Distributed Locks Actually Work | Why Are They So Hard?
-cWDfwWGqqGU	Communication & Coupling in Distributed Systems
-MvNUXk2d5ho	Caching Explained: Why, When & Where Do We Use It? | System Design Fundamentals
 5WSqZ4Q5yYI	Linear Regression Explained from Scratch | Complete ML & Math Intuition
 uFvc_P1ER0E	How Hospitals Train AI Without Sharing Patient Data | Federated vs Distributed Learning
-cCPxy0ND-zU	Cache Stampede Explained from Scratch | Why Your Database Crashes (And How Big Tech Prevents It)
-ITu4dLo3a68	Fail-Open vs Fail-Closed Explained Simply | System Design Interview with HLD Examples
-zhBtl_Bxhvc	Stateful and Stateless Processing
-oi4vNQcg3oI	System Design Interview: Functional and Non-Functional Requirements Explained Clearly
-O1SpXy1aY6U	Push vs Pull vs Hybrid Data Sync — Explained with Real Life Examples
-LdH-AJ6Rm1A	Replication Lag Explained | Causes, Stale Reads & Fixes
-ObgZ9XNw0lc	Split Brain in Distributed Systems Explained | How to Prevent It
-IgVENRLztVM	How Replication Works in Databases | Sync, Async, Semi Sync
-yryZlPHw9Bc	Master Slave Architecture for System Design Interviews | Complete Explanation
 nRVHM1Wutsk	Realtime Payment Security System using Agentic AI
 9htNyWyUDPo	Data Centers & How it Powers the Digital World
 qcEeOA_4XeQ	Hallucinations in AI and the rise of Agentic RAG | AI for SDE
-kGXRuGnS0Q8	Active-Passive vs Active-Active | Replication at Global Scale
-kRR-12dYun0	Checkpointing – The Backbone of Fault Tolerance
-wzVgZnqJURc	Which clock counts ? Event vs Arrival vs Processing Time - Amazon Example
-3FmZt4Mgk50	Why Logging is Critical in System Design
 E6XaSWf95vc	HNSW Explained — How Amazon Finds Your Next Purchase in Milliseconds
-hYVR5s4W-eY	Single Point of Failure | SPOF | Fault Tolerant Systems
-4TezK-w9_W0	Kafka System Design | Full Course | Design & Architecture
-dXVRSqGoyKI	Load Balancer | System Design
-gyCT9VvQ7xE	Caching | System Design
-aCzZKlRL4q8	Synchronous vs Asynchronous
-HZwmF47OPMk	Service Level Agreement (SLA) | Service Level Objective (SLO) | Service Level Indicator (SLI)
-rpBPMFk1ah0	Fault tolerance Vs Resilience
-uVXuZNttOzY	Vertical and Horizontal scaling | System design
 XpZpJi4wEsY	Upstream and Downstream Systems | System Design
 epf1eLbbBl8	Maintainability | System Design
-kS06YB_K8n0	Resiliency | System Design
-DNam6NbjgW4	Fault Tolerance | System Design
-oVGOUh6-m4E	Cascading Failure | System Design
-02pg0GJky9I	Failover | System Design
-FWuK7uhlYBs	Durability | System Design
-U-4tjScxc_Q	Isolation | System Design
-w4rGJ9QylNU	Atomicity | System Design
-l1wBr-MZnPQ	Faults & Failures | System Design
-YSL8wJNLA58	Latency | System Design
-e_HjDt6AA8s	Consistency | System Design
--CAuaHEJD8E	Scalability | System Design
-y_Orb2euMo0	Reliability | System design

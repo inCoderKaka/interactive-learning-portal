@@ -14,11 +14,7 @@ xZ4mrm6PuII	Why nobody watches YouTube tutorials anymore
 KFcyF66IeuE	The Cost of Switching to Kernel Mode
 DFTSYgKczhY	Why It took Postgres years to do async
 aJpcysMJkvk	Page Tables | The Backend Engineering Show
-ImaSgNgxu00	How HTTP/2 frees connections
 ezq8tIMkPB0	How Huge Pages Work in Linux
--A7b_BXvRLg	TLS can be slow, this changes the game
-rjx4XRvw9PY	Freeing HTTP/1.1 Connection
-tZQnafyuXUM	3 hours without DNS caused a day of outage
 tO5kZv5bQ7I	The state of Direct IO in Postgres
 AsFxaZJ1M0k	Page Faults | The Backend Engineering Show
 1IYOmUzKg2s	Postgres 18 Async IO methods
@@ -27,40 +23,26 @@ JW6oVpQW2hw	The rule of CPU in the Kernel
 DZTq_ADss7U	Why you need to close sockets
 vKiGo8aShyo	Database Synchronous vs Asynchronous IO
 q1kBGyEsxdQ	What is Virtual memory?
-M6RjC20k3Ig	How 3 hours with no DNS caused a day of outage
-LZm9nTwsGi8	We now know why the DNS failed
 yYhAOPc6MLQ	The problem with software engineering
-wsMF9j0dLYg	HTTP/3 over QUIC, HPACK and QPACK
 qWxAKSNdTrE	My Database Course
 olWfkVyPMa0	I discuss passion, time management and more
-iu40ThXsE8E	Long Polling - The Backend Engineering Show
 iconx8bAmVk	Bloat in Databases
 h9LYokF5K0k	WebTransport is a Game Changer Protocol
 SBHxEb4E0S4	Aging tech
 PQcIfqE85Co	Primary Key vs Secondary Key - What you probably didn't know 
-Fac-gzudFIA	Key vs Non-Key Column Database Indexing
 F2njOSJ59x0	NVMe is awesome
 9wC8l4zzPxc	On being content creating content
 2EFvf-26lVA	Distributed systems, low level OS
-1I7yT5GzAZs	node http is beautiful
-abUaM6iuElU	HTTP Graceful shutdown | The Backend Engineering Show
 yGjGc21mmoU	Asynchronous IO in Postgres 18 | The Backend Engineering Show
-ugAZsDdmwJQ	Load balancing WebSockets Streams efficeintly
-iCFlT2Xs-LY	New Course Alert - Scalable Real-Time Backends with WebSockets
 l04CMEwBAD0	The Anatomy of Node Packages
-SyrgSKEi4Sc	Kernel TLS | The Backend Engineering Show
 iV5fajdpb7c	Network Routing Crash Course
 WpIsAZwKA64	Does discipline work?
 rn8r1RdhEUQ	Socket management and Kernel Data structures
 4GmJMktMFGw	New Course - Node Internals and Architecture
-5aRamFLgtis	The genius of long polling
-beDiiWE8ESM	Where http2 hits its limit
 ZIORoo5oXlI	Backends can now process requests faster now in Linux
 MK24y7AmKTc	Advanced MySQL Index Locking Explained
-S-5Sx561jnk	Spin an HTTP/3 Reverse Proxy (using mitmproxy)
 OoXN1wY2LrI	Six stages of a good software engineer
 -kUgcdJ84Dg	When do you use threads?
-Ou-4rfillYo	Cloudflare's 150ms global cache purge | Deep Dive
 s-xeAEVdWbs	MySQL is having a bumpy journey
 cOYK3nbpa2w	The Beauty of Assembly
 0Ih7FhVZ21s	SQL IN clauses are miles faster in Postgres 17
@@ -68,12 +50,9 @@ ERaGORGfLF4	How many kernel system calls do runtimes make?
 2GAQVXGT_Zw	Frontend and Backends Timeouts
 1KzcJXNSzgE	Sequential Scans in Postgres just got faster (Postgres 17 feature)
 KXg89DnfIZg	Windows vs Linux Kernel performance on unreachable  ports
-dbcfD5AZrHc	Running out of TCP ports
 0UjIAcwkT8o	IO uring gets Zero Copy network operations
 93Q1vPe-z00	They made Python faster with this compiler option
-QAq3HRMmdbo	They made Kafka 80% faster by switching file systems
 gEsEl_NZORQ	Fundamentals of Operating Systems
-qo1FFNUVB-Q	Google Patches Linux kernel with 40% TCP performance
 WpMwuo13-7w	Cloudflare Open sources Pingora (NGINX replacement)
 wsmy-PsH5K8	The Beauty of Programming Languages
 la2R7m8_y8c	Watch out for defaults - A Short PostgreSQL Story
@@ -83,13 +62,8 @@ hVyI4ppUZRs	How a Machine Becomes a Router | ip_forward
 MN2jIUonuQQ	The Real Hidden Cost of a Request
 ykVumkmkbik	Why create Index blocks writes
 E3hEAEJt3fU	Create Index DDL
-DWC0ELc6oIE	Before you move to HTTP/3 ...
-rIcahiIklSk	Deep dive on how static files are served with HTTP (kernel, sockets, file system, memory, zero copy)
-1ezrBsJCVqw	Encrypted TLS Client Hello | The Backend Engineering Show
-OAOQ7U0XAi0	The effect of Random UUID on database performance
 BTD5I1BMx2Q	How CPU Efficient is your App?
 Mc7hAjgFBvY	How does the Kernel manage backend Connections?
-gSQoA4SYhJY	What happens before the Backend gets the Request
 YPorP8BsF_c	They Enabled Postgres Partitioning and their Backend fell apart
 Urf281FtfEI	New course alert - Unlocking Backend Performance
 SEF8VBYlLik	WebTransport is a Game Changer Protocol
@@ -104,23 +78,15 @@ xsLqf1Qomn0	The Cloudflare mTLS vulnerability - A Deep Dive Analysis
 WUNu24bM9sE	GitHub SSH key is Leaked - How bad is this?
 ASfMqrE0ISg	How Linus Tech Tips got hacked
 URwmzTeuHdk	All Postgres Locks Explained | A Deep Dive
-19Et2M3amA4	Pinterest moves to HTTP/3
 DaU1-XoANig	NodeJS Architecture - I/O
 iPXLk5Fk1-U	How Loom Leaked Session Cookies
-xynXjChKkJc	How Discord Stores Trillions of Messages | Deep Dive
 AveRgUrC7FM	Postgres System Columns Explained (ctid, xmin,xmax)
 Q56kljmIN14	PostgreSQL Internal Architecture Explained
-2eXbf8-br0Q	How Alt-Svc switches HTTP/2 clients to use HTTP/3
-OL5mLcJPWVY	yOuR DNS qUeRies wILl eVenTualLy lOok lIKe ThIs (0x20 DNS encoding)
 lCb5BkJOOVI	DropBox Removed their SSDs, got 20% faster writes
 d41wkF1sWuc	Analyzing ChatGPT Backend
-3cpUdppYzJw	How Fast is MySQL on HTTP/3?
 f53-Iw_5ucA	How Shopify’s engineering improved database writes by 50% with ULID
-ONzdr4SmOng	MongoDB Internal Architecture
 ebx9JmlGWW8	How UI/UX can break the backend
-FYcO4ZshG8Q	How DNS and DHCP Servers Communicate (With wireshark)
 Ael488F_peM	Certificates are Large and uncompressed, this RFC fixes it
-75XEK-P-yGI	Google pushes TCP Protective Load Balancing to Linux Kernel 6.2
 1WWOWsCIwXE	Thankfully, It’s not Heartbleed
 6nlazL_yhK4	New Udemy Course - Fundamentals of Backend Communications, Design Patterns and Protocols
 OU6xOM0SE4o	Docker Networking Crash Course
@@ -130,42 +96,28 @@ QbOAHkaFU6w	Cloudflare is moving away from NGINX | The Backend Engineering Show
 CZw57SIwgiE	Threads and Connections | The Backend Engineering Show
 NCePGsRZFus	Memcached Architecture - Crash Course with Docker, Telnet, NodeJS
 sYHqusaPNWA	Is SmartNIC a game changer for network performance? | The Backend Engineering Show
-r9kbjAN2788	Slow Start vs Congestion Avoidance in TCP
-p6wwj0ozifw	Consistent Hashing | The Backend Engineering Show
-nEFOni_87Yw	It’s Time to replace TCP in the Datacenter | The Backend Engineering Show
 phQc-eukrKw	ByteDance makes Linux kernel reboots faster
 g_tmQ5G-T2w	tcpdumping my NodeJS app
 2dMuXTB2YPQ	This dangerous OpenSSL vulnerability can easily be triggered | CVE-2022-2274 Explained
 NVwCPNSovdE	nulls are weird, Postgres15 makes them slightly better
 D4M7jTwhevo	This decades old Linux function is now 4 times faster
-yYWxOJR5ZbA	Amazon Aurora Supports Postgres 14
 qXDhMJCuDEc	Index Fill Factor | The Backend Engineering Show
 czSIB8czedE	Canada Rogers ISP Internet Outage - Early report and speculation
-iEuz5hPVNXk	HTTP 103 - Early Hints
-4ZiFKWOPvoc	YugabyteDB supports read committed isolation
 AI0TCXoxEDk	Twitter Backend is slow
-KwpV-ICpkc4	Mutual TLS  | The Backend Engineering Show
 BDhSos_TZRU	Cloudflare Outage Analysis - Jun 21 2022
 8oUiOj-PJIU	Cloudflare went down - Jun 21 2022
-mgcv4UR3jKU	HTTP Request Prioritization (RFC 9218) | The Backend Engineering Show
 aBuERMIJhZk	What is a zero day attack?
 bYi9EUQ_e8Y	This project could free millions of IPv4 addresses, but is it worth it?
-S7Ifw5XsypQ	UDP hole punching | The Backend Engineering Show
 7-ZB7vnpE5o	Software Engineering and Nursery Rhymes
-llRX_34X8WY	Linux Big TCP might change the game for Google (and other cloud providers)
-uHvR7nOu5m4	Redo, Undo and WAL logs | The Backend Engineering Show
 zaQ8uEM5ogU	The software engineer mental health
-eltn4x788UM	Distributed Transactions are Hard (How Two-Phase Commit works)
 PT_qEhesKW8	Why 0177.0.0.1 is also localhost
 msmdMLK4BqI	The Lifecycle of an HTTP Request in NodeJS
 t2PvSi-5xzI	Coding a NodeJS HTTP Server (no IDE, no debugger, no editor, without Express, with baby sleeping)
 HinCxBt6mNY	Why this query is fast
 yS4qcYmJauM	This tool is neat
 yqZDurNOmNI	WhatsApp went down (early report/analysis) April-28-2022
-tgWx81_NGcg	DNS is beautiful
 o5S0-_vniiM	The Beauty of the Internet Protocol
 xpOeDGrZQ1I	New Udemy Course - Fundamentals of Networking for Effective Backends
-jIA7z1gxuc8	Caching is hard
 7lYnzRkVVLE	package.json is not enough
 CjUdp1UY3uM	The limitations of today’s SSDs | The Backend Engineering Show
 kVYgN1D2FlA	Google thinks Linux is slow to reboot, so they patched it
@@ -178,33 +130,21 @@ mZEm3o2WSgk	Why the next Chrome version will break websites
 9bSC9n55ZjQ	Should NodeJS support HTTP/3?
 MxFt3YsjyQg	I like this Backend
 8x4AjUoGErc	Canada's Banks 2022 Outage
-Fwv_85YRovQ	Accessing SSDs through TCP - NVMe over TCP
-iu8k5DrM_J0	What does it take to break Bitcoin’s encryption? | The Backend Engineering Show
 khwGOOCAnkY	NodeJS introduces HTTPS Import from URLs
 gXdisQwnGc8	Can you outperform this website? | Devtooling Hacker News
 XtIDFaFU_po	First port your computer hits
 NzKcLB0_uAY	Spotify Web is bloated - Devtooling Spotify
 fnR215jy-X8	Database page splits | The Backend Engineering Show
-rjZpGc9xWlM	How Instagram content is served through GraphQL - Devtooling Instagram
-IhrBgoVIoT4	Multi-tenancy architecture | The Backend Engineering Show
 N8goWkeBu1w	Is ULTRARAM a game changer? | The Backend Engineering Show
 JhIgiAiomsw	My website went down (enom outage analysis)
 0_AQZbvxH2s	Low code | The Backend Engineering Show
 k13LpTPdxt4	Tech I want to explore in 2022
-2df8PMfajDQ	How TikTok short content is delivered through HTTP - Devtooling TikTok
-K2qV6VpfR7I	The Journey of an HTTP request to the Backend | Backend Engineering Show
 _k-QAPwajRo	Log4DoS - New Denial of Service discovered in log4j | The Backend Engineering Show
 WI1qJW67aZQ	Detailed analysis on the Amazon US-EAST-1 Outage | The Backend Engineering Show
 77XnEaWNups	The Log4j vulnerability | The Backend Engineering Show
-Jemuod4wKWo	what is a database index?
 qcInj-XW1Vc	Postgres index bloat | The Backend Engineering Show
 oebtXK16WuU	when indexes are useless | The Backend Engineering Show
 omizQEkTcl4	The cost rolling back transactions (postgres/mysql)
-X7AQ_f-ki3s	Its all WebSockets! - Devtooling Twitch
-fKO0Me_t2So	Why do Web servers allow you to disable QUIC and HTTP/2
-BFwTpQeblgs	TLS and HTTPS Options in Microsoft IIS
-tvuZ-wqSTi0	On Graph Databases | The Backend Engineering Show
-ZlTjwVYnbLw	SSL Certificate Revocation | The Backend Engineering Show
 JODWEal5vko	Detailed analysis on the facebook outage
 PsLNQaY5SqE	What really caused the 2021 facebook outage (summary)
 xdYhwW2-6_A	Facebook, WhatsApp, Instagram are down here’s what might’ve caused it (early report)
@@ -212,26 +152,15 @@ KGbwkbaCwss	backend leaking Postgres database connections - what I did to fix it
 o0y347Qfckc	large cookies
 IjJtmfjp1Ls	Identifying backend connection latencies with chrome devtools
 Ix-c2X7dlks	Building an upload backend service with No libraries, No forms, just vanilla JS with progress)
-AYSxxO2yZp8	How Airline WIFI allows Texting but not Media in WhatsApp/iMessage
-GRGYXJn08W8	There is more to node http server listen
 2R5jfLDudgw	Spook.js - This will bloat Chrome even more | The Backend Engineering Show
-aTThXMRxmiE	node http is beautiful
-DDMAO88MWko	SSL Striping | The Backend Engineering Show
-1xJXTJzp7Mw	TCP/IP turns 40 | The Backend Engineering Show
-pV06O5FIeuU	gRPC over HTTP/3 is finally a thing | Backend Engineering Show
 TWlJlZKokAs	KeepAlive | The Backend Engineering Show
-gCvEHt4kbqI	my initial thoughts of the multi-path TCP (mpTCP)
 B2G49HZxnRE	The Anatomy of a Proxy Server | The Backend Engineering Show
-MBzcgNaXjvc	How Redis efficiently snapshots gigabytes of memory to disk (forking)
 uFbMtOdjEOE	Table Clustering in MySQL and Postgres - The pros and cons
 Vf47Jyt_hqc	Synchronous and asynchronous workloads are everywhere
 RcfyZOx18nQ	Microsoft IIS as a Backend - CPU Throttling in the Application Pool
 WL2NXQmUOC0	Partial Indexing | The Backend Engineering Show
-WSDjjgSP-jA	Turns out MySQL Statement-based Replication might not be a good idea, Lets discuss why
 yk7oeFZ8iPE	fetch is beautiful
-VLTPqImLapM	Can Redis be used as a Primary database?
 fuGNXbfDLKc	Why the Internet went dark for two hours - Let's discuss the Akamai outage
-UaTFCVZPtYk	Microsoft IIS as a Backend - HTTP/HTTPS Bindings
 zt-nGfJwKa0	One regular expression can crash NodeJS
 hEap0fIwaGI	Scaling CPU-intensive Backends - The Backend Engineering Show
 H_zJ81I_D5E	Should you go with an Optimistic or Pessimistic Concurrency Control Database?
@@ -241,30 +170,18 @@ Bgay4hNUSPQ	My thoughts on the ALPACA Attack (Detailed analysis)
 9w23S_fU74s	Facebook Awarded him $30,000 for Finding a Critical Instagram Bug
 p6mqb5FCO0g	Hub vs Switch vs Bridge vs Router (Full Detailed Example)
 iQU39VQfy3s	Zero-downtime restarts are hard to get right
-KmGy3sU6Xw8	My thoughts on the CAP theorem
 VjC7LFS5Woc	Fastly's Outage Took Down Amazon, Reddit, Stack Overflow and many other websites (Early reports)
 VnGYyqh4vgU	The Backend of this Fintech Exposed Users' Personal Information - The Klarna Leak (Full Report)
 y3nXwzEGe3o	13 TB of Dominos Pizza India customers’ data leaked and put on the Dark Web
-vfShdjlyRGg	QUIC is FINALLY a Standard
-WmPKzFYKijM	why it is very hard to cancel an HTTP request
-aE2UPg3Ckck	All Types of Database Replication Discussed
 6THVzuUtwJs	Tor’s Connection Establishment - The Backend Engineering Show with Hussein Nasser
 aAJJORDSlho	i almost burnt out creating software engineering content on YouTube, here is what I learned
-J0okraIFPJ0	Long Polling and how it differs from Push, Poll and SSE - The Backend Engineering Show
 CKCY4GKqxg0	The New Postgres 14 Looks Promising - The Backend Engineering Show with Hussein Nasser
-eNF9z5JNl-A	The OSI Model by Example - The Backend Engineering Show with Hussein Nasser
 ixuSv0k-jWU	Optimizing Communication and Networking in Database Systems - The Backend Engineering Show
-N-uT79a3uSE	If you are using Let’s Encrypt Watch out for this (September 30 2021)
 5Cjt0l2qP7o	This is why Salesforce services went down
 JZ-ivZrsHEc	How HAProxy forwards 2 Million Requests Per Second? - The Backend Engineering Show
 l-kM_IpD_p8	Severe Prototype Pollution Vulnerability found in gRPC Node JS codebase
-Iqx90bjsV34	The Tale of OLTP, OLAP, and HTAP in Data Warehousing - The Backend Engineering Show
-PaQPtvXge0g	Auth0 MongoDB Gets Overloaded Causes an Major Outage
-98B6P_QAh68	Following an HTTP GET / through Switches, Routers, Gateways, and Proxies (Detailed Examples)
 -9ELAtJWUTE	CLEVER! Hackers Sneak Trojan through PING
 KvVYXkJ1huI	This Python And NodeJS IP Address Validation Vulnerability is Severe, Lets discuss
-DXTHb9TqJOs	Publish-Subscribe Pattern vs Message Queues vs Request Response (Detailed Discussions with Examples)
-6NmFI0gULpQ	HTTP Code 502 Bad Gateway Explained (All its Possible Causes on the Backend)
 JIA4ca0afnY	Technical Discussion on VPNs - How VPNs Work, their benefits, and What happens when VPNs are Hacked
 eI_EQNTxF6U	SELECT COUNT(*) is Slow, Estimate it Instead (with Example in Node JS and Postgres)
 UqtuPjHFBgw	Let us discuss the Linux Kernel community and University of Minnesota situation
@@ -275,62 +192,35 @@ tJsBxx1DEGg	These New WhatsApp Vulnerabilities Can Leak Images, Voice Notes, and
 G4w__ZpvUs0	Here is what caused the Hack to PHP Source Code git Server
 iSwJI00Rv2s	Can NULLs Improve your Database Queries Performance?
 Vc6kWFivQtw	Securing Backend Applications (OWASP recommendations)
-z4XdfFscxSk	Browser Caching Best Practices,  When to use no-cache vs max-age without breaking your site
 jsWwFL_iqVM	Write Amplification Explained in Backend Apps, Database Systems and SSDs
-Rd8_pmPpm3s	DNS issue impacting multiple Microsoft services on April’s fool day (with Bonus content)
-aXD4tWbkoJo	Avoid premature Database Sharding
 j264R9JCs9w	Microsoft Just Had its Third Major Outage ( April-1st-2021 )
-RUTjh04pZDs	cURL TLS 1.3 session ticket proxy host mixup Vulnerability
 nhbtUrQ61w0	PHP’s Git Server hacked - Two Remote Code executions added to the source code, let us discuss
-zu97H24zpXU	Watch out before Adding Indexes to Your Table, Your Database Optimizer Might not Use them
 ckEIQdGJ1tc	What happens when your Web Server Private Key is Leaked?
 Phmt8UrofDY	Spectre Explained - The Attack that took the world by surprise in 2018
 aDPQ0_MyRnc	High severity flaw can crash your WebServer when using OpenSSL - Let us discuss
-s-a9-V6o_aU	Researcher bypasses Azure and Cloudflare Reverse Proxy Security - HTTP/2 Smuggling (h2c)
 gMtchRodC2I	When is NodeJS Single-Threaded and when is it Multi-Threaded?
-douKdQRgDEQ	Slack's Migrating Millions of Websockets from HAProxy to Envoy, lets discuss
-wLdxC9gesBs	Why WebSockets over HTTP/2 (RFC8441) is Critical for Effective Load Balancing and Backend Scaling
-i4m06W6ubxU	How HTTP Compression Can Leak Sessions and JWTs - CRIME Explained and how HPACK in HTTP/2 fixes this
 P7EUFtjeAmI	Postgres Explain Explained - How Databases Prepare Optimal Query Plans to Execute SQL
-Cuz5WOSXE_s	Can you Max-out the Connections between Load Balancer and Backend Servers?
 hPbCEHRlYlk	What Caused Microsoft Teams and other services to go down On March 15 2021?
 jUsEDN_yIGQ	The Second Microsoft Global Outage in less than 6 months (preliminary report) - let us discuss
 -CraNvj48J0	iptables Demystified  - Load Balancing without a Load Balancer (no software installation) (part 2)
-qoEq_Ro1wjU	Load Balancing Server-Sent Events (SSE) Backends with Round Robin
-NAdJojxENEU	iptables Demystified - Port Redirection and Forwarding HTTP Traffic to another machine (part 1)
-WqplePFfvuc	Fire Destroys Datacenter in France, Disaster Recovery is critical, let us discuss the OVHcloud Fire
 SJ9Ec1MqhTM	Did you get logged out of GitHub? - Backend Race condition Bug discussion
-XrlfX0duLKQ	Chrome 90 will use HTTPS (port 443) by Default - Let us discuss
 3JdQOExKtUY	Percentile Tail Latency Explained (95%, 99%) Monitor Backend performance with this metric
-YAqX4paeaZw	S3 compliant MinIO Suffers a Server Side Request Forgery vulnerability, lets discuss
 C1Y6P6vDFts	How Database Cursors Help in Fetching Large Result sets from your SQL
 zvNsK3T4dWE	How to Run a Tech YouTube Channel and Enjoy it Without Burning out
-MEAD5JNc_Dw	Phantom Reads in Postgres Explained Compared to Other DBMS
 j0NWlYTmalI	3 New Ways to Crash your NodeJS Server, Update Node JS today! (Feb 2021 Security Update)
-ETYmvjxc1h4	Firefox State Partitioning in Cookies Might End Evil Tracking forever
-KoULlXKK1H8	Serializable vs Repeatable Read Isolation Level - When to use one over the other in Database Systems
 oVitnBgTs14	I’m Trying to Get better at VIM
 JjXUH0VORnE	Getting Started with HAProxy Runtime API to Remove Backends for Maintenance Remotely and More
 SjEChq9Yqpk	cURL creator @Daniel Stenberg threatened - The entitlement towards OSS needs to STOP!
 e3HW7l2dt30	SRE changes HAProxy config, Breaks the Backend and troubleshoots it like a champ - lets discuss
 hi6g-tHNF4Y	A Bug in Stripe Caused by AWS Lambda Serverless Design (Container re-use)
 OVN99SgBGkM	XMPP - Extensible Messaging and Presence Protocol (with Node JS and eJabberd)
-uNjACLXoH5A	How timeouts can make or break your Backend load balancers
-V7FPk4J10KI	Redis In-Memory Database Crash Course
 43g3PF-e4ik	I can’t believe how smart this is! He Hacked Into Apple and Microsoft with this genius trick.
-DQ3D_mplIgY	CQRS is probably the cause of the Microservices madness
-y--0ZXP3qqU	Making TLS Handshake more Secure - The New Encrypted Client Hello TLS Extension (ECH)
 px0i9ihcjuM	Load Balance multiple RTMP Servers to Horizontally Scale Streaming (Node Media Server and HAProxy)
-Y5mWz4vK10A	UUIDs are Bad for Performance in MySQL - Is Postgres better? Let us Discuss
-Zow5-Pa46MY	70GB of Unused Bloated Index Space Freed on Postgres, Here is how they did it
 3H0JhBlZSUk	How do i learn new tech as a software engineer
 PlvMGpQnqOM	The IPFS Protocol Explained with Examples - Welcome to the Decentralized Web
 TsAxgvsPSv4	This Certificate Authority is being banned from Google
-Ts6lx3sImQo	How to Automate Partitioning in Postgres
 8xKS7QQKgzk	SELECT COUNT (*) can impact your Backend Application Performance, here is why
 QQVNVOneZNg	Is SELECT * Expensive?
-Fvv6eEDi66w	Create Index Blocking Production Database Writes? Postgres Solves this with this trick
-7BXsaU42yok	Capture, Analyze and Debug HTTPS traffic with MITMProxy
 rGx8DB2HsuI	This YouTube Backend API Leaks Private Videos - Google paid $5000 to the researcher who found it
 bHjbi8xbOIE	He found a way to Hijack Private Google Docs Screenshots with a clever hack - Google paid him $4000
 73wykKgA6bY	How does NodeJS HTTP Server Looks Like in Wireshark?
@@ -339,125 +229,72 @@ eusHw-mUa8Y	10 YouTube Backend, Protocols, Networking, Database Channels to Foll
 vWPTqGpI22U	Chrome deprecates FTP for good
 PVm0YEEuS8s	cURL Verbose Mode Explained (and how I use it to Troubleshoot my Backend)
 GaqFlqAZE-A	Backend Engineer tries React for first time
-64geP_LAZ5U	The TLS Handshake Explained with Example (the Math)
 dhZ5--R42AM	The 2021 Slack Outage - Detailed analysis of what happened to Slack on Jan 4th 2021
-cgv0UzMv2qw	HAProxy is closer to QUIC and HTTP/3 Support
 qdkmToW3GKs	Create Postgres Table with a MILLION Rows (from scratch)
-ptOmy-SmBYU	Apache Kafka 2.7 is One Step Closer to Killing ZooKeeper
-6dDtN1wk5Qc	Is EventStoreDB the First Native gRPC Database?
 nIracKeqsFk	Show your Backend Engineering Skills To Recruiters - Building a Full Backend Portfolio
 JvrvvI4TViA	WhatsApp’s Ultimatum and New Policy - What WhatsApp Sees And Collects (In Details)
 qgWwp0l0M_0	Have a Node JS Server? Update it Now!
 stn1poCdbdo	2021 technologies i’m excited for (parody)
 O73Yeyc5elg	The Slack Outage (Early Report & Speculations)
 ghAeBRcMif4	My Thoughts on the Clever and Dangerous SolarWinds Hack
-rJ-oG0y1hqE	Bitmap Index Scan in Postgres Explained with Examples (Members only)
 POBmmmFjIe4	Burned by Docker and it was my fault (Postgres issue)
-XgFzHXOk8IQ	The Complete Guide to WebSockets
 WDJRRNCGIRs	dont use offset in your SQL
 TMamxmcurAQ	My Process of Designing and Architecting Software
 BM2B4Zc1xFM	How to Overcome Procrastination as a Software Engineer
 9hzInvEswj0	SSH into Backend Servers without Publicly Exposing Them - SSH Connection Routing with HAProxy
 DDBqT8yCQAc	2020 Retrospective - Goals, Channel Growth, and More Backend Engineering Content for 2021
 MLmmez5GFmE	DevTooling Reddit - 30 minutes Bonus Content (Members only)
-eCenv_MkYOU	How Reddit Delivers Dynamic Content through Varnish Cache Reverse Proxy - Devtooling Reddit
 7H53Peoh_Jc	The 2020 Google Outage (Detailed Analysis)
 59Z3DlSu8tU	What's On My Bookshelf? | Hussein Nasser
-RfolgB-rVe8	How SSH password-less key based authentication work in 4 minutes (with example)
-mBonHTpQO7E	Combining Database Indexes for Better Performance in Your Backend Applications (with PostgreSQL)
 72HS_ZjJPTQ	Postgres Instances hacked and used to mine crypto - Let us discuss how is that possible
 ro-BD3X4fWY	The Google Outage ( Early report )
 g08Omc1wi0s	Certificates Gone Bad! Certificate Revocation Techniques Explained (CRL, OCSP, OCSP Stapling)
-flnw78uhFkE	DNS over HTTPS in 2 Minutes
 oD6HnSKmmVQ	How Apple delivers its website content on Desktop vs Mobile - DevTooling Apple's Website
-L3170mqWac8	Oblivious DoH (oDOH) Introduces a TLS Terminating Proxy with additional Layer of Encryption
 _UUFMAZswhU	Be careful while working with large text fields in Postgres - TOAST
 9yiBLabruZU	Meet mySQL RAPID - distributed, in-memory, columnar, query processing engine by ORACLE
 v1QE3jDCCTk	What Happens when you Search Google Through a VPN?
 xvnY_tS-CtQ	Will AWS Babelfish Succeed in Moving Developers Away from SQL Server to Postgres?
 CDVDWJ5HE2k	We Need a Solution to NPM Trojans - post-install hell
-1-KmLc0c2sk	How YouTube Efficiently Streams Videos through HTTP? - DevTooling YouTube
 mrp1F2rezdw	A Detailed Analysis of The Amazon Kinesis US East-1 Outage - AWS Outage Explained
 ew1IKlkLbv0	Update - Nov 2020 (members only)
 I9v-fCz0HZY	AWS US East-1 Region Experienced Several Outages, What could’ve been the Cause? let us discuss!
-ccemOqDrc2I	Basic Caching Techniques Explained - Spatial, Temporal, Distributed, Write-Through, Write-Back,Aside
-zBS4JMyDxFw	Why Redis Became the Most Popular Database on the Cloud in 2020
 a2vKVSzlmUU	Using GitHub Actions? Watch out for this Command Injunction Vulnerability!
 M17nryMueJI	DO NOT COMMIT .ENV Files! BotNet Harvesting Credentials and API Keys from Public .ENV files
-VgI9P-KneYo	Envoy Proxy Fixes Two Zero Day vulnerabilities  (UDP Proxy, TCP Proxy) - CVE-2020-35470
-B5Vw6H3oSD8	NEW GENIUS DNS Cache Poisoning Attack - SAD DNS Explained
-jvdg-jOYK5E	Is this the end of WebSockets? - The New WebTransport Protocol
-7RMcWFoiAn8	Is FireFox HTTPS only Mode The death of HSTS?
 wznMQxZCpco	NAT Slipstreaming Vulnerability Explained
 Ph_ZsGI4r3Y	Denial of Service through DNS request Discovered in Node JS (CVE-2020-8277)
 6TEwVDNA7bI	DevTools Waterfall Deep Dive - Diagnose Your Backend and Improve the Frontend User Experience
 mUFFbObqNFY	Can't connect to port 5060 anymore? Here is why
-PAJ5kK50qp8	How HTTP Tunneling works, The CONNECT method, Pros & Cons and more
-kAyKmLUUt3c	MEMBERS - What is HTTP CONNECT? Why do we need it? Pros & Cons and the future of MASQUE
 _E43l5EbNI4	Opening Old Wounds - Why Uber Engineering Switched from Postgres to MySQL
-uAfNRJJ_BrA	HTTP/2 Push is Being Removed, let us discuss
 bXQ0HvsWI60	What is a Virtual IP Address? How does it help with High-Availability
 LBgfSwX4GDI	Demystifying the Browser Networking Tab in Developer Tools With Examples
 FExZvpVvYxA	WebRTC Crash Course
-UroWECETMEw	Facebook Moves their Backend and Frontend to QUIC, Wasn’t smooth but it Paid Off, let us discuss
 nkRDmBWDNWk	Chrome Dedicated ROOT Certificate Store is Coming Soon, What Does That Mean To You? let us discuss
 5XCPyXS_Im8	Installing This Twilio Malware NPM Package Opens a Backdoor on Your Developer Machine
-8cXOERg-soY	A New Attack Allows Access to any TCP/UDP service on a Machine behind NAT - NAT Slipstreaming
 TnXqUopa9vk	WebRTC Crash Course (Members)
 Vw1fCeD06YI	Column vs Row Oriented Databases Explained
 UuAY6Lxkppw	Should you become a Full Stack Engineer?
-mL0fzj7e6WU	Uber’s new Backend Architecture for Processing Payments
 e03c3CIGtYU	2 Hours RabbitMQ Course with NodeJS, Pros & Cons, Cloud RMQ, RMQ vs Kafka, RMQ in Wireshark & MORE!
 MbDjrztWtX4	Software Engineering is Overwhelming
 S3tLp_eKjbk	Discord Backend Architecture Discussion
-9aFu7APZQmY	Database Replication Crash Course ( with Postgres 13 )
-T9n_-_oLrbM	Indexing in PostgreSQL vs MySQL
 wMbTHFXImzI	PostgreSQL 13 Has Some Performance Boosts! Let us discuss it!
-9v3GqKtbqzQ	Explaining Key vs Non-Key Column Database Indexing and How it can Improve Performance
-86olupkuLlU	Why Discord Moved from MongoDB to Apache Cassandra, Let us Discuss
-lR1uHVS7I-8	Why Application-Layer Protocol Negotiation (ALPN) is Critical for HTTP/2 Backends
 NsIeAV5aFLE	We Need to Discuss the Microservices Madness - Scaling with Common Sense
-xsPBT5gIQac	Index Scan vs Index Only Scan on Database Systems (with Postgres)
-sitUYx2EfhY	Database Partitioning Crash Course (with Postgres)
 zGvazErsoH0	I got served an Instagram Ad after browsing this website? Let us discuss how that’s possible
 bydpDpOTm8s	Why you Shouldn't Implement Features Because They are Easy - Backend Engineering
-76sgBHUl7iI	HTTPS and HTTP/3 negotiations are now Faster thanks to Cloudflare, RIP HSTS, Let us Discuss
--qNSXK7s7_w	Database Indexing Explained (with PostgreSQL)
 0ozri9APCv0	Microsoft 365 Outage, What Happened and What Caused it? Let us discuss
-3E7HF26XNfU	When to Build a Stateless vs Stateful Back-ends using the right protocols (UDP,  HTTP, TCP,  QUIC)
-sakebksjnGo	Russia Follows in China’s footsteps and attempts to block TLS 1.3, ESNI, DoH & DoT, let us discuss
 04dQxHb5rQ4	Casting to your TV, Roku or Game Console? Watch out for this major DANGEROUS FireFox bug!
-5_pmFByqoz4	GoogleBot Crawler Now Uses HTTP/2 to Index the Web, Let us discuss how this affects our Back-end ..
 JI0lCQZLV2U	How I Got "Slightly" Better at Communicating my Ideas Effectively as a Software Engineer
 qYshJmuqYi0	My Opinion on the “Stop Using React” Article
 wj7KEMEkMUE	Best Practices Working with Billion-row Tables in Databases
-17a2w7kp3rg	Another Unsecured ElasticSearch Cluster Exposed with 900GB worth of private data, let us discuss
-gfq-LG9ZJQA	Twitter System Design - Building the "Follow" Feature
 cALteOt_tvU	How I deal with Stress and being Overwhelmed as a Software Engineer
-Q0irm6xzNNk	Unimog - The Cloudflare Kernel Layer 4 Load Balancer is an interesting Tech. let us discuss!
-B2VEQ3jFq6Q	WOW! HTTP/2 Clear Text (h2c) Smuggling is a SERIOUS flaw and very easy to Execute, Let us discuss!
 emRw8Lg3vys	Backend Engineering Content - Where to Start?
-e5uAhoT1hhU	Kafka Consumer Group is a Brilliant Design Choice and We should Discuss it
 o-EkdZW4zbA	Is there a Limit to Number of Connections a Backend can handle?
-G86axGfnWag	When to use UDP vs TCP in Building a Backend Application?
-sXjWTLMGmVY	Doordash moves their Backend to Apache Kafka from RabbitMQ, VERY interesting! Let us discuss it!
 QsSlvkugdkY	I Hate YAML, Envoy Was Interesting, Do I Hate Traefik?
-CUiBVTcgvBU	Your Backend Might not Be Ready for HTTP/2 - Watch This Before Implementing it
 HVWlMNTNcF4	Wiresharking Secure Shell (SSH) - Spoiler alert 🚨 : its chatty
-40gKzHQWgP0	Envoy Proxy Crash Course, Architecture, L7 & L4 Proxying, HTTP/2, Enabling TLS 1.2/1.3 and more
 2yVq2AyroJI	Envoy Proxy Outline (Members only)
 J9AYpmw8E7A	I finished Researching Envoy Proxy here is what I think, Let us Discuss
-iLHhL-vAPqo	TLS Passthrough Explained
-rMO35XQXuLA	Cloudflare fixes a HUGE limitation in HTTP/2 upload implementation in  NGINX - Let us discuss
-4QiD8cvzCN0	A SameSite Cookie Exception was made to avoid Redirect Loop in Single Sign-On (SSO) Let us Discuss
-qpC1YH0FhuY	Inefficient Code in Chrome puts ENORMOUS load on DNS Roots Just for a pretty UX, let us discuss...
 kaMeNRP3SKA	Windows 95 is 25 Years Old Today and I am feeling nostalgic, let us discuss
-2tsRAcGac9U	REST API has a major limitation and Vulcain solves it, Let us discuss
-MkK4CstRXU0	Traefik struggle, I know nothing about TLS and more
-LGpv01erDdQ	Chrome is enabling RAW TCP AND UDP Connections! Let us discuss
 m4vatwFryI8	What are Third Party Cookies, How do they work?
 XAyxHlD4uYI	They Web Scraped 235 MILLION YouTube, Instagram and TikTok Accounts and Left their Database Exposed
-I8IlO0hCSgY	Pessimistic concurrency control vs Optimistic concurrency control in Database Systems Explained
 xw4HjtRo1Ik	What caused the cold start performance “dip” in MariaDB .. Let us discuss (@Percona Article)
 apU1j_gWsCQ	Critical Bug in Jenkins - This is why Building a Web Server is Hard
 8z6G9flQevs	My Struggle with the English Language in the US as an Arab Native Speaker and a Software Engineer
@@ -467,88 +304,49 @@ E0TyFbv7gMw	Using History API to Animate URL and hmm what else?
 C6IL8tjwC5E	Traefik Crash Course (Without docker)
 bDIB2eIzIC8	I ask this question to every Backend Engineer I interview
 nHOuakyHX1E	Content Security Policy Can be bypassed in Chrome?
-mSuTmVhQ2fc	Enabling TLS/SSL on PostgreSQL with Docker
-Q8BL2uXVZZY	WOW! China Blocks TLS 1.3 with ESNI - Let us discuss
 4AHBgA8FC6A	Tech Support Scammers are actually Smart Engineers, Annoying but Smart
-naJC-yuCZb8	Wiresharking MongoDB  Decrypting TLS traffic
 J6LxE-D8GNo	FireFox Changes to SameSite Cookie Default Behavior Following Chrome’s footsteps - Great Change
-sL4jGso9c78	Chrome Blocks Downloads For Files Hosted on HTTP (insecure) URLs - GREAT CHANGE!
 hEoV_FjtWhE	Traefik is too complex and hard to understand... let us discuss
 2MXwsOMK3Bg	Your Backend is Also a Frontend (Backend vs Frontend Engineering)
-LXIwIIJUU3Y	How Homomorphic Encryption will revolutionize Software Engineering (Encrypted Database Search)
-cx6D6sKj3JE	How the Twitter Hack really happened? How they got caught and can Homomorphic Encryption help?
 ckraiZ_qa2o	Dropbox migrates to Envoy from NginX - Let us discuss
 XYVWylZqnhM	Join me in a Blind System Design Exercise for Twitter (I make tons of mistakes and learn from them)
 T5nqr5-zIJE	MariaDB vs MySQL SSD NVMe vs SATA Performance - Discussions on the Percona Benchmark
-hEwJUvxEC84	MongoDB and ElasticSearch Clusters WIPED! The Meow attack and how Backend Engineers can prevent it
 btKd-VLzNR0	I started Researching WebRTC and…..
 iyOC5eTiOXQ	Starting a Software Engineering YouTube Channel? This might help
 DsJMDLFw1Ys	One Line of Code can open you for a MITM attack, Let us Discuss
-FUL_Buud7jY	Wiresharking Server-Sent Events
-vQ5o4wPvUXg	WhatsApp handles 3 MILLION TCP Connections Per Server! How do they do it? Let us discuss
-VhTOJedHzHY	TLS 1.1 is Dead … Well Almost! thanks to Chrome 84 - (Deep Dive Analysis)
 lvwTgKxOUf4	Remote Code Execution bug found in Popular Node.js changelog library (I go through the code)
-rgPcxg8gjho	What is TCP Slow Start and how Does it affect your Web Application Performance?
 1sjut9xdg58	My Thoughts on the Massive VPN Leak of 1.2 TB User logs
 6zHWU7zBep0	Best Practices Building Backend Application With Node JS Express and Postgres
 pdC3H8SX-F4	1 Hour of Popular Web Attacks (XSS, CSRF, SSRF, SQL Injection, MIME Sniffing, Smuggling and more!)
 L4rD4CU7R-4	Digicert revokes 50,000 EV Certificates
-CrWizvX1Pkk	TLS Certificates Types - Extended Validation Certificate vs Domain Validated Certificate
 nRjyEezdwsQ	The Cloudflare Outage - What Happened? And my Thoughts
 tClcCMrXzek	SYN Flood Attack Explained
-4HlNv1qpZFY	Server-Sent Events Crash Course
 z4C_w1vkbZg	My Thoughts on The Twitter “Hack”
-3coPpYJgFro	TLS/SSL Certificate Pinning Explained
-3AIswRtblYY	HTML Ping Attribute Explained  ˂ href = ‘http://youtube.com’ ping = ‘http://localhost:8080’ ˃
 skwb7IH9TtY	What is the Largest POST Request the Server can Process?
-NnYQ3vg5X9Q	Wiresharking HTTP/2 - Decrypting Traffic with Wireshark And peeking at Naked HTTP/2 Traffic
-SJq61Rhr6N4	TCP Half-Open Explained
 pD6C1-zSxIM	Cross-Site Scripting Explained with Examples and How to Prevent XSS with Content Security Policy
 7Y_Sh0FKAGo	What is the Largest SQL Query We can Send Before The Database Process Crashes?
-JT3eMp0hme8	Wiresharking RabbitMQ - What Happens when you create a Queue in RabbitMQ behind the scenes ?
 hcw-NjOh8r0	NginX Crash Course
-S6hZcxM3Sz4	DNS Reflection Attack Explained
-pR2qNnVIuKE	Expose Local WebSocket, HTTP and HTTPS WebServers to the Public Internet with Ngrok
-0QHmHR55_Lo	304 Not Modified HTTP Status (Explained with Code Example and Pros & Cons)
-PFllH0QccCs	HTTP Request Smuggling Explained
-UKvK76Rnqus	What is a DDOS Mitigating Reverse Proxy and is it Worth It? (Commenting on a Security Now Video)
-ZNGMifZQHxM	HOW Would TikTok Be Blocked in the US (Technical Details)
 vjWt-PF_6tA	Wiresharking PostgreSQL - SELECT * FROM on Postgres behind the scenes
 T8gic7Hb-dk	A Database User for each REST Route - Best Practices for Backend Application with Postgres
 IJXoEz7HpSY	Wireshark the world, ZeroMQ Research, H2 is nasty, One Year Cert and more
 fD0DgrnFuCo	Spinning a lightweight Postgres instance and Consume it with NodeJS
-G2erltVFchE	What is TCP Fast Open and how can it speeds up your Backend Application?
 eWiqa5SgxeA	Spinning a lightweight RabbitMQ instance and Consume it with NodeJS
 UrwtQfSbrOs	ZeroMQ (ØMQ) Crash Course
-I6TcBmNhB78	Building a Deno HTTPS Web Server with Self-Signed Certificate
 P39KP7fpxQE	How much can you learn about the Backend from its API?
 a7OMdTuYaGc	Cross Site Request Forgery vs Server Side Request Forgery Explained
 rIw6CSnjJsY	Google Chrome and Firefox to Join Apple’s Safari in One Year Certificate Validity (My opinion)
-1Sd1M2-2GCI	Why We Can’t Run Unsecured HTTP/2 on Port 80 - Protocol Ossification Explained
-gejfT1h6LBo	They Turned on HTTP/2 and Regretted it, Let us discuss the Lucidchart Article
-06Kq50P01sI	Wiresharking TLS - What happens during TLS 1.2 and TLS 1.3 Handshake
-r1nJT63BFQ0	What are SSL/TLS Certificates? Why do we Need them? and How do they Work?
 HwhIz-pnyg4	What is a Request?
 QbmOyr0HwnM	Nginx backend upstream timeouts Explained
 Sz7vnUNoBDw	If you feel inspired, act on it. DON'T WASTE IT
 40rjf-1E81M	My Struggle with English, Public IP,  Public Key Cert, Wireshark, Over-engineering and more!
-CPOpPTpMSiE	Multicast DNS Explained
-5tBmkxpeTyE	What Really Happens During a WebSockets Connection - Wiresharking WebSockets
-manTiXESYG0	Server Name Indication (SNI) TLS Extension Explained
-gOEiBliwMUA	Wiresharking CURL - How a single GET request translates to 10 TCP Packets
-dwySzO9xbBI	Why Backend Engineers should Learn TCP Handshake
 wNSZLOabpK4	Keep your Servers Close and Your Database Closer
 HW1uha7h3dY	Overengineering in Software
 aTdGt_Mr4Fk	What Recruiters really look for in a Backend Engineer? (Unpopular opinion)
-bW_BILl7n0Y	What is the TCP 3-Way Handshake and Why Backend Engineers should understand it
 u3i30gMiqs0	A Good Network Engineering Videos Resource Recommendation
-UiaJ_Ek3ds0	Enable HTTP/2 and TLS 1.3 on Apache Tomcat 10 with Let's Encrypt
 b35Dcz91ItE	Building a NodeJS HTTP/2 Server and Secure it with Let’s Encrypt
 BQY1l0rgDSQ	6 NginX FrontEnd Timeouts Explained in Details
 QzvVQ8vRDuM	Database Dead Locks Explained by Example
-gv62vmvyy6s	Two Phase Locking Explained (2PL)
 qWe9YBKSoGQ	DevOps Explained
-HAadSWQpB3s	Can you Cancel a REST HTTP Request?
 x_I6Qc35PuQ	Certificates and Certificate Authority Explained
 13v-eWBlvzY	Can Your ISP block A Single YouTube Video?
 Li3H_4f0w0g	Application Deployment Explained (From standalone EXE to Containers)
@@ -560,37 +358,20 @@ haLxy1e_Hwo	A Bug in Certification Path Validation Causes Many services to stop 
 Vy_9luYaPRM	Carnegie Mellon University Advanced Database Course Is a GREAT resource for Backend Engineers!
 DbxddGtHl70	How Do Databases Store Tables on Disk? Explained both SSD & HDD
 uR4YjsrBj14	The Barebones of Distributed Systems
-NqpM2GYbovo	Is MultiProcessing over a Single TCP Connection a Good Idea?
 8q9k1qzXRk4	Portainer - Lightweight Management UI for Docker
 ZYwrQsBvZtI	Why do we need to call “then” twice on Fetch?
-posIZrz-m7s	When to use a Publish-Subscribe System Like Kafka?
-AjNIlebLMRw	Understand Fundamentals not Tools - WebSockets vs Socket.io, Javascript vs React, Python vs Django
 PTEv9n0vlUo	Identify good software documentation from bad ones
-R4NvQMF58K4	7 Tips to Optimize Your Backend API Without Caching
-YirvKh1jP9k	Database Indexing (Minute Engineering)
 XGOxLyWFfl0	Agile vs Waterfall Software Development Methodologies Explained
-LN_HcJVbySw	What is Kafka and How does it work?
-ylkAc9wmKhc	Layer 4 vs Layer 7 Proxying In Details Explained with Examples
 9iKdn2S41Gs	I should start using mySQL more
 mnuYVi5pcfQ	10 FrontEnd Performance Tips To Improve Your Application (Any Programming Language)
 4OuaONkZw1I	Why Idempotency is very critical in Backend Applications
-0avOYByiTRQ	Load Balancing in HTTP/2 Explained
 gzIcGhJC8hA	Scaling Websockets with Redis, HAProxy and Node JS - High-availability Group Chat Application
-0TA69aD9onM	How WebSockets Work with HTTP/2 (RFC8441 Explained)
 gezpwfbUeUE	What is Machine Learning? (Explained with Example - Occupancy Detection System HOV)
 tp5xBJ2tKpk	When to Switch a Backend Programming Language?
 x8vtmX4vF9I	What is a Multitenancy Architecture and Why Is it becoming popular?
 pG_twkFN6iE	How Important are Algorithms and Data Structures in Backend Engineering?
-5uX3rDRaHXw	URL Shortener System Design (Explained with Two proposed Designs with Pro and Cons of each)
 4NsWnT_-FoE	My Preferred Method of Learning Backend Engineering Technologies
-GriONb4EfPY	HTTP/2 Critical Limitation that led to HTTP/3 & QUIC (Explained by Example)
-fzwkkZp5WcE	No, You Don’t have to Encrypt Passwords before sending POST requests and here is why
-W4_aGb_MOls	What is a Message Queue and When should you use Messaging Queue Systems Like RabbitMQ and Kafka
-4Z3MAsdrEi8	Should RabbitMQ Implement QUIC Protocol for their Channels Message Queue?
-d-Bfi5qywFo	Active-Active vs Active-Passive Cluster to Achieve High Availability in Scaling Systems
-1yeGkoN514k	Can the QUIC Protocol improve Database Performance in Web Applications?
 otkKkFrkN88	Contact Tracing Bluetooth Spec for COVID-19 Explained
-iHNovZUZM3A	When should you shard your database?
 N8f5zv9UUMI	SSH Tunneling - Local & Remote Port Forwarding (by Example)
 V3C0VvNrFZ8	Advice for beginner backend engineers who just started their new jobs in software companies
 rd1VmW7ItD4	System Design in Software Engineering Is An Art
@@ -600,155 +381,83 @@ vJ5cOfiJRgM	Multi-player System Game Design - Pros & Cons of Proposed Designs & 
 0vFgKr5bjWI	Asynchronous vs Multithreading and Multiprocessing Programming (The Main Difference)
 U_RKc2UoMTY	Why you shouldn’t use google.com to search Google
 v2whOJWJSiA	WhatsApp Limits Forwarding of Viral Messages
-hwQbPgvEQyw	How End-to-End encryption Works?
-99YNg8UAesI	What is SSL Stripping?
-gBygn3cVP80	Bloom Filters Explained by Example
 gtxO_niDC5M	Lazy Loading Images with NO SCRIPTS!  (HTML only)
 _t8EPImx9LI	Five Password Authentications From Least to Most Secure (Explained with NodeJS & Postgres)
-SqqrOspasag	Proxy vs Reverse Proxy Server Explained
-JwQTBq3oivw	What is On Demand TLS?
-p8mK8GBCARE	Replication and Clustering in Redis
 NLChKMNyLhc	Vulnerbility Based Denial of Service Attack Explained
 _95dCYv2Xv4	How to Avoid Double Booking and Race Conditions in Online Web Applications
 D-l57G-Qdxk	Chrome follows FireFox steps - Rolling back SameSite cookie change
-H6F4BorD49g	What is a Distributed Transaction in Microservices?
 U8wffcXm-TM	Lazy Loading vs Eager Loading with Node JS & Express
-u4LWEXDP7_M	This is why gRPC was invented
-X9N2MP7D6i0	gRPC - The good, the bad and the ugly
 g7WeY0DZNJ0	Sidecar Proxy Pros & Cons (Explained by Example)
-sh3TPId35Ec	Firefox re-enables TLS 1.0 & TLS 1.1 to allow access to legacy websites hosting COVID19 information
 o4twb5KQRYo	Copying and Pasting Code, Tutorial Hell, Frontend Frameworks, GitHub PR Trolling - Software Chat
-Xkr2nm6UPN8	Why Browsers have 6 active TCP Connections for each website?
-6PrR6SW4QGM	Learning at Home, Consistent Hashing, Empathy with Engineers and More - Software Chat
 NizRDkTvxZo	Setup Active-Passive Cluster with Keepalived & HAProxy (Two raspberry pis)
 V3ZPPPKEipA	How to Become a Good Backend Engineer (Fundamentals)
-SudCPE1Cn6U	What is DNS over HTTPS ?
 Jznz6pYFT30	Blocking Single Threaded Web Server
-EjTFlaFSwro	The problem with error management in GraphQL
 85XY7H2JPbs	Virtual IP Address (VIP) Explained by Example
 qO53PbCUv34	This Javascript code runs on Node JS and the Browser
-BRPvjNQsqis	Spin up an Nginx Docker Container as a Load Balancer
 aUF2QCEudPo	SameSite Cookie Attribute Explained by Example (Strict, Lax, None & No SameSite)
-ibnUI-amsj8	How HAProxy acts as TCP Proxy & HTTP Proxy Layer 4 vs Layer 7
 9sAg7RooEDc	Step by Step Basic Microservices System (3 NodeJS + 1 Load Balancer containers) with Docker Compose
 fHmPUYu296Y	mySQL 8 Atomic DDL is not what you think it is
-uIx_3EGu9FU	The basic components of RabbitMQ
 nuBi2XbHH18	Row-Level Database Locks Explained - (Read vs Exclusive)
-Yw4rkaTc0f8	gRPC Crash Course - Modes, Examples, Pros & Cons and more
 6fUI-hQAmZo	Firefox fixes a bug that prevented users from signing into the Royal Bank of Canada (73.1)
 NMePCdDfUIA	SNI Limitation and Invention of ESNI
-4wwoAzkEBmE	Redis Networking Transport Protocol
 m5JPbz2Nrxg	I'm in love with these new Javascript features - Javascript Optional Chaining and nullish coalescing
-cXxEiWudIUY	Building a Multi-player Game with WebSockets
-grVVuGnN9IE	Firefox deprecates support for TLS 1.0 and 1.1 ( THIS IS GREAT! BUT .... )
-J5NkUQ7XRYA	When to use GraphQL over REST?
 46O73On0gyI	Protocol Buffers Crash Course
-RNloSI2yLp4	Envoy fixes a critical security bug related to HTTP headers with whitespaces
 hVMyRzINrWw	Google blocks Embedded browsers sign ins to avoid MITM phishing attacks
 SB4vdkieqiI	How IndexedDB Works?
 h1TZpWbucj0	Node JS fixes an HTTP Request Smuggling vulnerability
-K2kVi8m38OY	Layer 4 Proxying in NginX
 PfbzNdrecv4	PostgreSQL 12 Top Features Explained
 G-5c25DYnfI	Docker Volumes Explained (PostgreSQL example)
 ULKEr8Bdjlc	Will the New Chrome version 80 finally end Cross-Site Request forgery?
-BB2s8K2fWeA	How do Browsers Force HTTPS with HSTS and How it can prevent SSL Stripping?
 WHv_t_yK-QM	What is NginX and What are its use cases?
-Rf6AfhqJKxg	Scaling and Securing WebSockets with HAProxy
-8EjSLjHhsIQ	gitHub Authorization REST API
-CKrR-pQqtGg	What is Layer 4 Load Balancer?
-rYqmshzB8rc	NginX as a Layer 7 Proxy
-WC2-hNNBWII	NginX Crash Course (Layer 4 & Layer 7 Proxy, HTTPS, TLS 1.3, HTTP/2 & More)
 KOibBdrdyY0	How an HTTP Proxy works and How to Build one? (Node JS)
 P80Js_qClUE	What is a Database transaction?
 CxamHNc3U4A	Hosting 3 WebSites on one IP Address with SNI and HAProxy
 t0zlO5-NWFU	Server Name Indication (SNI) (Explained by Example)
-dhul9MgS12U	HSTS - HTTP Strict Transport Security - Limitations
-zSQtyW_ywZc	Perfect Forward Secrecy in TLS Explained
-hadVnnXHcOo	The Huge Flaw HTTP 1.0 Had...
-cp3Ku1XeOn8	The Bare-Bones of a Service Mesh Proxy
 BMTaucJYe6Q	Port forwarding with DNAT and Iptables
 lk228q9mwrY	New Book Alert - The ! Empathetic Engineer: A short story portraying the software engineer archetype
-clK8Wf4-F5k	How HTTPS Work?
-HX9RsIQktuQ	Spin up Kafka Broker and Zookeeper on Docker
 3v5VLS-oWKs	Spin up a Postgres Instance & PGADMIN with Docker
 Zgy1miPsTNs	Fail-over and High-Availability (Explained by Example)
 1acKGwbby-E	Building TCP & UDP Servers with Node JS
-QA25cMWp9Tk	Horizontal vs Vertical Database Partitioning
 dh406O2v_1c	What happens when you type google.com into your browser and press enter? (Detailed Analysis)
-CNipJ0Z5qA0	Spin up RabbitMQ on Docker
-ZkwKyUZWkp4	Spin up Redis on Docker and learn basic commands
 mqWEWye-8m8	Address Resolution Protocol - ARP
-DFlgyrP5HMY	The good, the bad & the ugly of WebSockets
-LjC-pXALyLM	What is Layer 7 Load Balancer?
 Ey9YHcWdjWQ	Programmatically Open External Ports with UPNP
 J9_oOHGzegk	Getting Started with Jupyter Notebook 📒
-cHtKtfT-WSA	Synchronous vs Asynchronous Clients (TikTok vs Instagram Example)
-qYnA2DFEELw	HAProxy Crash Course (TLS 1.3, HTTPS, HTTP/2 and more)
 -aGM4mfDX48	What does this Browser Built-in API Does? (Beacon)
 6YKbVpWmeLM	What is Collateral Knowledge?
-kYhMnw4aJTw	HTTP Strict Transport Security (HSTS) and TLS Stripping Explained
 K9Qd3UMHUQ4	Database Engines Crash Course (MyISAM, Aria, InnoDB, XtraDB, LevelDB & RocksDB)
 k2caqvBkYv8	Blockchain proof of work Explained & my opinion on this tech
 8nKyNzXAjP8	MySQL and NodeJS Tutorial
--4Lid7tBr6Y	Webhooks Tutorial with Discord and Vanilla Javascript (fetch api)
 npnqyRT77Zc	VPN vs Proxy Explained Pros and Cons
 vmSMrQ8Ev9w	Spin up a lightweight Nodejs docker container running your application
--cWs6eoyaLg	Varnish - HTTP Accelerator Crash Course
-d1fXBLqnFvc	Database Sharding Crash Course (with Postgres examples)
 gIkzx7-s2RU	How Tor Works?  (The Onion Router)
-R873BlNVUB4	Apache Kafka Crash Course
-ryD9IA9i-c8	Can you get Eventual Consistency in Relational Databases?
-fVKPrDrEwTI	How HTTP/2 Works, Performance, Pros & Cons and More
 JHYd1q0-bhs	What I learned from Posting on YouTube for Two years
 O1PgqUqZKTA	Publish-Subscribe Architecture (Explained by Example)
 XCyP8TU6Rkw	Do you REALLY need a VPN?
 qlhqcyB5Spo	Build a Calculator and Learn Javascript by Example in the process
 GTeCtIoV2Tw	Connection Pooling in PostgresSQL with NodeJS (Performance Numbers)
 zhwMv5RxGew	Amazon Alexa is a Stateless Application, Here is Why
-Cie5v59mrTg	RabbitMQ Crash Course
 M9Fs-CCe0Jo	Javascript and Mongodb Tutorial with Mongodb NodeJS Driver
 ZM7gXus7BH8	Javascript Essentials Crash Course for Absolute Beginners (All you need is a browser nothing else)
 oPZjrhf6UlQ	Aborting Fetch API Request
-sVCZo5B8ghE	Redis In-memory Database Crash Course
 hmTl5Y4ee_Y	Building a non-blocking multi-processes Web Server (Node JS fork example)
-fVmQCnQ_EPs	GraphQL Crash Course
-DzyC8lqbjC8	Spinning MongoDB, MongoShell and Mongo GUI with Docker
 whuccl2FNiI	C# by Example Crash Course
-H0bkLsUe3no	SSL/TLS Termination, TLS Forward Proxy Pros and Cons
-t4naLFSlBpQ	Getting started with Caddy the HTTPS Web Server from scratch
-pomxJOFVcQs	Relational Database ACID Transactions (Explained by Example)
 e1KJ47tyCso	Building a Command Line Tool with Javascript
-2Nt-ZrNP22A	WebSockets Crash Course - Handshake, Use-cases, Pros & Cons and more
 JhpUch6lWMw	What are web servers and how do they work (with examples httpd and nodejs)
 lq6ZimHh-j4	How Un-deletable Zombie Cookies work (with implementation example)
-M3XQ6yEC51Q	REST API Pros and Cons (Explained by Example)
-aKMLgFVxZYk	Load balancing in Layer 4 vs Layer 7 with HAPROXY Examples
-x4E4mbobGEc	What is an HTTP Proxy? (Transparent, HTTP and Service Mesh Proxy examples)
 ECukPUUK_74	How public WIFI can be sniffed?
-0OrmKCB0UrQ	Hyper Text Transfer Protocol Crash Course - HTTP 1.0, 1.1, HTTP/2, HTTP/3
 nhwZn6v5vT0	Examples of Stateful vs Stateless web applications with Python
 uuWzk8U4dJE	Port forwarding with NAT and iptables (transparent proxying) - “Run” your webapp on port 80
 RG97rvw1eUo	Network Address Translation - NAT Explained
-iR4jLbG9KXw	TCP Tunneling Applications Pros and Cons (Explained by Example)
-AlE5X1NlHgg	Transport Layer Security, TLS 1.2 and 1.3 (Explained by Example)
 6Tf80mbhyAQ	How much bandwidth do you really need? (Web browsing, streaming and gaming)
 4I7tPW8of2g	Denial of Service Attacks Explained
-Z3FwixsBE94	Symmetrical vs asymmetrical Encryption Pros and Cons by Example
-qqRYkcta6IE	TCP vs UDP Crash Course
-K8HJ6DN23zI	When to use HTTP GET vs POST?
 0JNq46eFuOM	Building a Web API with Express and PostgreSQL to Consume from Browser
 Azo9tDUtC9s	Sql Injection Explained by Example with Express and PostgreSQL
-7IS7gigunyI	The OSI Model - Explained by Example
-sovAIX4doOE	HTTP Cookies Crash Course
 MknF8Oxdug0	Why Programmers use const when declaring variables in Javascript?
 hwN9TogY2TU	Javascript Destructuring assignment
 xBDhb5IPQVk	Javascript By Example L2E02 - Blurred
 yTh6q-k2bEA	Javascript Promises and async/await Tutorial
-5QlE6o-iYcE	github REST API v3 Crash Course with Vanilla Javascript (No dependencies)
 pkMSUlHoiWY	Javascript By Example L2E01 - Canvas
 OCpXTpIyeO8	Javascript By Example L2E00 - Building Space invaders from scratch
-SwYGK--qqWM	Step by Step Sidecar Pattern Tutorial
-zcJWvhzkPsw	What is the Sidecar pattern and why is it heavily used in micro-services
 T-m7ZFxeg1A	Microservices Explained and their Pros & Cons
 BnzZ7nrKlF0	Python and MySQL Tutorial
 kOrGN36ViaU	Spinning MySQL Database with Docker
@@ -768,16 +477,13 @@ C4rooZmyltk	nodejs through my IPhone 📱to my pi
 nHU2NC4vXDs	Turn your laptop into a Web Server to serve static files in minutes with Node Js and Http-server
 2PDkXviEMD0	Step-by-Step Python and Postgres Tutorial with psycopg2
 5QNL7_i-ay8	Spinning multiple Postgres instances and PGAdmin with Docker
-4xGQS8Pv4io	Load Balancing Tutorial with Python and Nginx
 iocs7ls8r-k	3K Subscribers!! Happy Holidays
-S8J2fkN2FeI	Load Balancer vs Reverse Proxy (Explained by Example)
 00bLHDtU7U4	Building Image and File Upload Service With Python
 VxMKVNU7mR0	My New Course Learn Coding by Example with C#
 bLjzzcRcRHQ	Python on the Backend (Announcing my new Python Online Course)
 EKCM1oQQrCM	Understanding State Transfer in REST (Explained by Example)
 W5yfZ6R_Ayk	Javascript By Example L1E08 - CSS, Arrays and Loops
 q38IHVcBBFQ	My New GIS Book 2018 Just published on Kindle - Learn GIS Programming
-DQNW9qhl4eA	Writing a Python HTTP Server with Tornado (Explained with 4 Examples)
 hw3jHk5uOs4	Software Troubleshooting is an Art, here is why
 IViXt1mpYX4	Product Architect vs Solutions Architect #softwaretalk
 igwG2_su-C0	Reverse Engineering Twitter
@@ -785,28 +491,20 @@ cpHPOkqyAk0	User Experience vs API - What Comes First? #softwaretalk
 1T2xcarK5TU	How to become a Better Software Engineer?
 iuynM_7vrd8	Is Coding Easy? #softwaretalk
 r9IZnuZstXM	Resource vs Query String Parameters (Explained by Example)
-NEKImNnYB70	HTTP GET vs. POST Tutorial
 eq6R6dxRuiU	MIME and Media Type sniffing explained and the type of attacks it leads to
 WT7Kc-tSS4s	Popup Modal Dialog with Javascript and HTML
 Bfj6HiTXY4I	Reverse Engineering Instagram feed
 gTGWXcRPpvE	Nodejs Express "Hello, World"
 it8ybkQuAh8	Simple Object Access Protocol Pros and Cons (Explained by Example)
-TgZnpp5wJWU	HTTP Caching with E-Tags -  (Explained by Example)
 93Vz2HfUnTw	Software vs. Hardware AdBlockers (Explained by Example)
 8D1NAezC-Dk	Difference between Client Polling vs Server Push in Notifications
 b7razfltSFM	Database Exclusive lock vs Shared Lock (Explained by Example)
 LMaVIqfb3TQ	What is an Asynchronous service?
-N5Ky-mz6n-8	Synchronous vs Asynchronous Applications (Explained by Example)
 v48Q5Z86CIE	No Excuses
-3IJ5ko8jSIA	Canary Deployment (Explained by Example)
-ozhe__GdWC8	Proxy vs. Reverse Proxy (Explained by Example)
 8qU3hZOXlBE	The evolution from virtual machines to containers
-1o7bB4hUPew	The Benefits of the 3-Tier Architecture (e.g. REST API)
 edB-_JnhoRY	Content Persistence: Examples from Siri, Whatsapp and Twitter
 PQaXd5gqXLo	Dragons Fight Engineers Too
 dVsDBUYA3_Y	Reverse engineering Instagram in flight mode
-AYfwXG4iKOM	Can User Experience Help Build Better Rest API?
-EA1sjQb_qpQ	Phantom Read Phenomena - (Explained by Example)
 _EZ1tQ0yDo4	My Story
 CedNJFB9WGU	See you in the Esri Dev Summit 2018! (Mar-6 till Mar-9)
 bbJhCE83X9g	I Wrote Bad Front-End Code That Broke Chrome
@@ -814,7 +512,6 @@ JGLJimhu_IE	Learn By Doing.
 dj_f1OXuVpg	git by Example - (IG) - #2 - Branches
 2MdaSGgl5XM	Do Developers Build Bad User Interfaces/Experience?
 1cB27B9nYnE	Should Software Engineers Learn Bleeding-Edge Technologies?
-FPELK256liQ	Building Scalable Software - SLA, HS, VS
 vv3TmB6O_9Q	Why JSON is so Popular?
 cXaUoAW3DZQ	Advice for New Software Engineers and Developers
 M7AwXyOxrOc	Javascript By Example L1E07 - Running our Calculator on the Mobile Phone

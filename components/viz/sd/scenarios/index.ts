@@ -9,6 +9,8 @@ import { MESSAGING } from "./messaging";
 import { PROTECTION } from "./protection";
 import { OPS } from "./ops";
 import { SECURITY } from "./security";
+import { GEO } from "./geo";
+import { PAPERS } from "./papers";
 
 /** Sequence scenarios by widget id. Each file holds one chapter's scenarios. */
 export const SCENARIOS: Record<string, Scenario> = {
@@ -22,4 +24,6 @@ export const SCENARIOS: Record<string, Scenario> = {
   ...PROTECTION,
   ...OPS,
   ...SECURITY,
+  ...GEO,
+  ...PAPERS,
 };

@@ -1,26 +1,19 @@
 04AMB6QzdQc	Iceberg Native Batch Queries in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 49
-fQLAKVNOuCg	Accelerated Flink Batch Queries in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 48
 VJmZzClOaaM	Accelerated Paimon Table Maintenance in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 47
 iqGKrcSN52I	Accelerated Iceberg Table Maintenance in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 46
 o8_f4KT1q2M	Apache Doris in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 45
 xnboA__3Tos	Iceberg in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 44
 KDpnRgOghcA	Fluss in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 43
-VHGC7mr30nk	What is Apache Iggy (vs. Kafka)? | Distributed Systems Deep Dives With Ex-Google SWE
-d-vZ90a7ya8	Supporting Flink 1.18 in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 42
 16VA55dqE2g	The Road to Apache Fluss in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 41
 IqFHEdlKMhY	Adding an Apache Paimon Sink to Streamfusion! | Personal Projects With Ex-Google SWE, Ep 40
 4tO0LQfxIlo	Building a fast RocksDB backend in StreamFusion! | Personal Projects With Ex-Google SWE, Ep 39
 GT9k8OSjzX8	Durable Execution (Temporal/Inngest) | Distributed Systems Deep Dives With Ex-Google SWE
-t8c1CocHqEM	StreamFusion Supports Parquet Writing! | Personal Projects With Ex-Google SWE, Ep 38
 KIV9D1Z9fpE	StreamFusion Released! | Personal Projects With Ex-Google SWE, Ep 37
 7aY64SMwGCU	StreamFusion - Managing Streaming State | Personal Projects With Ex-Google SWE, Ep 36
 -aL6CQ2Thlo	StreamFusion - The Road To Prod | Personal Projects With Ex-Google SWE, Ep 35
 rB7_3DCsYDk	StreamFusion State Backend - All Roads Lead To Paimon | Personal Projects With Ex-Google SWE, Ep 34
 X5U_Wg_3ShQ	Sneak Peak Of DataFusion Presentation! Iceberg writes in DataFusion Comet
-MO-7fFjIC3s	Managing Flink Operator State In StreamFusion! | Personal Projects With Ex-Google SWE, Ep 33
-TVhCQPc84Do	Benchmarking StreamFusion - 2x as fast as Flink?! | Personal Projects With Ex-Google SWE, Ep 32
 iw3MQFwGfxs	Introducing StreamFusion! | Personal Projects With Ex-Google SWE, Ep 31
-ZlE9zDpLmIk	New Project! Accelerating Flink With DataFusion | Personal Projects With Ex-Google SWE, Ep 30
 kTpf9aKfJqc	IceStream: Architectural Review | Personal Projects With Ex-Google SWE, Ep 29
 DFlVF-9gB9Q	Benchmarking IceStream! | Personal Projects With Ex-Google SWE, Ep 28
 GoBSzuPNZGE	Iceberg Writes In DataFusion Comet! | Personal Projects With Ex-Google SWE, Ep 27
@@ -28,8 +21,6 @@ uiXi_-1JlZk	Introduction To Vector Search | Distributed Systems Deep Dives With 
 xE7OcI-zmj8	Apache DataFusion Comet In 15 Minutes | Distributed Systems Deep Dives With Ex-Google SWE
 wNgHvBSc11o	Icestream on Object Store! | Personal Projects With Ex-Google SWE, Ep 26
 vo-lHtTsFnI	Introducing Icestream | Personal Projects With Ex-Google SWE, Ep 25
-s0bV9oU2E6g	Iceberg Secondary Indexes in Cassandra! | Personal Projects With Ex-Google SWE, Ep 24
-slDV2jVGdL0	Iceberg Equality Deletes to Deletion Vectors in Spark | Personal Projects With Ex-Google SWE, Ep 23
 puTkJ2YNOlM	Apache Iceberg Summit 2026 Recap/Trends
 0rWEF5_tH4E	Apache Fluss In 15 Minutes | Distributed Systems Deep Dives With Ex-Google SWE
 ZN-Cda1NBqo	Hacking The Iceberg Protocol: IceStream | Personal Projects With Ex-Google SWE, Ep 22
@@ -40,12 +31,10 @@ VNbJ8XYei6U	IceStream - Streaming Writes In Iceberg [Design Doc] | Personal Proj
 A-TDJJRX8Rg	Scrapping (Re-Designing) The DataHarness | | Personal Projects With Ex-Google SWE, Ep 17
 NuxXR-lVxpc	Mooncake - Iceberg For Streaming Writes! | Distributed Systems Deep Dives With Ex-Google SWE
 7JYgNcyEKu0	Partitioning DataHarness Sources! | Personal Projects With Ex-Google SWE, Ep 16
-H38dFWB_Xek	Spark On Icebase - Iceberg Metadata In Postgres (Pt 2) | Personal Projects With Ex-Google SWE, Ep 15
 leh7r_YnZC8	Icebase - Postgres-backed Iceberg Metadata | Personal Projects With Ex-Google SWE, Ep 14
 sY_fH-TK5IA	Professionalizing The DataHarness | Personal Projects With Ex-Google SWE, Ep 13
 sMyPYHRDHe8	Writing My First DataHarness Blog Post! | Personal Projects With Ex-Google SWE, Ep 12
 QQMq51nK5Uk	Adding Postgres as a Data Harness Source | Personal Projects With Ex-Google SWE, Ep 11
-Z0oTEeVjz_A	Building the Data Harness Catalog for Apache Spark | Personal Projects With Ex-Google SWE, Ep 10
 zw4gu0fbVA8	Vibe Coding The Data Harness | Personal Projects With Ex-Google SWE, Ep 9
 S0yO6cSNG60	Bootstrapping The Data Harness | Personal Projects With Ex-Google SWE, Ep 8
 MYi-e3Kd8MI	Building The Data Harness | Personal Projects With Ex-Google SWE, Ep 7
@@ -54,176 +43,59 @@ thqRyZ8xdOw	Thankful for you all!
 Km0_eWETVe0	Coding Trino Time Travel Queries Of CockroachDB (Pt2) | Personal Projects With Ex-Google SWE, Ep 5
 6fyPBLUZDck	Coding Apache Trino Time Travel Queries Of CockroachDB | Personal Projects With Ex-Google SWE, Ep 4
 p16fR9iaWyo	Coding Apache Trino Time Travel Queries Of Hudi Tables | Personal Projects With Ex-Google SWE, Ep 3
-rFcSRe9RZPU	Building Apache Trino Snapshot Reads Of Kafka Topics | Personal Projects With Ex-Google SWE, Ep 2
 tbp0-o9sUfQ	[Design Doc Review] Introducing The Data Harness | Personal Projects With Ex-Google SWE, Ep 1
 jULPA0JYmGk	Almost Time To Start Coding!
-D0g_zEsRPYw	Design Twitter Post Search | Systems Design Questions 3.0 With Ex-Google SWE
-8wDRlS3vJvc	Design Uber/Lyft Location Index (Pt 2, Deep Dives) | Systems Design Questions 3.0 With Ex-Google SWE
-rUAdeHpCPq8	Design Uber/Lyft (Part 1) | Systems Design Questions 3.0 With Ex-Google SWE
-WLVnfPOQIfA	Design Yelp | Systems Design Questions 3.0 With Ex-Google SWE
 hWWSs90RDbY	Quick Channel Update
-IScGMqojqKE	Design a Notification Service (OneSignal) | Systems Design Questions 3.0 With Ex-Google SWE
-Qi3Kzq_rlKQ	Design Dropbox/Google Drive | Systems Design Questions 3.0 With Ex-Google SWE
-IbwgUJcGMnA	Design Facebook Messenger/WhatsApp | Systems Design Questions 3.0 With Ex-Google SWE
-mT3y0k_0ZBQ	[Deep Dives] Design the Facebook/Twitter News Feed | Systems Design Questions 3.0 With Ex-Google SWE
-qogwP78LzAk	Design the Facebook/Twitter News Feed | Systems Design Questions 3.0 With Ex-Google SWE
-RLdh1vQsVIQ	Design the Facebook Like Button | Systems Design Questions 3.0 With Ex-Google SWE
-6TroztUV3f8	Design an Ad Click Aggregator | Systems Design Questions 3.0 With Ex-Google SWE
 V_yOcipUqUE	Design PasteBin | Systems Design Questions 3.0 With Ex-Google SWE
-xFeWVugaouk	Design a URL Shortener (TinyURL, Bit.ly) | Systems Design Questions 3.0 With Ex-Google SWE
 A7xEG6smBAk	Systems Design 3.0 Is Here!
-zplIwqWBhwg	Amazon S3 (Object Stores) - In Practice | Distributed Systems Deep Dives With Ex-Google SWE
-k8_qxgoZ4bg	Redis - In Practice | Distributed Systems Deep Dives With Ex-Google SWE
 Fcb9bJnA9_c	PostgreSQL Scaling - Citus | Distributed Systems Deep Dives With Ex-Google SWE
-51nrFPsNi3M	WarpStream - Kafka on a Budget! | Distributed Systems Deep Dives With Ex-Google SWE
-JDtf4drFTNo	Flink Demystified | Distributed Systems Deep Dives With Ex-Google SWE
-ouVAhSpEdUM	Kafka Consumer Groups - No Code Coordination | Distributed Systems Deep Dives With Ex-Google SWE
-xP7YUk3lP7g	Kafka Raft (KRaft) - When ZooKeeper Fails | Distributed Systems Deep Dives With Ex-Google SWE
-330elaZHWbE	Kafka Replication - Can You Lose Messages?? | Distributed Systems Deep Dives With Ex-Google SWE
-nKLjz1INBMA	Kafka Transactions - *Exactly* Once Processing?? | Distributed Systems Deep Dives With Ex-Google SWE
 dwp8DwRbL40	Three Years Of No Life!
-ddw7_fp05pU	Apache Cassandra - Just a Dynamo Clone?? | Distributed Systems Deep Dives With Ex-Google SWE
-D7DbBRUyTRU	Google Zanzibar - Permissions At Scale | Distributed Systems Deep Dives With Ex-Google SWE
 avDxdsRQkfA	Google Napa Partitioning - Query Time Splits | Distributed Systems Deep Dives With Ex-Google SWE
-x-0gZiR2yqg	Google Dapper - Distributed Tracing | Distributed Systems Deep Dives With Ex-Google SWE
 9TDR-17wFY4	Apache Airflow - DAGs and Batches | Distributed Systems Deep Dives With Ex-Google SWE
 K2UcC1Y4f_A	Trino/Presto - SQL On Everything | Distributed Systems Deep Dives With Ex-Google SWE
-Y8StDey3_6Q	Facebook Memcache - The Need For Speed | Distributed Systems Deep Dives With Ex-Google SWE
-FeFYLKJQxTs	Amazon DynamoDB - No, It's Not Dynamo | Distributed Systems Deep Dives With Ex-Google SWE
 uWvjhAssI6M	Apache Hudi - Streaming Table Formats | Distributed Systems Deep Dives With Ex-Google SWE
-i_400CkR0lk	DropBox Magic Pocket - Blob Stores At Scale | Distributed Systems Deep Dives With Ex-Google SWE
-8WVthsOAJgM	TikTok Monolith - Online Recommendation Systems | Distributed Systems Deep Dives With Ex-Google SWE
-AeZcCcc9bis	Amazon Aurora - Cloud Native SQL | Distributed Systems Deep Dives With Ex-Google SWE
 12QWLde9PJg	Happy New Year!
 q0iYD2eyHEA	Databricks Photon - Fun With Vectors | Distributed Systems Deep Dives With Ex-Google SWE
-49rLFlcm6U8	Borg - Get The Most Out Of Your Resources | Distributed Systems Deep Dives With Ex-Google SWE
-DZwnP_qwAlA	Flink - *Exactly* Once Processing? | Distributed Systems Deep Dives With Ex-Google SWE
-6VbRlQ0rL3I	Debezium - Change Data Capture Made Easy | Distributed Systems Deep Dives With Ex-Google SWE
 cB-vGKZu-eE	Apache Iceberg - More Than A Table Format | Distributed Systems Deep Dives With Ex-Google SWE
 Hyh6QamL-Zo	Apache Arrow - A Game Changer? | Distributed Systems Deep Dives With Ex-Google SWE
 wFfDbN7wTxU	Snowflake - Power With No Tuning | Distributed Systems Deep Dives With Ex-Google SWE
-SN0-VdqvDLU	Spark - Fault Tolerance Made Easy | Distributed Systems Deep Dives With Ex-Google SWE
-3S51y5OwbRQ	ZooKeeper - Better Than Chubby? | Distributed Systems Deep Dives With Ex-Google SWE
-KGNlY7V9xA8	Kafka - Perfect For Logs? | Distributed Systems Deep Dives With Ex-Google SWE
 cOUTsmpd8M0	Mesa - Data Warehousing Done Right | Distributed Systems Deep Dives With Ex-Google SWE
-CXGY1Kxu65g	Photon - Exactly Once Stream Processing | Distributed Systems Deep Dives With Ex-Google SWE
-BNK_JMYoPyc	Spanner - The Perfect Database? | Distributed Systems Deep Dives With Ex-Google SWE
 iYIjJ7utdDI	Systems Design in an Hour
-bx-wLCfnkNY	Megastore - Paxos ... But Better? | Distributed Systems Deep Dives With Ex-Google SWE
-UkL1qYif6hE	Percolator - Two Phase Commit In Practice | Distributed Systems Deep Dives With Ex-Google SWE
-9AEkIg043Kc	Dremel - Columns Are Better | Distributed Systems Deep Dives With Ex-Google SWE
-aay7CzkL_u4	Google SSO - Strong Consistency in Practice | Distributed Systems Deep Dives With Ex-Google SWE
-x2MdvCTWh3o	BigTable - One Database to Rule Them All?. | Distributed Systems Deep Dives With Ex-Google SWE
-haho0XAFoeY	Google File System (GFS) - It's Ok To Fail | Distributed Systems Deep Dives With Ex-Google SWE
-Sj8vo4YmUZI	Chubby - Eventual Consistency Is Too Hard... | Distributed Systems Deep Dives With Ex-Google SWE
-U4dQmL_zu5E	MapReduce - Google Thinks You're Bad At Coding | Distributed Systems Deep Dives With Ex-Google SWE
-TtrmHQCGbb0	Dynamo - Why Amazon Ditched SQL | Distributed Systems Deep Dives With Ex-Google SWE
 8UX0pahoPvo	time for a change
 9YQxB46xbOI	30: LinkedIn Mutual Connection Search | Systems Design Interview Questions With Ex-Google SWE
-rT4sS4l51PY	29: Amazon Payment Gateway | Systems Design Interview Questions With Ex-Google SWE
 3aX-lC5_P1M	28: Bidding Platform (eBay) | Systems Design Interview Questions With Ex-Google SWE
-dGYfpO3WJ1o	27: High Throughput Stock Exchange | Systems Design Interview Questions With Ex-Google SWE
-SAa6xFyATcw	26: Robinhood Stock Trading Platform | Systems Design Interview Questions With Ex-Google SWE
-7KO7o55dcuw	24: Video/Conference Calling (Zoom) | Systems Design Interview Questions With Ex-Google SWE
 i0tPWfB2Rgg	23: Multiplayer Battle Royale Video Game | Systems Design Interview Questions With Ex-Google SWE
 C1XV6Yg4Nm4	Insights From an L7 Meta Manager: Interviews, Onboarding, and Building Trust
-QrZTmiZSRcw	22: Recommendation Engine (YouTube, TikTok) | Systems Design Interview Questions With Ex-Google SWE
-Lp8oITg0MiI	21: Distributed Locking | Systems Design Interview Questions With Ex-Google SWE
-pzDwYHRzEnk	20: Distributed Job Scheduler | Systems Design Interview Questions With Ex-Google SWE
-J-5JozlYIqI	19: Notification Service | Systems Design Interview Questions With Ex-Google SWE
 X83DFlt15Xw	18: Count Unique Active Users | Systems Design Interview Questions With Ex-Google SWE
-nQpkRONzEQI	17: Top K Leaderboard | Systems Design Interview Questions With Ex-Google SWE
-F9lcK1jnAcs	16: Amazon/Flipkart | Systems Design Interview Questions With Ex-Google SWE
 BO2gRisnBcA	15: Reddit Comments | Systems Design Interview Questions With Ex-Google SWE
 p_q-n09B8KA	14: Distributed Logging & Metrics Framework | Systems Design Interview Questions With Ex-Google SWE
-1pmcoh4hc_A	13: Google Maps | Systems Design Interview Questions With Ex-Google SWE
-YCjVIDv0zQY	12: Design Google Docs/Real Time Text Editor | Systems Design Interview Questions With Ex-Google SWE
-sMgxHf9AU_U	11: Design TicketMaster/StubHub | Systems Design Interview Questions With Ex-Google SWE
 BqthxLRyPSg	The Coding Influencer's Dilemma
-giwa8Hc0niY	10: Design Uber/Lyft | Systems Design Interview Questions With Ex-Google SWE
-mMSJO4SrQLI	9: Design Yelp/Google Places | Systems Design Interview Questions With Ex-Google SWE
-MdWvMX4J-Vc	8: Design a Web Crawler | Systems Design Interview Questions With Ex-Google SWE
-VzW41m4USGs	7: Design a Rate Limiter | Systems Design Interview Questions With Ex-Google SWE
 vkLAU23raOI	2024: Still No Life
-MCKX3n4-UR4	6: Typeahead Suggestion + Google Search Bar | Systems Design Interview Questions With Ex-Google SWE
-43bB7oSn190	5: Netflix + YouTube | Systems Design Interview Questions With Ex-Google SWE
--3Ge8EooS3g	4: Facebook Messenger + WhatsApp | Systems Design Interview Questions With Ex-Google SWE
-4wIU4rTV-JU	3: Dropbox + Google Drive | Systems Design Interview Questions With Ex-Google SWE
-S2y9_XYOZsg	2: Instagram + Twitter + Facebook + Reddit | Systems Design Interview Questions With Ex-Google SWE
-5V6Lam8GZo4	1: TinyURL + PasteBin | Systems Design Interview Questions With Ex-Google SWE
 HVfoxkxeNfQ	A Tribute To My Viewers
 kDHb99gTByU	Monolith Vs. Microservices + Docker + Kubernetes | Systems Design Interview with Ex-Google SWE
-fIwOd4PToAY	Long Polling, Websockets, Server Sent Events - Who Wins? | Systems Design  with Ex-Google SWE
-hPSsPCNxta4	TCP vs. UDP in 12 minutes | Systems Design Interview 0 to 1 With Ex-Google SWE
 TnCDJ4eB8fU	Mid Level to Senior SWE: How To Get Your Promotion ft. Jordan Cutler
-PERKHUJYotM	Load Balancing - The Right Way To Do It | Systems Design Interview 0 to 1 With Ex-Google SWE
-0lO2zEHFoh4	What Are Object Stores Used For? [S3] | Systems Design Interview 0 to 1 With Ex-Google SWE
-h5YK640kwXY	Content Delivery Networks - You Need Them | Systems Design Interview 0 to 1 With Ex-Google SWE
-Gyy1SiE8avE	Redis vs. Memcached - Who Wins? | Systems Design Interview 0 to 1 With Ex-Google SWE
 68AVUZqbSLg	You're Leetcoding too much.
-4wEQ9_tkqvE	Cache Evictions: Don't Mess Them Up | Systems Design Interview 0 to 1 with Ex-Google SWE
 p3IdZN3bo3Y	Junior to Mid Level SWE: The Right Way To Get Promoted ft. Jordan Cutler (Part 1)
-ULgXBImWVWQ	Distributed Cache Writes: What You Have To Know | Systems Design Interview 0 to 1 With Ex-Google SWE
 oXnEkq7IlxQ	My first YouTube Beef!  Here's my response
-crPoHnhkjFE	Introduction to Distributed Caching - Systems Design Interview 0 to 1 with Ex-Google SWE
-9BewOp5Gaw8	GeoSpatial Indexes - Why You Need Them | Systems Design Interview 0 to 1 with Ex-Google SWE
-Sdw_D-Gllac	How are Graph Databases So Fast?? (Neo4j) | Systems Design Interview 0 to 1 with Ex-Google SWE
-fUpYLwzGtW0	How are Time Series Databases SO FAST? | Systems Design Interview 0 to 1 With Ex-Google SWE
-wmCWCVAl1Us	What's ElasticSearch Used For? | Search Indexes | Systems Design Interview 0 to 1 with Ex-Google SWE
 ty9DQhM32mM	Search Indexes - Why do we need them? | Systems Design Interview 0 to 1 with Ex-Google SWE
-fYO5-6Owt0w	Apache Flink - A Must-Have For Your Streams | Systems Design Interview 0 to 1 With Ex-Google SWE
-oiPCC8G6ufg	Stop messing up your stream processing joins! | Systems Design Interview 0 to 1 with Ex-Google SWE
 uNlpsUe8cZ0	When you think you're smarter than your interviewer - Ft. NeetCode
-_5mu7lZz5X4	Kafka vs. RabbitMQ - who wins and why? | Systems Design Interview 0 to 1 with Ex-Google SWE
 zqXCzFNol3o	10k subs - Origin and Future of the Channel
-7PjPhgCoT9c	What's Stream Processing + When Do We Use It?  | Systems Design Interview 0 to 1 with Ex-Google SWE
-ZYTZ4JwRZqE	You Should Be Using Spark, Not MapReduce | Systems Design Interview 0 to 1 With Ex-Google SWE
 gqxbQTVgdkI	The *Right* Way to do Batch Job Data Joins | Systems Design Interview 0 to 1 with Ex-Google SWE
-lHp7M078nHo	WTF is MapReduce?? [Batch Processing] | Systems Design Interview 0 to 1 with Ex-Google SWE
-ouxCE6ViVpw	What's HBase and how does it compare to Cassandra? | Systems Design 0 to 1 with Ex-Google SWE
-ix88Zj0asjs	WTF is Hadoop? | Systems Design Interview 0 to 1 with Ex-Google SWE
 Cf0a_otJ0a0	1 Year of Software Engineering - What I didn't realize
-6bxin9cZL_w	MongoDB vs. Apache Cassandra - Who Wins? | Systems Design Interview 0 to 1 with Ex-Google SWE
-YIaYoxqpE7E	Is Google Spanner the BEST Database? | | Systems Design Interview 0 to 1 with Ex-Google SWE
 K-UXF8Y72X8	What's VoltDb and Why Do We Care About It? | | Systems Design Interview 0 to 1 with Ex-Google SWE
 x6-RN-_i5Xs	MySQL vs PostgreSQL - Who Wins? | Systems Design Interview 0 to 1 with Ex-Google SWE
-YgTLqO54UOA	SQL vs NoSQL - Who Wins? | Systems Design Interview 0 to 1 with Ex-Google SWE
-F06tdYgcz_A	What is ZooKeeper? - Coordination Services | Systems Design Interview 0 to 1 with Ex-Google SWE
-FByzF2D_-KU	Distributed Consensus - Raft Writes | Systems Design Interview 0 to 1 with Ex-Google SWE
-Al2JNJBGG30	Distributed Consensus - Raft Leader Election | Systems Design Interview 0 to 1 with Ex-Google SWE
-C_XLEeWUq3M	Linearizable Databases | Systems Design Interview 0 to 1 with Ex-Google SWE
-z-xxLoJAfmY	Consistent Hashing - Rebalancing Partitions | Systems Design Interview 0 to 1 with Ex-Google SWE
-7DoT2sTGulc	Two Phase Commit - Distributed Transactions | Systems Design Interview 0 to 1 with Ex-Google SWE
 Bt8ZMC_Yuys	Introduction to Partitioning | Systems Design Interview 0 to 1 with Ex-Google SWE
-uvRcYQ8fdMs	Replication Summarized in 9 Minutes | Systems Design Interview 0 to 1 with Ex-Google SWE
-DAONthD50g0	Quorums - Leaderless Replication Continued | Systems Design Interview 0 to 1 with Ex-Google SWE
-Jy4Cm2WEZVg	Leaderless Replication Introduction | Systems Design 0 to 1 with Ex-Google SWE
-FG5Varj1Ows	CRDTs - Stop Worrying About Write Conflicts | Systems Design 0 to 1 with Ex-Google SWE
 sa4BJAFT8sU	Dealing with Write Conflicts - What do you do? | Systems Design 0 to 1 with Ex-Google SWE
-tffuvQtiTwY	Multi Leader Replication - chaos | Systems Design 0 to 1 with Ex-Google SWE
-8h-a7TsXw28	Single Leader Replication - how it works | Systems Design 0 to 1 with Ex-Google SWE
-Y29yuEoBmjM	Dealing with Stale Reads - Make Your App Better | Systems Design 0 to 1 with Ex-Google SWE
-FIPCDRRBGz4	Intro to Replication - Systems Design "Need to Knows" | Systems Design 0 to 1 with Ex-Google SWE
 E7Gk8etqkgU	Data Serialization Frameworks - You Should Be Using Them | Systems Design 0 to 1 with Ex-Google SWE
-Zt7rqtJ3uWA	Column Oriented Storage (with Parquet!) | Systems Design Interview: 0 to 1 with Ex-Google SWE
-4TAKYRzm_dA	Serializable Snapshot Isolation | Systems Design Interview: 0 to 1 with Ex-Google SWE
-gB7qazeSD3k	Database Internals: Two Phase Locking | Systems Design Interview: 0 to 1 with Ex-Google SWE
 siqTIPMWgv0	Quitting Google after 8 months - My thought process
 XT8JMzdlWUI	Day in the life of a Google Software Engineer (NYC)
-kN_rOaNZBng	Achieving ACID: Serial Execution | Systems Design Interview: 0 to 1 with Google Software Engineer
-eym48yrObhY	Write Skew and Phantom Writes | Systems Design Interview: 0 to 1 with Google Software Engineer
 Tgpa9TrxsfU	Snapshot Isolation | Systems Design Interview: 0 to 1 with Google Software Engineer
-oS60pr8H1e0	Read Committed Isolation | Systems Design Interview: 0 to 1 with Google Software Engineer
-oGmxzUBCYtY	Intro to ACID Database Transactions | Systems Design Interview: 0 to 1 with Google Software Engineer
 QO7KTO-8RWM	Indexes Concluded | Systems Design Interview: 0 to 1 with Google Software Engineer
-ciGAVER_erw	LSM Tree + SSTable Database Indexes | Systems Design Interview: 0 to 1 with Google Software Engineer
 I1wQsY-Nh_k	How do Hash Indexes work? | Systems Design Interview: 0 to 1 with Google Software Engineer
-LzNdvuj3a5M	Database Indexes: What do they do? | Systems Design Interview: 0 to 1 with Google Software Engineer
 bwt09KXDH94	What is Systems Design? | Systems Design Interview: 0 to 1 with Google Software Engineer
 _KVubjCHMNU	Acing Your Behavioral Interview | Google SWE Mentors Viewers Ep. 4
 K9YBNulhXmk	What you need to know for your FIRST software engineer interview | Google SWE mentors viewers | Ep3
 LJ72DPs6QGQ	Mentoring My Viewers - Can I help them get SWE jobs? | Introduction | Ep1
-6GebEqt6Ynk	Choosing a Database for Systems Design: All you need to know in one video
 1chGrWLoK5E	Design An Air Traffic Controller | Google SWE Teaches Low Level Design Episode 6
 nmYx6tQxtSs	Design A Limit Order Book | Google SWE Teaches Low Level Design Episode 5
 -TSwjzJB74k	Design A Parking Garage | Google SWE Teaches Low Level Design Episode 4
@@ -233,80 +105,22 @@ syRJMPRYtnM	Counting the number of jobs I applied to before getting a Google off
 Mw0fHf7d-38	TicTacToe | Google Gigachad SWE Teaches Low Level Design Episode 1
 1j7Wj5Jl3yg	L8 Software Engineer Explains: What's the right time to leave your job?
 IvDoD8DpCMM	EP1: Arrays & Lists | Google SWE Teaches Data Structures and Algorithms
-e2iK8pUP9Vs	Distributed Message Broker Design Deep Dive with Google SWE! | Systems Design Interview Question 27
 TuKjdj9YXns	Count Unique Active Users Design Deep Dive with Google SWE! | Systems Design Interview Question 26
-WTxG5880EH8	Distributed Job Scheduler Design Deep Dive with Google SWE! | Systems Design Interview Question 25
 PtHHbbc7tfI	Most Software Engineering Influencers are Trash
-szw54UbPJRE	Distributed Locking Design Deep Dive with Google SWE! | Systems Design Interview Question 24
 b4awhnG4R3M	Shazam Audio Recognition Design Deep Dive with Google SWE! | Systems Design Interview Question 23
-TpugGhXhdaU	Notification Service Design Deep Dive with Google SWE! | Systems Design Interview Question 22
 YcKf7BT8v8Y	MMO Video Game (Fortnite) Design Deep Dive with Google SWE! | Systems Design Interview Question 21
-ZAIBFf8KpgI	Recommendation Engine Design Deep Dive with Google SWE! | Systems Design Interview Question 20
-XbkjEX-jgj0	Top K Leaderboard Design Deep Dive with Google SWE! | Systems Design Interview Question 19
-vNDz6jqtR40	Amazon/Flipkart Ecommerce Design Deep Dive with Google SWE! | Systems Design Interview Question 18
-Pkl9RHq0yDk	Zoom/Skype Video Chat Design Deep Dive with Google SWE! | Systems Design Interview Question 16
-erusCJu6CQY	Low Latency Stock Exchange Design Deep Dive with Google SWE! | Systems Design Interview Question 15
 _KoiMoZZ3C8	Distributed Metrics/Logging Design Deep Dive with Google SWE! | Systems Design Interview Question 14
-WXxExjI9FnM	Google Docs Design Deep Dive with Google SWE! | Systems Design Interview Question 13
-A-GcQwo434w	TicketMaster Design Deep Dive with Google SWE! | Systems Design Interview Question 12
-CI4j-uo58nQ	Uber/Google Maps Design Deep Dive with Google SWE! | Systems Design Interview Question 11
-dSuYtpk59OY	Yelp Design Deep Dive with Google SWE! | Systems Design Interview Question 10
-cud-wqZwEk4	Web Crawler Design Deep Dive with Google SWE! | Systems Design Interview Question 9
-eUvwRAxmEgY	Twitter Search/ElasticSearch Design Deep Dive with Google SWE! | Systems Design Interview Question 8
-MDH7xybVr8o	Rate Limiter Design Deep Dive with Google SWE! | Systems Design Interview Question 7
-1moO3rn42uk	Typeahead Suggestion Design Deep Dive with Google SWE! | Systems Design Interview Question 6
-PmryH1_NulU	Netflix/YouTube Design Deep Dive with Google SWE! | Systems Design Interview Question 5
-2Ejdj6QdDD0	Messenger/WhatsApp Design Deep Dive with Google SWE! | Systems Design Interview Question 4
-B9DBB7-Z9gg	Dropbox/Google Drive Design Deep Dive with Google SWE! | Systems Design Interview Question 3
-bOhQLr7nbhQ	Twitter/Instagram/Facebook Design Deep Dive with Google SWE! | Systems Design Interview Question 2
-f5Z7sbkwEwc	TinyURL/PasteBin Design Deep Dive with Google SWE! | Systems Design Interview Question 1
 IY2EPjShgc4	Google SWE teaches systems design | EP50: Approaching Interview Questions
-2APFrmoqxKc	Google SWE teaches systems design | EP49: Neo4j (Graph Databases)
 hUHw4OnPGCA	Google SWE teaches systems design | EP48: Bitcoin
-uOKrTc3Q0D0	Google SWE teaches systems design | EP47: Collaborative Text Editing (operational transform v. CRDT)
-W2PlBX81XyA	Google SWE teaches systems design | EP46: Certificate Transparency (SSL/TLS)
-vPP2aoY7D4E	Google SWE teaches systems design | EP45: TCP versus UDP
-Ne9Gq3dQpW8	Google SWE teaches systems design | EP44: Apache Parquet
 Dt1trw66IAc	Google SWE teaches systems design | EP43: Data Serialization (Protocol Buffers, Thrift, Avro)
-FaTB91EQGzM	Google SWE teaches systems design | EP42: Merkle Trees
-a5pesP6ezRM	Google SWE teaches systems design | EP41: Bloom Filters for set approximation
-YgxiRs4y4q0	Google SWE teaches systems design | EP40: Flink in 15 Minutes, Stateful Stream Processing!
-BsqM_neLJbM	Google SWE teaches systems design | EP39: Apache Spark
-c4F7Tfzl198	Google SWE teaches systems design | EP38: WebSockets, Long Polling, Server Sent Events
 YSA9BcrAehA	Google SWE teaches systems design | EP37: Monoliths vs. Microservices
 hoEhM9s3FNQ	Google SWE teaches systems design | EP36: VoltDB
-ZEh0A6O72Kw	Google SWE teaches systems design | EP35: MongoDB
-VBFAphx6kkM	Google SWE teaches systems design | EP34: Amazon Aurora
-wJcG1Rzr8i4	Google SWE teaches systems design | EP33: Load Balancing
-y6mnZKls3iI	Google SWE teaches systems design | EP32: Google Spanner
-w2USXdq58Yc	Google SWE teaches systems design | EP31: Content Delivery Networks (CDNs)
-fQvSKpeABxQ	Google SWE teaches systems design | EP30: Chain Replication
-VXWcNGxKMq4	Google SWE teaches systems design | EP29: Geospatial Indexes
-_pZ7VNO1UDs	Google SWE teaches systems design | EP28: Time Series Databases
 DTUSFVfjRQA	Google SWE teaches systems design | EP27: Search Indexes
-g1mLKeEPgWU	Google SWE teaches systems design | EP26: Redis and Memcached Explained (While Drunk?)
-JIAAlb3AtjA	Google SWE teaches systems design | EP25: Distributed Caching Primer
 5P6omeGwQ8c	Google SWE teaches systems design | EP24: Riak Explained
 xR7-H1EMDJc	Google SWE teaches systems design | EP23: Conflict-Free Replicated Data Types
-Pd3sIbWzlHw	Google SWE teaches systems design | EP22: HBase/BigTable Deep Dive
-3-_652dKCIY	Google SWE teaches systems design | EP21: Hadoop File System Design
 xTHPZo8xQlY	Google SWE teaches systems design | EP20: Coordination Services
-VnLAyZHBO6o	Google SWE teaches systems design | EP19: Cassandra Deep Dive
-8dz0riI13j8	Google SWE teaches systems design | EP18: Gossip Protocol
-kiCbLOPmBh4	Google SWE teaches systems design | EP17: Consistent Hashing
-XFAx53P9NWE	Google SWE teaches systems design | EP16: Stream Processing
-VySrBndGlOs	Google SWE teaches systems design | EP15: Batch Processing
-YOMgi7T823E	Google SWE teaches systems design | EP14: Raft in 15 minutes
-4gLD2pKxo20	Google SWE teaches systems design | EP13: Two Phase Commit
-Clq5prZWg8s	Google SWE teaches systems design | EP12: Linearizability and Ordering
-1At8wV8fwp8	Google SWE teaches systems design | EP11: Fencing Tokens
 ax39W2blN00	Google SWE teaches systems design | EP10: Unreliable clocks
 lHfcMmAX42g	Google SWE teaches systems design | EP9: Data warehousing
 coJNGQFJ5kM	Google SWE teaches systems design | EP8: SQL and its Pitfalls
 5f7AliHXQ08	Google SWE teaches systems design | EP7: Weak forms of isolation
-NpQ-S89jVzE	Google SWE teaches systems design | EP6: ACID Transactions
-IM6urSjtMrQ	Google SWE teaches systems design | EP5: Database sharding/partitioning
-atDe7qka6q8	Google SWE teaches systems design | EP4: Leaderless Replication
-1BXCxpcsmzc	Google SWE teaches systems design | EP3: Multileader replication
-X687PvgOWzQ	Google SWE teaches systems design | EP2: single leader replication
 ugVwhsWslAc	Google SWE teaches systems design | EP1: Database Design

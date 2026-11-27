@@ -241,4 +241,34 @@ Every request a system receives raises two questions: **who is this?** and **are
 Never trust where a request comes from: check identity and permission on every call, deny by default, and give every secret a short life and an owner who can revoke it.
 :::
 `,
+  "multi-region": md`
+## What this chapter is about
+
+A single region, even with several data centres, can still fail as a whole, and it is far from most of the world's users. Running in several regions fixes both, but the same data now lives in places 50–200 milliseconds apart, and they can't agree instantly. This chapter is about living with that distance.
+
+1. **Region topologies.** Active-passive and active-active, home regions, and globally consistent databases like Spanner: what each costs in latency and what it loses when a region dies. Fail a region yourself and compare.
+2. **Conflict resolution.** When two places change the same data at once: last-writer-wins and what it silently drops, version vectors that notice, and CRDTs that merge automatically. Try all three on the same edits.
+3. **Disaster recovery.** RPO and RTO, why replicas are not backups, point-in-time recovery, immutable backups and tested restores. See what a disaster costs under each plan.
+4. **Data residency.** Keeping a country's data in that country: a home region per customer, and the logs, caches and backups that leak it if you forget them.
+
+:::tip The one idea to keep
+Decide, per kind of data, where it lives, who may write it, and what you're prepared to lose. One answer for everything is either too slow or too risky.
+:::
+`,
+  "google-papers": md`
+## What this chapter is about
+
+Many of the ideas in this course were first described in papers by Google (and Amazon) about systems they built to run at planet scale. Interviewers at Google don't expect you to recite them, but knowing what each system did and why gives you a vocabulary of proven designs to borrow from, and shows you understand the trade-offs behind them.
+
+1. **GFS and Colossus.** Storing the web on thousands of failing disks: one metadata master, clients reading data straight from storage servers, and how Colossus removed the single master. Step through reads, appends and a server failure.
+2. **Bigtable.** A huge sorted map split into tablets that move between servers, built on a log-structured write path. Try row-key designs and watch where writes land.
+3. **Spanner.** A global SQL database that orders transactions by time, using clocks with measured uncertainty and a short wait. See why the wait is needed.
+4. **Chubby and ZooKeeper.** Small, strongly consistent services that other systems use to elect leaders and find each other. Watch a leader fail and a successor take over.
+5. **Dynamo.** Amazon's always-writable store: hash rings, quorums, stand-in replicas and conflict merging.
+6. **Borg and Kubernetes.** How one cluster manager runs everything on shared machines, and the ideas Kubernetes inherited. Pack a cell yourself.
+
+:::tip The one idea to keep
+Each system is a set of deliberate trade-offs for one workload: learn what each gave up, and you'll know when to borrow its design.
+:::
+`,
 };

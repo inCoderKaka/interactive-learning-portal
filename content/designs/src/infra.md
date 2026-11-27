@@ -1,0 +1,288 @@
+=== d-kv-store
+est: 45
+--- words
+- **Key-value store**: a database with two operations, `put(key, value)` and `get(key)`, spread over many machines.
+- **Partitioning (sharding)**: deciding which machine stores which keys.
+- **Consistent hashing**: placing machines and keys on a ring so adding a machine moves only a small share of keys.
+- **Replication factor (N)**: how many machines keep a copy of each key (usually 3).
+- **Quorum (R, W)**: how many replicas must answer a read (R) or confirm a write (W).
+- **Vector clock / version**: metadata that tells whether two versions of a value conflict.
+- **Gossip**: machines telling a few random others what they know, so cluster membership spreads without a central server.
+- **LSM tree**: a storage engine that writes to memory and an append-only log, then sorts into files on disk: fast writes.
+--- flow
+1. **0–5, requirements**: get/put/delete, huge scale, tunable consistency, always available (or strongly consistent?), values up to ~1 MB. Clarify which: Dynamo-style (AP) or Spanner/Bigtable-style (CP).
+2. **5–10, estimates**: 100 TB of data, 1 M ops/s, 3 replicas.
+3. **10–15, API**: `get`, `put` with version context, `delete`; client library or coordinator nodes.
+4. **15–25, high level**: consistent-hash ring with virtual nodes, N replicas per key, coordinator, storage engine per node, membership via gossip.
+5. **25–40, deep dives**: quorums and what R+W>N buys, conflict handling (LWW vs vector clocks), failure detection, hinted handoff, anti-entropy, rebalancing.
+6. **40–45, wrap**: leader-per-partition alternative for strong consistency, monitoring.
+--- req
+**Functional**
+- `put(key, value)`, `get(key)`, `delete(key)`; values up to ~1 MB; optional TTL.
+- Keys are opaque bytes; no range queries required (mention ordered stores as a variant).
+
+**Non-functional**
+- **Scale out**: add machines to grow capacity and throughput.
+- **High availability**: survive machine and zone failures.
+- **Tunable consistency**: per request, choose faster/more available or stronger reads.
+- **Low latency**: single-digit milliseconds at the median, tens at p99.
+- **Durability**: acknowledged writes survive failures.
+--- est
+- **Data**: 100 TB × 3 replicas = 300 TB; with 4 TB usable per node ≈ **75 nodes** (more for headroom: ~100).
+- **Throughput**: 1 M ops/s ÷ 100 nodes ≈ 10 k ops/s per node, fine for SSD-backed LSM storage.
+- **Keys**: 10 B keys × ~100 bytes overhead ≈ 1 TB of index/metadata spread across nodes.
+- **Rebalancing**: adding a node moves ~1/100 of data ≈ 3 TB: at 200 MB/s that's ~4 hours, so it must be throttled and incremental.
+--- api
+- `get(key, consistency=ONE|QUORUM|ALL) → [(value, version)]` (may return several versions if concurrent writes happened).
+- `put(key, value, context=version, consistency=...)` → ok.
+- `delete(key)` writes a **tombstone** (removed later), so replicas that missed the delete don't resurrect the value.
+
+**On each node**: an LSM storage engine (write-ahead log + memtable + SSTables + Bloom filters + compaction), plus metadata for hinted writes and Merkle trees per key range.
+--- hl
+1. **Partitioning**: keys hashed onto a ring; each physical node owns many **virtual nodes** for even spread; a key's **preference list** is the next N distinct nodes clockwise.
+2. **Request path**: the client (or any node acting as **coordinator**) sends the operation to the N replicas and waits for W acks (writes) or R answers (reads).
+3. **Storage**: each replica appends to its commit log and memtable, flushing to SSTables.
+4. **Membership**: nodes gossip membership and ring ownership every second; a few seed nodes help new nodes join.
+5. **Repair**: read repair fixes stale replicas noticed during reads; background **anti-entropy** with Merkle trees fixes the rest; **hinted handoff** covers short outages.
+
+Two families exist: this **leaderless** design (Dynamo, Cassandra) favours availability; a **leader per partition** with Raft/Paxos (DynamoDB, etcd, TiKV, Spanner) gives strong consistency more simply. Name both and choose by requirements.
+--- deep
+**1. Quorums**: with N=3, W=2, R=2, every read set overlaps every write set, so reads usually see the latest write. W=1 gives faster, more available writes; R=1 faster reads; both risk staleness. Note what quorums don't guarantee: with **sloppy quorums** (writes to stand-in nodes during failures) and concurrent writes, R+W>N is not linearizability.
+
+**2. Conflicts**: last-writer-wins (timestamps) is simple but silently drops concurrent writes and depends on clocks; **vector clocks** detect concurrency and return siblings for the application to merge; CRDT value types merge automatically. Choose per use: LWW for caches/sessions, CRDTs or siblings for carts/counters.
+
+**3. Failure detection and handoff**: gossip-based detectors (phi accrual) mark a node suspected; writes for it go to the next node with a **hint**, replayed when it returns. Permanent failure triggers re-replication of its ranges from the remaining replicas.
+
+**4. Anti-entropy**: each node keeps a Merkle tree per key range; two replicas compare tree roots and descend only into differing branches, transferring just the out-of-sync keys.
+
+**5. Rebalancing**: new nodes take virtual nodes from many existing nodes, streaming data in the background with throttling; ownership switches only after the copy completes.
+
+**6. Strong consistency option**: per-partition Raft groups (leader takes writes, majority commit, leases for linearizable reads). Simpler semantics, no siblings; a partition is briefly unavailable during leader election.
+--- wrap
+**Monitoring**: per-node latency p99, hinted-handoff backlog, repair progress, compaction backlog, disk usage, ring balance, read-repair rate (a proxy for divergence).
+
+**Failures**: node loss (replicas serve; re-replicate), zone loss (place replicas across zones), network partitions (leaderless: keep serving, reconcile later; leader-based: minority side stops writing).
+
+**At 10×**: more nodes and virtual nodes, multi-region replication (async between regions, LWW or CRDTs), tiered storage.
+--- variants
+Q: A distributed cache (like Memcached/Redis Cluster) instead of a database
+A: Durability no longer matters: in-memory, no commit log, replication optional; eviction policies (LRU/LFU) and hot-key handling matter; clients use consistent hashing directly.
+Q: Range queries (scan all keys of a user)
+A: Hash partitioning scatters ranges; use range partitioning on sorted keys (Bigtable/HBase/Spanner style) with splits and merges, and design keys to avoid hotspots.
+Q: Strongly consistent reads always (a configuration store like etcd)
+A: Leader-based Raft per partition (or a single Raft group for small data); linearizable reads through the leader with a lease or read index; watches for changes.
+Q: Multi-region active-active with low latency writes everywhere
+A: Local quorums per region, asynchronous cross-region replication, conflict resolution with LWW or CRDTs; or a home region per key.
+--- steer
+Q: How do you choose which nodes store a key?
+A: Consistent hashing with virtual nodes; preference list of N distinct physical nodes (across zones).
+Q: Does R + W > N make it strongly consistent?
+A: It gives overlap in normal operation, not linearizability: sloppy quorums, concurrent writes and clock-based LWW break it.
+Q: A node is down for 10 minutes.
+A: Hinted handoff to the next node; hints replayed on return; reads still succeed from other replicas.
+Q: Two clients write the same key concurrently.
+A: LWW (simple, lossy) or vector clocks with siblings merged by the application, or CRDT types.
+Q: How do replicas that drifted apart get fixed?
+A: Read repair on reads, Merkle-tree anti-entropy in the background.
+--- pitfalls
+- Modulo hashing (key % N), which moves almost all keys when N changes
+- Claiming strong consistency from quorums alone
+- Deletes without tombstones (deleted values come back)
+- Replicas in the same rack/zone
+- Unthrottled rebalancing that overloads the cluster
+--- level
+- **L4**: consistent hashing, replication, a storage engine, basic quorums.
+- **L5**: quorum maths and its limits, conflict strategies, hinted handoff, Merkle anti-entropy, gossip membership, tombstones, leaderless vs leader-based choice.
+- **L6**: operational concerns (rebalancing, compaction, repair scheduling), multi-region strategy, choosing per-workload consistency defaults.
+
+=== d-collab-docs
+est: 45
+--- words
+- **Collaborative editing**: several people typing in the same document at once and all seeing each other's changes live.
+- **Operation**: one small edit, like "insert 'a' at position 12" or "delete 3 characters at position 40".
+- **Operational transformation (OT)**: adjusting an operation that was made on an older version so it still means the right thing after others' edits (Google Docs uses this).
+- **CRDT**: a data structure where every character has a unique ID, so edits merge in any order without a central server.
+- **Revision number**: a counter of how many operations the document has had; each edit says which revision it was based on.
+- **Presence / cursors**: showing where other people are in the document.
+- **Snapshot**: a saved full copy of the document at some revision, so you don't replay all history to open it.
+--- flow
+1. **0–5, requirements**: real-time co-editing (changes visible in ~100–500 ms), cursors, comments, version history, offline edits, sharing. Clarify document size and collaborators per doc (Docs: up to ~100 editors).
+2. **5–10, estimates**: 100 M docs edited/day; ~1 op per keystroke batched to a few per second per active editor.
+3. **10–15, API and data**: WebSocket session per document, operation log, snapshots, permissions.
+4. **15–25, high level**: clients ↔ collaboration server owning the document (one owner per doc) → orders ops, transforms, broadcasts, appends to the op log; snapshots periodically; storage.
+5. **25–40, deep dives**: OT vs CRDT, the single-owner model, offline edits, history and snapshots, scaling to many docs.
+6. **40–45, wrap**: failures and recovery, monitoring.
+--- req
+**Functional**
+- Multiple users edit the same document simultaneously; everyone converges to the same content.
+- See collaborators' cursors and selections; comments and suggestions.
+- Version history with named versions and restore.
+- Offline editing that syncs when reconnected.
+- Sharing with view/comment/edit permissions.
+
+**Non-functional**
+- **Low latency**: local typing is instant; others see edits within a few hundred ms.
+- **Convergence**: no lost keystrokes, no divergent copies.
+- **Durability**: acknowledged edits are never lost.
+- **Scale**: hundreds of millions of documents, mostly idle; a few with many editors.
+--- est
+- **Docs**: billions stored; ~100 M edited per day; at peak maybe 10 M open with active editors.
+- **Ops**: an active editor generates a few batched ops per second; 20 M active editors × 2 ops/s ≈ **40 M ops/s** worldwide at peak, each small (~100 bytes).
+- **Per document**: usually 1–5 editors, a few ops/s: one server can own tens of thousands of active documents.
+- **Storage**: op logs grow fast; compact into snapshots every few hundred ops; documents average tens of KB.
+--- api
+- `GET /docs/{id}` → latest snapshot + revision + permissions.
+- `WS /docs/{id}/session`: client sends `{op, base_revision, client_op_id}`; server sends `ack {client_op_id, revision}` and broadcasts `{op, revision, author}`; presence messages for cursors.
+- `GET /docs/{id}/history`, `POST /docs/{id}/restore {revision}`.
+
+**Data**
+- `doc_ops(doc_id, revision) → op, author, ts` (append-only log).
+- `doc_snapshots(doc_id, revision) → content`.
+- `docs(doc_id, owner, title, acl_ref, latest_revision)`; comments as anchored ranges.
+--- hl
+1. Opening a document loads the latest **snapshot** plus any later ops, and opens a **WebSocket** to the **collaboration server** that currently **owns** that document (found via a routing table or consistent hashing; ownership by lease).
+2. The client applies edits locally immediately (optimistic), then sends each op with the revision it was based on.
+3. The owner **orders** ops (assigns the next revision), **transforms** any op based on an older revision against the ops it missed, appends it to the **op log** (durably), acks the author and **broadcasts** the transformed op to other editors.
+4. Each client transforms incoming ops against its own unacknowledged local ops so everyone converges.
+5. A background job writes **snapshots** every N ops; history views use snapshots + ops.
+6. Presence (cursors) is broadcast through the same session but not persisted.
+--- deep
+**1. OT vs CRDT**: OT needs a central ordering point (the document owner) and correct transformation functions; it's what Google Docs uses and works well with a server. CRDTs (Yjs, Automerge) give every character a unique ID and merge without a server, great for offline and peer-to-peer, at the cost of metadata (tombstones) and memory. With a server-owned document, either works; explain the trade-off.
+
+**2. One owner per document**: having a single server order a document's ops makes ordering trivial. Ownership is assigned with a lease (via a coordination service); if the owner dies, another takes over by loading the snapshot + op log and clients reconnect. Many documents per server; hot documents (a company-wide doc open by 500 people) may need view-only fan-out through separate broadcast servers.
+
+**3. Offline edits**: the client keeps unsent ops; on reconnect it sends them based on its last known revision, and the server transforms them over everything that happened. Long offline periods mean many transforms; CRDTs handle this more naturally.
+
+**4. Durability vs latency**: ack an op only after it's appended to the replicated log; batching ops (every ~50 ms) keeps write rates manageable.
+
+**5. History**: the op log is history; named versions are pointers to revisions; restore creates new ops (it doesn't rewrite history), so collaborators converge on the restored content.
+
+**6. Permissions**: checked on session open and on each op type (commenters can't edit); permission changes must cut off sessions promptly (Zanzibar-style checks with consistency tokens).
+--- wrap
+**Failures**: owner crash → lease expires, new owner rebuilds from snapshot + log, clients reconnect and resend unacked ops (idempotent by client op ID); storage region issue → replicated log; network flaps → clients buffer locally.
+
+**Monitoring**: op round-trip latency, transform conflicts, reconnect rates, owner failovers, snapshot lag, document load time.
+
+**At 10×**: more collaboration servers (documents are independent), regional placement of owners near most editors.
+--- variants
+Q: Collaborative spreadsheet (Google Sheets)
+A: Operations are on cells and ranges, plus formula recalculation; ordering per sheet; recalculation can be heavy and partly server-side; conflicts are per cell, simpler than text.
+Q: Design tool with shapes (Figma)
+A: The document is a tree of objects with properties; edits are per property and merge with last-writer-wins per property plus ordering for children (Figma's approach), simpler than text OT.
+Q: Fully offline-first notes app syncing across devices
+A: CRDT documents on each device, sync through a server that just stores and relays changes; no central transform.
+Q: 1,000 people watching a live doc during a meeting
+A: Separate editors from viewers: viewers receive broadcast snapshots/ops through fan-out servers; presence is sampled.
+--- steer
+Q: Alice and Bob type at the same position at the same time.
+A: The owner orders the ops; the later one is transformed against the earlier (positions shift); ties broken deterministically (by user ID); all clients converge.
+Q: Why not lock the paragraph someone is editing?
+A: Locks feel terrible in real time and break offline; OT/CRDT lets everyone type freely.
+Q: The server owning a document crashes.
+A: Lease expires, another server loads snapshot + op log, clients reconnect and resend unacked ops (deduped by client op IDs).
+Q: OT or CRDT?
+A: OT with a central owner (Docs); CRDT for offline/peer-to-peer at the cost of metadata; justify by requirements.
+Q: How do you open a document with a million edits quickly?
+A: Periodic snapshots plus the ops after them.
+--- pitfalls
+- Last-writer-wins on whole documents
+- Sending full documents on every keystroke
+- No single ordering point and no convergence argument
+- Acking edits before they're durable
+- Ignoring offline edits and reconnection
+--- level
+- **L4**: WebSocket sessions, operation broadcasting, storage of ops and snapshots.
+- **L5**: OT with revision-based transformation (or CRDT) and convergence, single owner with leases and failover, offline reconciliation, snapshots, permissions on sessions.
+- **L6**: OT vs CRDT trade-offs in depth, hot-document fan-out, regional ownership, history/restore semantics and storage cost.
+
+=== d-job-scheduler
+est: 45
+--- words
+- **Job**: a task to run, once at a time ("send this email at 9:00") or repeatedly ("every night at 2:00", like cron).
+- **Cron expression**: a short text describing a schedule, such as `0 2 * * *` for 2:00 every day.
+- **Worker**: a machine that actually runs jobs.
+- **At-least-once execution**: a job is guaranteed to run, but might run twice after failures, so jobs should be idempotent.
+- **Lease**: a time-limited claim on a job by one worker; if the worker dies, the lease expires and another worker can take it.
+- **Dead-letter queue**: where jobs go after failing too many times, for a human to look at.
+--- flow
+1. **0–5, requirements**: schedule one-off and recurring jobs, run them on time (within seconds), retries, never lose a job, view status. Clarify scale and how exact the timing must be.
+2. **5–10, estimates**: 100 M jobs/day ≈ 1,200/s average, with spikes at round times (midnight, top of the hour).
+3. **10–15, API and data**: job definitions, next-run index, execution records.
+4. **15–25, high level**: API → job store; schedulers scan due jobs from a time index and enqueue them; workers lease, run, report; retries and dead letters.
+5. **25–40, deep dives**: finding due jobs efficiently, avoiding duplicate runs, the midnight spike, long-running jobs, priorities and fairness.
+6. **40–45, wrap**: failures, monitoring.
+--- req
+**Functional**
+- Create jobs: one-off at a time, or recurring by cron expression and time zone; payload and target (an HTTP call or a queue message).
+- Run each due job, with retries and backoff on failure, timeouts, and a final dead-letter state.
+- Pause, resume, delete; see history of runs and their results.
+
+**Non-functional**
+- **Never lose a job**; run within a few seconds of the scheduled time.
+- **At-least-once** execution (exactly-once isn't achievable for external side effects; jobs should be idempotent).
+- **Scale** to hundreds of millions of jobs and big spikes at popular times.
+- **Isolation**: one tenant's flood doesn't delay others.
+--- est
+- **Jobs**: 500 M stored definitions; **100 M executions/day ≈ 1,200/s**, but schedules cluster: maybe 30% of daily jobs at the top of each hour or midnight → spikes of **100,000+/s** for a minute.
+- **Execution records**: 100 M × 500 bytes = 50 GB/day; keep 30 days.
+- **Workers**: depends on job duration: 1,200/s × 10 s average = 12,000 concurrent jobs.
+--- api
+- `POST /jobs {schedule: "0 2 * * *" | run_at, tz, target, payload, retry_policy, timeout, idempotency_key}` → `{job_id}`.
+- `GET /jobs/{id}`, `GET /jobs/{id}/runs`, `POST /jobs/{id}/pause|resume`, `DELETE /jobs/{id}`.
+
+**Data**
+- `jobs(job_id, tenant, schedule, tz, target, payload, next_run_at, status)`.
+- A **time index**: `(time_bucket, job_id)` for the next run, partitioned by bucket and shard (e.g. one row per job per minute bucket), so "what's due in this minute?" is a range read.
+- `runs(job_id, scheduled_for, attempt, status, worker, started, finished, error)` with a unique key on `(job_id, scheduled_for)` to stop duplicate runs.
+--- hl
+1. **Create**: the API stores the job and computes `next_run_at`, inserting it into the time index.
+2. **Schedulers** (one per shard of the time index, each owning its shard by lease) read jobs due in the next bucket, and enqueue them into a **work queue** at their time (or slightly before, with a delay).
+3. **Workers** pull from the queue, create a run record (`job_id, scheduled_for` unique), execute with a timeout, heartbeat to extend their lease for long jobs, and record the result.
+4. On success, recurring jobs get their next run computed and inserted into the time index; on failure, a retry is scheduled with backoff; after N failures, the run goes to the **dead-letter** state and alerts the owner.
+5. A **reaper** finds runs whose lease expired (worker died) and re-enqueues them.
+--- deep
+**1. Finding due jobs**: scanning all jobs every second is impossible. Bucket by time (minute) and shard; each scheduler reads its shard's current bucket. Alternatives: a delay queue (Redis sorted set by time; Kafka with timed topics) for one-off jobs, or a hierarchical timing wheel in memory for very precise timers.
+
+**2. No duplicate runs**: two schedulers must not own the same shard: leases from a coordination service with fencing tokens. Workers dedupe with the unique `(job_id, scheduled_for)` run record. External side effects still require idempotent jobs (use the run ID as an idempotency key downstream).
+
+**3. The midnight spike**: thousands of tenants schedule "0 0 * * *". Pre-enqueue due jobs slightly early, spread non-urgent jobs with jitter (offer "around midnight" scheduling), scale workers ahead of known peaks, and apply per-tenant concurrency limits so fair scheduling holds.
+
+**4. Long-running jobs**: leases with heartbeats; checkpoints so a restarted job resumes; maximum runtimes.
+
+**5. Time zones and DST**: compute next runs in the job's time zone; daylight-saving jumps create skipped or repeated hours: define behaviour (run once).
+--- wrap
+**Failures**: scheduler crash → lease expires, another takes the shard and processes buckets it missed (catch-up from the last committed bucket); worker crash → run lease expires, reaper re-enqueues; queue outage → schedulers back off and catch up.
+
+**Monitoring**: schedule lag (actual start − scheduled time) p99, queue depth, failures and dead letters per tenant, catch-up backlog.
+
+**At 10×**: more time-index shards and schedulers, regional deployments, tenant isolation via separate queues.
+--- variants
+Q: Workflow orchestration (multi-step jobs with dependencies, like Airflow)
+A: Jobs become DAGs: a run completes when all tasks complete; tasks are scheduled when dependencies finish; state machine per run; backfills over past dates.
+Q: Millions of timers with millisecond precision (game or trading engine)
+A: In-memory hierarchical timing wheels per shard, replicated state, much shorter horizons; durability via event logs.
+Q: Delayed messages ("send a reminder in 3 days")
+A: A delay queue: store with deliver-at time; a poller moves due messages into the main queue; same idempotency rules.
+Q: Kubernetes CronJobs vs this service
+A: For a few internal jobs, a cluster's CronJobs are enough; this service is for multi-tenant, high-volume scheduling with history, retries and SLAs.
+--- steer
+Q: How do you find jobs due right now among 500 M?
+A: A time-bucketed index sharded across schedulers; read the current bucket per shard.
+Q: How do you stop a job from running twice?
+A: Lease-owned scheduler shards with fencing, unique run records per scheduled time, idempotent jobs downstream.
+Q: A worker dies halfway through.
+A: Its run lease expires; the reaper re-enqueues; jobs are idempotent or checkpointed.
+Q: 40% of jobs are scheduled at midnight.
+A: Pre-enqueue early, jitter where allowed, pre-scale workers, per-tenant limits.
+Q: Exactly-once?
+A: Not for external side effects; at-least-once + idempotency keys.
+--- pitfalls
+- Polling the whole jobs table every second
+- A single scheduler with no failover
+- Claiming exactly-once execution
+- No retries/backoff or dead-letter handling
+- Ignoring time zones and daylight saving
+--- level
+- **L4**: jobs table, a scheduler that finds due jobs, a queue and workers.
+- **L5**: time-bucketed sharded index, leases with fencing, unique run records, reaper, retries and dead letters, spike handling, tenant fairness.
+- **L6**: workflow DAGs and backfills, multi-region scheduling semantics, SLAs and capacity planning for known peaks.

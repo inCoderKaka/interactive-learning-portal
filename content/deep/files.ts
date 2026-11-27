@@ -34,4 +34,6 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "hld/storage": () => Promise.all([import("./hld/storage"), import("./hld/notes/storage")]).then(([m, n]) => withNotes(m.storage, n.notes)),
   "hld/ops": () => Promise.all([import("./hld/ops"), import("./hld/notes/ops")]).then(([m, n]) => withNotes(m.ops, n.notes)),
   "hld/security": () => Promise.all([import("./hld/security"), import("./hld/notes/security")]).then(([m, n]) => withNotes(m.security, n.notes)),
+  "hld/multiregion": () => Promise.all([import("./hld/multiregion"), import("./hld/notes/multiregion")]).then(([m, n]) => withNotes(m.multiregion, n.notes)),
+  "hld/papers": () => Promise.all([import("./hld/papers"), import("./hld/notes/papers")]).then(([m, n]) => withNotes(m.papers, n.notes)),
 };
