@@ -113,7 +113,7 @@ export function Queueing() {
   const L = s.samples ? s.inSys / s.samples : 0;
   // the curve: response / service vs utilisation, for the random (M/M/1) model, with Kingman for the others
   const W = 300, H = 150, X = (u: number) => 28 + u * (W - 40), Y = (r: number) => H - 18 - (Math.min(r, 25) / 25) * (H - 30);
-  const curve = useMemo(() => Array.from({ length: 98 }, (_, i) => (i + 1) / 100).map((u) => `${X(u)},${Y(1 / (1 - u))}`).join(" "), []); // eslint-disable-line react-hooks/exhaustive-deps
+  const curve = useMemo(() => Array.from({ length: 98 }, (_, i) => (i + 1) / 100).map((u) => `${X(u)},${Y(1 / (1 - u))}`).join(" "), []);
   return (
     <Frame title="Why servers get slow before they are full" q="A server is busy 90% of the time. How long does a request wait, compared with the work it needs?"
       about="Requests (dots) arrive and wait for one server that takes 10 ms each on average. Drag the load and watch the line and the response time; switch between steady, random and bursty traffic."
