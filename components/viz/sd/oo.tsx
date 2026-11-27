@@ -76,7 +76,7 @@ export function NounVerb() {
           : <span key={i}>{t.w}</span>)}
       </p>
       <div className="mt-2 min-h-[44px] rounded-xl border border-line bg-panel2/40 px-3 py-2 text-[13px]">
-        {sel?.tag ? <><span className="font-semibold" style={{ color: TAG[sel.tag].color }}>"{sel.w}" → {TAG[sel.tag].becomes}:</span> <span className="text-mute">{sel.info}</span></> : <span className="text-faint">Click an underlined word.</span>}
+        {sel?.tag ? <><span className="font-semibold" style={{ color: TAG[sel.tag].color }}>&ldquo;{sel.w}&rdquo; → {TAG[sel.tag].becomes}:</span> <span className="text-mute">{sel.info}</span></> : <span className="text-faint">Click an underlined word.</span>}
       </div>
       <div className="mt-3 grid gap-2 sm:grid-cols-3">
         {[["Classes", classes, "#7aa7ff"], ["Methods", methods, "#c8f547"], ["Enums / interfaces", kinds, "#ffb454"]].map(([h, xs, c]) => (

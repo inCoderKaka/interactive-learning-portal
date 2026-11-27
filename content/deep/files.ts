@@ -39,4 +39,6 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "lld/framework": () => Promise.all([import("./lld/framework"), import("./lld/notes/framework")]).then(([m, n]) => withNotes(m.framework, n.notes)),
   "lld/oop": () => Promise.all([import("./lld/oop"), import("./lld/notes/oop")]).then(([m, n]) => withNotes(m.oop, n.notes)),
   "lld/patterns1": () => Promise.all([import("./lld/patterns1"), import("./lld/notes/patterns1")]).then(([m, n]) => withNotes(m.patterns1, n.notes)),
+  "lld/patterns2": () => Promise.all([import("./lld/patterns2"), import("./lld/notes/patterns2")]).then(([m, n]) => withNotes(m.patterns2, n.notes)),
+  "lld/quality": () => Promise.all([import("./lld/quality"), import("./lld/notes/quality")]).then(([m, n]) => withNotes(m.quality, n.notes)),
 };

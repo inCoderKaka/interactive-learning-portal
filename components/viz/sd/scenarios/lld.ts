@@ -2,6 +2,140 @@ import type { Scenario } from "../Seq";
 
 /** LLD sequence scenarios: object collaborations shown as calls between objects (not machines). */
 export const LLD: Record<string, Scenario> = {
+  "seq-layers": {
+    title: "One booking through the layers",
+    q: "Which layer owns each step, and what goes wrong when a business rule lives in the controller?",
+    about: "A seat booking travels from the HTTP controller through the use case and the domain to the storage adapter. Compare the clean version, a rule leaking into the controller, and a test that swaps the adapter.",
+    actors: [{ id: "http", label: "BookingController" }, { id: "app", label: "BookSeat use case" }, { id: "dom", label: "Show (domain)" }, { id: "port", label: "ShowRepository port" }, { id: "db", label: "JDBC adapter" }],
+    variants: [
+      {
+        key: "clean", label: "Clean layering", end: "Each layer did one kind of job, and the business rule (no double booking, premium pricing) lives in the domain, reusable by the mobile API, a batch job or a test.",
+        steps: [
+          { from: "http", to: "http", label: "parse JSON, validate fields", say: "The controller turns HTTP into a command object. No rules here." },
+          { from: "http", to: "app", label: "book(showId, seat, user)", say: "It calls the use case." },
+          { from: "app", to: "port", label: "findById(showId)", say: "The use case loads the aggregate through a port it owns." },
+          { from: "port", to: "db", label: "SELECT … FOR UPDATE", say: "The adapter implements the port with SQL, locking the row." },
+          { from: "db", to: "app", label: "Show", kind: "res", say: "A domain object comes back, not a result set." },
+          { from: "app", to: "dom", label: "show.book(seat, user)", say: "The domain applies the rules: seat free? premium price? Throws if not allowed.", set: { dom: "A7 → booked" } },
+          { from: "app", to: "port", label: "save(show)", say: "The use case saves and commits: one transaction per use case." },
+          { from: "app", to: "http", label: "Booking", kind: "res", say: "A result goes back up." },
+          { from: "http", to: "http", label: "201 Created", kind: "ok", say: "The controller maps it to HTTP." },
+        ],
+      },
+      {
+        key: "leak", label: "Rule in the controller", end: "The premium discount now lives in the web controller. The mobile API and the group-booking job each need it too, so it gets copied, and the copies drift.",
+        steps: [
+          { from: "http", to: "http", label: "parse JSON", say: "Same start." },
+          { from: "http", to: "db", label: "SELECT seat … (direct SQL)", kind: "bad", say: "The controller skips the use case and queries the database itself." },
+          { from: "http", to: "http", label: "if (premium && weekend) price *= 0.8", kind: "bad", say: "A business rule written in the presentation layer." },
+          { from: "http", to: "db", label: "INSERT booking", kind: "bad", say: "No transaction around check and insert: two requests can book the same seat." },
+          { from: "http", to: "http", label: "200 OK", say: "It works today, but it can't be tested without a web server and a database." },
+        ],
+      },
+      {
+        key: "test", label: "Same use case, test adapter", end: "Swapping the adapter changed nothing above the port. The same use case and domain ran in a millisecond with no database.",
+        steps: [
+          { from: "app", to: "port", label: "findById(showId)", say: "In a unit test, the port is wired to an in-memory adapter." },
+          { from: "port", to: "port", label: "InMemoryShowRepository: map.get", kind: "ok", say: "No SQL, no network.", set: { port: "in-memory" } },
+          { from: "app", to: "dom", label: "show.book(A7, user)", say: "The real domain logic runs unchanged.", set: { dom: "A7 → booked" } },
+          { from: "app", to: "port", label: "save(show)", say: "Saved into the map." },
+          { from: "app", to: "app", label: "assert seat A7 booked, price ₹320", kind: "ok", say: "The test asserts the resulting state." },
+        ],
+      },
+    ],
+  },
+  "seq-observer": {
+    title: "A spot frees up: who hears about it?",
+    q: "The floor doesn't know who is listening. What happens when a listener is slow, or was never unsubscribed?",
+    about: "Three listeners have subscribed to a parking floor. Compare normal delivery, a slow push-notification listener called inline, and a screen that closed without unsubscribing.",
+    actors: [{ id: "lot", label: "ParkingLot" }, { id: "fl", label: "Floor 2 (subject)" }, { id: "board", label: "EntranceBoard" }, { id: "app", label: "AppPusher" }, { id: "old", label: "Closed screen" }],
+    init: { fl: "listeners: board, app" },
+    variants: [
+      {
+        key: "ok", label: "Normal delivery", end: "One change, two reactions, and Floor 2 never named either listener. A new listener subscribes; the floor's code doesn't change.",
+        steps: [
+          { from: "lot", to: "fl", label: "release(R-17)", t: 0, say: "A car leaves; the lot tells the floor to free the spot." },
+          { from: "fl", to: "fl", label: "free REGULAR: 11 → 12", t: 1, say: "The floor updates its own count first, then notifies.", set: { fl: "12 free · listeners: board, app" } },
+          { from: "fl", to: "board", label: "changed(F2, REGULAR, 12)", t: 1, say: "Push model: the event carries the new count." },
+          { from: "board", to: "board", label: "show 12", t: 2, kind: "ok", say: "The board redraws.", set: { board: "F2: 12" } },
+          { from: "fl", to: "app", label: "changed(F2, REGULAR, 12)", t: 2, say: "Next listener." },
+          { from: "app", to: "app", label: "enqueue push job", t: 3, kind: "ok", say: "A well-behaved listener: it only enqueues the slow work and returns at once." },
+          { from: "fl", to: "lot", label: "done", t: 3, kind: "res", say: "The release finished in 3 ms." },
+        ],
+      },
+      {
+        key: "slow", label: "Slow listener inline", end: "The car's exit waited 2 seconds for a push-notification server it doesn't care about. Keep listeners fast (enqueue), or notify through an executor.",
+        steps: [
+          { from: "lot", to: "fl", label: "release(R-17)", t: 0, say: "Same release." },
+          { from: "fl", to: "board", label: "changed(…)", t: 1, say: "The board updates quickly." },
+          { from: "fl", to: "app", label: "changed(…)", t: 2, say: "This version of AppPusher calls the push server directly." },
+          { from: "app", to: "app", label: "HTTP to push server… 2 s", t: 2002, kind: "bad", say: "The push server is slow today. The floor's notify loop is stuck waiting." },
+          { from: "fl", to: "lot", label: "done after 2 s", t: 2003, kind: "bad", say: "The exit barrier opened two seconds late, because of a side effect." },
+        ],
+      },
+      {
+        key: "leak", label: "Never unsubscribed", end: "The closed screen is still in the listener list, so it can't be garbage-collected and keeps doing work. Every subscribe needs a matching unsubscribe (return a Subscription handle).",
+        init: { fl: "listeners: board, app, closed screen" },
+        steps: [
+          { from: "old", to: "old", label: "user closed the screen", t: 0, say: "A settings screen subscribed when it opened, and the user closed it. It never unsubscribed." },
+          { from: "lot", to: "fl", label: "release(R-17)", t: 5000, say: "Later, a spot frees up." },
+          { from: "fl", to: "board", label: "changed(…)", t: 5001, say: "The board gets it." },
+          { from: "fl", to: "old", label: "changed(…)", t: 5002, kind: "bad", say: "So does the dead screen: the floor still holds a strong reference to it." },
+          { from: "old", to: "old", label: "redraw a disposed view", t: 5003, kind: "bad", say: "It wastes CPU, may throw, and its memory is never freed. Open and close it 1,000 times and there are 1,000 ghosts." },
+        ],
+      },
+    ],
+  },
+  "seq-chain": {
+    title: "A request through the middleware chain",
+    q: "Where is each bad request stopped, and which handlers never run because of it?",
+    about: "Every request passes timing → auth → rate limit → validation → the endpoint. Each handler either calls next or stops the request.",
+    actors: [{ id: "c", label: "Client" }, { id: "tm", label: "Timing" }, { id: "au", label: "Auth" }, { id: "rl", label: "RateLimit" }, { id: "va", label: "Validate" }, { id: "ep", label: "Endpoint" }],
+    variants: [
+      {
+        key: "ok", label: "Valid request", end: "Each handler did one job and called next. Timing wrapped everything, so it measured the full request on the way out.",
+        steps: [
+          { from: "c", to: "tm", label: "POST /orders", say: "The request enters the first handler." },
+          { from: "tm", to: "au", label: "next(req)", say: "Timing starts a clock and passes the request on." },
+          { from: "au", to: "rl", label: "next(req + user 42)", say: "Auth verifies the token and attaches the user to the request." },
+          { from: "rl", to: "va", label: "next(req)", say: "User 42 is under the limit." },
+          { from: "va", to: "ep", label: "next(req)", say: "The body is valid." },
+          { from: "ep", to: "tm", label: "201 Created", kind: "res", say: "The endpoint answers; the response travels back out through each handler." },
+          { from: "tm", to: "c", label: "201 · 38 ms", kind: "ok", say: "Timing records 38 ms on the way out and returns the response." },
+        ],
+      },
+      {
+        key: "noauth", label: "Missing token", end: "Auth short-circuited. Rate limiting, validation and the endpoint never ran, and timing still logged the 401.",
+        steps: [
+          { from: "c", to: "tm", label: "POST /orders (no token)", say: "A request without credentials." },
+          { from: "tm", to: "au", label: "next(req)", say: "Timing passes it on." },
+          { from: "au", to: "tm", label: "401 Unauthorized", kind: "bad", say: "Auth stops it and does NOT call next." },
+          { from: "tm", to: "c", label: "401 · 1 ms", kind: "bad", say: "Cheap rejection; nothing behind auth spent any work." },
+        ],
+      },
+      {
+        key: "limited", label: "Over the rate limit", end: "Stopped before validation and the database: flooding the API costs the server almost nothing.",
+        steps: [
+          { from: "c", to: "tm", label: "POST /orders (601st this minute)", say: "A buggy client in a loop." },
+          { from: "tm", to: "au", label: "next(req)", say: "Passes on." },
+          { from: "au", to: "rl", label: "next(req + user 42)", say: "Authenticated: the limiter needs to know who it is." },
+          { from: "rl", to: "tm", label: "429 · Retry-After: 12", kind: "bad", say: "Over the per-user limit: stopped here." },
+          { from: "tm", to: "c", label: "429 · 2 ms", kind: "bad", say: "The client is told when to retry." },
+        ],
+      },
+      {
+        key: "invalid", label: "Invalid body", end: "Validation stopped it with field-level errors; the endpoint's code can assume valid input.",
+        steps: [
+          { from: "c", to: "tm", label: "POST /orders {qty: -3}", say: "A request with a bad field." },
+          { from: "tm", to: "au", label: "next", say: "Passes on." },
+          { from: "au", to: "rl", label: "next", say: "Authenticated." },
+          { from: "rl", to: "va", label: "next", say: "Within limits." },
+          { from: "va", to: "tm", label: "400 · qty must be ≥ 1", kind: "bad", say: "Validation rejects it before the endpoint." },
+          { from: "tm", to: "c", label: "400 · 3 ms", kind: "bad", say: "A clear error for the client to fix." },
+        ],
+      },
+    ],
+  },
   "seq-factory": {
     title: "Who knows which class to build?",
     q: "When a new notification channel is added, which objects have to change?",

@@ -183,3 +183,52 @@ export function CompositeTree() {
     </Frame>
   );
 }
+
+// ───────────────────────── undo-redo ─────────────────────────
+
+type Cmd = { label: string; apply: (t: string) => string; revert: (t: string) => string };
+const Stack = ({ title, xs, tone }: { title: string; xs: Cmd[]; tone: string }) => (
+  <div className="rounded-xl border border-line bg-bg p-2.5">
+    <div className="text-[10.5px] uppercase tracking-wider" style={{ color: tone }}>{title}</div>
+    <div className="mt-1 flex min-h-[120px] flex-col-reverse justify-start gap-1">
+      {xs.map((c, i) => <div key={i} className={cn("rounded-lg border px-2 py-1 font-mono text-[11.5px]", i === xs.length - 1 ? "text-text" : "text-mute")} style={{ borderColor: i === xs.length - 1 ? tone : "var(--color-line)" }}>{c.label}{i === xs.length - 1 && <span className="ml-1 text-faint">← top</span>}</div>)}
+      {!xs.length && <div className="text-[12px] text-faint">empty</div>}
+    </div>
+  </div>
+);
+
+export function UndoRedo() {
+  const [text, setText] = useState("");
+  const [undo, setUndo] = useState<Cmd[]>([]);
+  const [redo, setRedo] = useState<Cmd[]>([]);
+  const [note, setNote] = useState("Type a word, delete, then undo and redo.");
+  const words = ["hello ", "world ", "again "];
+  const run = (c: Cmd) => { setText((t) => c.apply(t)); setUndo((u) => [...u, c]); if (redo.length) setNote(`New action: the redo stack (${redo.length}) was cleared.`); else setNote(`run: ${c.label}`); setRedo([]); };
+  const type = () => {
+    const w = words[undo.length % words.length];
+    run({ label: `Insert "${w.trim()}"`, apply: (t) => t + w, revert: (t) => t.slice(0, t.length - w.length) });
+  };
+  const del = () => {
+    if (!text) { setNote("Nothing to delete."); return; }
+    const removed = text.slice(-3);
+    run({ label: `Delete "${removed}"`, apply: (t) => t.slice(0, -removed.length), revert: (t) => t + removed });
+  };
+  const doUndo = () => {
+    const c = undo.at(-1); if (!c) { setNote("Undo stack empty."); return; }
+    setText((t) => c.revert(t)); setUndo((u) => u.slice(0, -1)); setRedo((r) => [...r, c]); setNote(`undo: ${c.label} reversed, moved to redo`);
+  };
+  const doRedo = () => {
+    const c = redo.at(-1); if (!c) { setNote("Redo stack empty."); return; }
+    setText((t) => c.apply(t)); setRedo((r) => r.slice(0, -1)); setUndo((u) => [...u, c]); setNote(`redo: ${c.label} applied again`);
+  };
+  return (
+    <Frame title="Undo and redo as two stacks of commands" q="What moves where on undo and redo, and why does typing after an undo throw the redo history away?"
+      about="Each action is a command object that knows how to apply and reverse itself. Watch the document and both stacks."
+      foot="Undo pops the top command, reverses it and pushes it onto redo. Redo does the opposite. A brand-new action clears redo: the 'future' you undid no longer follows from the current text. The delete command remembered the text it removed, which is what makes its undo possible.">
+      <div className="flex flex-wrap gap-1.5"><Btn onClick={type}>Type a word</Btn><Btn onClick={del}>Delete 3 chars</Btn><Btn onClick={doUndo} disabled={!undo.length}>Undo</Btn><Btn onClick={doRedo} disabled={!redo.length}>Redo</Btn><Btn onClick={() => { setText(""); setUndo([]); setRedo([]); setNote("Reset."); }}>Reset</Btn></div>
+      <div className="mt-3 rounded-xl border border-line bg-[#f7f7f5] px-3 py-2.5 font-mono text-[15px] text-[#1f1f1f]">{text || <span className="text-[#999]">(empty document)</span>}<span className="animate-pulse">|</span></div>
+      <div className="mt-2 text-[12.5px] text-mute">{note}</div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2"><Stack title="Undo stack" xs={undo} tone="#7aa7ff" /><Stack title="Redo stack" xs={redo} tone="#ffb454" /></div>
+    </Frame>
+  );
+}

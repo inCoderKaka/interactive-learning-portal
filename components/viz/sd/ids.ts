@@ -19,4 +19,6 @@ export const HLD_WIDGET_IDS = new Set<string>([
   "noun-verb", "rel-lab", "seq-park", "state-lab", "vending-state",
   "invariant-guard", "combo-explosion", "dispatch-lab", "ocp-lab", "lsp-lab", "di-swap",
   "seq-factory", "seq-singleton", "seq-facade", "seq-proxy", "decorator-onion", "composite-tree",
+  "seq-observer", "seq-chain", "undo-redo",
+  "doubles-lab", "seq-layers",
 ]);

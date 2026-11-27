@@ -16,6 +16,17 @@ const Log = ({ lines }: { lines: { ok: boolean; t: string }[] }) => (
 
 // ───────────────────────── invariant-guard ─────────────────────────
 
+type Acct = { bal: number; log: { ok: boolean; t: string }[] };
+const Panel = ({ title, s, sub }: { title: string; s: Acct; sub: string }) => (
+  <div className="rounded-xl border border-line bg-bg p-3">
+    <div className="text-[13px] font-semibold">{title}</div>
+    <div className="text-[11.5px] text-faint">{sub}</div>
+    <div className={cn("num display mt-2 text-[26px] font-semibold", s.bal < 0 ? "text-bad" : "text-text")}>{s.bal}¢</div>
+    <div className={cn("text-[12px]", s.bal < 0 ? "text-bad" : "text-ok")}>{s.bal < 0 ? "invariant broken: balance < 0" : "invariant holds: balance ≥ 0"}</div>
+    <Log lines={s.log} />
+  </div>
+);
+
 export function InvariantGuard() {
   const [open, setOpen] = useState({ bal: 100, log: [] as { ok: boolean; t: string }[] });
   const [enc, setEnc] = useState({ bal: 100, log: [] as { ok: boolean; t: string }[] });
@@ -35,15 +46,6 @@ export function InvariantGuard() {
     });
   };
   const reset = () => { setOpen({ bal: 100, log: [] }); setEnc({ bal: 100, log: [] }); };
-  const Panel = ({ title, s, sub }: { title: string; s: { bal: number; log: { ok: boolean; t: string }[] }; sub: string }) => (
-    <div className="rounded-xl border border-line bg-bg p-3">
-      <div className="text-[13px] font-semibold">{title}</div>
-      <div className="text-[11.5px] text-faint">{sub}</div>
-      <div className={cn("num display mt-2 text-[26px] font-semibold", s.bal < 0 ? "text-bad" : "text-text")}>{s.bal}¢</div>
-      <div className={cn("text-[12px]", s.bal < 0 ? "text-bad" : "text-ok")}>{s.bal < 0 ? "invariant broken: balance < 0" : "invariant holds: balance ≥ 0"}</div>
-      <Log lines={s.log} />
-    </div>
-  );
   return (
     <Frame title="One rule, checked in one place" q="Can any line of code anywhere in the program make this balance negative?"
       about="Press the same buttons for both accounts. The left one has a public field; the right one has a private field and only deposit/withdraw."
@@ -137,7 +139,7 @@ export function DispatchLab() {
       ) : (
         <div className="mt-3 grid gap-3 lg:grid-cols-2">
           <div className="rounded-xl border border-line bg-bg p-3">
-            <div className="text-[12px] text-faint">Declared type of x (the object is always the String "hi"):</div>
+            <div className="text-[12px] text-faint">Declared type of x (the object is always the String &quot;hi&quot;):</div>
             <div className="mt-1"><Chips value={decl} onChange={setDecl} options={[["Object", "Object x"], ["String", "String x"]]} /></div>
             <pre className="code mt-3 text-[12px]">{`void print(Object o) { System.out.println("object"); }\nvoid print(String s) { System.out.println("string"); }\n\n${decl} x = "hi";\nprint(x);`}</pre>
           </div>
@@ -271,6 +273,65 @@ export function DiSwap() {
           <div className="mt-3"><Btn onClick={run}>Run the unit test</Btn></div>
         </div>
         <div><Log lines={out} /></div>
+      </div>
+    </Frame>
+  );
+}
+
+// ───────────────────────── doubles-lab ─────────────────────────
+
+const DOUBLES = ["Stub", "Fake", "Spy", "Strict mock"] as const;
+const GOALS = ["Seat ends up booked", "Exactly one email sent", "Survives a refactor", "Catches a wrong-id bug"] as const;
+type DK = (typeof DOUBLES)[number];
+const CELL: Record<DK, [boolean, string][]> = {
+  Stub: [
+    [false, "A stub only returns canned answers (isFree → true). It stores nothing, so there's no seat state to check afterwards."],
+    [false, "A stub doesn't record calls, so you can't count emails."],
+    [true, "It returns answers whatever the call order, so restructuring the service doesn't break it."],
+    [false, "It returns 'free' for any id, so saving under the wrong id goes unnoticed."],
+  ],
+  Fake: [
+    [true, "The in-memory inventory really stores holds and bookings: assert inventory.isBooked(A7)."],
+    [false, "A fake notifier that discards messages can't tell you how many were sent (make it a spy for that)."],
+    [true, "Tests check the final state, so any refactor that keeps behaviour keeps the test green."],
+    [true, "Saving under the wrong id and reading the right one fails, just like production would."],
+  ],
+  Spy: [
+    [true, "A recording fake stores state and records calls, so you can check both."],
+    [true, "notifier.sent() has one entry, to the right user: the interaction is the requirement here."],
+    [true, "As long as you only assert what matters (one email), internal changes don't break it."],
+    [true, "It is still a working fake underneath."],
+  ],
+  "Strict mock": [
+    [false, "You'd verify that save(...) was called, not that the seat is actually booked."],
+    [true, "verify(notifier, times(1)).send(...) checks it directly."],
+    [false, "The test encodes every expected call and its order. Batch two saves into one and it fails, though behaviour is the same."],
+    [false, "It checks the calls you scripted, with the arguments you predicted, so it repeats the bug you wrote."],
+  ],
+};
+export function DoublesLab() {
+  const [sel, setSel] = useState<[DK, number] | null>(["Strict mock", 2]);
+  return (
+    <Frame title="Which test double can check what?" q="Testing BookingService.book(): which kind of stand-in lets the test verify each property?"
+      about="Rows are the stand-ins for the seat inventory and notifier; columns are things the test wants to verify. Click a cell for the reason."
+      foot="Fakes and recording fakes (spies) check outcomes and survive refactoring. Strict mocks check that particular calls happened, which is right only when the call itself is the requirement, like sending exactly one email. That is why Google's testing guidance prefers real objects and fakes, and uses mocks sparingly.">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[560px] border-separate border-spacing-1 text-[12.5px]">
+          <thead><tr><th />{GOALS.map((g) => <th key={g} className="px-1 py-1 text-left font-medium text-mute">{g}</th>)}</tr></thead>
+          <tbody>
+            {DOUBLES.map((d) => (
+              <tr key={d}>
+                <td className="pr-2 font-mono text-[12px] font-semibold">{d}</td>
+                {CELL[d].map(([ok], j) => (
+                  <td key={j}><button onClick={() => setSel([d, j])} className={cn("w-full rounded-lg border px-2 py-1.5 text-center text-[13px] font-semibold transition", ok ? "border-ok/30 text-ok" : "border-bad/30 text-bad", sel?.[0] === d && sel[1] === j && "ring-2 ring-accent/50")}>{ok ? "✓" : "✗"}</button></td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="mt-2 min-h-[48px] rounded-xl border border-line bg-panel2/40 p-2.5 text-[13px]">
+        {sel ? <><span className="font-semibold">{sel[0]} × {GOALS[sel[1]]}:</span> <span className="text-mute">{CELL[sel[0]][sel[1]][1]}</span></> : <span className="text-faint">Click a cell.</span>}
       </div>
     </Frame>
   );
