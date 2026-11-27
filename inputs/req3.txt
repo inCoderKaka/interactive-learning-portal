@@ -83,3 +83,6 @@ Ask whatever questions you have right now.
 
 [2026-11-27, session 4]
 also, write my instructions exact word by word to req files
+
+[2026-11-27, session 4]
+I'm able to see excercises in the HLD articles, but its nots like simulating real life interview experience.... in the real interview, I migt be given a whiteboard etc. in such interview type questions, it should redirect me to the mock interview scatterred all throughout the course of HLD, LLD. rules for this is that what all questions the learner be interviewed on given all concepts and topics prior to and including the current page are covered. once the interview is done, it goes back to the course when user is coming from the course. these interview type questions should be within the plan and it should have a page in the topic tree if the question is independent enough to be asked in an interview... it should also have the capability to show the user all the possibilities and situations the interview can be steered into and let the user see what all interview paths are explored and what all are still left to be explored. Add these requirements too in the req3 file. add my exact wordings. I hope you understood the whole requirement. if there's any ambiguity or doubts, ask them. do not assume anything.
