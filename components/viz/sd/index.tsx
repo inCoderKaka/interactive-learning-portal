@@ -3,6 +3,7 @@ import type { ComponentType } from "react";
 import { LbRace } from "./lb";
 import { LatencyLadder, Queueing } from "./basics";
 import { HolBlocking, PushCompare } from "./net";
+import { HealthTimeline, L4L7 } from "./traffic";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -12,6 +13,8 @@ const SIMS: Record<string, ComponentType> = {
   queueing: Queueing,
   "hol-blocking": HolBlocking,
   "push-compare": PushCompare,
+  "l4-l7": L4L7,
+  "health-timeline": HealthTimeline,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */

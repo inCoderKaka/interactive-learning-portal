@@ -22,4 +22,5 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "dsa/advanced-graphs": () => Promise.all([import("./dsa/advanced-graphs"), import("./dsa/notes/advanced-graphs")]).then(([m, n]) => withNotes(m.advancedGraphs, n.notes)),
   "hld/foundations": () => Promise.all([import("./hld/foundations"), import("./hld/notes/foundations")]).then(([m, n]) => withNotes(m.foundations, n.notes)),
   "hld/networking": () => Promise.all([import("./hld/networking"), import("./hld/notes/networking")]).then(([m, n]) => withNotes(m.networking, n.notes)),
+  "hld/traffic": () => Promise.all([import("./hld/traffic"), import("./hld/notes/traffic")]).then(([m, n]) => withNotes(m.traffic, n.notes)),
 };

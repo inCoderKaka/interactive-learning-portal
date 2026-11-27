@@ -39,4 +39,35 @@ Four pages:
 Use round numbers, say every assumption out loud, and only compute numbers that change a decision.
 :::
 `,
+  networking: md`
+## What this chapter is about
+
+Every system design starts with a user's device sending a request across the internet to your servers. This chapter follows that journey and explains each step in plain terms, because each step costs time and can fail.
+
+1. **TCP, UDP and QUIC.** How data is chopped into packets, how TCP makes delivery reliable and ordered (at the cost of a handshake and waiting on lost packets), when UDP's "just send it" is better, and how QUIC rebuilds TCP's job faster on top of UDP.
+2. **HTTP and TLS.** The request–response language of the web, how encryption keeps it private and proves who you are talking to, and how HTTP/1.1, HTTP/2 and HTTP/3 send many requests at once.
+3. **DNS.** How a name becomes an IP address through a chain of servers and caches, why changes take time to spread, and how DNS steers users to nearby data centres.
+4. **REST, gRPC and GraphQL.** Three ways programs talk to each other, and which fits public APIs, internal services and mobile apps.
+5. **API design.** The habits that make an API safe in the real world: pagination that does not skip items, idempotency keys so retries never charge twice, versioning, clear errors, and handling slow operations.
+6. **Real-time push.** How a server tells clients about new events (polling, long polling, server-sent events, WebSockets), and how to run millions of open connections.
+
+:::tip The one idea to keep
+Every network round trip costs time set by distance, so good designs reuse connections, set them up close to users, and avoid making requests one after another.
+:::
+`,
+  "load-balancing": md`
+## What this chapter is about
+
+One server is never enough: it has limited capacity and it will eventually fail. So you run many identical copies, and you need something in front of them that gives clients one address, spreads requests across the copies, and quietly stops using broken ones. This chapter covers that layer, from one data centre up to the whole planet.
+
+1. **L4 vs L7 load balancing.** Balancing whole connections by looking only at addresses and ports (fast, works for any protocol) versus reading each HTTP request to route by path or cookie (smarter, costlier). An explorer shows what each can see.
+2. **Balancing algorithms.** Round robin, least connections and the power of two choices, raced on identical traffic, so you can watch why a slow server ruins round robin and why "always pick the least busy" can cause a stampede.
+3. **Health checks and draining.** How quickly a dead server is noticed and how many requests fail meanwhile, why health checks must not depend on shared services, and how to remove servers without dropping requests.
+4. **API gateways and service meshes.** The single front door that checks identity, applies rate limits and routes requests for many services, and how it differs from a mesh of proxies that handles traffic between services.
+5. **Global traffic.** Getting users to the nearest healthy region with GeoDNS or anycast, setting up connections at the edge, and what happens when a whole region fails.
+
+:::tip The one idea to keep
+A load balancer must itself never be the single point of failure, and the strategy it uses decides whether one slow server becomes everyone's problem.
+:::
+`,
 };
