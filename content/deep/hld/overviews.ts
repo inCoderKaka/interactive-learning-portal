@@ -182,4 +182,33 @@ Some questions need all of the data (last year's logs); others need answers cont
 Process by when things happened, not when you saw them, and design outputs that can be corrected when late data arrives.
 :::
 `,
+  "rate-limiting-concept": md`
+## What this chapter is about
+
+Every service has a limit on how much work it can do. Rate limiting stops any single client from using more than its fair share; overload protection keeps the service working when total demand exceeds capacity. Without both, one buggy client or one traffic spike can take everything down.
+
+1. **Rate-limiting algorithms.** Fixed windows, sliding windows, token buckets and leaky buckets, raced on the same bursty traffic so you can see which let a burst slip through at a window boundary.
+2. **Distributed rate limiting.** Enforcing a per-user limit when that user's requests land on hundreds of servers: a shared atomic counter, or local counts synced periodically.
+3. **Load shedding and backpressure.** Why overloaded systems collapse instead of slowing down, how naive retries keep them collapsed, and how rejecting early, retrying carefully and dropping low-priority work keeps the important things running.
+
+:::tip The one idea to keep
+Under overload, rejecting some requests quickly serves more users than trying to serve everyone slowly.
+:::
+`,
+  "storage-search": md`
+## What this chapter is about
+
+Beyond tables of records, large systems store files, video, text to search, locations, and endless streams of measurements, each with its own specialised storage. This chapter covers the ones that appear in design interviews again and again.
+
+1. **Object storage.** Where photos, videos and backups live: how services like Google Cloud Storage keep billions of files safe with far less than three full copies, and how clients upload directly.
+2. **Media pipelines.** Turning an uploaded video into many sizes and short segments so every viewer gets smooth playback on any network.
+3. **Search.** How an inverted index finds documents containing your words in milliseconds, how results are ranked, and how the index is split across machines.
+4. **Geospatial indexes.** Answering "what's near me?" with geohashes, quadtrees and Google's S2 cells.
+5. **Sketches.** Bloom filters, HyperLogLog and Count-Min: tiny structures that answer "seen it?", "how many distinct?" and "how often?" approximately, at huge scale.
+6. **Time-series storage.** Storing millions of metric points per second with heavy compression and automatic summarising of old data.
+
+:::tip The one idea to keep
+Match the storage to the shape of the data and its queries: immutable blobs, text, places, approximate counts and time series each have a structure built for them.
+:::
+`,
 };

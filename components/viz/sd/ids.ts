@@ -9,4 +9,6 @@ export const HLD_WIDGET_IDS = new Set<string>([
   "partition-load", "rebalance", "snowflake", "seq-partitioned-index",
   "seq-wal", "isolation-lab", "seq-mvcc", "seq-2pc", "seq-saga", "raft", "seq-clocks", "seq-fencing",
   "queue-log", "consumer-groups", "seq-delivery", "seq-events", "seq-dlq", "mapreduce", "watermarks", "seq-checkpoint", "seq-cdc",
+  "rl-race", "retry-storm", "seq-rl-distributed",
+  "erasure", "abr", "inverted-index", "geohash", "hll",
 ]);
