@@ -314,7 +314,7 @@ export const HLD_CONCEPTS: [RegExp, string, boolean][] = [
 ];
 
 /** HLD-only noise: setup tutorials, framework how-tos, contest problems, LLD and AI videos. */
-export const HLD_SKIP = /\b(install(ing|ation)?|set ?up\b|setup|spring ?boot|spring (security|data|cloud|propagation|transactions)|\bjpa\b|hibernate|mongotemplate|node ?js|windows 1[01]|ubuntu|kibana console|step[- ]by[- ]step tutorial|\$project|date queries|aktu|blockchain|codeforces|codechef|leetcode|\bdiv ?\d\b|\blld\b|low[- ]level design|\brag\b|llm|agentic|langchain|chain of responsibility|design patterns?\b)/i;
+export const HLD_SKIP = /\b(install(ing|ation)?|set ?up\b|setup|spring ?boot|spring (security|data|cloud|propagation|transactions)|\bjpa\b|hibernate|mongotemplate|node ?js|windows 1[01]|ubuntu|kibana console|step[- ]by[- ]step tutorial|\$project|date queries|aktu|blockchain|codeforces|codechef|leetcode|\bdiv ?\d\b|\blld\b|low[- ]level (system )?design|\brag\b|llm|agentic|langchain|chain of responsibility|design patterns?\b)/i;
 /** Product channels must also look explanatory, and not be news round-ups or very old talks. */
 export const BROAD_OK = /what is|what'?s|how\b|explained|deep dive|internals|architecture|under the hood|introduction|overview|in a minute|at scale|\b101\b|why\b|behind/i;
 export const BROAD_NO = /google i\/o 20(0\d|1[0-5])|dev news|, and more|this week|in this episode|gdd-|hackathon|codelab/i;
@@ -346,4 +346,19 @@ export const HLD_DESIGNS: ConceptRule[] = ([
   [/zanzibar|authori[sz]ation (system|service)|permission(s)? system/i, "d-authz"],
   [/e-?commerce (platform|system|design)|amazon\/flipkart|flipkart like e-?commerce|shopping cart|inventory reservation|checkout requests/i, "d-global-cart"],
   [/\bledger\b|double[- ]entry/i, "d-dr-ledger"],
+  [/google maps|navigation system|uber\/google maps|eta (prediction|calculation)/i, "d-google-maps"],
+  [/\bgmail\b|email (service|system)|mail server/i, "d-gmail"],
+  [/google photos|photo (storage|sharing|backup)/i, "d-google-photos"],
+  [/tiktok|youtube shorts|\breels\b|google news|short video/i, "d-news-shorts"],
+  [/view count|like (button|count)|youtube views|counting (views|likes)|distributed counter/i, "d-view-counter"],
+  [/\bzoom\b|video (call|chat|conferenc)|google meet|webrtc|skype/i, "d-video-call"],
+  [/ad serving|contextual advertising|ad auction|google ads|banners are shown/i, "d-ad-serving"],
+  [/recommendation (engine|system)s?|recommender/i, "d-recommendations"],
+  [/search engine|google search|searches one document|code search/i, "d-search-engine"],
+  [/online judge|leetcode \(online|code editor|coding contests?/i, "d-online-judge"],
+  [/live comments?|live chat/i, "d-live-comments"],
+  [/stock (exchange|broker|trading)|trading platform|robinhood|zerodha|matching engine/i, "d-stock-exchange"],
+  [/distributed messag(e|ing) queue|design kafka|pub-sub model like kafka|message queue system design/i, "d-message-queue"],
+  [/calendar|meeting schedul/i, "d-calendar"],
+  [/inventory (management|system)/i, "d-inventory"],
 ] as ConceptRule[]).map(([re, to]) => [new RegExp(`^(?=.*(${DESIGNISH.source}))(?=.*(${re.source}))`, "i"), to] as ConceptRule);

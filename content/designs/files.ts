@@ -3,9 +3,10 @@ import { designs as classics } from "./classics";
 import { designs as data } from "./data";
 import { designs as extras } from "./extras";
 import { designs as feeds } from "./feeds";
+import { designs as google } from "./google";
 import { designs as infra } from "./infra";
 import { designs as realtime } from "./realtime";
 import { designs as search } from "./search";
 
 import type { DesignPatch } from "./types";
-export const PATCHES: DesignPatch[] = [...classics, ...data, ...extras, ...feeds, ...infra, ...realtime, ...search];
+export const PATCHES: DesignPatch[] = [...classics, ...data, ...extras, ...feeds, ...google, ...infra, ...realtime, ...search];

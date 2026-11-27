@@ -54,7 +54,6 @@ avDxdsRQkfA	Google Napa Partitioning - Query Time Splits | Distributed Systems D
 9TDR-17wFY4	Apache Airflow - DAGs and Batches | Distributed Systems Deep Dives With Ex-Google SWE
 K2UcC1Y4f_A	Trino/Presto - SQL On Everything | Distributed Systems Deep Dives With Ex-Google SWE
 uWvjhAssI6M	Apache Hudi - Streaming Table Formats | Distributed Systems Deep Dives With Ex-Google SWE
-8WVthsOAJgM	TikTok Monolith - Online Recommendation Systems | Distributed Systems Deep Dives With Ex-Google SWE
 12QWLde9PJg	Happy New Year!
 q0iYD2eyHEA	Databricks Photon - Fun With Vectors | Distributed Systems Deep Dives With Ex-Google SWE
 cB-vGKZu-eE	Apache Iceberg - More Than A Table Format | Distributed Systems Deep Dives With Ex-Google SWE
@@ -65,12 +64,8 @@ iYIjJ7utdDI	Systems Design in an Hour
 8UX0pahoPvo	time for a change
 9YQxB46xbOI	30: LinkedIn Mutual Connection Search | Systems Design Interview Questions With Ex-Google SWE
 3aX-lC5_P1M	28: Bidding Platform (eBay) | Systems Design Interview Questions With Ex-Google SWE
-dGYfpO3WJ1o	27: High Throughput Stock Exchange | Systems Design Interview Questions With Ex-Google SWE
-SAa6xFyATcw	26: Robinhood Stock Trading Platform | Systems Design Interview Questions With Ex-Google SWE
-7KO7o55dcuw	24: Video/Conference Calling (Zoom) | Systems Design Interview Questions With Ex-Google SWE
 i0tPWfB2Rgg	23: Multiplayer Battle Royale Video Game | Systems Design Interview Questions With Ex-Google SWE
 C1XV6Yg4Nm4	Insights From an L7 Meta Manager: Interviews, Onboarding, and Building Trust
-QrZTmiZSRcw	22: Recommendation Engine (YouTube, TikTok) | Systems Design Interview Questions With Ex-Google SWE
 X83DFlt15Xw	18: Count Unique Active Users | Systems Design Interview Questions With Ex-Google SWE
 BO2gRisnBcA	15: Reddit Comments | Systems Design Interview Questions With Ex-Google SWE
 p_q-n09B8KA	14: Distributed Logging & Metrics Framework | Systems Design Interview Questions With Ex-Google SWE
@@ -114,9 +109,6 @@ TuKjdj9YXns	Count Unique Active Users Design Deep Dive with Google SWE! | System
 PtHHbbc7tfI	Most Software Engineering Influencers are Trash
 b4awhnG4R3M	Shazam Audio Recognition Design Deep Dive with Google SWE! | Systems Design Interview Question 23
 YcKf7BT8v8Y	MMO Video Game (Fortnite) Design Deep Dive with Google SWE! | Systems Design Interview Question 21
-ZAIBFf8KpgI	Recommendation Engine Design Deep Dive with Google SWE! | Systems Design Interview Question 20
-Pkl9RHq0yDk	Zoom/Skype Video Chat Design Deep Dive with Google SWE! | Systems Design Interview Question 16
-erusCJu6CQY	Low Latency Stock Exchange Design Deep Dive with Google SWE! | Systems Design Interview Question 15
 _KoiMoZZ3C8	Distributed Metrics/Logging Design Deep Dive with Google SWE! | Systems Design Interview Question 14
 IY2EPjShgc4	Google SWE teaches systems design | EP50: Approaching Interview Questions
 hUHw4OnPGCA	Google SWE teaches systems design | EP48: Bitcoin
