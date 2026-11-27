@@ -14,6 +14,7 @@ import { RetryStorm, RlRace } from "./protect";
 import { Abr, Erasure, Geohash, Hll, InvertedIndex } from "./store";
 import { Breaker, ErrorBudget, Gossip } from "./ops";
 import { DefenceLayers, JwtLab, TenantQueue, Zanzibar } from "./sec";
+import { CrdtLab, RegionFailover, RpoRto } from "./geo";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -54,6 +55,9 @@ const SIMS: Record<string, ComponentType> = {
   zanzibar: Zanzibar,
   "tenant-queue": TenantQueue,
   "defence-layers": DefenceLayers,
+  "region-failover": RegionFailover,
+  "crdt-lab": CrdtLab,
+  "rpo-rto": RpoRto,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */

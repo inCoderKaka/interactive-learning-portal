@@ -241,4 +241,18 @@ Every request a system receives raises two questions: **who is this?** and **are
 Never trust where a request comes from: check identity and permission on every call, deny by default, and give every secret a short life and an owner who can revoke it.
 :::
 `,
+  "multi-region": md`
+## What this chapter is about
+
+A single region, even with several data centres, can still fail as a whole, and it is far from most of the world's users. Running in several regions fixes both, but the same data now lives in places 50–200 milliseconds apart, and they can't agree instantly. This chapter is about living with that distance.
+
+1. **Region topologies.** Active-passive and active-active, home regions, and globally consistent databases like Spanner: what each costs in latency and what it loses when a region dies. Fail a region yourself and compare.
+2. **Conflict resolution.** When two places change the same data at once: last-writer-wins and what it silently drops, version vectors that notice, and CRDTs that merge automatically. Try all three on the same edits.
+3. **Disaster recovery.** RPO and RTO, why replicas are not backups, point-in-time recovery, immutable backups and tested restores. See what a disaster costs under each plan.
+4. **Data residency.** Keeping a country's data in that country: a home region per customer, and the logs, caches and backups that leak it if you forget them.
+
+:::tip The one idea to keep
+Decide, per kind of data, where it lives, who may write it, and what you're prepared to lose. One answer for everything is either too slow or too risky.
+:::
+`,
 };

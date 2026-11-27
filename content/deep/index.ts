@@ -62,9 +62,13 @@ import { notes as n_hld_ops } from "./hld/notes/ops";
 import { security } from "./hld/security";
 import { notes as n_hld_security } from "./hld/notes/security";
 
-const NOTES: Record<string, string> = { ...n_hld_security, ...n_hld_ops, ...n_hld_storage, ...n_hld_protection, ...n_hld_streams, ...n_hld_messaging, ...n_hld_transactions, ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
+import { multiregion } from "./hld/multiregion";
+import { notes as n_hld_multiregion } from "./hld/notes/multiregion";
+
+const NOTES: Record<string, string> = { ...n_hld_multiregion, ...n_hld_security, ...n_hld_ops, ...n_hld_storage, ...n_hld_protection, ...n_hld_streams, ...n_hld_messaging, ...n_hld_transactions, ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
 
 const BODIES: Record<string, Deep> = {
+  ...multiregion,
   ...security,
   ...ops,
   ...storage,
