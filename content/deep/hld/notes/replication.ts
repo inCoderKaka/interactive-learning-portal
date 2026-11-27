@@ -15,11 +15,18 @@ Normally ms; seconds–minutes under load. Monitor it; stop routing reads to far
 Detect via heartbeat timeout (10–30 s typical) → elect most up-to-date follower (ideally via consensus) → reroute clients → fence old leader.
 Risks: lost async writes (GitHub 2012 ID reuse incident), split brain, failover storms from tight timeouts.
 Defences: majority election, leases, STONITH, fencing tokens.
+## Remember
+Replicas are not backups: mistakes replicate instantly
+keep point-in-time backups.
+Clients find the new leader via a virtual IP, a registry/coordination service, or a proxy endpoint.
+Retry writes after failover with idempotency keys.
+Monitor replication lag and failover events.
 `,
   "multi-leader-leaderless": `
 ## Multi-leader
 Each region/device writes locally, replicates async to other leaders.
-Uses: multi-region low-latency writes; offline-first clients.
+Uses: multi-region low-latency writes
+offline-first clients.
 Cost: conflicts.
 ## Conflict handling
 Avoid: home-region per record.
@@ -32,7 +39,9 @@ N replicas; write succeeds after W acks; read waits for R; R + W > N → overlap
 Read repair
 hinted handoff
 Merkle-tree anti-entropy.
-High write availability, no failover; conflicts and subtle consistency; no multi-key transactions.
+High write availability, no failover
+conflicts and subtle consistency
+no multi-key transactions.
 ## Choosing
 Single leader: simplicity, transactions. Multi-leader: regional writes with a conflict policy. Leaderless: max availability for key-value access.
 `,
@@ -46,23 +55,36 @@ N=3: (2,2) balanced
 (1,1) fast but stale.
 N=5 majorities (3,3): survive 2 failures.
 ## Not guaranteed
-Concurrent writes may be ordered differently; failed partial writes linger; reads during writes can flip; clock-based versions misorder.
-Quorums ≠ linearisability; consensus adds a single ordered log.
+Concurrent writes may be ordered differently
+failed partial writes linger
+reads during writes can flip
+clock-based versions misorder.
+Quorums ≠ linearisability
+consensus adds a single ordered log.
 ## Sloppy quorum + hinted handoff
 Write to healthy stand-ins when home replicas are down; hand off later; overlap not guaranteed meanwhile (Dynamo carts).
 ## Latency
 Wait for the W-th fastest: stragglers ignored.
 ## Choosing
-N=3 default, N=5 for critical metadata; majorities for overlap; tune W/R by read/write mix.
+N=3 default, N=5 for critical metadata
+majorities for overlap
+tune W/R by read/write mix.
 `,
   "consistency-models": `
 ## Ladder
-Linearisable: one copy, real-time order; unavailable on minority side of a partition; coordination per op.
+Linearisable: one copy, real-time order
+unavailable on minority side of a partition
+coordination per op.
 Sequential: one common order, not real time.
-Causal: cause → effect everywhere; concurrent ops may vary; partition-available; dependency metadata.
+Causal: cause → effect everywhere
+concurrent ops may vary
+partition-available
+dependency metadata.
 Eventual: converges when writes stop; anything before.
 ## Related
-Serialisability = transactions; linearisability = single objects in real time; strict serialisability = both (Spanner).
+Serialisability = transactions
+linearisability = single objects in real time
+strict serialisability = both (Spanner).
 ## Who provides what
 Linearisable: leader reads, consensus stores (etcd, ZooKeeper writes, Spanner), Bigtable single-row.
 Eventual: async replicas, DNS, leaderless at low quorums.
@@ -81,7 +103,8 @@ Reply before question → consistent prefix.
 ## Implementations
 RYW: own data from leader
 leader for N seconds after a write
-session stores last log position/timestamp; replica must be at least there.
+session stores last log position/timestamp
+replica must be at least there.
 Monotonic reads: sticky replica (hash user ID)
 highest-seen version in session.
 Monotonic writes: one leader per session's writes
@@ -89,14 +112,17 @@ versioned writes.
 Consistent prefix: same partition for related data
 dependency tracking.
 ## Why it matters
-Only the acting user pays for freshness; others read nearby replicas.
+Only the acting user pays for freshness
+others read nearby replicas.
 ## Scope
-Per session: cross-device needs server-side positions or home-region routing; cross-region RYW needs waiting or remote reads.
+Per session: cross-device needs server-side positions or home-region routing
+cross-region RYW needs waiting or remote reads.
 `,
   "cap-pacelc": `
 ## CAP precisely
 During a partition each operation chooses: consistent (some requests refused/blocked) or available (answers, maybe stale/conflicting).
-C = linearisability; A = every non-failed node answers.
+C = linearisability
+A = every non-failed node answers.
 P is not optional; healthy networks allow both C and A.
 Per operation, not per product.
 ## PACELC (Abadi)

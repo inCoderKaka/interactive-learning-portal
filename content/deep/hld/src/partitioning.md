@@ -540,6 +540,11 @@ orders_by_customer(customer_id, created_at, order_id): hand-built global index; 
 Rare indexed reads / few partitions → local. Frequent indexed reads → global or second table.
 Main access path → make it the partition key.
 
+## Remember
+Global index lag → show the user's own new item from the client until the index catches up.
+Scatter-gather over 64 partitions at 1% tail each → ~47% of queries hit a slow partition.
+Search engines are document-partitioned, so they keep shard counts moderate and add replicas for throughput.
+If one query dominates, make its field the partition key instead of indexing it.
 --- doubts
 Q: Why not just make every index global?
 A: Because every write then becomes a multi-partition operation: either a slower distributed transaction or an asynchronous update that leaves the index briefly stale. For write-heavy data with rarely used indexes, that cost buys little. Use global indexes for frequent queries that must be fast.
@@ -690,6 +695,11 @@ New shards → dual writes or CDC → backfill → verify → reads → writes �
 ## Control
 Automatic moves can cascade under false failure detection: throttle, require approval.
 
+## Remember
+Pick fixed partition counts ~10–100× the maximum machine count you expect.
+Throttle data movement so live traffic keeps its I/O.
+Pre-split new tables before bulk loads (dynamic partitioning starts with one partition).
+Verify (counts, checksums) before cutting over a migration.
 --- doubts
 Q: How do I pick the number of fixed partitions?
 A: Estimate the maximum number of machines you might ever need and multiply by roughly 10–100, so each machine always holds enough partitions to balance finely; then check per-partition overhead (each partition has metadata, files, replication streams). Thousands of partitions is common; Redis Cluster fixes 16,384 slots for exactly this reason.

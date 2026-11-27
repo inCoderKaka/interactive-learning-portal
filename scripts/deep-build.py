@@ -161,7 +161,13 @@ def main():
     def one_fact_per_line(t):
         out = []
         for line in t.strip().split("\n"):
-            out += [line] if line.startswith("#") else [x.strip() for x in line.split(" · ") if x.strip()]
+            if line.startswith("#"):
+                out.append(line)
+                continue
+            for part in [x.strip() for x in line.split(" · ") if x.strip()]:
+                bits = [b.strip() for b in part.split("; ")]
+                # split "fact; fact" into lines when every piece is a real statement, not a fragment
+                out += bits if len(bits) > 1 and all(len(b) > 18 for b in bits) else [part]
         return "\n".join(out)
     for _, _, parts in pages:
         if parts.get("notes"):

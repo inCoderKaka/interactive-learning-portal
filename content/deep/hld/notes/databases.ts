@@ -6,7 +6,8 @@ export const notes: Record<string, string> = {
 Access patterns + rates → correctness needs → size and write rate vs one machine → simplest fitting store → state the trade-off.
 ## Relational
 Tables, SQL, ACID, joins, indexes; read replicas; writes limited to one primary unless sharded.
-Distributed SQL (Spanner, CockroachDB): automatic sharding + transactions; consensus latency on writes.
+Distributed SQL (Spanner, CockroachDB): automatic sharding + transactions
+consensus latency on writes.
 ## NoSQL families
 Key-value: lookups by key (sessions, carts)
 weak at other queries.
@@ -31,7 +32,8 @@ consistency depends on configuration, not the label.
   "data-modeling": `
 ## Normalise, then denormalise deliberately
 Normalised: one place per fact, joins on read.
-Denormalise for hot reads (author name on posts, like counts, per-user inbox); accept sync work or staleness.
+Denormalise for hot reads (author name on posts, like counts, per-user inbox)
+accept sync work or staleness.
 Copies for history (price at purchase) are correctness, not optimisation.
 ## Relationships
 1-to-many: FK + index
@@ -43,7 +45,8 @@ Surrogate over natural keys.
 Distributed IDs: UUID (scattered) or time-ordered (Snowflake, UUIDv7).
 In partitioned stores the key = partition: spread load, co-locate what is read together.
 ## No-join stores
-One table/key layout per query; row key encodes the access path (reverse domains, reversed timestamps).
+One table/key layout per query
+row key encodes the access path (reverse domains, reversed timestamps).
 ## Patterns
 Counters (sharded when hot)
 soft deletes with deleted_at
@@ -54,15 +57,19 @@ money in minor units.
 `,
   "db-indexes": `
 ## B-tree
-Sorted keys in pages; wide and shallow (hundreds of keys per page); 3–4 levels for billions of rows.
+Sorted keys in pages
+wide and shallow (hundreds of keys per page)
+3–4 levels for billions of rows.
 Point lookup = one page per level, top levels cached.
 Linked sorted leaves → fast ranges and free ORDER BY.
 ## Composite
-Sorted by col1, then col2…; leftmost prefix only.
+Sorted by col1, then col2…
+leftmost prefix only.
 Equality columns first, then range/sort.
 (customer_id, created_at DESC) serves "latest N for a customer".
 ## Covering
-INCLUDE extra columns → index-only scans; more space and write work.
+INCLUDE extra columns → index-only scans
+more space and write work.
 ## Costs
 Each index updated on every write; space; memory competition. Remove unused indexes.
 ## Ignored indexes
@@ -88,7 +95,9 @@ Random writes; rewrite whole pages for small changes; fragmentation.
 PostgreSQL, InnoDB, SQL Server, Oracle.
 ## LSM engines
 Commit log + memtable → flush to immutable SSTable (sequential) → background compaction.
-Reads: memtable, then newest→oldest SSTables; Bloom filters skip files; sparse index finds blocks.
+Reads: memtable, then newest→oldest SSTables
+Bloom filters skip files
+sparse index finds blocks.
 Deletes = tombstones until compacted.
 Size-tiered vs leveled compaction.
 Bigtable, HBase, Cassandra, Scylla, RocksDB/LevelDB, CockroachDB/TiDB storage.
@@ -104,7 +113,8 @@ Watch compaction backlog and tombstones.
 ## Layout
 Row store: whole rows per page → great for single-row access.
 Column store: one column per file/segment → read only needed columns; 5–10×+ compression; vectorised execution.
-Column stores load in batches/appends; poor at point updates.
+Column stores load in batches/appends
+poor at point updates.
 ## OLTP vs OLAP
 OLTP: users, small key queries, constant writes, B-tree rows, current state.
 OLAP: analysts/dashboards, scans + aggregates, bulk loads, compressed columns, history.
@@ -112,29 +122,38 @@ OLAP: analysts/dashboards, scans + aggregates, bulk loads, compressed columns, h
 Batch ETL (hours old)
 CDC streaming (seconds–minutes)
 event streams (Kafka/Pub/Sub).
-Never heavy analytics on the primary; at most a reporting replica.
+Never heavy analytics on the primary
+at most a reporting replica.
 ## Warehouse modelling
 Star schema: fact table + dimensions; partition by date; cluster by filters; materialised views for hot dashboards.
 ## Lakes
-Parquet/ORC in object storage; Iceberg/Delta/Hudi add ACID → lakehouse; compute separate from storage.
+Parquet/ORC in object storage
+Iceberg/Delta/Hudi add ACID → lakehouse
+compute separate from storage.
 ## Google
 Dremel (2010) → BigQuery: columnar nested data, tree execution, terabytes in seconds.
 `,
   "nosql-families": `
 ## Key-value (DynamoDB-style)
-Partition key hashed → partition; sort key orders within; get/put/query range.
-Good keys: high cardinality, even use. Model each access pattern as a key layout; single-table design.
+Partition key hashed → partition
+sort key orders within
+get/put/query range.
+Good keys: high cardinality, even use. Model each access pattern as a key layout
+single-table design.
 Global secondary indexes: own keys, async, extra writes. Eventually consistent reads by default; strong optional; limited transactions.
 ## Document (MongoDB, Firestore)
 Nested JSON; index fields inside.
-Embed bounded, read-together data; reference shared/large/unbounded data. 16 MB doc limit (MongoDB).
+Embed bounded, read-together data
+reference shared/large/unbounded data. 16 MB doc limit (MongoDB).
 Shard key: targeted vs scatter-gather queries. Firestore: real-time listeners, offline sync.
 ## Wide-column (Bigtable, HBase, Cassandra)
 Row key → families → columns → versions; sorted; sparse; tablets by key range.
 Row key = only index (Bigtable). Avoid timestamp-first keys; prefix with distributed values; reverse timestamps for newest-first; tall-and-narrow.
 Cassandra: leaderless, tunable consistency. Bigtable: strongly consistent single-row ops.
 ## Graph
-Nodes + edges + properties; traversals follow pointers; deep multi-hop queries.
+Nodes + edges + properties
+traversals follow pointers
+deep multi-hop queries.
 One-hop social graphs usually live in sharded KV (TAO).
 `,
 };

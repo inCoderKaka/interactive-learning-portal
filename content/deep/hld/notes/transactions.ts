@@ -6,15 +6,24 @@ export const notes: Record<string, string> = {
 A: all or nothing (abortability). C: invariants (app + constraints). I: no interference (serialisable ideal). D: survives crashes.
 ## WAL protocol
 Append change to log → modify page in memory → on COMMIT append commit record + fsync log → ack.
-Pages flushed later; checkpoints bound recovery time and allow log trimming.
+Pages flushed later
+checkpoints bound recovery time and allow log trimming.
 ## Recovery (ARIES)
 Analysis from checkpoint → redo committed → undo uncommitted.
 ## Performance
-Sequential log writes; lazy batched page writes.
-Commit = fsync (~0.1 ms on good SSDs, ms on cheap disks); group commit amortises.
+Sequential log writes
+lazy batched page writes.
+Commit = fsync (~0.1 ms on good SSDs, ms on cheap disks)
+group commit amortises.
 Relaxed durability per transaction where loss of ms is fine.
 ## Durability levels
 OS buffer < local fsync < sync replica < multi-zone < multi-region.
+## Remember
+Use one transaction for related writes (debit + credit), plus an idempotency key for retries.
+Long transactions hold locks/versions: keep them short
+no remote calls inside.
+Distributed SQL (Spanner, CockroachDB) offers ACID across partitions
+many NoSQL stores offer single-item atomicity.
 `,
   "isolation-anomalies": `
 ## Anomalies
@@ -25,9 +34,12 @@ lost update
 write skew
 phantom.
 ## Levels
-Read Uncommitted < Read Committed (PG/Oracle default) < Snapshot isolation (PG "Repeatable Read"; MySQL RR default is similar) < Serializable (Spanner, CockroachDB default).
+Read Uncommitted < Read Committed (PG/Oracle default) < Snapshot isolation (PG "Repeatable Read"
+MySQL RR default is similar) < Serializable (Spanner, CockroachDB default).
 RC: blocks dirty reads/writes only.
-SI: consistent snapshot per transaction; PG detects lost updates; misses write skew and phantoms.
+SI: consistent snapshot per transaction
+PG detects lost updates
+misses write skew and phantoms.
 Serializable: equivalent to some serial order; may abort → retry.
 ## Fixes
 Counters/balances: atomic UPDATE … SET x = x − k WHERE x ≥ k.
@@ -38,30 +50,42 @@ Know your database's default and the real meaning of its level names.
 `,
   "mvcc-2pl": `
 ## 2PL
-Shared/exclusive locks; hold until end (strict) → serialisable; range/next-key locks stop phantoms.
-Readers ↔ writers block; deadlocks detected and one aborted; consistent lock order helps.
+Shared/exclusive locks
+hold until end (strict) → serialisable
+range/next-key locks stop phantoms.
+Readers ↔ writers block
+deadlocks detected and one aborted
+consistent lock order helps.
 ## MVCC
-Writes create versions tagged by transaction ID; reads use a snapshot.
-Readers never block writers. Write–write: second waits; first committer wins under SI.
-Old versions cleaned by VACUUM / undo purge; long transactions cause bloat.
+Writes create versions tagged by transaction ID
+reads use a snapshot.
+Readers never block writers. Write–write: second waits
+first committer wins under SI.
+Old versions cleaned by VACUUM / undo purge
+long transactions cause bloat.
 PostgreSQL, InnoDB, Oracle, Spanner, CockroachDB.
 ## SSI (Cahill 2008, PG SERIALIZABLE)
 Snapshot reads + dependency tracking → abort dangerous structures; retry needed.
 ## Optimistic vs pessimistic
 Pessimistic: wait; good under high contention; deadlocks.
-Optimistic: abort/retry; good when conflicts rare; abort storms under contention.
+Optimistic: abort/retry
+good when conflicts rare
+abort storms under contention.
 App-level: SELECT … FOR UPDATE vs version column.
 `,
   "two-phase-commit": `
 ## Protocol
 Phase 1 prepare: participants write changes + "prepared" durably, hold locks, vote.
-Phase 2: all yes → coordinator logs COMMIT (decision point) → tells all; any no/timeout → ABORT.
+Phase 2: all yes → coordinator logs COMMIT (decision point) → tells all
+any no/timeout → ABORT.
 Participants apply, release locks; ack.
 ## Blocking
-Yes-voters are in doubt until they learn the decision; coordinator crash after votes → locks held indefinitely.
+Yes-voters are in doubt until they learn the decision
+coordinator crash after votes → locks held indefinitely.
 Costs: 2+ round trips, several fsyncs, locks across network, slowest participant.
 ## Making it work
-Log decisions durably; recovery completes protocol.
+Log decisions durably
+recovery completes protocol.
 Spanner: Paxos-replicated coordinator/participants → non-blocking in practice.
 XA: standard but blocking and painful across heterogeneous systems.
 ## When not
@@ -69,9 +93,11 @@ Across independent services → saga + outbox. Inside one distributed DB → fin
 `,
   "sagas-outbox": `
 ## Saga
-T1…Tn local transactions; on failure at Tk run Ck−1…C1.
+T1…Tn local transactions
+on failure at Tk run Ck−1…C1.
 Compensations are business actions (refund, cancel, correction email).
-Order: validation and reversible steps first; charge/irreversible near the end (pivot).
+Order: validation and reversible steps first
+charge/irreversible near the end (pivot).
 No isolation → semantic locks (reserved/pending states).
 Steps and compensations idempotent and retryable.
 ## Orchestration vs choreography
@@ -95,7 +121,8 @@ Vote only for candidates at least as up to date → committed entries survive el
 Higher term wins; stale leaders step down (fencing).
 ## Practice
 2f+1 nodes tolerate f; odd sizes.
-Write = majority round trip + fsync; leader is the bottleneck → many groups per system (Spanner, CockroachDB, TiKV).
+Write = majority round trip + fsync
+leader is the bottleneck → many groups per system (Spanner, CockroachDB, TiKV).
 Reads: via log, read index, or leader lease.
 ## Paxos
 Prepare/promise + accept with proposal numbers; Multi-Paxos ≈ Raft with a stable leader; Chubby, Spanner.
@@ -105,31 +132,42 @@ etcd (Kubernetes), ZooKeeper, Consul, Chubby; metadata; per-range replication in
   "clocks-ordering": `
 ## Physical clocks
 NTP sync: ms on good networks; jumps on correction; VM pauses.
-Fine for humans, leases with margins; not for ordering close events across machines.
+Fine for humans, leases with margins
+not for ordering close events across machines.
 ## Lamport
 Increment per event; send counter; receive: max + 1.
-A → B ⇒ L(A) < L(B); total order with node-ID tie-break; can't detect concurrency.
+A → B ⇒ L(A) < L(B)
+total order with node-ID tie-break
+can't detect concurrency.
 ## Vector clocks
 Vector per process; increment own; merge = element-wise max (+1 own).
 A → B ⇔ VA ≤ VB (and ≠). Neither ≤ → concurrent → conflict.
-Dynamo-style version vectors; size grows with participants.
+Dynamo-style version vectors
+size grows with participants.
 ## HLC
 Physical + logical; causality + near wall time; CockroachDB, YugabyteDB, MongoDB.
 ## TrueTime (Spanner)
-GPS + atomic clocks; interval with ε of a few ms.
-Commit timestamp s = TT.now().latest; wait until TT.now().earliest > s (~2ε).
+GPS + atomic clocks
+interval with ε of a few ms.
+Commit timestamp s = TT.now().latest
+wait until TT.now().earliest > s (~2ε).
 → external consistency (real-time order) across the globe.
 `,
   "distributed-locks": `
 ## Leases
-Lock with expiry, renewed by holder; crash → expiry → next holder.
+Lock with expiry, renewed by holder
+crash → expiry → next holder.
 Service must be consensus-based: ZooKeeper (ephemeral nodes/sessions), etcd leases, Chubby.
 ## Pause problem
-GC/VM pauses exceed the lease; holder wakes and acts; check-then-act doesn't help.
+GC/VM pauses exceed the lease
+holder wakes and acts
+check-then-act doesn't help.
 ## Fencing tokens
 Monotonic number per grant (zxid / etcd revision).
-Every protected write carries it; storage rejects lower than max seen.
-Needs storage support; otherwise idempotency.
+Every protected write carries it
+storage rejects lower than max seen.
+Needs storage support
+otherwise idempotency.
 ## Redis locks
 SET NX PX on one node: efficiency only (async failover loses it, no token).
 Redlock: debated; timing assumptions; unsafe without fencing (Kleppmann 2016).

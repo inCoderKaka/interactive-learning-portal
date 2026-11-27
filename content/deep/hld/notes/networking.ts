@@ -16,7 +16,8 @@ Reuse connections: keep-alive, pools, warm backend connections.
 On UDP; built-in TLS 1.3; 1-RTT setup, 0-RTT on resumption.
 Per-stream loss recovery: no cross-stream head-of-line blocking.
 Connection ID survives IP changes (Wi-Fi ↔ mobile).
-HTTP/3 = HTTP over QUIC; falls back to TCP if UDP is blocked.
+HTTP/3 = HTTP over QUIC
+falls back to TCP if UDP is blocked.
 ## Choosing
 APIs/pages: TCP or QUIC
 service-to-service: pooled TCP (gRPC/HTTP/2)
@@ -43,14 +44,17 @@ Cache-Control max-age, ETag + If-None-Match → 304.
 Stateless: login travels with every request (cookie or token).
 ## TLS
 Privacy, integrity, authentication via certificates.
-Public-key handshake agrees a symmetric key; bulk data uses fast symmetric crypto.
+Public-key handshake agrees a symmetric key
+bulk data uses fast symmetric crypto.
 TLS 1.2: 2 RTT
 TLS 1.3: 1 RTT
 resumption: 0-RTT (replay risk).
-Terminate at the edge/LB to route on HTTP; mTLS inside if needed.
+Terminate at the edge/LB to route on HTTP
+mTLS inside if needed.
 ## Versions
 HTTP/1.1 (1997): keep-alive, one response at a time, ~6 connections per host.
-HTTP/2 (2015): binary frames, multiplexed streams, HPACK; TCP head-of-line blocking remains.
+HTTP/2 (2015): binary frames, multiplexed streams, HPACK
+TCP head-of-line blocking remains.
 HTTP/3 (2022): over QUIC; per-stream loss recovery; 1-RTT setup; migration.
 ## Design
 Terminate TLS near users
@@ -75,13 +79,19 @@ TXT (verification, policies).
 ## TTL
 Long TTL: fewer lookups, slow changes.
 Short TTL (30–60 s): fast changes, more lookups.
-Lower before migrations; some clients ignore TTLs, so keep old endpoints alive.
+Lower before migrations
+some clients ignore TTLs, so keep old endpoints alive.
 ## Routing with DNS
-GeoDNS / latency-based answers; weighted answers for canaries; health-checked answers.
+GeoDNS / latency-based answers
+weighted answers for canaries
+health-checked answers.
 The server sees the resolver's location (EDNS Client Subnet helps).
 DNS failover takes minutes.
 ## Anycast
-One IP from many sites; nearest wins by routing; failover in seconds; used by DNS providers, CDNs, global LBs.
+One IP from many sites
+nearest wins by routing
+failover in seconds
+used by DNS providers, CDNs, global LBs.
 ## Failure
 Authoritative DNS down = you vanish once caches expire: use redundant, anycast DNS.
 `,
@@ -121,11 +131,14 @@ Opaque cursor (last sort key + ID), server-capped limit.
 Offsets: duplicates/skips on change, slow at depth.
 ## Idempotency
 Client UUID per operation in a header (Idempotency-Key).
-Store key + result in the same transaction as the effect; replay returns stored result.
+Store key + result in the same transaction as the effect
+replay returns stored result.
 Same key + different body → error. Expire keys (e.g. 24 h).
 Handle concurrent duplicates with a unique constraint or lock.
 ## Versions and errors
-Major version in path or package; additive changes freely; clients tolerate unknown fields and enum values.
+Major version in path or package
+additive changes freely
+clients tolerate unknown fields and enum values.
 Correct status + structured body (code, message, details); say whether retry helps; no internals.
 429 + Retry-After (+ RateLimit-Limit/Remaining/Reset).
 ## Async and concurrency
@@ -144,7 +157,9 @@ auth.
 `,
   "realtime-push": `
 ## Short polling
-Delay ≈ interval / 2; mostly empty responses; 1M clients every 5 s = 200k req/s.
+Delay ≈ interval / 2
+mostly empty responses
+1M clients every 5 s = 200k req/s.
 ## Long polling
 Held request until news or timeout; near-zero delay; one request per event; good fallback.
 ## SSE
@@ -161,7 +176,9 @@ Route via user→gateway registry or pub/sub.
 Balance at connect time; drain on deploy.
 Heartbeats every 20–60 s; drop after misses.
 Presence updated lazily or in batches.
-Reconnect with backoff + jitter; server caps reconnect rate.
-Store messages durably; clients resume from last-seen ID.
+Reconnect with backoff + jitter
+server caps reconnect rate.
+Store messages durably
+clients resume from last-seen ID.
 `,
 };

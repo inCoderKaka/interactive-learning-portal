@@ -4,20 +4,28 @@ export const notes: Record<string, string> = {
   "l4-l7": `
 ## Every load balancer
 Stable address in front of changing servers.
-Distributes traffic; health-checks backends.
+Distributes traffic
+health-checks backends.
 Must itself be redundant (pairs, clusters, anycast, floating IP).
 ## L4
-Sees IPs, ports, protocol; balances connections by 5-tuple hash.
-Millions of packets/s; any TCP/UDP protocol; TLS passes through.
+Sees IPs, ports, protocol
+balances connections by 5-tuple hash.
+Millions of packets/s
+any TCP/UDP protocol
+TLS passes through.
 Cannot route by path, retry requests, or balance within one connection.
 Direct server return: replies bypass the balancer. Example: Google Maglev (2016).
 ## L7
 Reverse proxy: terminates client connection and TLS, reads HTTP.
-Routes by path/host/header/cookie; per-request balancing; retries (idempotent only).
+Routes by path/host/header/cookie
+per-request balancing
+retries (idempotent only).
 Adds compression, caching, auth, rate limits, tracing headers.
-Costlier per request; holds TLS keys. Examples: Envoy, NGINX, HAProxy, GFE.
+Costlier per request
+holds TLS keys. Examples: Envoy, NGINX, HAProxy, GFE.
 ## Layering
-L4 at the front → fleet of L7 proxies → services; sidecars or client-side balancing inside.
+L4 at the front → fleet of L7 proxies → services
+sidecars or client-side balancing inside.
 ## Breakage
 Long-lived connections pin load → per-request L7 or max connection age.
 Client IP lost → X-Forwarded-For / PROXY protocol.
@@ -30,28 +38,39 @@ Random: no shared state; similar to RR; slightly lumpier.
 A slow server under load-blind strategies builds an unbounded queue → p99 explodes.
 ## Load-aware
 Least connections / outstanding requests: adapts to slowness and heavy requests.
-Needs fresh numbers; stale or partial views cause herding.
+Needs fresh numbers
+stale or partial views cause herding.
 EWMA / least response time: reacts to slowness before queues grow (Finagle, Envoy).
-Power of two choices: two random picks, lighter wins; exponentially better max load than random; herd-proof. Default in modern proxies and gRPC clients.
+Power of two choices: two random picks, lighter wins
+exponentially better max load than random
+herd-proof. Default in modern proxies and gRPC clients.
 ## Affinity
-Cookie stickiness: simple, uneven, sessions die with the server; keep state external.
-Hash routing: hash % N reshuffles everything; consistent/rendezvous/Maglev hashing moves ~1/N.
+Cookie stickiness: simple, uneven, sessions die with the server
+keep state external.
+Hash routing: hash % N reshuffles everything
+consistent/rendezvous/Maglev hashing moves ~1/N.
 Bounded-load consistent hashing (Google, 2017): cap ~1.25× average.
 ## Warm-up
 Slow start ramps new servers over 30–60 s.
 ## Defaults
-P2C or least outstanding requests; weights for mixed hardware; consistent hashing with bounded load for locality.
+P2C or least outstanding requests
+weights for mixed hardware
+consistent hashing with bounded load for locality.
 `,
   "lb-health": `
 ## Active checks
-Probe every interval with a timeout; unhealthy after N fails, healthy after M passes.
-Detection ≈ interval × N; failed requests ≈ server's traffic share × detection time.
+Probe every interval with a timeout
+unhealthy after N fails, healthy after M passes.
+Detection ≈ interval × N
+failed requests ≈ server's traffic share × detection time.
 Short intervals: faster, more probes, more flapping.
 ## Passive / outlier detection
-Eject after consecutive 5xx or connection errors; retest after an ejection period.
+Eject after consecutive 5xx or connection errors
+retest after an ejection period.
 Fast under load; catches what shallow probes miss.
 ## Endpoints
-Liveness = restart me; readiness = route to me.
+Liveness = restart me
+readiness = route to me.
 Not ready during startup (warm-up), shutdown (drain) and overload.
 Don't gate every server on a shared dependency: correlated failure.
 Fail open / panic threshold when most of the pool looks unhealthy.
@@ -79,22 +98,28 @@ Mesh: east–west sidecars, mTLS, traffic splitting, without code changes.
 ## Keep it healthy
 Stateless, horizontally scaled, multi-zone, behind L4.
 No business logic; per-client BFFs when needs diverge.
-Verify JWTs locally with cached keys; cache API-key lookups.
+Verify JWTs locally with cached keys
+cache API-key lookups.
 Per-route timeouts; per-backend circuit breakers.
 Shared or approximate rate-limit counters.
 `,
   "global-lb": `
 ## Steering users
-GeoDNS: per-region IPs, answer by resolver location; minutes to fail over.
-Anycast: one global IP; nearest edge by routing; seconds to fail over.
-Edge termination: TCP/TLS ends a few ms from the user; backbone with warm connections to the region.
+GeoDNS: per-region IPs, answer by resolver location
+minutes to fail over.
+Anycast: one global IP
+nearest edge by routing
+seconds to fail over.
+Edge termination: TCP/TLS ends a few ms from the user
+backbone with warm connections to the region.
 ## Choosing a region
 Proximity → health → capacity (waterfall spill) → data placement / residency.
 ## Regional failure
 Traffic moves fast; capacity and data are the hard parts.
 Plan N+1 regions (3 regions → each ≤ ~66% at peak) or shed low-priority traffic.
 Stateless tiers fail over cleanly; caches start cold; no server-local sessions.
-Single write region → promote a replica, possibly losing async writes; multi-region writes → conflicts.
+Single write region → promote a replica, possibly losing async writes
+multi-region writes → conflicts.
 ## Examples
 Google Cloud global external load balancer (anycast IP, GFEs at the edge); Cloudflare; CDNs.
 `,

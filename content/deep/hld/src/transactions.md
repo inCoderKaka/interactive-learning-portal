@@ -93,6 +93,10 @@ Relaxed durability per transaction where loss of ms is fine.
 ## Durability levels
 OS buffer < local fsync < sync replica < multi-zone < multi-region.
 
+## Remember
+Use one transaction for related writes (debit + credit), plus an idempotency key for retries.
+Long transactions hold locks/versions: keep them short; no remote calls inside.
+Distributed SQL (Spanner, CockroachDB) offers ACID across partitions; many NoSQL stores offer single-item atomicity.
 --- doubts
 Q: If pages are written later, how is the committed data safe?
 A: Because the log record describing every change of a committed transaction is already on disk. If the machine crashes before the pages are written, recovery replays those log records and rebuilds the pages. The log, not the data files, is the source of truth for the recent past.

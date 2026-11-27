@@ -96,6 +96,11 @@ Detect via heartbeat timeout (10–30 s typical) → elect most up-to-date follo
 Risks: lost async writes (GitHub 2012 ID reuse incident), split brain, failover storms from tight timeouts.
 Defences: majority election, leases, STONITH, fencing tokens.
 
+## Remember
+Replicas are not backups: mistakes replicate instantly; keep point-in-time backups.
+Clients find the new leader via a virtual IP, a registry/coordination service, or a proxy endpoint.
+Retry writes after failover with idempotency keys.
+Monitor replication lag and failover events.
 --- doubts
 Q: Why not make every follower synchronous to never lose data?
 A: Because then the slowest follower sets the speed of every write, and any follower being down stops all writes, making the system less available than a single server. Waiting for a majority gives the same "no acknowledged write lost" guarantee (as long as a majority survives) while tolerating slow or failed minorities.
