@@ -70,4 +70,20 @@ One server is never enough: it has limited capacity and it will eventually fail.
 A load balancer must itself never be the single point of failure, and the strategy it uses decides whether one slow server becomes everyone's problem.
 :::
 `,
+  caching: md`
+## What this chapter is about
+
+Reading from memory is about a thousand times faster than reading from disk, and a database can only answer so many questions per second. A **cache** keeps copies of frequently used data in memory so most reads never reach the database. It is the most common way to make a system both faster and able to serve far more users, and also a reliable source of subtle bugs, because you now have two copies of the same data.
+
+1. **Cache patterns.** The four ways an application and a cache share reads and writes (cache-aside, read-through, write-through, write-back), and what each loses when something crashes.
+2. **Eviction and sizing.** What to throw out when the cache is full (LRU, LFU, modern admission policies), raced on the same traffic, and how big a cache needs to be.
+3. **Invalidation.** Why caches end up holding old data even when every rule is followed, and the fixes used at scale: TTLs, leases, versions and invalidation from the database's change log.
+4. **Failure modes.** Stampedes when a popular entry expires, requests for things that do not exist, mass expiry, and single keys too popular for one server.
+5. **Redis and Memcached.** How the two common caches work inside, how they are spread across machines, and what happens when one fails.
+6. **CDNs.** Caches in hundreds of cities that serve images, video and files near users, and how to control and update what they hold.
+
+:::tip The one idea to keep
+A cache makes the database depend on the hit rate, so design for the moments when the hit rate drops: expiry, restarts and failures.
+:::
+`,
 };
