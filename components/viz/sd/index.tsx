@@ -9,6 +9,7 @@ import { BtreeLsm, IndexExplorer, RowColumn } from "./db";
 import { PartitionSim } from "./repl";
 import { PartitionLoad, Rebalance, Snowflake } from "./part";
 import { IsolationLab, Raft } from "./txn";
+import { ConsumerGroups, MapReduce, QueueLog, Watermarks } from "./msg";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -31,6 +32,10 @@ const SIMS: Record<string, ComponentType> = {
   snowflake: Snowflake,
   "isolation-lab": IsolationLab,
   raft: Raft,
+  "queue-log": QueueLog,
+  "consumer-groups": ConsumerGroups,
+  mapreduce: MapReduce,
+  watermarks: Watermarks,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */

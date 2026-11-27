@@ -152,4 +152,34 @@ Whenever several changes must happen together (move money, book the last seat, p
 Atomicity, isolation and agreement all cost coordination; use them where a mistake would be expensive, and make everything else idempotent.
 :::
 `,
+  messaging: md`
+## What this chapter is about
+
+Not every piece of work should happen while the user waits. Sending emails, resizing photos, updating search indexes and notifying other services can happen a moment later, elsewhere. Message systems carry that work and those events between services, absorb traffic bursts, and keep services independent of each other. This chapter explains how they behave and how to use them without losing or duplicating anything.
+
+1. **Queues vs logs.** Task queues hand each job to one worker and forget it; logs like Kafka keep an ordered history that many systems read at their own pace and can replay.
+2. **Kafka internals.** Partitions and keys, why appending to files is fast, replication settings that prevent data loss, consumer groups, and keeping only the latest value per key.
+3. **Delivery guarantees.** Why messages are either sometimes lost or sometimes duplicated, and how "exactly once" is really built from duplicates made harmless.
+4. **Event patterns.** Publishing business events, storing every change as an event (event sourcing), and separating write and read models (CQRS).
+5. **Retries and dead-letter queues.** Handling messages that keep failing, consumers that fall behind, and events that arrive out of order.
+
+:::tip The one idea to keep
+Assume every message can arrive twice and late; make consumers idempotent and decide what happens to messages that keep failing.
+:::
+`,
+  "stream-processing": md`
+## What this chapter is about
+
+Some questions need all of the data (last year's logs); others need answers continuously as data arrives (orders per minute, right now). This chapter covers both: processing huge finished datasets across many machines, and processing never-ending streams where events arrive late and out of order.
+
+1. **Batch processing.** Google's MapReduce model (map, shuffle, reduce), why it scales and survives failures, and its successors Spark and Beam.
+2. **Windows and watermarks.** Grouping a stream by time, the difference between when something happened and when you heard about it, and deciding when a window's answer is ready.
+3. **Stateful streams.** Keeping counts and joins in a stream processor, and recovering after a crash without losing or double-counting events.
+4. **Lambda vs Kappa.** Two architectures for combining fresh and complete answers, and why the industry moved to a single streaming pipeline.
+5. **Change data capture.** Streaming a database's own log of changes so search indexes, caches and warehouses stay in sync without fragile dual writes.
+
+:::tip The one idea to keep
+Process by when things happened, not when you saw them, and design outputs that can be corrected when late data arrives.
+:::
+`,
 };
