@@ -237,47 +237,6 @@ function Estimator() {
   );
 }
 
-// ---------- load balancer ----------
-function LoadBalancer() {
-  const N = 5;
-  const [algo, setAlgo] = useState<"rr" | "random" | "least" | "p2c">("rr");
-  const [load, setLoad] = useState<number[]>(Array(N).fill(0));
-  const [slow, setSlow] = useState(2);
-  const [peakMax, setPeakMax] = useState(0);
-  const rr = useRef(0), ld = useRef(load);
-  ld.current = load;
-  useEffect(() => { setLoad(Array(N).fill(0)); setPeakMax(0); }, [algo, slow]);
-  useEffect(() => {
-    const t = setInterval(() => {
-      const L = ld.current;
-      let pick = 0;
-      if (algo === "rr") pick = rr.current++ % N;
-      else if (algo === "random") pick = Math.floor(Math.random() * N);
-      else if (algo === "least") pick = L.indexOf(Math.min(...L));
-      else { const a = Math.floor(Math.random() * N), b = Math.floor(Math.random() * N); pick = L[a] <= L[b] ? a : b; }
-      setLoad((x) => { const y = x.map((v, i) => (i === pick ? v + 1 : v)); setPeakMax((m) => Math.max(m, ...y)); return y; });
-      setTimeout(() => setLoad((x) => x.map((v, i) => (i === pick ? Math.max(0, v - 1) : v))), pick === slow ? 2600 : 700);
-    }, 170);
-    return () => clearInterval(t);
-  }, [algo, slow]);
-  const NAMES = { rr: "Round robin", random: "Random", least: "Least connections", p2c: "Power of two choices" };
-  return (
-    <Frame title="Load balancing strategies" about="One backend is slow (click a server to move the slowness). Compare how each strategy copes with in-flight requests piling up.">
-      <div className="mb-4 flex flex-wrap gap-2">{(Object.keys(NAMES) as (keyof typeof NAMES)[]).map((k) => <Button key={k} size="sm" variant={algo === k ? "primary" : "soft"} onClick={() => setAlgo(k)}>{NAMES[k]}</Button>)}</div>
-      <div className="flex h-44 items-end justify-around gap-3 rounded-xl border border-line bg-bg p-4">
-        {load.map((v, i) => (
-          <button key={i} onClick={() => setSlow(i)} className="flex h-full flex-1 flex-col items-center justify-end gap-2" aria-label={`Server ${i + 1}${i === slow ? " (slow)" : ""}`}>
-            <span className="num text-[12px] text-mute">{v}</span>
-            <motion.div animate={{ height: `${Math.min(100, v * 7)}%` }} className="w-full max-w-14 rounded-t-lg" style={{ background: v > 10 ? "var(--color-bad)" : i === slow ? "var(--color-warn)" : "var(--color-dsa)", minHeight: 4 }} />
-            <span className={cn("font-mono text-[11px]", i === slow ? "text-warn" : "text-faint")}>{i === slow ? "slow" : `s${i + 1}`}</span>
-          </button>
-        ))}
-      </div>
-      <div className="mt-3 grid grid-cols-3 gap-2"><Stat k="In flight" v={load.reduce((a, b) => a + b, 0)} /><Stat k="Worst backlog seen" v={peakMax} tone={peakMax > 10 ? "var(--color-bad)" : "var(--color-ok)"} /><Stat k="Strategy" v={<span className="text-sm">{NAMES[algo]}</span>} /></div>
-    </Frame>
-  );
-}
-
 export const WIDGETS: Record<string, () => ReactNode> = {
-  "consistent-hash": ConsistentHash, "token-bucket": TokenBucket, quorum: Quorum, bloom: Bloom, estimator: Estimator, "load-balancer": LoadBalancer,
+  "consistent-hash": ConsistentHash, "token-bucket": TokenBucket, quorum: Quorum, bloom: Bloom, estimator: Estimator,
 };

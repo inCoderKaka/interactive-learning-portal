@@ -20,9 +20,37 @@ import { notes as n_dp } from "./dsa/notes/dp";
 import { notes as n_greedy_math } from "./dsa/notes/greedy-math";
 import { notes as n_strings_structures } from "./dsa/notes/strings-structures";
 
-const NOTES: Record<string, string> = { ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
+import { foundations } from "./hld/foundations";
+import { notes as n_hld_foundations } from "./hld/notes/foundations";
+
+import { networking } from "./hld/networking";
+import { notes as n_hld_networking } from "./hld/notes/networking";
+
+import { traffic } from "./hld/traffic";
+import { notes as n_hld_traffic } from "./hld/notes/traffic";
+
+import { caching } from "./hld/caching";
+import { notes as n_hld_caching } from "./hld/notes/caching";
+
+import { databases } from "./hld/databases";
+import { notes as n_hld_databases } from "./hld/notes/databases";
+
+import { replication } from "./hld/replication";
+import { notes as n_hld_replication } from "./hld/notes/replication";
+
+import { partitioning } from "./hld/partitioning";
+import { notes as n_hld_partitioning } from "./hld/notes/partitioning";
+
+const NOTES: Record<string, string> = { ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
 
 const BODIES: Record<string, Deep> = {
+  ...partitioning,
+  ...replication,
+  ...databases,
+  ...caching,
+  ...traffic,
+  ...networking,
+  ...foundations,
   ...complexity,
   ...arraysHashing,
   ...linear,

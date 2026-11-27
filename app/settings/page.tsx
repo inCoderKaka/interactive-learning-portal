@@ -26,6 +26,7 @@ function VisualSettings() {
   const v = useStore((s) => s.settings.visuals ?? DEFAULT_VISUALS);
   const setSettings = useStore((s) => s.setSettings);
   const set = (p: Partial<typeof v>) => setSettings({ visuals: { ...v, ...p } });
+  const glossary = useStore((s) => s.settings.glossary ?? true);
   const opt = (on: boolean) => cn("rounded-xl border px-3.5 py-2.5 text-left text-[13px] transition", on ? "border-accent/60 bg-accent/10" : "border-line bg-panel2 hover:border-[#3a4160]");
   return (
     <Section id="visuals" icon={Shapes} title="Visuals and animations" sub="Step-through animations, simulations and interactive diagrams. Hide one from its own Hide button, or set a level for all of them here.">
@@ -37,6 +38,10 @@ function VisualSettings() {
       <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-panel2 p-4">
         <input type="checkbox" checked={v.motion === "reduced"} onChange={(e) => set({ motion: e.target.checked ? "reduced" : "auto" })} className="mt-1 accent-[var(--color-accent)]" />
         <span><span className="block text-sm font-semibold">Reduce motion</span><span className="block text-[13px] leading-relaxed text-mute">Transitions jump instead of animating. Off follows your device setting.</span></span>
+      </label>
+      <label className="mt-2 flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-panel2 p-4">
+        <input type="checkbox" checked={glossary} onChange={(e) => setSettings({ glossary: e.target.checked })} className="mt-1 accent-[var(--color-accent)]" />
+        <span><span className="block text-sm font-semibold">Hover definitions</span><span className="block text-[13px] leading-relaxed text-mute">Technical words get a faint dotted underline; hover or tap one for a plain-words definition.</span></span>
       </label>
       {v.hidden.length > 0 && (
         <div className="mt-4">

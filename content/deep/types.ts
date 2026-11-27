@@ -1,4 +1,4 @@
-import type { Quiz, Ref } from "@/lib/types";
+import type { Exercise, Quiz, Ref } from "@/lib/types";
 
 /**
  * The body of one subtopic page (its id, title, tier and minutes come from content/outline.ts).
@@ -11,6 +11,7 @@ import type { Quiz, Ref } from "@/lib/types";
  * notes   — the cheat sheet under the recall items (collapsed by default): plain lines, one fact per line, that together
  *           bring the whole Learn page back to mind. "## Heading" lines group them.
  * doubts  — questions learners actually get stuck on, answered in full.
+ * exercises — write-then-reveal practice: [kind, prompt, model answer] (see ExerciseKind).
  * problems — LeetCode numbers that belong on this page (portal problems and extra pages alike).
  */
 export interface Deep {
@@ -27,6 +28,7 @@ export interface Deep {
   widgets?: string[];
   problems?: number[];
   prereq?: string[];
+  exercises?: Exercise[];
 }
 
 /** Source helpers: S.paper("title", "authors", url) etc. Keeps the content files compact. */
