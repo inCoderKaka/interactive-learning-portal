@@ -15,6 +15,7 @@ import { Abr, Erasure, Geohash, Hll, InvertedIndex } from "./store";
 import { Breaker, ErrorBudget, Gossip } from "./ops";
 import { DefenceLayers, JwtLab, TenantQueue, Zanzibar } from "./sec";
 import { CrdtLab, RegionFailover, RpoRto } from "./geo";
+import { BigtableKeys, BorgSched, TrueTime } from "./papers";
 import { Seq } from "./Seq";
 import { SCENARIOS } from "./scenarios";
 
@@ -58,6 +59,9 @@ const SIMS: Record<string, ComponentType> = {
   "region-failover": RegionFailover,
   "crdt-lab": CrdtLab,
   "rpo-rto": RpoRto,
+  "bigtable-keys": BigtableKeys,
+  truetime: TrueTime,
+  "borg-sched": BorgSched,
 };
 
 /** Any HLD visual by id: a simulation, or a sequence scenario (ids starting "seq-"). */
