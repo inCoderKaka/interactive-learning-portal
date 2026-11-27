@@ -6,4 +6,5 @@ export const AI_WIDGET_IDS = new Set([
 /** Widget ids served by components/viz/AiDeep.tsx (the req3 AI deep-pass visuals, Ai3.tsx onward). */
 export const AI_DEEP_WIDGET_IDS = new Set([
   "matrix-transform", "likelihood", "ab-test-sim", "bias-variance", "loss-shapes", "regularisation-paths",
+  "feature-hashing", "least-squares", "logistic-boundary", "tree-split", "boosting-residuals", "knn-boundary", "kmeans", "pca-projection",
 ]);

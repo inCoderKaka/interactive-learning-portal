@@ -431,7 +431,7 @@ const FCOL = [AI, "#ff8fa3", LIME, "#7cc4ff", "#f5b547", MUTE];
 function RegularisationPaths() {
   const [s, setS] = useState(0.35);
   const [kind, setKind] = useState<"l1" | "l2">("l1");
-  const data = useMemo(regData, []);
+  const data = useMemo(() => regData(), []);
   const grid = useMemo(() => Array.from({ length: 41 }, (_, i) => i / 40), []);
   const paths = useMemo(() => grid.map((g) => { const lam = 10 ** (-3 + 4 * g); return kind === "l1" ? lasso(data.X, data.y, lam * 2) : ridge(data.X, data.y, lam * 3); }), [grid, data, kind]);
   const lam = 10 ** (-3 + 4 * s);
@@ -451,7 +451,7 @@ function RegularisationPaths() {
       if (l < bl) { bl = l; best = [a, b]; }
     }
     return best;
-  }, [kind, t]);
+  }, [kind, t]); // eslint-disable-line react-hooks/exhaustive-deps
   const S2 = 40, O2 = 110, P2 = (a: number, b: number) => [O2 + a * S2, O2 - b * S2];
   const level = lossAt(sol[0], sol[1]);
   const ellipse = (L: number) => Array.from({ length: 121 }, (_, i) => {
