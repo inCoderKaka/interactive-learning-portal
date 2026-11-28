@@ -812,7 +812,7 @@ interface Visitor<R> { R visit(Paragraph p); R visit(Image i); R visit(Table t);
 
 final class ToHtml implements Visitor<String> {
   public String visit(Paragraph p) { return "<p>" + escape(p.text()) + "</p>"; }
-  public String visit(Image i)     { return "<img src=\\"" + i.url() + "\\" alt=\\"" + escape(i.alt()) + "\\">"; }
+  public String visit(Image i)     { return "<img src=\"" + i.url() + "\" alt=\"" + escape(i.alt()) + "\">"; }
   public String visit(Table t)     { /* rows → <tr><td> */ }
 }
 final class WordCount implements Visitor<Integer> { /* ... */ }
@@ -830,7 +830,7 @@ How it works: \`node.accept(v)\` dispatches on the **node's** type (first dispat
 static String toHtml(Node n) {
   return switch (n) {
     case Paragraph p -> "<p>" + escape(p.text()) + "</p>";
-    case Image i     -> "<img src=\\"" + i.url() + "\\">";
+    case Image i     -> "<img src=\"" + i.url() + "\">";
     case Table t     -> renderTable(t);
   };
 }

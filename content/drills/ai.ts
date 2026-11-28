@@ -3,6 +3,20 @@ import { blank, bug, guess, match, odd, order, pick, tf } from "@/lib/drills";
 
 /** Quick-play drills for the AI area, keyed by topic id. */
 export const aiDrills: Record<string, Drill[]> = {
+  "ai-math": [
+    pick("Two unit-length embeddings have a dot product of 0. They are…", ["Identical", "Opposite", "*Orthogonal (unrelated directions)", "Invalid"], "For unit vectors the dot product is the cosine of the angle; 0 means 90°."),
+    guess("A layer maps 1,024 inputs to 4,096 outputs. About how many million multiply-adds per example?", { min: 0.1, max: 100, answer: 4.2, tol: 0.15, log: true }, "1,024 × 4,096 ≈ 4.2 million (about 8.4 MFLOPs counting multiply and add)."),
+    tf("A p-value of 0.03 means there's a 97% chance the effect is real.", false, "It's the chance of data this extreme if there were no effect; it says nothing directly about the effect being real."),
+    match("Match the assumption to the loss it gives.", [["Gaussian noise", "Mean squared error"], ["Laplace noise", "Mean absolute error"], ["Bernoulli labels", "Binary cross-entropy"], ["Gaussian prior on weights", "L2 regularisation"]]),
+    blank("To halve a confidence interval's width you need about ___ the data.", ["*4×", "2×", "8×", "√2×"], "Standard error falls with √n."),
+  ],
+  "ai-data": [
+    tf("Applying SMOTE before splitting into training and validation folds is fine.", false, "Synthetic points built from validation examples leak into training; resample inside each training fold only."),
+    pick("A model trained on clicks keeps recommending the same popular items. The main cause?", ["Too much regularisation", "*A feedback loop with exposure bias", "Too few features", "A bad optimiser"], "It only sees reactions to what it showed; add exploration and propensity weighting."),
+    blank("Miss costs 200, false alarm costs 5: flag when the calibrated probability exceeds about ___.", ["*0.024", "0.5", "0.2", "0.0025"], "c_FA / (c_FA + c_miss) = 5 / 205."),
+    odd("Which is NOT a cause of training–serving skew?", ["Two different code paths for one feature", "Training on data from after the prediction time", "Time-zone differences between pipelines", "*Using a larger model"], "Skew is about features differing between training and serving, not model size."),
+    match("Match the encoding to when it fits.", [["One-hot", "Few categories"], ["Hashing trick", "Huge or open-ended vocabularies"], ["Embedding", "User, item and ad IDs"], ["Target encoding (out-of-fold)", "High-cardinality columns for trees"]]),
+  ],
   "ai-history": [
     order("Put these AI milestones in order.", ["Turing's \"Computing Machinery and Intelligence\"", "The Dartmouth workshop", "Minsky and Papert's Perceptrons", "AlexNet wins ImageNet", "\"Attention Is All You Need\"", "ChatGPT launches"], "1950, 1956, 1969, 2012, 2017, 2022."),
     guess("In what year was the Dartmouth summer workshop, usually called the birth of AI as a field?", { min: 1900, max: 2020, answer: 1956, tol: 3 }, "1956, organised by McCarthy, Minsky, Rochester and Shannon. The 1955 proposal coined \"artificial intelligence\"."),

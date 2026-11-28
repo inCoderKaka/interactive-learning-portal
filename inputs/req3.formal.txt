@@ -157,3 +157,70 @@ Next: the same checkpoints for LLD during its deep pass, then AI and Craft.
 "LLD outline for the deep pass: 7 chapters, 44 pages. The 5 existing chapters are kept, and concurrency and clean code get chapters of their own. That is in addition to ~20 visuals (thread-interleaving race stepper, deadlock, producer-consumer buffer, CAS retry, decorator layers, observer fan-out, clickable state machines, undo/redo stacks…), LLD videos, hover glossary and exercises. Is this outline right?"="Approve outline (Recommended)"
 "Which language should the LLD lessons and model answers use for code? Existing LLD content is Java, as are most of your LLD channels (Concept && Coding, codeWithAryan). Your editor setting can be C++, Java, Python or JavaScript."="Java only (Recommended)"
 "LLD mock interviews currently get a whiteboard and a notes tab, but no code editor. Real OOD rounds finish with you writing the core classes and logic. Add a Code tab to the LLD interview room?"="Add a Code tab (Recommended)"
+
+[2026-11-28, session 6]
+wake up directly at 4:55 AM (direct wake instead of polling every hour, I'll keep this session active) and check the req3's requirements I gave, the researches you did, and what you implemented to get context on what to continue ... the last chat ended with this: "Audit, lint and tests pass. Checking a new LLD question page and the interviews hub in the browser.
+
+  Called claude-in-chrome
+
+The question page renders with the mock-interview button, prerequisites notice, stages and level ladder. Confirming the class diagram reveals and the interviews hub lists LLD.
+
+  Called claude-in-chrome
+
+Class diagram and interviews hub both work. Final production build, then PR, merge and deploy.
+
+  Created PR #12, ran 2 shell commands
+
+Live. Updating project memory with the finished LLD state and what comes next.
+
+  Called claude-in-chrome, ran 1 shell command
+
+The LLD deep pass is finished and live on https://ascent-trail.vercel.app. It shipped in two parts: PR #11 at the midway point and PR #12 at the end. Your instructions from this session and your three answers are in inputs/req3.txt and req3.formal.txt, word for word.
+
+Course: 7 chapters, 44 pages, all code in Java
+1. Interview framework: how design questions are asked at Google, from vague prompt to classes, class and state diagrams, writing the core code.
+2. OOP and SOLID: one page per principle, plus composition vs inheritance and dependency injection.
+3. Creational and structural patterns.
+4. Behavioural patterns.
+5. Clean code: API design, data modelling, testability, code smells, layering.
+6. Concurrency foundations: races, memory visibility, locks, wait/notify, deadlock, compare-and-set.
+7. Concurrency in practice (new chapter): blocking queues, semaphores, thread pools, concurrent maps, async code and virtual threads, timers, classic puzzles.
+
+Each page has Learn, Revise, a cheat sheet, common doubts, exercises, a quiz and sources. Each chapter has a plain-words overview, and about 135 LLD terms show a definition on hover.
+
+41 visuals. Some examples:
+- You step two threads yourself and watch count++ lose an update, or a seat get sold twice.
+- A two-lock deadlock you can create and then fix with lock ordering.
+- The inside of a thread pool: when it adds threads, queues tasks or rejects them.
+- A timing wheel firing timers.
+- A call passing through stacked decorators.
+- Clickable state machines and undo/redo stacks.
+
+33 LLD interview questions. The 16 existing ones are expanded, and 17 are new: card game, snake & ladder, library, notifications, ATM, car rental, cart coupons, spreadsheet, Q&A site, payments, hotel booking, inventory, movie booking, auction, ride matching, connection pool and a multithreaded crawler. Each question comes with:
+- a 45-minute flow and model answers for each stage;
+- a class diagram;
+- the variations an interviewer can switch to;
+- what L4, L5 and L6 answers look like;
+- prerequisites and a tree of interview paths.
+
+Mock-interview checkpoints for LLD work the same way as in HLD.
+- There are 24 checkpoint pages, from the polymorphism page through the concurrency puzzles page. The first chapter has none, because nothing can be designed with only those ideas.
+- The LLD interview room now has a Code tab next to the whiteboard and notes.
+
+Videos: the LLD channels are mapped to every page and question. A second pass caught videos the first rules missed.
+
+Not tested: I haven't run an LLD mock against a live AI model. So the Code tab during a real interview, and the step that marks which interview paths you covered, are both unchecked. In the browser I checked the new pages, the visuals, a new question's class diagram and the interviews page. The content audit, lint, tests and production build all pass.
+
+Next: the AI area, then Craft. One question I'll ask before starting AI: should the AI design questions also become mock-interview checkpoints, like HLD and LLD?" check the previous exact instructions I gave and incorporate those as well... continue that work. I wont be availble at the time so if you have any questions, ask them right now.
+
+[2026-11-28, session 6, answers to clarifying questions on the AI pass]
+"For the AI deep pass: should the AI design questions also become mock-interview checkpoints, the same way as HLD and LLD (unlock after their prerequisite pages, a checkpoint in the plan and topic tree, a paths map, a mock with the AI interviewer)?"="Yes, same as HLD/LLD (Recommended)"
+"Today the AI area has only 3 design questions (enterprise RAG, refund agent, Smart Compose). Which kinds of AI interview questions should I add?"="deep research yourself on what's important and required for a Google/a top tech company interview for the AI job roles. the important goal is to not miss anything. whatever's present in the portal, if everything is done by the learner, it should be sufficient to tackle any top company's interview."
+"What depth should the AI pages aim for? For HLD/LLD you chose 'what a Google senior (L5) engineer is expected to know'. For AI, which kind of L5 should that be?"="L5 ML engineer"
+"Which language should AI code examples and model answers use?"="Python (+ PyTorch) (Recommended)"
+
+[2026-11-28, session 6, answers to clarifying questions, second round]
+i declined by mistake ... these are the answers: You won't be around to approve the AI outline (chapters and pages). How should I proceed? (Research and proceed (Recommended))
+· ML interviews also include ML coding rounds (implement attention, k-means or a training loop from scratch). Should AI mock interviews get a Python Code tab, as LLD got a Java one, and should I add ML-coding questions? (Code tab + ML coding questions (Recommended))
+· How should the AI work ship, and what comes after it? (Midway + end, stop after AI)
+· How much of this session's budget should the 4:55 AM run use? as much as it takes to finish the ai part (the craft in not updated in this session)
