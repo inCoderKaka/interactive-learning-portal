@@ -8,4 +8,6 @@ export const AI_DEEP_WIDGET_IDS = new Set([
   "matrix-transform", "likelihood", "ab-test-sim", "bias-variance", "loss-shapes", "regularisation-paths",
   "feature-hashing", "least-squares", "logistic-boundary", "tree-split", "boosting-residuals", "knn-boundary", "kmeans", "pca-projection",
   "calibration", "ndcg-ranking", "activations", "backprop-steps", "lr-schedules", "activation-stats", "resnet-block", "loss-doctor", "broadcasting", "roofline", "receptive-field", "iou-nms",
+  "contrastive-batch", "matrix-factorisation", "recsys-funnel", "multitask-score", "explore-exploit", "token-cost", "causal-mask", "transformer-flow", "rope",
+  "transformer-families", "gqa-heads", "moe-router", "data-pipeline", "parallelism", "training-memory", "chat-template", "dpo-margin", "self-consistency", "grpo-group",
 ]);
