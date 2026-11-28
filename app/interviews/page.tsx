@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Check, CircleDashed, Flag, Lock, Mic, PencilLine } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { topicById } from "@/content";
-import { CHECKPOINTS, INTERVIEWS, checkpointByPage, coverage, coursePos, isSolved, isUnlocked, missing, mockHref, questionsAt, unlockPage } from "@/lib/interviews";
-import { PageHead, Pill, btnClass, cn } from "@/components/ui";
-import type { Design } from "@/lib/types";
+import { CHECKPOINTS, INTERVIEWS, INTERVIEW_AREAS, checkpointByPage, coverage, coursePos, isSolved, isUnlocked, missing, mockHref, questionsAt, unlockPage } from "@/lib/interviews";
+import { PageHead, Pill, Tabs, btnClass, cn } from "@/components/ui";
+import type { Area, Design } from "@/lib/types";
 
 const titleOf = (page: string) => topicById.get(page)?.title ?? page;
 
@@ -40,19 +40,31 @@ export default function Interviews() {
   const progress = useStore((s) => s.progress);
   const [at, setAt] = useState<string | null>(null);
   const [from, setFrom] = useState<string | undefined>(undefined);
-  useEffect(() => { const q = new URLSearchParams(window.location.search); setAt(q.get("at")); setFrom(q.get("from") ?? undefined); }, []);
+  const [tab, setTab] = useState<Area>(INTERVIEW_AREAS[0].area);
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    setAt(q.get("at")); setFrom(q.get("from") ?? undefined);
+    const a = q.get("area");
+    if (a && INTERVIEW_AREAS.some((x) => x.area === a)) setTab(a as Area);
+  }, []);
   const ck = at ? checkpointByPage.get(at) : undefined;
+  // Areas never mix: a checkpoint shows only its own area; the hub shows one area at a time.
+  const area: Area = ck?.area ?? tab;
+  const pickTab = (a: Area) => { setTab(a); window.history.replaceState(null, "", `/interviews?area=${a}`); };
 
   const groups = useMemo(() => {
-    const pool = ck ? questionsAt(ck) : INTERVIEWS;
+    const mine = INTERVIEWS.filter((d) => d.area === area);
+    const pool = ck ? questionsAt(ck) : mine;
     const order = (a: Design, b: Design) => coursePos(unlockPage(a)) - coursePos(unlockPage(b));
     return {
       ready: pool.filter((d) => isUnlocked(d, progress) && !isSolved(d, progress)).sort(order),
-      solved: INTERVIEWS.filter((d) => isSolved(d, progress)).sort(order),
-      upcoming: INTERVIEWS.filter((d) => !isUnlocked(d, progress) && !isSolved(d, progress) && !(ck && pool.includes(d))).sort(order),
+      solved: mine.filter((d) => isSolved(d, progress)).sort(order),
+      upcoming: mine.filter((d) => !isUnlocked(d, progress) && !isSolved(d, progress) && !(ck && pool.includes(d))).sort(order),
       atCk: ck ? pool.filter((d) => !isUnlocked(d, progress) && !isSolved(d, progress)) : [],
+      checkpoints: CHECKPOINTS.filter((c) => c.area === area),
     };
-  }, [ck, progress]);
+  }, [ck, area, progress]);
+  const areaName = INTERVIEW_AREAS.find((x) => x.area === area)?.name ?? area;
   const ckDone = ck && progress[ck.id]?.status === "done";
   const back = from ?? (ck ? `/learn/${ck.page}` : undefined);
 
@@ -64,6 +76,9 @@ export default function Interviews() {
           : "Each design question unlocks once you've covered every page it needs. Checkpoints in your plan ask you to do one; the rest are optional practice."}
         right={ck ? <Pill color={ckDone ? "var(--color-ok)" : "var(--color-accent)"}>{ckDone ? "Checkpoint cleared" : "Checkpoint open"}</Pill> : undefined} />
 
+      {ck ? <p className="text-[12.5px] text-faint">Showing {areaName} questions only. <Link href={`/interviews?area=${area}`} className="text-accent hover:underline">All {areaName} interviews</Link></p>
+        : <Tabs tabs={INTERVIEW_AREAS.map((x) => ({ id: x.area, label: x.name }))} value={tab} onChange={pickTab} />}
+
       <section>
         <h2 className="mb-2 text-[13px] font-semibold uppercase tracking-widest text-faint">Ready for you · {groups.ready.length}</h2>
         {groups.ready.length ? <ul className="grid gap-3 md:grid-cols-2">{groups.ready.map((d) => <QuestionCard key={d.id} d={d} fresh={ck?.opens.includes(d.id)} from={from ?? (ck ? `/learn/${ck.page}` : undefined)} ck={ck?.id} />)}</ul>
@@ -72,9 +87,9 @@ export default function Interviews() {
       </section>
 
       <section>
-        <h2 className="mb-2 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-widest text-faint"><Flag size={13} />Checkpoints along the course</h2>
+        <h2 className="mb-2 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-widest text-faint"><Flag size={13} />{areaName} checkpoints along the course</h2>
         <ol className="card divide-y divide-line/60 overflow-hidden">
-          {CHECKPOINTS.map((c) => {
+          {groups.checkpoints.map((c) => {
             const d = progress[c.id]?.status === "done";
             const reached = progress[`t-${c.page}`]?.status === "done";
             return (

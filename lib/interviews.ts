@@ -43,11 +43,17 @@ export const missing = (d: Design, progress: Record<string, Progress>) => (d.pre
 export const isUnlocked = (d: Design, progress: Record<string, Progress>) => missing(d, progress).length === 0;
 export const isSolved = (d: Design, progress: Record<string, Progress>) => progress[d.id]?.status === "done";
 
-/** Questions available at a checkpoint: everything unlocked up to and including its page. */
+/** Questions available at a checkpoint: everything in the checkpoint's own area unlocked up to and including its
+ * page. Areas never mix: an AI checkpoint offers only AI questions, an HLD one only HLD questions. */
 export function questionsAt(ck: Checkpoint): Design[] {
   const at = coursePos(ck.page);
-  return INTERVIEWS.filter((d) => coursePos(unlockPage(d)) <= at);
+  return INTERVIEWS.filter((d) => d.area === ck.area && coursePos(unlockPage(d)) <= at);
 }
+
+/** Areas that have interview questions, in course order, with display names. */
+export const INTERVIEW_AREAS: { area: Area; name: string }[] = CHECKPOINT_AREAS
+  .filter((a) => INTERVIEWS.some((d) => d.area === a))
+  .map((a) => ({ area: a, name: a === "hld" ? "System design (HLD)" : a === "lld" ? "Low-level design (LLD)" : "AI and ML" }));
 
 // ───────── paths ─────────
 
