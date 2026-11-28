@@ -3,6 +3,8 @@ import { designs as ai_gen1 } from "./ai-gen1";
 import { designs as ai_gen2 } from "./ai-gen2";
 import { designs as ai_ml1 } from "./ai-ml1";
 import { designs as ai_ml2 } from "./ai-ml2";
+import { designs as ai_mlc1 } from "./ai-mlc1";
+import { designs as ai_mlc2 } from "./ai-mlc2";
 import { designs as classics } from "./classics";
 import { designs as data } from "./data";
 import { designs as early } from "./early";
@@ -25,4 +27,4 @@ import { designs as realtime } from "./realtime";
 import { designs as search } from "./search";
 
 import type { DesignPatch } from "./types";
-export const PATCHES: DesignPatch[] = [...ai_gen1, ...ai_gen2, ...ai_ml1, ...ai_ml2, ...classics, ...data, ...early, ...extras, ...feeds, ...google, ...google2, ...google3, ...infra, ...interview, ...lld_a1, ...lld_a2, ...lld_b1, ...lld_b2, ...paths_a, ...paths_b, ...paths_c, ...platform, ...realtime, ...search];
+export const PATCHES: DesignPatch[] = [...ai_gen1, ...ai_gen2, ...ai_ml1, ...ai_ml2, ...ai_mlc1, ...ai_mlc2, ...classics, ...data, ...early, ...extras, ...feeds, ...google, ...google2, ...google3, ...infra, ...interview, ...lld_a1, ...lld_a2, ...lld_b1, ...lld_b2, ...paths_a, ...paths_b, ...paths_c, ...platform, ...realtime, ...search];
