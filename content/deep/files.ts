@@ -51,4 +51,6 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "ai/nn": () => Promise.all([import("./ai/nn"), import("./ai/notes/nn")]).then(([m, n]) => withNotes(m.nn, n.notes)),
   "ai/pytorch": () => Promise.all([import("./ai/pytorch"), import("./ai/notes/pytorch")]).then(([m, n]) => withNotes(m.pytorch, n.notes)),
   "ai/cnn": () => Promise.all([import("./ai/cnn"), import("./ai/notes/cnn")]).then(([m, n]) => withNotes(m.cnn, n.notes)),
+  "ai/embeddings": () => Promise.all([import("./ai/embeddings"), import("./ai/notes/embeddings")]).then(([m, n]) => withNotes(m.embeddings, n.notes)),
+  "ai/recsys": () => Promise.all([import("./ai/recsys"), import("./ai/notes/recsys")]).then(([m, n]) => withNotes(m.recsys, n.notes)),
 };
