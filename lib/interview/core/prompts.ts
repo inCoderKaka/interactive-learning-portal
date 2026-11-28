@@ -10,6 +10,8 @@ export const KIND_NAME: Record<Kind, string> = {
   coding: "coding",
   hld: "system design",
   lld: "object-oriented design",
+  ml: "machine learning system design (ML and generative-AI systems)",
+  mlcode: "ML coding (implementing machine learning from scratch in Python with NumPy or PyTorch)",
   behavioral: "behavioural (Googleyness and leadership)",
 };
 

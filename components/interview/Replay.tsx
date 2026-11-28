@@ -24,7 +24,7 @@ export function Replay({ record, media, onRedo }: { record: SessionRecord; media
   const [t, setT] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [tab, setTab] = useState<"board" | "code" | "notes">(record.cfg.kind === "coding" ? "code" : "board");
+  const [tab, setTab] = useState<"board" | "code" | "notes">(record.cfg.kind === "coding" || record.cfg.kind === "mlcode" ? "code" : "board");
   const scroller = useRef<HTMLDivElement>(null);
   const offset = media?.audioOffsetMs ?? 0;
   const url = useMemo(() => (media?.audio ? URL.createObjectURL(media.audio) : ""), [media?.audio]);
@@ -73,8 +73,8 @@ export function Replay({ record, media, onRedo }: { record: SessionRecord; media
     setPlaying((p) => !p);
   };
 
-  const hasBoard = record.cfg.kind === "hld" || record.cfg.kind === "lld";
-  const tabs = ([hasBoard && "board", (record.cfg.kind === "coding" || record.cfg.kind === "lld") && "code", hasBoard && "notes"].filter(Boolean)) as ("board" | "code" | "notes")[];
+  const hasBoard = record.cfg.kind === "hld" || record.cfg.kind === "lld" || record.cfg.kind === "ml";
+  const tabs = ([hasBoard && "board", (record.cfg.kind !== "hld" && record.cfg.kind !== "behavioral") && "code", hasBoard && "notes"].filter(Boolean)) as ("board" | "code" | "notes")[];
 
   return (
     <section className="card overflow-hidden" aria-label="Replay">

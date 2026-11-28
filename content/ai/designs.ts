@@ -11,12 +11,35 @@ const ASK = {
 };
 const TITLE = { req: "Requirements", est: "Estimation", api: "API, data & prompts", hl: "High-level design", deep: "Deep dives", wrap: "Evaluation & wrap-up" };
 
-function AI(id: string, topic: string, title: string, tier: Tier, prompt: string, s: Record<keyof typeof ASK, string>, steer: [string, string][], pitfalls: string[], level: string, a: Design["arch"]): Design {
+export function AI(id: string, topic: string, title: string, tier: Tier, prompt: string, s: Record<keyof typeof ASK, string>, steer: [string, string][], pitfalls: string[], level: string, a: Design["arch"]): Design {
   return {
     id: `d-${id}`, area: "ai", topic, title, tier, est: 60, prompt,
     stages: (Object.keys(ASK) as (keyof typeof ASK)[]).map((k) => ({ key: k, title: TITLE[k], ask: ASK[k], model: s[k] })),
     steer, pitfalls, level, arch: a,
   };
+}
+
+// ML system design (d-ml-*) and ML coding (d-mlc-*) rounds, built from content/designs/src (req3 AI pass)
+const ML_STAGES = [
+  ["frame", "Problem framing & metrics", "Clarify the product goal and turn it into an ML objective: what is predicted, for whom and when. Pick the online metric, offline metrics and guardrails."],
+  ["data", "Data, labels & features", "Where labels come from and how noisy or delayed they are, sampling and splits, and the features (user, item, context, crosses) with how each is computed and served."],
+  ["model", "Model & training", "Start with a baseline, then the model, the loss, how much data and how often you retrain. Justify each choice."],
+  ["eval", "Evaluation", "Offline evaluation that predicts online results, the A/B test, slices and guardrail metrics."],
+  ["serve", "Serving & monitoring", "The serving path within the latency and cost budget, monitoring, drift, retraining and what happens when parts fail."],
+  ["deep", "Deep dives", "Go deep where the interviewer pushes: the hardest ML problem in this system."],
+] as const;
+const MLC_STAGES = [
+  ["clarify", "Clarify", "Pin down the inputs, their shapes and types, edge cases, and which libraries you may use."],
+  ["approach", "Approach & maths", "State the equations and the algorithm, with its complexity, before writing code."],
+  ["code", "Code", "Write the Python (NumPy or PyTorch) implementation, explaining as you go."],
+  ["test", "Test & follow-ups", "Sanity-check it on a tiny example: shapes, edge cases, numerical stability, a gradient check. Then the follow-ups."],
+] as const;
+type M = Partial<Record<string, string>>;
+export function ML(id: string, topic: string, title: string, tier: Tier, prompt: string, m: M, steer: [string, string][], pitfalls: string[], level: string, a: Design["arch"]): Design {
+  return { id, area: "ai", topic, title, tier, est: 45, prompt, stages: ML_STAGES.map(([key, t, ask]) => ({ key, title: t, ask, model: m[key] ?? "" })), steer, pitfalls, level, arch: a };
+}
+export function MLC(id: string, topic: string, title: string, tier: Tier, prompt: string, m: M, steer: [string, string][], pitfalls: string[], level: string): Design {
+  return { id, area: "ai", topic, title, tier, est: 45, prompt, stages: MLC_STAGES.map(([key, t, ask]) => ({ key, title: t, ask, model: m[key] ?? "" })), steer, pitfalls, level };
 }
 
 export const aiDesigns: Design[] = [

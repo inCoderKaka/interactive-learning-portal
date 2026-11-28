@@ -8,6 +8,8 @@ const TEAMS: Record<Kind, string[]> = {
   coding: ["Search ranking infrastructure", "Maps routing", "Ads auction serving", "YouTube recommendations", "Android build tooling", "Cloud storage metadata"],
   hld: ["Cloud Spanner", "YouTube video processing", "Gmail backend", "Google Pay payments", "Pub/Sub", "Maps live traffic"],
   lld: ["Workspace collaboration", "Android framework", "Chrome sync", "Calendar backend", "Play billing", "Photos sharing"],
+  ml: ["YouTube recommendations", "Ads quality", "Search ranking", "Trust & Safety ML", "Gemini app serving", "Maps ETA"],
+  mlcode: ["Gemini pre-training", "JAX and TensorFlow", "Ads modelling", "Lens vision models", "Speech recognition", "Research engineering"],
   behavioral: ["Developer productivity", "Search quality", "Cloud networking", "Assistant platform", "Fitbit data", "Workspace admin tools"],
 };
 const LIKES = [

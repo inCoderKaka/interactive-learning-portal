@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { Boxes, Code2, Compass, MessagesSquare, Network, Save, Shuffle, Sparkles, Target, Trash2, Users } from "lucide-react";
+import { Boxes, BrainCircuit, Code2, Compass, FlaskConical, MessagesSquare, Network, Save, Shuffle, Sparkles, Target, Trash2, Users } from "lucide-react";
 import { TOPICS } from "@/content";
 import { Button, Pill, cn } from "@/components/ui";
 import { NeedAI } from "@/components/Work";
@@ -33,6 +33,8 @@ export const KINDS: { id: Kind; label: string; desc: string; min: number; icon: 
   { id: "coding", label: "Coding", desc: "One problem, then a twist. Clarify, code on a plain doc, analyse.", min: 45, icon: Code2, color: "var(--color-dsa)" },
   { id: "hld", label: "System design", desc: "An open-ended system on a whiteboard. You drive: requirements, numbers, design, deep dives.", min: 45, icon: Network, color: "var(--color-hld)" },
   { id: "lld", label: "Object-oriented design", desc: "Model a small system with classes on the whiteboard, then extend it.", min: 40, icon: Boxes, color: "var(--color-lld)" },
+  { id: "ml", label: "ML system design", desc: "An ML or generative-AI product end to end: framing, data, model, evaluation, serving. Whiteboard, notes and a Python tab.", min: 45, icon: BrainCircuit, color: "var(--color-ai)" },
+  { id: "mlcode", label: "ML coding", desc: "Implement a model, loss or algorithm from scratch in Python (NumPy or PyTorch), then test it.", min: 45, icon: FlaskConical, color: "var(--color-ai)" },
   { id: "behavioral", label: "Googleyness", desc: "Behavioural questions with follow-ups that probe your actual role.", min: 30, icon: MessagesSquare, color: "var(--color-craft)" },
 ];
 
@@ -82,7 +84,7 @@ type Saved = { name: string; cfg: SessionConfig };
 const loadSaved = (): Saved[] => { try { return JSON.parse(localStorage.getItem(PRESET_KEY) || "[]"); } catch { return []; } };
 const storeSaved = (s: Saved[]) => { try { localStorage.setItem(PRESET_KEY, JSON.stringify(s)); } catch { /* private mode */ } };
 
-const AREA: Record<Kind, string> = { coding: "dsa", hld: "hld", lld: "lld", behavioral: "craft" };
+const AREA: Record<Kind, string> = { coding: "dsa", hld: "hld", lld: "lld", ml: "ai", mlcode: "ai", behavioral: "craft" };
 
 function Chip({ on, onClick, children, title }: { on: boolean; onClick: () => void; children: React.ReactNode; title?: string }) {
   return <button type="button" title={title} aria-pressed={on} onClick={onClick} className={cn("rounded-full border px-3 py-1 text-[12.5px] font-medium transition", on ? "border-accent/60 bg-accent/10 text-accent" : "border-line text-mute hover:text-text")}>{children}</button>;

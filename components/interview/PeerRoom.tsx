@@ -195,7 +195,7 @@ export function PeerRoom({ settings, custom, progress, kind, onSaved, onLeave }:
                 </div>
               )}
               <div className="min-h-0 flex-1">
-                {q?.kind === "coding" ? (
+                {q?.kind === "coding" || q?.kind === "mlcode" ? (
                   role === "candidate"
                     ? <textarea value={code} onChange={(e) => setCode(e.target.value)} spellCheck={false} placeholder="Write your code here." className="h-full w-full resize-none rounded-xl border border-line bg-[#f7f7f5] p-4 font-mono text-[13px] text-[#1f1f1f] outline-none" aria-label="Shared doc" />
                     : <pre className="h-full overflow-auto whitespace-pre-wrap rounded-xl border border-line bg-[#f7f7f5] p-4 font-mono text-[13px] text-[#1f1f1f]">{v.code || "The candidate's code appears here."}</pre>

@@ -22,7 +22,7 @@ import { committeeDecision, committeePrompt, defaultLoop, parseCommittee, roundC
 import type { ReverseFeedback, ReverseGrade } from "@/lib/interview/core/reverse";
 import { InterviewSession } from "@/lib/interview/session";
 import { ReverseSession } from "@/lib/interview/reverse-session";
-import { drawQuestion, generateQuestion } from "@/lib/interview/questions";
+import { drawQuestion, generateQuestion, kindOfDesign } from "@/lib/interview/questions";
 import { loadHistory, makeRecord, mergeHistory, saveRecord, scoreSession, scorecardProvenance, toFeedback, transcriptText, type SessionRecord } from "@/lib/interview/results";
 import { deliveryStats } from "@/lib/interview/core/analytics";
 import { RoundRecorder } from "@/lib/interview/recorder";
@@ -107,10 +107,10 @@ export default function Mock() {
     // roadmap links pass a recommended configuration
     const kind = q.get("kind") as Kind | null;
     const topics = q.get("topics")?.split(",").filter(Boolean);
-    if (kind && ["coding", "hld", "lld", "behavioral"].includes(kind)) setInitial({ kind, ...(topics?.length ? { selection: { mode: "random-pool", pool: { topics } } } : {}) });
+    if (kind && ["coding", "hld", "lld", "ml", "mlcode", "behavioral"].includes(kind)) setInitial({ kind, ...(topics?.length ? { selection: { mode: "random-pool", pool: { topics } } } : {}) });
     // course checkpoints link straight to one design question and remember where to return
     const qid = q.get("q"), d = qid ? interviewById.get(qid) : undefined;
-    if (d) setInitial({ kind: d.area === "lld" ? "lld" : "hld", level: "L5", selection: { mode: "exact", questionId: d.id } });
+    if (d) setInitial({ kind: kindOfDesign(d), level: "L5", selection: { mode: "exact", questionId: d.id } });
     setRet({ from: q.get("from") ?? undefined, ck: q.get("ck") ?? undefined, q: d?.id });
     setReady(true);
     return () => { void sessionRef.current?.stop("error"); void recorderRef.current?.stop(); };

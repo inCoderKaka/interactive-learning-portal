@@ -122,8 +122,8 @@ export function ReverseRoom({ session, settings, onDone }: { session: ReverseSes
             <p className="mt-2 text-[12px] text-faint">Rubric: {dims.map((d) => d.label).join(" · ")}. Probe, don&apos;t teach; note specific moments for your feedback.</p>
           </div>
           <div className="min-h-0 flex-1">
-            <div className="eyebrow mb-1.5">{cfg.kind === "hld" ? "Candidate's whiteboard" : cfg.kind === "behavioral" ? "Notes" : "Candidate's doc"}</div>
-            <pre className={cn("h-[360px] overflow-auto whitespace-pre-wrap rounded-xl border border-line p-3.5 font-mono text-[12.5px] leading-relaxed", cfg.kind === "coding" ? "bg-[#f7f7f5] text-[#1f1f1f]" : "bg-bg")}>{(cfg.kind === "hld" ? v.board : v.doc) || "Nothing written yet."}</pre>
+            <div className="eyebrow mb-1.5">{cfg.kind === "hld" || cfg.kind === "ml" ? "Candidate's whiteboard" : cfg.kind === "behavioral" ? "Notes" : "Candidate's doc"}</div>
+            <pre className={cn("h-[360px] overflow-auto whitespace-pre-wrap rounded-xl border border-line p-3.5 font-mono text-[12.5px] leading-relaxed", cfg.kind === "coding" || cfg.kind === "mlcode" ? "bg-[#f7f7f5] text-[#1f1f1f]" : "bg-bg")}>{(cfg.kind === "hld" || cfg.kind === "ml" ? v.board : v.doc) || "Nothing written yet."}</pre>
           </div>
         </section>
       </div>

@@ -10,7 +10,7 @@ export interface DesignPatch {
   prompt?: string;
   words?: string;
   flow?: string;
-  models?: Partial<Record<"req" | "est" | "api" | "hl" | "deep" | "wrap" | "model" | "patterns" | "code" | "ext", string>>;
+  models?: Partial<Record<"req" | "est" | "api" | "hl" | "deep" | "wrap" | "model" | "patterns" | "code" | "ext" | "frame" | "data" | "eval" | "serve" | "clarify" | "approach" | "test", string>>;
   variants?: [string, string][];
   steer?: [string, string][];
   pitfalls?: string[];

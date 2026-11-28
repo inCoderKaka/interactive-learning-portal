@@ -143,7 +143,7 @@ export function problemItem(p: Problem): Item {
  */
 const COURSE_ORDER = TOPICS.flatMap((t) => { const subs = subsOf(t.id); return subs.length ? subs.map((s) => s.id) : [t.id]; });
 const COURSE_POS = new Map(COURSE_ORDER.map((p, i) => [p, i]));
-const CHECKPOINT_AREAS = new Set<Area>(["hld", "lld"]);
+const CHECKPOINT_AREAS = new Set<Area>(["hld", "lld", "ai"]);
 const unlockAt = (d: Design) => (CHECKPOINT_AREAS.has(d.area) && d.prereqs?.length ? [...d.prereqs].sort((a, b) => (COURSE_POS.get(a) ?? -1) - (COURSE_POS.get(b) ?? -1)).at(-1) : undefined);
 const tierOfPage = (id: string) => (SUBTOPICS.find((s) => s.id === id) ?? TOPICS.find((t) => t.id === id))?.tier ?? 2;
 

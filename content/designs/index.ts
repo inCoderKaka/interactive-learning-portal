@@ -1,6 +1,7 @@
 import type { Design } from "@/lib/types";
 import { H } from "../hld-problems";
 import { L } from "../lld";
+import { AI, ML, MLC } from "../ai/designs";
 import { PATCHES } from "./files";
 import type { DesignPatch } from "./types";
 
@@ -30,6 +31,21 @@ export function applyDesignPatches(base: Design[]): Design[] {
         { req: m.req ?? "", model: m.model ?? "", patterns: m.patterns ?? "", code: m.code ?? "", ext: m.ext ?? "" },
         p.steer ?? [], p.pitfalls ?? [], [], []);
       out.push({ ...d, topic: p.topic, est: p.est ?? d.est, classes: p.classes, level: p.level, words: p.words, flow: p.flow, variants: p.variants, refs: p.refs, prereqs: p.prereqs, paths: p.paths });
+      continue;
+    }
+    const extra = { words: p.words, flow: p.flow, variants: p.variants, refs: p.refs, prereqs: p.prereqs, paths: p.paths };
+    if (p.id.startsWith("d-mlc-")) {
+      if (!p.title || !p.topic || !p.tier || !p.prompt || !m) throw new Error(`new design ${p.id} is missing fields`);
+      const d = MLC(p.id, p.topic, p.title, p.tier, p.prompt, m, p.steer ?? [], p.pitfalls ?? [], p.level ?? "");
+      out.push({ ...d, est: p.est ?? d.est, ...extra });
+      continue;
+    }
+    if (p.id.startsWith("d-ml-") || p.id.startsWith("d-gen-")) {
+      if (!p.title || !p.topic || !p.tier || !p.prompt || !m || !p.arch) throw new Error(`new design ${p.id} is missing fields`);
+      const d = p.id.startsWith("d-ml-")
+        ? ML(p.id, p.topic, p.title, p.tier, p.prompt, m, p.steer ?? [], p.pitfalls ?? [], p.level ?? "", p.arch)
+        : AI(p.id.replace(/^d-/, ""), p.topic, p.title, p.tier, p.prompt, { req: m.req ?? "", est: m.est ?? "", api: m.api ?? "", hl: m.hl ?? "", deep: m.deep ?? "", wrap: m.wrap ?? "" }, p.steer ?? [], p.pitfalls ?? [], p.level ?? "", p.arch);
+      out.push({ ...d, est: p.est ?? d.est, ...extra });
       continue;
     }
     if (!p.title || !p.topic || !p.tier || !p.prompt || !m || !p.arch) throw new Error(`new design ${p.id} is missing fields`);

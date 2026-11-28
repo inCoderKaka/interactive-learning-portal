@@ -9,7 +9,7 @@ import { DESIGNS, TOPICS, subsOf } from "@/content";
 import type { Area, Design, PathNode, Progress } from "./types";
 
 /** Interview checkpoints are built for these areas (only questions with prerequisites take part). */
-export const CHECKPOINT_AREAS: Area[] = ["hld", "lld"];
+export const CHECKPOINT_AREAS: Area[] = ["hld", "lld", "ai"];
 
 /** Every learnable page in course order: chapters without subtopics count as one page. */
 export const COURSE: string[] = TOPICS.flatMap((t) => { const subs = subsOf(t.id); return subs.length ? subs.map((s) => s.id) : [t.id]; });

@@ -8,7 +8,9 @@ import type { InterviewQuestion, Kind, PoolFilter, Selection } from "./core/type
 import { rng } from "./core/rng";
 import { runTask } from "./tasks";
 
-const AREA: Record<Kind, Design["area"]> = { coding: "dsa", hld: "hld", lld: "lld", behavioral: "craft" };
+const AREA: Record<Kind, Design["area"]> = { coding: "dsa", hld: "hld", lld: "lld", ml: "ai", mlcode: "ai", behavioral: "craft" };
+/** The interview round a design question is asked in. ML coding questions (d-mlc-*) get the ML coding room. */
+export const kindOfDesign = (d: Design): Kind => d.id.startsWith("d-mlc-") ? "mlcode" : d.area === "ai" ? "ml" : d.area === "hld" ? "hld" : d.area === "lld" ? "lld" : "behavioral";
 
 function fromProblem(p: Problem): InterviewQuestion {
   return {
@@ -24,7 +26,7 @@ function fromProblem(p: Problem): InterviewQuestion {
 }
 
 function fromDesign(d: Design): InterviewQuestion {
-  const kind: Kind = d.area === "hld" || d.area === "ai" ? "hld" : d.area === "lld" ? "lld" : "behavioral";
+  const kind = kindOfDesign(d);
   const est = d.stages.find((s) => s.key === "est")?.model ?? "";
   return {
     id: d.id, kind, title: d.title, topic: d.topic,
@@ -39,8 +41,7 @@ function fromDesign(d: Design): InterviewQuestion {
 
 export function allQuestions(kind: Kind, custom: Problem[]): InterviewQuestion[] {
   if (kind === "coding") return [...PROBLEMS, ...custom.filter((p) => p.approaches.length)].filter((p) => p.diff !== "E").map(fromProblem);
-  // AI system design questions are asked in the system design round
-  return DESIGNS.filter((d) => d.area === AREA[kind] || (kind === "hld" && d.area === "ai")).map(fromDesign);
+  return DESIGNS.filter((d) => d.area === AREA[kind] && kindOfDesign(d) === kind).map(fromDesign);
 }
 
 export function questionById(id: string, custom: Problem[]): InterviewQuestion | undefined {
@@ -85,7 +86,7 @@ export function drawQuestion(kind: Kind, sel: Selection, custom: Problem[], prog
 
 /** Out-of-curriculum curveball: a new question not in Ascent's content, validated before use. */
 export async function generateQuestion(s: Settings, kind: Kind, level: string, avoid: string[]): Promise<InterviewQuestion> {
-  const what = kind === "coding" ? "an algorithmic coding problem (medium or hard), framed as a real-world task, not a LeetCode copy" : kind === "hld" ? "a system design question about a product or system that is not among the usual textbook ones" : "an object-oriented design question for a small real system";
+  const what = kind === "coding" ? "an algorithmic coding problem (medium or hard), framed as a real-world task, not a LeetCode copy" : kind === "hld" ? "a system design question about a product or system that is not among the usual textbook ones" : kind === "ml" ? "a machine learning or generative-AI system design question about a real product (not the usual feed, ads or RAG textbook ones)" : kind === "mlcode" ? "an ML coding question: implement a model, loss, metric or algorithm from scratch in NumPy or PyTorch, solvable in 30 minutes" : "an object-oriented design question for a small real system";
   const text = await runTask(s, "question.generate",
     "You write fresh Google interview questions. They must be solvable in 35 minutes, unambiguous to the interviewer, and deliberately underspecified to the candidate.",
     [{ role: "user", content: `Write ${what} for the ${level} bar. Avoid these, which the candidate has studied: ${avoid.slice(0, 60).join("; ")}.

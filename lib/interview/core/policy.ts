@@ -43,6 +43,21 @@ export const STAGES: Record<Kind, { key: string; title: string; share: number }[
     { key: "behaviour", title: "core code for the key flows (in the Code tab)", share: 0.38 },
     { key: "extension", title: "extensions, edge cases and thread safety", share: 0.25 },
   ],
+  ml: [
+    { key: "framing", title: "problem framing, the ML objective and metrics", share: 0.14 },
+    { key: "data", title: "data, labels and features", share: 0.16 },
+    { key: "model", title: "model choice and training", share: 0.22 },
+    { key: "evaluation", title: "offline and online evaluation", share: 0.14 },
+    { key: "serving", title: "serving, monitoring and iteration", share: 0.16 },
+    { key: "deep-dive", title: "deep dives", share: 0.18 },
+  ],
+  mlcode: [
+    { key: "clarify", title: "clarifying inputs, shapes and the maths", share: 0.1 },
+    { key: "approach", title: "the approach and its equations", share: 0.17 },
+    { key: "code", title: "writing Python (NumPy or PyTorch) in the Code tab", share: 0.43 },
+    { key: "test", title: "testing, numerical stability and complexity", share: 0.15 },
+    { key: "followup", title: "a follow-up", share: 0.15 },
+  ],
   behavioral: [
     { key: "story", title: "the main story", share: 0.5 },
     { key: "probe", title: "follow-up probes", share: 0.5 },
