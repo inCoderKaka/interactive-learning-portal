@@ -125,9 +125,21 @@ import { notes as n_ai_tokens } from "./ai/notes/tokens";
 import { transformers } from "./ai/transformers";
 import { notes as n_ai_transformers } from "./ai/notes/transformers";
 
-const NOTES: Record<string, string> = { ...n_ai_transformers, ...n_ai_tokens, ...n_ai_recsys, ...n_ai_embeddings, ...n_ai_cnn, ...n_ai_pytorch, ...n_ai_nn, ...n_ai_metrics, ...n_ai_classic, ...n_ai_data, ...n_ai_basics, ...n_ai_math, ...n_lld_concurrency2, ...n_lld_concurrency, ...n_lld_quality, ...n_lld_patterns2, ...n_lld_patterns1, ...n_lld_oop, ...n_lld_framework, ...n_hld_papers, ...n_hld_multiregion, ...n_hld_security, ...n_hld_ops, ...n_hld_storage, ...n_hld_protection, ...n_hld_streams, ...n_hld_messaging, ...n_hld_transactions, ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
+import { llmtrain } from "./ai/llmtrain";
+import { notes as n_ai_llmtrain } from "./ai/notes/llmtrain";
+
+import { alignment } from "./ai/alignment";
+import { notes as n_ai_alignment } from "./ai/notes/alignment";
+
+import { reasoning } from "./ai/reasoning";
+import { notes as n_ai_reasoning } from "./ai/notes/reasoning";
+
+const NOTES: Record<string, string> = { ...n_ai_reasoning, ...n_ai_alignment, ...n_ai_llmtrain, ...n_ai_transformers, ...n_ai_tokens, ...n_ai_recsys, ...n_ai_embeddings, ...n_ai_cnn, ...n_ai_pytorch, ...n_ai_nn, ...n_ai_metrics, ...n_ai_classic, ...n_ai_data, ...n_ai_basics, ...n_ai_math, ...n_lld_concurrency2, ...n_lld_concurrency, ...n_lld_quality, ...n_lld_patterns2, ...n_lld_patterns1, ...n_lld_oop, ...n_lld_framework, ...n_hld_papers, ...n_hld_multiregion, ...n_hld_security, ...n_hld_ops, ...n_hld_storage, ...n_hld_protection, ...n_hld_streams, ...n_hld_messaging, ...n_hld_transactions, ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
 
 const BODIES: Record<string, Deep> = {
+  ...reasoning,
+  ...alignment,
+  ...llmtrain,
   ...transformers,
   ...tokens,
   ...recsys,
