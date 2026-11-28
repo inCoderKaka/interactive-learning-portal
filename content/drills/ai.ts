@@ -17,6 +17,20 @@ export const aiDrills: Record<string, Drill[]> = {
     odd("Which is NOT a cause of training–serving skew?", ["Two different code paths for one feature", "Training on data from after the prediction time", "Time-zone differences between pipelines", "*Using a larger model"], "Skew is about features differing between training and serving, not model size."),
     match("Match the encoding to when it fits.", [["One-hot", "Few categories"], ["Hashing trick", "Huge or open-ended vocabularies"], ["Embedding", "User, item and ad IDs"], ["Target encoding (out-of-fold)", "High-cardinality columns for trees"]]),
   ],
+  "ai-recsys": [
+    order("Put the stages of a large recommender in request order.", ["Candidate retrieval (ANN, co-visitation)", "Light ranker", "Heavy multi-task ranker", "Re-ranking for diversity and policy"], "Each stage scores fewer items with a more expensive model."),
+    tf("Optimising click-through rate alone gives the best long-term recommendations.", false, "Clicks reward clickbait; watch time, satisfaction and dismissals belong in the objective."),
+    pick("A brand-new video has no interactions. What lets it be recommended?", ["Collaborative filtering", "*Content features (title, thumbnail, audio embeddings) plus a small exploration budget", "Waiting a week", "Matrix factorisation"], "Content-based embeddings and exploration break the cold start."),
+    match("Match the problem to its usual fix.", [["Position bias", "Position feature or bias tower, neutral at serving"], ["Cold-start item", "Content embeddings and exploration"], ["Popularity bias from in-batch negatives", "logQ sampling correction"], ["Filter bubble", "Diversity re-ranking and exploration"]]),
+    guess("Retrieval narrows 500 million videos to about how many candidates for the ranker?", { min: 10, max: 100000, answer: 1000, tol: 0.7, log: true }, "Typically hundreds to a few thousand: enough recall, few enough for a heavy model."),
+  ],
+  "ai-production": [
+    match("Match the term to what changed.", [["Data drift", "Distribution of inputs P(x)"], ["Concept drift", "Relationship P(y | x)"], ["Training–serving skew", "Feature code differs between training and serving"], ["Label shift", "Class proportions P(y)"]]),
+    order("Put a safe model rollout in order.", ["Offline evaluation on a time-based holdout", "Shadow deployment on live traffic", "Canary on a small share of users", "A/B test", "Full rollout with monitoring"], "Each step adds real-world exposure only after the previous one looks healthy."),
+    tf("Monitoring a model's uptime and latency is enough to know it still works.", false, "Models fail silently: watch prediction distributions, feature freshness and drift, and quality once labels arrive."),
+    pick("Why use a feature store?", ["To make models smaller", "*One feature definition for training and serving, with point-in-time correct values", "To replace the training data", "To speed up GPUs"], "It removes training–serving skew and leakage from future values."),
+    odd("Which is NOT a model-serving pattern?", ["Batch prediction", "Online prediction behind an API", "On-device inference", "*Gradient checkpointing"], "Gradient checkpointing is a training memory technique."),
+  ],
   "ai-history": [
     order("Put these AI milestones in order.", ["Turing's \"Computing Machinery and Intelligence\"", "The Dartmouth workshop", "Minsky and Papert's Perceptrons", "AlexNet wins ImageNet", "\"Attention Is All You Need\"", "ChatGPT launches"], "1950, 1956, 1969, 2012, 2017, 2022."),
     guess("In what year was the Dartmouth summer workshop, usually called the birth of AI as a field?", { min: 1900, max: 2020, answer: 1956, tol: 3 }, "1956, organised by McCarthy, Minsky, Rochester and Shannon. The 1955 proposal coined \"artificial intelligence\"."),

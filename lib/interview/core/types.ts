@@ -3,7 +3,7 @@
 
 import type { Overrides } from "./templates.ts";
 
-export type Kind = "coding" | "hld" | "lld" | "behavioral";
+export type Kind = "coding" | "hld" | "lld" | "ml" | "mlcode" | "behavioral";
 export type Tone = "guide" | "neutral" | "tough" | "notetaker";
 export type Pressure = "relaxed" | "realistic" | "high";
 export type Level = "L3" | "L4" | "L5" | "L6";

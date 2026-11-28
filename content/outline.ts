@@ -485,8 +485,8 @@ export const OUTLINE: Record<string, Sub[]> = {
   "ai-llm-training": [
     ["pretraining-data", "Pretraining data: collection, filtering, deduplication and mixtures", 2, 25],
     ["scaling-laws", "Scaling laws and compute budgets", 1, 25],
-    ["distributed-training", "Distributed training: data, tensor and pipeline parallelism, ZeRO and FSDP", 2, 35],
     ["training-memory", "Mixed precision and the memory of training", 2, 25],
+    ["distributed-training", "Distributed training: data, tensor and pipeline parallelism, ZeRO and FSDP", 2, 35],
   ],
   "ai-alignment": [
     ["sft-chat", "Supervised fine-tuning and chat templates", 1, 25],

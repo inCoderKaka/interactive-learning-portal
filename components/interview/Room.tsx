@@ -72,7 +72,10 @@ export function Room({ session, settings, onEnd }: { session: InterviewSession; 
     setLooking(true);
     try { await session.look(img); } finally { setLooking(false); }
   };
-  const hasBoard = cfg.kind === "hld" || cfg.kind === "lld";
+  const hasBoard = cfg.kind === "hld" || cfg.kind === "lld" || cfg.kind === "ml";
+  const codeOnly = cfg.kind === "coding" || cfg.kind === "mlcode";
+  // ML rounds are written in Python whatever the learner's usual language is
+  const lang = cfg.kind === "ml" || cfg.kind === "mlcode" ? "python" : settings.lang;
 
   // Commute mode (MI-X-7): voice only, one column, large controls for a phone
   if (cfg.layout === "commute") {
@@ -153,22 +156,22 @@ export function Room({ session, settings, onEnd }: { session: InterviewSession; 
           <section className="card flex h-[640px] flex-col overflow-hidden p-3">
             <div className="mb-2 flex items-center justify-between gap-2">
               {hasBoard ? (
-                <div className="flex gap-1">{(cfg.kind === "lld" ? (["board", "notes", "code"] as const) : (["board", "notes"] as const)).map((t) => <button key={t} onClick={() => setTab(t)} className={cn("rounded-lg px-3 py-1 text-[12.5px] font-medium", tab === t ? "bg-panel2 text-text" : "text-mute hover:text-text")}>{t === "board" ? "Whiteboard" : t === "notes" ? "Notes doc" : "Code"}</button>)}</div>
+                <div className="flex gap-1">{(cfg.kind === "lld" || cfg.kind === "ml" ? (["board", "notes", "code"] as const) : (["board", "notes"] as const)).map((t) => <button key={t} onClick={() => setTab(t)} className={cn("rounded-lg px-3 py-1 text-[12.5px] font-medium", tab === t ? "bg-panel2 text-text" : "text-mute hover:text-text")}>{t === "board" ? "Whiteboard" : t === "notes" ? "Notes doc" : "Code"}</button>)}</div>
               ) : <div className="eyebrow">Shared doc</div>}
               <div className="flex items-center gap-2">
-                <span className="text-[11.5px] text-faint">{cfg.kind === "coding" ? "no compiler, no autocomplete" : tab === "board" ? `${v.state.persona.name} follows your diagram as you draw` : tab === "code" ? "core classes and logic; no compiler" : cfg.kind === "lld" ? "actors, use cases, entities, APIs" : "requirements, numbers, APIs, schemas"}</span>
+                <span className="text-[11.5px] text-faint">{cfg.kind === "coding" ? "no compiler, no autocomplete" : cfg.kind === "mlcode" ? "Python with NumPy or PyTorch; nothing runs" : tab === "board" ? `${v.state.persona.name} follows your diagram as you draw` : tab === "code" ? (cfg.kind === "ml" ? "Python sketches: features, loss, training step; nothing runs" : "core classes and logic; no compiler") : cfg.kind === "lld" ? "actors, use cases, entities, APIs" : cfg.kind === "ml" ? "objective, metrics, labels, features, serving" : "requirements, numbers, APIs, schemas"}</span>
                 {hasBoard && tab === "board" && !ended && <Button size="sm" disabled={looking} onClick={look} title="Send a picture of the board to a vision model"><Eye size={14} />{looking ? "Looking…" : "Look at my diagram"}</Button>}
               </div>
             </div>
             <div className="min-h-0 flex-1">
-              {cfg.kind === "coding" ? (cfg.plainDoc
+              {codeOnly ? (cfg.plainDoc
                 ? <textarea value={code} onChange={(e) => setCode(e.target.value)} readOnly={ended} spellCheck={false} aria-label="Shared doc" placeholder="Write your code here, as you would in a shared Google Doc." className="h-full w-full resize-none rounded-xl border border-line bg-[#f7f7f5] p-4 font-mono text-[13.5px] leading-relaxed text-[#1f1f1f] outline-none" />
-                : <div className="h-full overflow-y-auto"><CodeEditor value={code} onChange={setCode} lang={settings.lang} minHeight="580px" readOnly={ended} /></div>)
+                : <div className="h-full overflow-y-auto"><CodeEditor value={code} onChange={setCode} lang={lang} minHeight="580px" readOnly={ended} /></div>)
                 : (
                   <>
                     <div className={cn("h-full", tab !== "board" && "hidden")}><Whiteboard readOnly={ended} handle={(h) => (board.current = h)} onDigest={(d, snap, els) => session.workspace(d, snap, () => board.current?.image() ?? Promise.resolve(null), els)} /></div>
-                    {tab === "code" && <div className="h-full overflow-y-auto"><CodeEditor value={code} onChange={setCode} lang={settings.lang} minHeight="580px" readOnly={ended} /></div>}
-                    {tab === "notes" && <textarea value={notes} onChange={(e) => setNotes(e.target.value)} readOnly={ended} aria-label="Notes doc" placeholder={"Requirements:\n- \n\nEstimates:\n- \n\nAPI:\n- "} className="h-full w-full resize-none rounded-xl border border-line bg-bg p-3.5 font-mono text-[13px] leading-relaxed outline-none focus:border-accent/60" />}
+                    {tab === "code" && <div className="h-full overflow-y-auto"><CodeEditor value={code} onChange={setCode} lang={lang} minHeight="580px" readOnly={ended} /></div>}
+                    {tab === "notes" && <textarea value={notes} onChange={(e) => setNotes(e.target.value)} readOnly={ended} aria-label="Notes doc" placeholder={cfg.kind === "ml" ? "Objective and metrics:\n- \n\nData and labels:\n- \n\nFeatures:\n- \n\nModel and serving:\n- " : "Requirements:\n- \n\nEstimates:\n- \n\nAPI:\n- "} className="h-full w-full resize-none rounded-xl border border-line bg-bg p-3.5 font-mono text-[13px] leading-relaxed outline-none focus:border-accent/60" />}
                   </>
                 )}
             </div>

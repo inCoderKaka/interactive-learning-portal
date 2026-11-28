@@ -28,6 +28,20 @@ export const DIMENSIONS: Record<Kind, { key: string; label: string; what: string
     { key: "behaviour", label: "Behaviour", what: "key methods and flows correct, including concurrency and errors" },
     { key: "communication", label: "Communication", what: "clarified use cases and explained choices" },
   ],
+  ml: [
+    { key: "framing", label: "Problem framing", what: "turned the product goal into an ML objective, labels and the right online and offline metrics" },
+    { key: "data", label: "Data & features", what: "label sources, sampling, leakage, features and their freshness" },
+    { key: "modeling", label: "Modelling", what: "a sensible baseline, then a justified model, loss and training setup" },
+    { key: "evaluation", label: "Evaluation", what: "offline evaluation that predicts online results, A/B tests, slices and guardrail metrics" },
+    { key: "production", label: "Production", what: "serving within latency and cost, monitoring, drift, retraining and failure modes" },
+    { key: "communication", label: "Communication", what: "drove the conversation, stated trade-offs and managed time" },
+  ],
+  mlcode: [
+    { key: "ml", label: "ML understanding", what: "the maths is right: equations, gradients, shapes and why the method works" },
+    { key: "coding", label: "Coding", what: "correct, vectorised, readable Python without a compiler" },
+    { key: "testing", label: "Testing & numerics", what: "sanity checks, edge cases, numerical stability and complexity" },
+    { key: "communication", label: "Communication", what: "clarified inputs and explained each step out loud" },
+  ],
   behavioral: [
     { key: "structure", label: "Structure", what: "a clear situation, action and result" },
     { key: "ownership", label: "Ownership", what: "their own contribution, decisions and accountability" },

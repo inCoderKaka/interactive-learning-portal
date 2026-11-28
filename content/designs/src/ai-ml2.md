@@ -1,0 +1,723 @@
+=== d-ml-app-recs
+title: Design Play Store app recommendations
+topic: ai-recsys
+tier: 2
+est: 45
+prompt: Design the recommendation system for the home page of an app store with millions of apps and over a billion users, where the goal is installs that users keep.
+--- words
+- **Install**: the conversion event, rarer than clicks; an install that is uninstalled in a day is not a success.
+- **Wide & deep**: a model that combines a linear part (memorises specific feature crosses) with a deep part (generalises through embeddings). It was first published for Play Store recommendations.
+- **Retention-weighted label**: an install counted only if the app is still used days later.
+- **Inventory**: the set of apps allowed in a country and compatible with the device.
+--- flow
+1. **0–5**: surfaces (home, "similar apps"), goal (retained installs), constraints (device compatibility, country, age ratings), latency.
+2. **5–12**: labels (impression → install → retained), features (user's installed apps, app metadata, context).
+3. **12–22**: retrieval (co-install, two-tower, popular in country) → ranking with wide & deep → policy and diversity re-ranking.
+4. **22–30**: offline AUC on installs and retained installs; online retained installs per user, uninstall rate.
+5. **30–40**: serving, compatibility filters, freshness for new apps.
+6. **40–45**: deep dive: cold start, paid promotion vs organic, games vs utilities.
+--- frame
+**Goal**: users discover apps they install and keep using; developers of good apps get found.
+
+**ML task**: rank eligible apps for a user; predict P(install | impression) and P(retained 7 days | install). Score = P(install) × P(retained), adjusted by value (paid apps, in-app purchase likelihood only as a minor term).
+
+**Metrics**: offline AUC and log loss per head, recall@k for retrieval. Online: retained installs per active user, uninstall-within-a-day rate, store sessions, developer reach across sizes; guardrails: policy violations, latency.
+--- data
+- **Labels**: impression logs; install within the session; retention from usage pings (with consent). Remove installs triggered by external links (not caused by the recommendation).
+- **Features**: user's installed and recently used apps (a bag of app embeddings), device type and storage, country and language, app category, rating, size, price, update recency, install velocity, developer history; cross features like (installed app, candidate app), the "wide" memorisation part.
+- **Splits**: by time; slices for new users and new apps.
+--- model
+1. **Retrieval**: co-install graph ("users with X also installed Y"), a two-tower model over installed apps, top charts per country and category, new-app pool. ~1,000 candidates after **hard filters** (device compatibility, country availability, age rating, already installed).
+2. **Ranking**: **wide & deep**: crosses of installed apps × candidate in the wide part, embeddings in the deep part; two heads (install, retention). Baseline: logistic regression on crosses.
+3. **Re-ranking**: category diversity, limit apps from one developer, promoted slots clearly separated and labelled.
+--- eval
+- Offline next-week replay: retained-install AUC, recall@k of retrieval.
+- A/B: retained installs per user and uninstall rate primary; long-term store engagement; developer reach guardrails.
+--- serve
+- Precompute candidate lists per user daily (installed apps change slowly) and refresh on install events; rank online with fresh context (~100 ms).
+- Monitoring: install and uninstall rates by category, share of new apps shown, retrieval source mix.
+--- deep
+**Cold-start apps**: metadata and screenshot/text embeddings, developer history, an exploration slot with a budget; graduate to behaviour-based scores after enough impressions.
+
+**Already-installed and incompatible apps** must never show: hard filters before ranking, not soft penalties.
+
+**Games vs utilities**: different retention curves; normalise retention labels per category.
+--- variants
+Q: "Similar apps" on an app's page
+A: Strong context from the current app: co-install and content similarity dominate; little personalisation.
+Q: Optimise developer revenue too
+A: Multi-objective score with a small weight on expected spend; guardrail on user retention.
+Q: Kids' accounts
+A: Teacher-approved inventory, no personalisation from sensitive data, strict filters.
+--- steer
+Q: Why not optimise installs?
+A: Installs that get uninstalled are bad experiences; retention head.
+Q: What does the wide part memorise that the deep part can't?
+A: Specific crosses (installed X → install Y) that are precise but rare; deep part generalises to unseen pairs.
+Q: A new app launches with no data.
+A: Content embeddings, developer prior, exploration budget.
+--- pitfalls
+- Optimising raw installs
+- Soft-penalising incompatible apps instead of filtering them
+- Counting installs from external links as recommendation successes
+- Ignoring category differences in retention
+--- level
+- **L4**: retrieval + ranking for installs.
+- **L5**: retention-weighted objective, wide & deep reasoning, hard filters, cold-start exploration, precompute + online rank.
+- **L6**: developer ecosystem health, promoted vs organic marketplace design.
+--- nodes
+store|Store home|client|0|150|Shows recommended apps; logs impressions and installs.
+cand|Candidate store|db|180|20|Daily per-user candidates from co-install, two-tower, charts.
+filt|Eligibility filters|service|180|150|Device compatibility, country, age rating, already installed.
+rank|Wide & deep ranker|service|380|150|Install and retention heads.
+rr|Re-ranker|service|560|150|Diversity, developer caps, labelled promotions.
+logs|Install & usage logs|queue|380|290|Impressions, installs, retention pings.
+train|Training|worker|560|290|Daily retrain, A/B tests.
+--- edges
+store>filt|request
+filt>cand|candidates
+filt>rank|eligible
+rank>rr|scored
+rr>store|apps
+store~logs|events
+logs~train|labels
+train~rank|new model
+--- prereqs
+two-tower-retrieval, ranking-models, recsys-problems
+--- paths
+- [deep] The objective :: P(install) × P(retained); uninstall rate as a guardrail.
+- [deep] Wide & deep :: Crosses memorise specific co-installs; embeddings generalise.
+- [deep] Eligibility :: Hard filters for compatibility, country, rating, installed.
+- [variation] New apps :: Content embeddings, developer prior, exploration slot.
+- [variation] Similar-apps page :: Co-install and content similarity from the current app.
+
+=== d-ml-notifications
+title: Design push notification ranking
+topic: ai-recsys
+tier: 2
+est: 45
+prompt: Design the system that decides which push notifications to send each user of a large social app, and when, so notifications help rather than annoy.
+--- words
+- **Notification candidate**: an event that could be pushed (a friend posted, a comment reply, a live video).
+- **Volume control**: a per-user budget of notifications per day.
+- **Disable rate**: users turning off notifications or uninstalling: the strongest negative signal.
+- **Uplift**: the extra visits caused by sending, compared with not sending. A notification about something the user would have seen anyway adds little.
+--- flow
+1. **0–5**: goals (useful visits), harms (annoyance, disables), types (direct messages are always sent; recommendations are optional), timing.
+2. **5–12**: labels (open, visit, disable), features.
+3. **12–22**: candidate scoring, a per-user budget, send-time choice, uplift modelling.
+4. **22–30**: offline AUC; online sessions, disable rate, long-term holdouts.
+5. **30–40**: real-time pipeline, batching, rate limits.
+6. **40–45**: deep dive: uplift vs open rate, quiet hours, deduplication.
+--- frame
+**Goal**: send notifications that create valuable visits the user would not otherwise have made, and nothing that leads to them disabling notifications.
+
+**ML task**: for each candidate: P(open), P(disable or mute | send), and **uplift** = P(visit | send) − P(visit | no send). Decide send/hold under a daily budget; choose the send time.
+
+**Metrics**: offline AUC per head; online: daily active users and sessions from notifications, **disable rate**, uninstalls, long-term retention in holdouts.
+--- data
+- **Labels**: open within an hour, session length after open, disable/mute events, and visits without notifications (for uplift, from a randomised **holdout** that receives fewer notifications).
+- **Features**: notification type and its source's relationship to the user, freshness, the user's recent activity (already in the app?), notifications already sent today, time of day and timezone, historical open rate per type.
+--- model
+1. **Rules first**: transactional and direct messages are always sent (not ranked); quiet hours; dedupe by event.
+2. **Scoring model**: multi-task (open, disable) gradient-boosted trees or deep model; **uplift model** trained on randomised holdout data (two-model or T-learner approach).
+3. **Decision**: value = uplift × value of a visit − λ × P(disable); send if above a threshold, subject to the daily budget; hold low-urgency items for a **digest**.
+4. **Send-time model**: predicts open probability by hour; low-urgency notifications are scheduled for the best hour.
+--- eval
+- Offline: AUC per head; uplift via Qini curves on holdout data.
+- A/B with long-term holdouts: sessions, disable rate, retention after months (notifications can win short-term and lose long-term).
+--- serve
+- Event stream → candidate generator → feature fetch → scoring → decision with per-user counters (budget) → scheduler → push service. Latency matters only for urgent types (minutes).
+- Monitoring: notifications per user distribution, disable rate per type, delivery failures.
+--- deep
+**Open rate vs uplift**: a notification about a message the user would read anyway has a high open rate but zero uplift; optimising opens over-sends. Randomised holdouts let you estimate uplift.
+
+**Budget**: global per-user cap plus a type-level cap; the budget is spent on the highest value candidates in each window.
+
+**Fatigue**: the disable head and recent-volume features capture it; back off quickly after ignored notifications.
+--- variants
+Q: Email digests instead of pushes
+A: Batch selection of the best N items weekly, subject-line choice, unsubscribe as the disable signal.
+Q: A news app with breaking news
+A: Urgency and topic interest; everyone at once means load spikes; editorial overrides.
+--- steer
+Q: Why not send the ones with the highest open probability?
+A: Uplift: they might have visited anyway; use holdouts to estimate causal effect.
+Q: Disable rate is rising.
+A: Lower budget, stronger disable head weight, per-type caps, check recent launches.
+Q: How do you pick the time?
+A: Per-user hourly open model; urgent ones now, others scheduled.
+--- pitfalls
+- Optimising open rate instead of uplift and long-term value
+- No per-user budget
+- Ignoring disable and uninstall signals
+- Short A/B tests only
+--- level
+- **L4**: open-rate model with a threshold.
+- **L5**: uplift with randomised holdouts, disable head, budgeted decision, send-time model, long-term holdouts.
+- **L6**: notification policy across all products of the company, user trust.
+--- nodes
+ev|Event stream|queue|0|150|Posts, comments, live events that could become notifications.
+cand|Candidate generator|service|180|150|Maps events to users; dedupes; rules for always-send types.
+score|Scoring & uplift|service|380|150|P(open), P(disable), uplift; value vs budget.
+cnt|Per-user counters|cache|380|20|Sent today, last ignored, quiet hours.
+sch|Scheduler|worker|580|150|Sends now or at the best hour; digests.
+push|Push service|ext|760|150|Delivers to devices.
+hold|Holdout logs|queue|380|290|Randomised fewer-notification group for uplift.
+--- edges
+ev>cand|events
+cand>score|candidates
+score>cnt|budget check
+score>sch|send decision
+sch>push|deliver
+push~hold|opens, disables
+hold~score|uplift training
+--- prereqs
+ranking-models, ab-testing-ml, recsys-problems
+--- paths
+- [deep] Open rate vs uplift :: Randomised holdouts, uplift models, value of an extra visit.
+- [deep] Budget and fatigue :: Per-user and per-type caps; disable head; back-off after ignores.
+- [deep] Send time :: Hourly open model, urgent vs schedulable, digests.
+- [failure] Disable rate spikes after a launch :: Roll back, lower budgets, check the new type's caps.
+- [variation] Email digests :: Weekly top-N selection, unsubscribe as the negative.
+
+=== d-ml-event-recs
+title: Design event recommendations
+topic: ai-recsys
+tier: 1
+est: 45
+prompt: Design a system that recommends local events (concerts, meetups, classes) to users of a ticketing or social app.
+--- words
+- **Perishable item**: an event exists only until it happens, so most items are new and have little history.
+- **Location feature**: distance from the user and travel time to the venue.
+- **Registration**: the conversion (RSVP or ticket purchase), rarer and more meaningful than a click.
+- **Content-based model**: one that recommends from the item's description rather than past interactions.
+--- flow
+1. **0–5**: goal (registrations, attendance), constraints (location, date), scale (millions of events, short lifetimes).
+2. **5–12**: labels and features: user interests, friends attending, event content, distance, price, time.
+3. **12–22**: filtering by location and date → ranking model (GBDT baseline, then deep model) → diversity.
+4. **22–30**: offline AUC/NDCG; online registrations per user, attendance.
+5. **30–40**: serving and freshness (events created and selling out constantly).
+6. **40–45**: deep dive: cold start of every event, social signals.
+--- frame
+**Goal**: users register for and attend events they enjoy; organisers sell tickets.
+
+**ML task**: rank upcoming events near the user: P(register | impression), optionally P(attend | register).
+
+**Metrics**: offline AUC, NDCG@10 on registrations. Online: registrations per active user, attendance (check-ins), organiser reach; guardrail: recommending sold-out or past events = 0.
+--- data
+- **Labels**: impressions, clicks, registrations, purchases, check-ins; negatives from shown but not registered.
+- **Features**: user interests (categories they registered for), price range history, friends registered, distance and travel time, event category, text embedding of the description, organiser's past success, time until the event, remaining capacity, weather forecast for outdoor events.
+- Every item is **cold**: content and organiser features matter more than item ids.
+--- model
+1. **Candidate filter**: within a radius and the next N weeks, not sold out; geo index.
+2. **Baseline**: popularity in the city × category match.
+3. **Ranker**: gradient-boosted trees on user–event features (distance, category affinity, friends attending, price match); later a two-tower model with content-based event tower for embedding retrieval.
+4. Diversity: mix categories and dates.
+--- eval
+- Time-split offline evaluation (next week's events only, as they will be in reality).
+- A/B: registrations and attendance per user; organiser reach.
+--- serve
+- New events indexed within minutes; capacity and sold-out status updated in real time and applied as filters at serve time.
+- Rank on request (~150 ms) because location and time change; cache per city for anonymous users.
+--- deep
+**Cold start of every item**: content embeddings of title and description, organiser history, early registration velocity; small exploration budget so new events get impressions.
+
+**Social signals**: friends attending is a strong feature; privacy controls on showing who is going.
+
+**Location**: users travel for some categories (big concerts) but not others (yoga); learn distance sensitivity per category.
+--- variants
+Q: Online events
+A: No distance constraint; time zone and language matter; more competition per slot.
+Q: Recommend events to organisers' target users (ads)
+A: Promoted listings with an auction, separate from organic ranking.
+--- steer
+Q: Collaborative filtering won't work here. Why?
+A: Events are short-lived with no history; content and organiser features.
+Q: A recommended event was already sold out.
+A: Real-time capacity filters at serve time, not in batch candidates.
+Q: How far will users travel?
+A: Distance sensitivity per category as a feature interaction.
+--- pitfalls
+- Relying on item-id collaborative filtering for perishable items
+- Stale availability data
+- Random splits that train on future events
+--- level
+- **L4**: filtering by location and a ranking model.
+- **L5**: perishable-item cold start, real-time filters, category-specific distance sensitivity, time-split evaluation.
+- **L6**: two-sided marketplace (organisers and attendees), pricing and promotion.
+--- nodes
+app|App|client|0|150|User location and time; shows events.
+geo|Geo + date filter|service|180|150|Events within radius and dates, not sold out.
+idx|Event index|db|180|20|New events indexed in minutes; live capacity.
+rank|Ranker|service|380|150|Boosted trees on user–event features; diversity.
+logs|Logs|queue|380|290|Impressions, registrations, check-ins.
+train|Training|worker|580|290|Time-split training and evaluation.
+--- edges
+app>geo|request
+geo>idx|query
+geo>rank|candidates
+rank>app|events
+app~logs|events
+logs~train|labels
+train~rank|new model
+--- prereqs
+collaborative-filtering, recsys-problems
+--- paths
+- [deep] Every event is new :: Content embeddings, organiser history, early velocity, exploration.
+- [deep] Location and time :: Radius filter, per-category distance sensitivity, time until the event.
+- [failure] Sold-out events are recommended :: Real-time capacity filters at serve time.
+- [variation] Online events :: Time zones and language instead of distance.
+
+=== d-ml-similar-listings
+title: Design similar listings for a marketplace
+topic: ai-vector-search
+tier: 2
+est: 45
+prompt: Design the "similar listings" carousel shown on each listing page of a home-rental or second-hand marketplace with tens of millions of listings.
+--- words
+- **Listing embedding**: a vector that places similar listings close together.
+- **Session co-occurrence**: listings viewed in the same browsing session are probably similar in the user's eyes.
+- **Skip-gram on sessions**: training listing embeddings like word2vec, with sessions as sentences.
+- **ANN (approximate nearest neighbour) index**: finds the closest vectors among millions in milliseconds.
+--- flow
+1. **0–5**: goal (bookings from the carousel), constraints (same city, available dates, price range), freshness.
+2. **5–12**: how to define similar: content vs behaviour; training data from sessions.
+3. **12–22**: embeddings from session co-views and bookings (word2vec-style), content tower for new listings, ANN retrieval, re-ranking.
+4. **22–30**: offline embedding evaluation; online click and booking rates from the carousel.
+5. **30–40**: index updates, filters at query time, latency.
+6. **40–45**: deep dive: cold start, availability filters, location.
+--- frame
+**Goal**: users who are viewing a listing find good alternatives they book.
+
+**ML task**: for query listing q, retrieve listings that users treat as substitutes and rank by P(click then book).
+
+**Metrics**: offline: how often the next clicked listing in a session is in the top-k neighbours (hit rate@k); online: carousel CTR, bookings from the carousel, overall bookings per session.
+--- data
+- **Training pairs**: listings clicked in the same search session (positives), the final booked listing as a strong **global context** for every listing in the session (Airbnb's published approach), negatives sampled from the same city (otherwise the model learns only "same city").
+- **Content features**: title and description text, photos (image embeddings), price, room type, location, amenities.
+--- model
+1. **Behavioural embeddings**: skip-gram over session sequences with booked listing as global context and in-city negatives.
+2. **Content tower**: maps content features to the same space, used for **new listings** without sessions.
+3. **Retrieval**: ANN on embeddings within the same market; filters for available dates, guest count, price band.
+4. **Re-ranker**: small model with the user's search context (dates, price filters) to order the top 100.
+--- eval
+- Offline hit rate@k on held-out sessions; sanity checks (neighbours share city, type and price band).
+- A/B: carousel bookings, overall conversion.
+--- serve
+- Embeddings retrained daily; index updated incrementally for new listings (content tower) and removed listings.
+- Query: get q's embedding → ANN with metadata filters (pre-filter by city, then post-filter availability) → re-rank → ~50 ms.
+--- deep
+**Negatives from the same city**: random negatives from anywhere are too easy and the embedding only learns geography.
+
+**Availability**: filter at query time from a live availability service; never cache carousels with dates.
+
+**Cold start**: content tower trained to match behavioural embeddings, or average of embeddings of nearby similar listings.
+--- variants
+Q: Second-hand goods (one item, sells once)
+A: Items disappear quickly; content embeddings (image + text) dominate; index churn is high.
+Q: Personalised similar listings
+A: Add the user's long-term preferences to the re-ranker.
+--- steer
+Q: How do you define similar?
+A: Behavioural substitutes from sessions, not just content; content for cold start.
+Q: Neighbours are all in the same city but wrong type.
+A: Hard negatives from the same city; content features.
+Q: Shown listings aren't available for my dates.
+A: Query-time availability filters.
+--- pitfalls
+- Random negatives from all cities
+- Caching results that depend on dates
+- No plan for new listings
+--- level
+- **L4**: embeddings + nearest neighbours.
+- **L5**: session-based embedding training with booked context and in-market negatives, content tower for cold start, filtered ANN, offline hit rate.
+- **L6**: marketplace balance (host exposure), search and recommendation shared embeddings.
+--- nodes
+page|Listing page|client|0|150|Shows the carousel; logs clicks and bookings.
+api|Similar listings API|service|180|150|Gets the query embedding, retrieves, re-ranks.
+ann|ANN index|db|380|40|Listing embeddings with city metadata.
+avail|Availability service|service|380|260|Live dates and capacity.
+rr|Re-ranker|service|560|150|Search context and user preferences.
+train|Embedding training|worker|380|360|Skip-gram on sessions daily; content tower.
+--- edges
+page>api|listing id
+api>ann|neighbours
+api>avail|filter dates
+api>rr|top 100
+rr>page|carousel
+page~train|sessions
+train~ann|embeddings
+--- prereqs
+contrastive-embeddings, embedding-similarity, ann-indexes
+--- paths
+- [deep] Training the embeddings :: Session skip-gram, booked listing as global context, in-market negatives.
+- [deep] Filtering :: Pre-filter by market, post-filter availability at query time.
+- [variation] New listings :: Content tower into the same space.
+- [variation] Second-hand goods :: Image and text embeddings, high index churn.
+
+=== d-ml-visual-search
+title: Design visual search (search with a photo)
+topic: ai-multimodal
+tier: 2
+est: 45
+prompt: Design a feature where users take a photo of an object (a shoe, a plant, a landmark) and get matching products or information, at the scale of a billion indexed images.
+--- words
+- **Image embedding**: a vector from a vision model that places similar-looking images close together.
+- **Object detection**: finding where objects are in the photo, so you search for the shoe, not the whole street.
+- **CLIP-style model**: trained so that images and their text descriptions get similar vectors, which also allows text-to-image search.
+- **Product quantisation**: compressing vectors so a billion of them fit in memory.
+--- flow
+1. **0–5**: query types (products, plants, landmarks, text in images), latency (~500 ms), index size, privacy.
+2. **5–12**: training data: image pairs and image–text pairs; labels from clicks and human raters.
+3. **12–22**: detect objects → embed crops → ANN retrieval in a vertical index → re-rank → results with metadata.
+4. **22–30**: offline recall@k on labelled pairs; online click and satisfaction.
+5. **30–40**: indexing a billion images, compression, freshness.
+6. **40–45**: deep dive: domain gap (phone photos vs catalogue photos), multiple objects.
+--- frame
+**Goal**: from one photo, users get the exact or close match and useful information.
+
+**ML task**: image retrieval: embed the query object, find nearest neighbours in an index of catalogue images, re-rank.
+
+**Metrics**: offline recall@k and mAP on labelled query–match pairs; online: click-through on results, "found it" rate, reformulations; guardrails: latency, sensitive-content filtering.
+--- data
+- **Pairs**: user photos matched to catalogue items from clicks and purchases; catalogue products with many photos (different angles are positives); human-labelled hard pairs.
+- **Domain gap**: query photos are blurry, angled and cluttered; catalogue photos are clean. Augment (crops, blur, lighting) and mine real query photos.
+- **Hard negatives**: same category but different product (two similar white sneakers).
+--- model
+1. **Detection**: a detector proposes objects; the user can tap to choose one.
+2. **Embedding model**: a vision transformer or CNN fine-tuned with contrastive loss (InfoNCE) on query–catalogue pairs, starting from a CLIP-style pretrained model; per-vertical heads (fashion, home, plants) or one shared model with vertical-specific indexes.
+3. **Retrieval**: ANN (IVF-PQ or ScaNN) over a billion vectors, compressed; search the top verticals predicted by a classifier.
+4. **Re-rank**: exact similarity on full vectors for the top 1,000, plus text and price features, availability.
+--- eval
+- Offline recall@10 on held-out real query photos (not on catalogue-to-catalogue pairs, which overstate quality).
+- A/B: click-through and conversion; human side-by-side ratings for quality.
+--- serve
+- On-device: optional lightweight detection and embedding to cut upload size; server: embedding on GPUs (~30 ms), ANN (~20 ms), re-rank.
+- Index: batch build for the catalogue, incremental adds for new products; sharded by vertical.
+- Monitoring: recall on a daily labelled sample, latency per stage, empty-result rate.
+--- deep
+**Domain gap**: evaluate on real user photos; mine query photos with clicks as positives; augment.
+
+**Scale**: a billion 512-dim float vectors is 2 TB; product quantisation to ~64 bytes per vector makes it ~64 GB, sharded; re-rank with full vectors from SSD.
+
+**Multiple objects**: detect all, let the user select, or run searches for the top few in parallel.
+--- variants
+Q: Text in the image (signs, menus)
+A: OCR then text search and translation; a different pipeline.
+Q: Landmarks
+A: Geographic priors from GPS, landmark-specific index, many photos per landmark.
+--- steer
+Q: Why not use the whole photo?
+A: Cluttered scenes; detect and crop the object.
+Q: Offline recall is great but users complain.
+A: Evaluation used catalogue images; evaluate on real query photos.
+Q: A billion vectors don't fit in memory.
+A: Product quantisation, sharding, re-rank from full vectors.
+--- pitfalls
+- Evaluating only on clean catalogue images
+- Embedding the whole cluttered photo
+- No hard negatives in training
+- Uncompressed vectors at billion scale
+--- level
+- **L4**: image embeddings + nearest neighbours.
+- **L5**: detection + crops, contrastive fine-tuning with hard negatives and domain-gap mining, compressed ANN at billion scale, re-ranking, real-photo evaluation.
+- **L6**: multimodal search platform (text, image, voice) and catalogue partnerships.
+--- nodes
+cam|Camera app|client|0|150|Takes the photo; optional on-device detection.
+det|Detector|service|170|150|Finds objects; user picks one.
+emb|Embedding model|service|340|150|Contrastive vision model on GPUs.
+ann|Vertical ANN indexes|db|520|60|IVF-PQ shards per vertical, a billion vectors.
+rr|Re-ranker|service|520|240|Full-vector similarity, text, price, availability.
+cat|Catalogue ingestion|worker|700|60|Embeds new products; incremental index updates.
+--- edges
+cam>det|photo
+det>emb|crop
+emb>ann|nearest
+ann>rr|top 1,000
+rr>cam|matches
+cat~ann|new vectors
+--- prereqs
+contrastive-embeddings, ann-indexes, vit-clip
+--- paths
+- [deep] Training the embedding :: Contrastive loss on query–catalogue pairs, hard negatives, CLIP start.
+  - Real photos look different :: Augmentation, mining real query photos, evaluating on them.
+- [deep] Billion-scale retrieval :: PQ compression, sharding by vertical, full-vector re-rank.
+- [deep] Multiple objects in the photo :: Detect, let the user choose, or parallel searches.
+- [variation] Text in the image :: OCR then text search.
+
+=== d-ml-autocomplete
+title: Design search query autocomplete
+topic: ai-tokenization
+tier: 2
+est: 45
+prompt: Design the query suggestions shown under the search box as the user types, for a search engine with billions of queries a day.
+--- words
+- **Prefix**: what the user has typed so far.
+- **Completion**: a full query suggested for that prefix.
+- **Trie**: a tree over characters that finds every stored query starting with a prefix.
+- **Language model**: a model that predicts the next words; can generate completions never seen before.
+- **Keystroke savings**: how many characters suggestions save users.
+--- flow
+1. **0–5**: latency (<50 ms per keystroke), languages, personalisation, safety (offensive suggestions).
+2. **5–12**: data: query logs, counts, freshness; labels: which suggestion was chosen.
+3. **12–22**: candidate generation (trie of popular queries + generative model for the tail) → ranker → safety filter.
+4. **22–30**: offline MRR on logged prefixes; online acceptance rate, keystroke savings.
+5. **30–40**: serving per keystroke, caching, freshness for trending.
+6. **40–45**: deep dive: safety, trending queries, personalisation.
+--- frame
+**Goal**: users reach the query they meant faster, and discover good queries, with no offensive or harmful suggestions.
+
+**ML task**: for a prefix and context, rank up to ~10 completions by P(the user selects it).
+
+**Metrics**: offline **MRR** of the query the user finally issued among suggestions, success@1/5; online: suggestion acceptance rate, keystrokes saved, searches with no reformulation; guardrails: latency, policy violations (must be ~0).
+--- data
+- **Logs**: (prefix, shown suggestions, chosen suggestion or final typed query). Every prefix of every query is a training example.
+- **Counts**: query frequency over time windows (all-time, last day, last hour) for popularity and trend features.
+- **Privacy**: only aggregate queries above a frequency threshold from many users, so no one's private query is suggested to others.
+--- model
+1. **Candidates**: a trie (or finite state transducer) over popular queries returns the top completions per prefix by frequency; for rare prefixes, a small **generative language model** proposes completions; personal history adds the user's own past queries.
+2. **Ranker**: gradient-boosted trees or a small neural model on features: frequency (multiple windows), trend ratio, prefix match quality, length, user's history match, location and language, time of day. Train with a pairwise or listwise loss against chosen completions.
+3. **Safety filter**: classifiers and blocklists for hateful, sexual, violent and defamatory suggestions, with stricter rules for names of people.
+--- eval
+- Offline: MRR and success@k on held-out prefixes, weighted by prefix frequency; separately for rare prefixes.
+- A/B: acceptance rate and keystroke savings; human review of safety on sampled outputs.
+--- serve
+- Per keystroke: cache the top completions for popular prefixes at the edge; trie lookup + ranker in ~10–20 ms; debounce on the client.
+- **Freshness**: a streaming job counts queries in the last minutes, promoting trending queries (a breaking news name) within minutes.
+- Monitoring: latency, acceptance rate, safety flags reported by users.
+--- deep
+**Safety**: generative models and popularity both surface offensive completions; layered filters (blocklists, classifiers, human escalation), stricter for people's names; fast removal path.
+
+**Trending**: short-window counts vs long-window baseline (trend ratio); guard against manipulation (bots pushing a query).
+
+**Personalisation**: the user's own past queries boosted; never show one user's private queries to others.
+--- variants
+Q: Autocomplete in an email composer (Smart Compose)
+A: Generative per-user context, latency on every keystroke, privacy of email content; see the Smart Compose question.
+Q: E-commerce search autocomplete
+A: Completions map to categories and products; conversion as the label.
+--- steer
+Q: How do you handle a prefix never seen before?
+A: Generative model or backing off to shorter prefixes and word-level completion.
+Q: An offensive suggestion goes viral.
+A: Fast removal path, filter layers, root-cause review.
+Q: Latency per keystroke?
+A: Edge caching of top prefixes, small ranker, client debounce.
+--- pitfalls
+- Suggesting rare queries that leak private information
+- No safety layer for generated or popular suggestions
+- Only all-time counts, missing trends
+- A heavy model on every keystroke
+--- level
+- **L4**: trie + popularity ranking.
+- **L5**: candidate sources incl. generative tail, ranker with multi-window counts and trend features, privacy thresholds, safety filters, per-keystroke latency design.
+- **L6**: search-wide query understanding, manipulation resistance, policy.
+--- nodes
+box|Search box|client|0|150|Sends the prefix per keystroke (debounced).
+edge|Edge cache|cache|170|150|Top completions for popular prefixes.
+cand|Candidate service|service|340|150|Trie of popular queries, generative tail model, personal history.
+rank|Ranker + safety|service|520|150|Boosted trees; blocklists and classifiers.
+cnt|Query counters|queue|340|290|Streaming counts per window; trend ratio.
+logs|Logs & training|worker|520|290|Prefix → chosen query examples.
+--- edges
+box>edge|prefix
+edge>cand|miss
+cand>rank|candidates
+rank>box|suggestions
+cnt~cand|fresh counts
+box~logs|choices
+logs~rank|new model
+--- prereqs
+ranking-models, tokenization-effects
+--- paths
+- [deep] Candidates :: Trie for popular, generative model for the tail, personal history.
+- [deep] Ranking features :: Multi-window frequency, trend ratio, prefix match, personal match.
+- [failure] An offensive suggestion appears :: Layered filters, people-name rules, fast removal.
+- [deep] Trending queries :: Streaming counts within minutes; manipulation checks.
+- [deep] Latency per keystroke :: Edge cache, small ranker, debounce.
+
+=== d-ml-harmful-content
+title: Design harmful content detection
+topic: ai-multimodal
+tier: 3
+est: 45
+prompt: Design the system that detects harmful content (hate speech, violence, nudity, harassment) in posts with text, images and video on a large social platform, before and after it is shown.
+--- words
+- **Policy**: the written rules for what is allowed; models only approximate them.
+- **Prevalence**: the share of views that contain violating content. The main measure of harm.
+- **Human review queue**: content flagged by models or users waiting for trained reviewers.
+- **Multimodal classifier**: a model that reads text, image and video together (a meme's meaning depends on both).
+- **Precision at action**: how often an automated removal is correct.
+--- flow
+1. **0–5**: policies covered, actions (remove, reduce reach, label, send to review), latency (at upload), languages, appeals.
+2. **5–12**: labels from reviewers, user reports; class imbalance; policy changes.
+3. **12–22**: hashes for known content → per-modality and multimodal classifiers → action thresholds → review queues.
+4. **22–30**: prevalence measured by sampling; precision and recall per policy; appeals overturn rate.
+5. **30–40**: serving at upload and re-scoring on virality, reviewer capacity.
+6. **40–45**: deep dive: adversarial evasion, new languages, fairness.
+--- frame
+**Goal**: minimise how many people see harmful content, with few wrongful removals.
+
+**ML task**: per item, P(violates policy p) for each policy; actions depend on confidence and severity: auto-remove at high precision, send to review in the middle, reduce distribution for borderline.
+
+**Metrics**: **prevalence** (from a random sample of views labelled by reviewers), recall and precision per policy and language, review queue precision, **appeal overturn rate**, time to action for viral content.
+--- data
+- **Labels**: reviewer decisions (gold, but expensive and with disagreement), user reports (noisy, biased by who reports), and policy-expert labelled sets for evaluation.
+- **Imbalance**: violations are rare; active learning picks uncertain items for review.
+- **Policy changes**: when rules change, old labels are wrong; version labels by policy.
+--- model
+1. **Hash matching** for known violating images and videos (perceptual hashes), immediate and precise.
+2. **Text classifiers** per language family (multilingual transformer), **image and video classifiers** (vision models on frames), and a **multimodal model** (text + image fusion, e.g. a VLM fine-tuned on policy labels) for memes.
+3. **Context features**: account history, prior strikes, network signals (coordinated accounts).
+4. **Thresholds per policy and severity**: child safety and terrorism auto-remove at lower thresholds; borderline categories demote instead.
+--- eval
+- Prevalence from random sampling of views (unbiased), not just of flagged items.
+- Precision/recall per policy, language and region on expert sets; reviewer agreement as the ceiling.
+- Appeal overturn rate and fairness slices (dialects, communities reclaiming slurs).
+--- serve
+- At upload: hashes and fast classifiers within seconds; heavy video models asynchronously before distribution grows.
+- **Virality trigger**: re-score and prioritise review for content gaining views fast.
+- Review queue prioritised by predicted severity × expected views.
+- Monitoring: prevalence trends, queue backlog, model score drift, new evasion patterns.
+--- deep
+**Adversarial evasion**: misspellings, text inside images, edited videos; OCR on images, robust hashes, retraining on new evasions found by reviewers.
+
+**Fairness**: models over-flag certain dialects; measure false positives by community, curate counter-examples, and calibrate thresholds.
+
+**Reviewer capacity**: limited; route by severity × reach; use model explanations to speed review; protect reviewer well-being (blurring, rotation).
+--- variants
+Q: Live video
+A: Score streams in near real time; interrupt or reduce distribution; human escalation.
+Q: Private messages (encrypted)
+A: No server-side content access; on-device classifiers, user reports, metadata signals.
+--- steer
+Q: How do you measure success?
+A: Prevalence via random view sampling; precision and appeals.
+Q: The model removes posts from one community unfairly.
+A: Slice false positives, counter-examples, threshold calibration, policy review.
+Q: Policy changed yesterday.
+A: Versioned labels, relabelling, quick fine-tuning, temporary rules.
+--- pitfalls
+- Measuring only on flagged items instead of random samples
+- One threshold for all policies and severities
+- Ignoring text inside images and memes' combined meaning
+- No appeals or fairness measurement
+--- level
+- **L4**: classifiers per modality with a review queue.
+- **L5**: hash + classifier layers, multimodal fusion, per-policy severity thresholds, prevalence measurement, virality-triggered re-scoring, active learning.
+- **L6**: policy and enforcement strategy, regulation, cross-platform coordination.
+--- nodes
+up|Upload|client|0|150|Posts with text, images, video.
+hash|Hash matching|service|170|150|Perceptual hashes of known violations.
+clf|Classifiers|service|350|150|Text, image, video and multimodal models per policy.
+act|Action engine|service|530|150|Remove, demote, label or send to review by severity and confidence.
+rev|Review queue|worker|530|20|Prioritised by severity × expected views.
+viral|Virality monitor|queue|350|290|Re-scores items gaining views fast.
+train|Labels & training|worker|710|150|Reviewer decisions, active learning, prevalence sampling.
+--- edges
+up>hash|content
+hash>clf|no match
+clf>act|scores
+act>rev|uncertain
+viral~clf|re-score
+rev~train|labels
+train~clf|new models
+--- prereqs
+class-imbalance, cnn-architectures, multimodal-llms
+--- paths
+- [deep] Measuring harm :: Prevalence from random view samples; precision, appeals.
+- [deep] Layers of detection :: Hashes, per-modality, multimodal models; severity thresholds.
+  - A meme where text and image are fine separately :: Multimodal fusion model.
+- [failure] Evasion by misspelling and text in images :: OCR, robust hashes, retraining on new patterns.
+- [deep] Reviewer capacity :: Priority by severity × reach, active learning.
+- [variation] Encrypted messages :: On-device models, reports, metadata.
+
+=== d-ml-video-dedup
+title: Design duplicate and copyright matching for uploaded videos
+topic: ai-multimodal
+tier: 3
+est: 45
+prompt: Design a system that checks every uploaded video against a reference library of copyrighted content (and against existing uploads) to find copies, even when they are cropped, re-encoded or sped up.
+--- words
+- **Fingerprint**: a compact signature of audio or video that survives re-encoding and small edits.
+- **Reference library**: content that rights holders have registered.
+- **Temporal alignment**: checking that a sequence of matching frames lines up in time, not just one frame.
+- **Match policy**: what the rights holder chose: block, track, or monetise.
+--- flow
+1. **0–5**: scale (500 hours uploaded per minute), match types (full copy, clip, audio only), robustness required, latency (before publishing).
+2. **5–12**: fingerprints: audio (spectrogram-based) and video (frame embeddings); training data from synthetic edits.
+3. **12–22**: segment fingerprints → ANN lookup → candidate references → temporal alignment → decision by policy.
+4. **22–30**: precision (false claims hurt creators), recall under edits, measured on synthetic and real sets.
+5. **30–40**: indexing billions of segments, compute cost per upload.
+6. **40–45**: deep dive: adversarial edits, fair use disputes, live streams.
+--- frame
+**Goal**: catch copies of registered content quickly and precisely; false claims hurt creators.
+
+**ML task**: near-duplicate retrieval and verification: for each upload, find reference segments that match with aligned timing, and decide the match type.
+
+**Metrics**: precision of claims (very high, ~99.9%), recall under each edit type (crop, speed, pitch, overlay, mirror), time to decision, dispute rate.
+--- data
+- **Training pairs**: generate positives by applying edits (re-encode, crop, scale, speed ±10%, pitch shift, overlays, picture-in-picture, mirror) to reference clips; negatives from different content, hard negatives from similar content (two broadcasts of the same match).
+- Real disputes and confirmed matches for evaluation.
+--- model
+1. **Audio fingerprints**: spectrogram landmarks (peak pairs hashed) or a learned audio embedding per second; robust to noise and compression.
+2. **Video fingerprints**: per-frame or per-segment embeddings from a CNN/ViT trained with contrastive loss on edited pairs, robust to crops and overlays.
+3. **Retrieval**: ANN over billions of segment embeddings (and hash lookups for landmarks).
+4. **Verification**: temporal alignment: many matching segments in a consistent order and speed ratio (a Hough-style vote over time offset) → match with duration and confidence.
+--- eval
+- Recall per edit type on synthetic benchmarks; precision on real upload samples reviewed by humans.
+- Dispute and reinstatement rates online.
+--- serve
+- Upload → transcode → fingerprint extraction (GPU, parallel per segment) → lookup → alignment → policy action before or shortly after publishing.
+- Reference library indexed and sharded; new references also scanned against existing uploads (backfill).
+- Monitoring: match rate, disputes, processing lag.
+--- deep
+**Robustness vs precision**: more invariance catches more edits but also matches similar but different content (two broadcasts); temporal alignment and minimum matched duration keep precision high.
+
+**Scale**: segment every few seconds × billions of hours: compress embeddings, hash audio landmarks, shard by content type.
+
+**Disputes**: creators may claim fair use; human review for disputed claims; never auto-block short incidental matches.
+--- variants
+Q: Live streams
+A: Rolling fingerprints every few seconds and near-real-time matching; interrupt with warnings.
+Q: Duplicate uploads of user content (not copyright)
+A: Same machinery; action is merging or demoting duplicates.
+--- steer
+Q: How do you handle a video sped up by 10%?
+A: Training augmentations plus alignment that allows a speed ratio.
+Q: Two different broadcasts of the same match get flagged.
+A: Hard negatives, temporal alignment, minimum duration, human review.
+Q: The reference arrives after the copy was uploaded.
+A: Backfill scan of existing uploads against new references.
+--- pitfalls
+- Frame-level matching without temporal alignment
+- No hard negatives, causing false claims
+- Ignoring audio-only copies
+- No backfill when new references arrive
+--- level
+- **L4**: fingerprints and lookup.
+- **L5**: learned robust fingerprints from synthetic edits, ANN at segment scale, temporal alignment verification, precision-first policy, backfill.
+- **L6**: rights-holder ecosystem, dispute process design, legal constraints.
+--- nodes
+up|Upload|client|0|150|Video and audio.
+fp|Fingerprinting|worker|180|150|Audio landmarks and video segment embeddings.
+ann|Reference index|db|360|40|Billions of segment fingerprints, sharded.
+align|Temporal alignment|service|360|260|Votes over time offset and speed ratio.
+pol|Policy engine|service|560|150|Block, track or monetise; human review for disputes.
+ref|Reference ingestion|worker|560|20|New references indexed; backfill scans.
+--- edges
+up>fp|transcode
+fp>ann|lookup segments
+ann>align|candidates
+align>pol|match
+ref~ann|new references
+--- prereqs
+contrastive-embeddings, ann-indexes, speech-models
+--- paths
+- [deep] Robust fingerprints :: Contrastive training on synthetic edits; audio landmarks.
+- [deep] Verification :: Temporal alignment with speed ratio; minimum matched duration.
+  - Two broadcasts of the same match :: Hard negatives and duration thresholds.
+- [deep] Scale :: Segment embeddings compressed and sharded; hashing for audio.
+- [variation] Live streams :: Rolling fingerprints, near-real-time matching.
+- [failure] Reference arrives late :: Backfill scan of existing uploads.

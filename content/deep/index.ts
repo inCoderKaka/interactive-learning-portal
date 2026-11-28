@@ -113,9 +113,81 @@ import { notes as n_ai_pytorch } from "./ai/notes/pytorch";
 import { cnn } from "./ai/cnn";
 import { notes as n_ai_cnn } from "./ai/notes/cnn";
 
-const NOTES: Record<string, string> = { ...n_ai_cnn, ...n_ai_pytorch, ...n_ai_nn, ...n_ai_metrics, ...n_ai_classic, ...n_ai_data, ...n_ai_basics, ...n_ai_math, ...n_lld_concurrency2, ...n_lld_concurrency, ...n_lld_quality, ...n_lld_patterns2, ...n_lld_patterns1, ...n_lld_oop, ...n_lld_framework, ...n_hld_papers, ...n_hld_multiregion, ...n_hld_security, ...n_hld_ops, ...n_hld_storage, ...n_hld_protection, ...n_hld_streams, ...n_hld_messaging, ...n_hld_transactions, ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
+import { embeddings } from "./ai/embeddings";
+import { notes as n_ai_embeddings } from "./ai/notes/embeddings";
+
+import { recsys } from "./ai/recsys";
+import { notes as n_ai_recsys } from "./ai/notes/recsys";
+
+import { tokens } from "./ai/tokens";
+import { notes as n_ai_tokens } from "./ai/notes/tokens";
+
+import { transformers } from "./ai/transformers";
+import { notes as n_ai_transformers } from "./ai/notes/transformers";
+
+import { llmtrain } from "./ai/llmtrain";
+import { notes as n_ai_llmtrain } from "./ai/notes/llmtrain";
+
+import { alignment } from "./ai/alignment";
+import { notes as n_ai_alignment } from "./ai/notes/alignment";
+
+import { reasoning } from "./ai/reasoning";
+import { notes as n_ai_reasoning } from "./ai/notes/reasoning";
+
+import { finetune } from "./ai/finetune";
+import { notes as n_ai_finetune } from "./ai/notes/finetune";
+
+import { decoding } from "./ai/decoding";
+import { notes as n_ai_decoding } from "./ai/notes/decoding";
+
+import { inference } from "./ai/inference";
+import { notes as n_ai_inference } from "./ai/notes/inference";
+
+import { prompting } from "./ai/prompting";
+import { notes as n_ai_prompting } from "./ai/notes/prompting";
+
+import { retrieval } from "./ai/retrieval";
+import { notes as n_ai_retrieval } from "./ai/notes/retrieval";
+
+import { agents } from "./ai/agents";
+import { notes as n_ai_agents } from "./ai/notes/agents";
+
+import { multimodal } from "./ai/multimodal";
+import { notes as n_ai_multimodal } from "./ai/notes/multimodal";
+
+import { evalsafety } from "./ai/evalsafety";
+import { notes as n_ai_evalsafety } from "./ai/notes/evalsafety";
+
+import { production } from "./ai/production";
+import { notes as n_ai_production } from "./ai/notes/production";
+
+import { sysdesign } from "./ai/sysdesign";
+import { notes as n_ai_sysdesign } from "./ai/notes/sysdesign";
+
+import { rnn } from "./ai/rnn";
+import { notes as n_ai_rnn } from "./ai/notes/rnn";
+
+const NOTES: Record<string, string> = { ...n_ai_rnn, ...n_ai_sysdesign, ...n_ai_production, ...n_ai_evalsafety, ...n_ai_multimodal, ...n_ai_agents, ...n_ai_retrieval, ...n_ai_prompting, ...n_ai_inference, ...n_ai_decoding, ...n_ai_finetune, ...n_ai_reasoning, ...n_ai_alignment, ...n_ai_llmtrain, ...n_ai_transformers, ...n_ai_tokens, ...n_ai_recsys, ...n_ai_embeddings, ...n_ai_cnn, ...n_ai_pytorch, ...n_ai_nn, ...n_ai_metrics, ...n_ai_classic, ...n_ai_data, ...n_ai_basics, ...n_ai_math, ...n_lld_concurrency2, ...n_lld_concurrency, ...n_lld_quality, ...n_lld_patterns2, ...n_lld_patterns1, ...n_lld_oop, ...n_lld_framework, ...n_hld_papers, ...n_hld_multiregion, ...n_hld_security, ...n_hld_ops, ...n_hld_storage, ...n_hld_protection, ...n_hld_streams, ...n_hld_messaging, ...n_hld_transactions, ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
 
 const BODIES: Record<string, Deep> = {
+  ...rnn,
+  ...sysdesign,
+  ...production,
+  ...evalsafety,
+  ...multimodal,
+  ...agents,
+  ...retrieval,
+  ...prompting,
+  ...inference,
+  ...decoding,
+  ...finetune,
+  ...reasoning,
+  ...alignment,
+  ...llmtrain,
+  ...transformers,
+  ...tokens,
+  ...recsys,
+  ...embeddings,
   ...cnn,
   ...pytorch,
   ...nn,

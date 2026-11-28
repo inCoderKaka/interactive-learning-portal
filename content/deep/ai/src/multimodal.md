@@ -1,0 +1,846 @@
+=== vit-clip
+blurb: How models connect images and text: Vision Transformers as image encoders, CLIP's contrastive image–text training and zero-shot classification, SigLIP's sigmoid loss, image embeddings for search and deduplication, and the biases and limits of these models.
+signals: "Design image search by text" (Google Photos, Lens, product search) | "How does zero-shot classification work?" | "Explain CLIP" | Multimodal embeddings in recommendation and moderation
+widgets: clip
+prereq: contrastive-embeddings, cnn-architectures
+
+--- lesson
+:::words
+- **Image encoder**: a network that turns an image into a vector (a CNN or Vision Transformer).
+- **Joint embedding space**: a single vector space where images and texts with the same meaning land close together.
+- **CLIP**: Contrastive Language–Image Pre-training, OpenAI's 2021 model trained on 400M image–caption pairs.
+- **Zero-shot classification**: classifying into labels never seen in training, by comparing an image with text descriptions of each label.
+- **SigLIP**: a Google variant of CLIP using a sigmoid loss per pair instead of a softmax over the batch.
+:::
+
+## The problem in plain words
+
+Search your photos for "dog on a beach at sunset", find products that look like a picture, flag images that match a policy description, or label images with categories you invented this morning. All need a model that understands images and text **in the same space**. CLIP-style models learned this from hundreds of millions of image–caption pairs on the web, and they're the backbone of image search, multimodal retrieval and the vision side of many multimodal LLMs.
+
+:::eli5
+Teach a child with a huge picture book where every photo has a caption. Shown a new photo and a few possible captions, they can pick the matching one, even for things they were never explicitly taught, because they learned how pictures and words go together.
+:::
+
+## Vision Transformers as encoders
+
+A ViT splits an image into patches (e.g. 16×16 pixels), embeds each as a token, adds position embeddings and runs a transformer (cnn-architectures page). The output (a [CLS] token or pooled patches) is the image's vector; the per-patch outputs are what multimodal LLMs consume.
+
+## CLIP training
+
+Two encoders: an image encoder $f$ and a text encoder $g$, each followed by a projection to a shared $d$-dimensional space, normalised. For a batch of $N$ (image, caption) pairs, compute the $N \times N$ cosine-similarity matrix and apply a **symmetric InfoNCE** loss (contrastive-embeddings page): each image must pick its own caption among $N$, and each caption its own image, with a learned temperature. CLIP used batches of 32,768.
+
+What it learns: images and texts describing the same thing get similar vectors, across an enormous variety of concepts, because web captions describe everything.
+
+## Zero-shot classification
+
+To classify an image into {cat, dog, car}: embed text prompts "a photo of a cat", "a photo of a dog", "a photo of a car"; embed the image; pick the label whose text vector has the highest cosine similarity (softmax over similarities for probabilities). No training on those labels at all. Prompt engineering (templates, averaging several phrasings) and **linear probes** on image embeddings improve results. Try matching images to captions below:
+
+[[widget:clip]]
+
+## SigLIP and successors
+
+**SigLIP** (Google, 2023) replaces the batch softmax with an independent **sigmoid** loss for every image–text pair (positive or negative), so no global normalisation across the batch is needed: simpler to scale, works well with smaller batches, better results. Others: ALIGN (noisy alt-text at scale), CoCa (contrastive + captioning), EVA-CLIP, OpenCLIP (open reproductions), SigLIP 2.
+
+## Uses
+
+- **Text-to-image search** (photos, stock, products): embed all images once; embed queries at search time; ANN search.
+- **Image-to-image search** (Lens-style visual search, near-duplicate detection, copyright matching), often combined with specialised embeddings.
+- **Zero-shot and few-shot classification** for new categories (content moderation policies, product tagging).
+- **Filtering and ranking training data** (CLIP score to remove mismatched captions).
+- **Conditioning generative models**: text encoders guiding diffusion models; vision encoders for multimodal LLMs.
+
+## Limits
+
+- **Fine-grained distinctions** (bird species, car models, medical findings) need domain fine-tuning.
+- **Counting, spatial relations and negation** ("a dog *without* a ball", "three cups left of a plate") are weak: bag-of-concepts behaviour.
+- **Text in images** (OCR) is limited in early models.
+- **Biases** from web data: stereotypes, under-representation; must be audited before use in sensitive decisions.
+- **Typographic attacks**: writing "iPod" on an apple can make the model label it an iPod.
+
+## Interview angles
+
+- "Design photo search by text." CLIP/SigLIP image embeddings precomputed (on-device for privacy where needed), text query embedding, ANN index, metadata filters (dates, places), reranking, evaluation with labelled queries.
+- "Explain zero-shot classification." Compare the image embedding with text embeddings of label prompts; pick the closest.
+- "CLIP vs SigLIP?" Batch softmax contrastive vs per-pair sigmoid loss: simpler scaling.
+
+--- revise
+### Models
+? What does CLIP learn? :: A joint image–text embedding space from image–caption pairs.
+? CLIP's loss? :: Symmetric InfoNCE over the batch's image–text similarity matrix with a learned temperature.
+? SigLIP's change? :: Independent sigmoid loss per pair instead of softmax across the batch.
+? What does a ViT produce for multimodal LLMs? :: Per-patch output vectors (plus a pooled vector).
+
+### Uses
+? Zero-shot classification with CLIP? :: Embed "a photo of a {label}" for each label; pick the most similar to the image.
+? Improving zero-shot accuracy? :: Prompt templates/ensembles, linear probes, domain fine-tuning.
+? Text-to-image search architecture? :: Precomputed image embeddings + ANN index + query text embedding + filters + rerank.
+
+### Limits
+? Known weaknesses? :: Fine-grained classes, counting, spatial relations, negation, OCR (early models), biases, typographic attacks.
+
+--- notes
+## ViT
+16×16 patches → tokens + positions → transformer → pooled vector + patch outputs.
+## CLIP (2021)
+Image + text encoders → projections → normalised shared space. 400M pairs. Symmetric InfoNCE, learned τ, batch 32k.
+## Zero-shot
+"a photo of a {label}" → cosine with image → softmax. Prompt ensembles; linear probes.
+## SigLIP
+Per-pair sigmoid loss; no batch normalisation; scales simply. ALIGN, CoCa, EVA-CLIP, OpenCLIP, SigLIP 2.
+## Uses
+Text→image search; image→image (Lens, dedupe, copyright); zero-shot moderation/tagging; data filtering (CLIP score); conditioning diffusion; VLM vision encoders.
+## Limits
+Fine-grained, counting, spatial, negation, OCR (early), web biases, typographic attacks.
+
+--- doubts
+Q: Why does "a photo of a cat" work better than just "cat"?
+A: Captions in training data are sentences, not single words; prompts that look like captions match the text distribution the text encoder learned, and disambiguate (a "crane" the bird vs the machine). Averaging several templates helps further.
+
+Q: Can CLIP embeddings replace a trained classifier?
+A: For broad categories and quick launches, zero-shot or a linear probe on CLIP embeddings is often good enough. For fine-grained or high-stakes classification, fine-tune or train a dedicated model and evaluate carefully.
+
+Q: How does Google Photos search work offline?
+A: The general approach used for private photo search is to compute image embeddings and labels on the device or in the user's private storage, so queries match against the user's own photos without sharing them; details of specific products vary.
+
+--- exercises
+[design] Design "search your photos by description" for a cloud photo service with 10 billion photos across 500 million users.
+A: On upload, compute a SigLIP-style image embedding (and OCR text, detected faces/places as metadata) once; store per-user. Because searches are within one user's library (median thousands of photos), use per-user indexes: small enough for exact or HNSW search; sharded by user. Query: embed the text, search the user's index with date/place filters, rerank top results with a cross-modal reranker. Privacy: per-user isolation, embeddings treated as personal data, deletion with the photo. Evaluate with labelled queries per category (objects, scenes, text, events).
+
+[estimate] 10 billion images with 768-dim float16 embeddings: storage? With 8-bit quantisation?
+A: $10^{10} \times 768 \times 2 \approx 15$ TB; int8 ≈ 7.7 TB. Sharded per user across many machines, this is manageable; PQ could shrink it further.
+
+[break] A zero-shot moderation filter using CLIP to detect "weapons" flags many kitchen knives and toy guns and misses some real weapons in unusual photos. What would you do?
+A: Zero-shot embeddings lack the fine distinctions the policy needs. Collect labelled examples (including hard negatives like kitchen knives, toys), train a linear probe or fine-tune on them, use more specific prompts per subcategory, set thresholds per class on validation data, and route uncertain cases to human review.
+
+--- pitfalls
+- Using zero-shot CLIP for fine-grained or high-stakes decisions without evaluation
+- Single-word prompts instead of caption-like templates
+- Ignoring biases in web-trained embeddings
+- Global indexes when queries are always within one user's data
+- Expecting reliable counting or negation
+
+--- quiz
+Q: CLIP is trained to?
+- Generate captions
+- *Match images with their captions in a shared embedding space
+- Classify 1,000 ImageNet classes
+- Detect objects
+W: Contrastive learning over image–text pairs.
+
+Q: Zero-shot classification with CLIP compares the image embedding with?
+- Other images
+- *Text embeddings of label prompts
+- Pixel histograms
+- A trained classifier head
+W: The closest label description wins.
+
+Q: SigLIP differs from CLIP by using?
+- A CNN encoder
+- *A sigmoid loss per image–text pair
+- No text encoder
+- Captions only
+W: No softmax across the batch.
+
+Q: A known weakness of CLIP-style models?
+- Recognising common objects
+- *Counting objects and understanding negation
+- Matching captions
+- Producing embeddings
+W: They behave like bags of concepts.
+
+--- sources
+- paper :: Learning Transferable Visual Models From Natural Language Supervision (CLIP) :: Radford et al., OpenAI (2021) :: https://arxiv.org/abs/2103.00020
+- paper :: Sigmoid Loss for Language Image Pre-Training (SigLIP) :: Zhai et al., Google (2023) :: https://arxiv.org/abs/2303.15343
+- paper :: Scaling Up Visual and Vision-Language Representation Learning With Noisy Text Supervision (ALIGN) :: Jia et al., Google (2021) :: https://arxiv.org/abs/2102.05918
+- article :: Multimodal Neurons in Artificial Neural Networks :: Goh et al. (Distill 2021) :: https://distill.pub/2021/multimodal-neurons/
+
+=== speech-models
+blurb: Speech recognition and synthesis for engineers: audio features (spectrograms), CTC and attention-based ASR, Whisper, word error rate, streaming recognition, text-to-speech pipelines and neural codecs, and end-to-end voice assistants and their latency budgets.
+signals: "Design a voice assistant or live captions" | "How does Whisper work?" | "What is WER?" | Meeting transcription, call-centre analytics, accessibility designs
+widgets: spectrogram
+prereq: transformer-families, seq2seq-attention
+
+--- lesson
+:::words
+- **ASR** (automatic speech recognition): converting speech audio to text.
+- **TTS** (text-to-speech): converting text to natural-sounding audio.
+- **Spectrogram**: a picture of sound: time on one axis, frequency on the other, brightness for loudness.
+- **Mel scale**: a frequency scale matching human pitch perception; most models use log-mel spectrograms.
+- **CTC** (connectionist temporal classification): a loss that aligns audio frames with text without frame-level labels.
+- **WER** (word error rate): the share of words substituted, deleted or inserted relative to a reference transcript.
+- **Streaming**: producing output while audio is still arriving.
+:::
+
+## The problem in plain words
+
+Voice is the most natural interface: dictation, voice search, meeting notes, call-centre analytics, accessibility and real-time conversation with AI. Speech models turn audio into text and back. Designs here hinge on accuracy across accents and noise, **latency** (people notice delays above a few hundred milliseconds in conversation), streaming, privacy (on-device processing) and cost.
+
+:::eli5
+A stenographer listens and types (ASR); a narrator reads text aloud (TTS). A voice assistant chains them with a brain in the middle, and has to do it fast enough that the pause feels like normal conversation.
+:::
+
+## Turning audio into features
+
+Audio is sampled (16,000 times per second for speech). Models usually take a **log-mel spectrogram**: slide a short window (25 ms, hop 10 ms), compute the frequency content (FFT), map to ~80 mel bands, take the log. 10 seconds of audio becomes ~1,000 frames × 80 features. See how speech looks as a spectrogram below:
+
+[[widget:spectrogram]]
+
+Some models (wav2vec 2.0, HuBERT) learn directly from raw waveforms with self-supervised pretraining on unlabelled audio, then fine-tune with few labels.
+
+## Speech recognition architectures
+
+- **CTC models**: an encoder emits, for every frame, a distribution over characters/tokens plus a "blank"; the CTC loss sums over all alignments that collapse to the target text (merge repeats, drop blanks). Fast, naturally streamable, but each frame's output is conditionally independent (weaker language modelling; add an external LM).
+- **RNN-Transducer (RNN-T)**: adds a prediction network over previous outputs; streaming-friendly with better accuracy; widely used in on-device recognition (e.g. Google's on-device speech recognition).
+- **Attention encoder–decoder** (Listen-Attend-Spell, Whisper): an encoder over audio frames, a decoder generating text tokens with cross-attention. Strong accuracy; streaming is harder (needs chunking).
+- **Conformer** encoders combine convolution (local patterns) and self-attention (long context): a common choice.
+
+**Whisper** (OpenAI, 2022): an encoder–decoder transformer trained on 680k hours of weakly supervised multilingual web audio with transcripts; special tokens select tasks (transcribe, translate to English, language ID, timestamps). Robust to accents and noise zero-shot; processes 30-second windows (long audio is chunked); hallucination on silence or noise is a known failure.
+
+## Measuring: WER
+
+$$\text{WER} = \frac{S + D + I}{N}$$
+
+substitutions, deletions and insertions (minimum edit distance at word level) over reference words $N$. Can exceed 100%. Report by accent, noise condition and domain; use **CER** (character error rate) for languages without spaces. Normalise text (casing, punctuation, numbers) consistently before scoring.
+
+## Streaming and latency
+
+- Streaming ASR emits partial hypotheses every ~100–300 ms and finalises words as context accumulates.
+- **Endpointing** (detecting when the user stopped speaking) is a major latency source: too eager cuts people off, too slow feels laggy. Voice-activity detection plus semantic end-of-turn models help.
+- On-device ASR avoids network round trips and keeps audio private.
+
+## Text-to-speech
+
+Modern pipelines: text normalisation ("Dr." → "doctor", numbers) → an acoustic model producing a mel spectrogram (Tacotron 2, FastSpeech) or discrete audio tokens → a **vocoder** turning it into a waveform (WaveNet, HiFi-GAN). Newer systems model speech as **neural codec tokens** (SoundStream, EnCodec) generated by a language model (VALL-E, AudioLM), enabling voice cloning from seconds of audio (with serious misuse risks: consent and watermarking matter). Streaming TTS starts speaking before the full sentence is generated.
+
+## Voice assistants: cascaded vs native
+
+- **Cascaded**: ASR → LLM → TTS. Modular and debuggable, but latency adds up (endpointing + ASR + LLM first token + TTS first audio), and tone of voice is lost in the text.
+- **Native speech-to-speech** models (audio in, audio out; Gemini Live, GPT-4o-style realtime models): lower latency, preserve prosody and emotion, handle interruptions ("barge-in") naturally; harder to control and evaluate.
+- Typical target: under ~500–800 ms from the user finishing to the assistant starting to speak.
+
+## Interview angles
+
+- "Design live captions for video calls." Streaming ASR (RNN-T/Conformer) per speaker, diarisation, partial results with stabilisation, punctuation model, latency target ~300–500 ms, on-device or regional servers, WER by accent and noise, custom vocabulary (names).
+- "Voice assistant latency budget." Endpointing ~200 ms, streaming ASR, LLM TTFT ~300 ms, streaming TTS first audio ~150 ms; or a native speech model.
+- "What's WER?" (S + D + I)/N at word level.
+
+--- revise
+### Audio basics
+? Log-mel spectrogram? :: Short-window frequency content mapped to ~80 mel bands, log-scaled, every 10 ms.
+? Self-supervised speech models? :: wav2vec 2.0, HuBERT: pretrain on unlabelled audio, fine-tune with few labels.
+
+### ASR
+? CTC? :: Per-frame token distributions with a blank; loss sums over alignments; streamable.
+? RNN-T advantage? :: Adds a prediction network over past outputs; streaming with better accuracy; on-device use.
+? Whisper? :: Encoder–decoder on 680k hours of weakly supervised multilingual audio; task tokens; robust; 30 s windows.
+? Conformer? :: Convolution + self-attention encoder.
+? WER? :: (Substitutions + deletions + insertions)/reference words.
+
+### Latency and TTS
+? Major voice latency source besides models? :: Endpointing (detecting the end of the user's turn).
+? TTS pipeline? :: Text normalisation → acoustic model (mel or codec tokens) → vocoder.
+? Cascaded vs native voice assistants? :: ASR→LLM→TTS (modular, slower, loses prosody) vs speech-to-speech (fast, expressive, harder to control).
+
+--- notes
+## Features
+16 kHz audio → 25 ms windows, 10 ms hop → FFT → 80 mel bands → log. 10 s ≈ 1000 × 80.
+Self-supervised: wav2vec 2.0, HuBERT.
+## ASR
+CTC (blank, alignment-free, streamable, + LM). RNN-T (prediction net, streaming, on-device). Attention enc-dec (LAS, Whisper). Conformer encoders.
+Whisper: 680k h weak supervision, multilingual, task tokens, timestamps, 30 s chunks, hallucinates on silence.
+## WER
+(S + D + I)/N, can exceed 100%. By accent/noise/domain. CER for no-space languages. Normalise text.
+## Streaming
+Partials every 100–300 ms; endpointing (VAD + semantic end-of-turn); on-device for latency/privacy.
+## TTS
+Normalise → acoustic (Tacotron 2, FastSpeech) → vocoder (WaveNet, HiFi-GAN). Codec LMs (SoundStream/EnCodec tokens; VALL-E, AudioLM). Voice cloning risk → consent, watermarking. Streaming TTS.
+## Assistants
+Cascaded ASR→LLM→TTS vs native speech-to-speech (Gemini Live-style). Target < 500–800 ms response; barge-in.
+
+--- doubts
+Q: Why do ASR models hallucinate text during silence?
+A: Encoder–decoder models trained to always produce transcripts can generate plausible text when given noise or silence, especially from weakly supervised web data (where some audio had unrelated transcripts). Voice-activity detection before ASR, confidence thresholds and timestamp checks reduce it.
+
+Q: Is WER enough to judge an ASR system?
+A: It's the standard, but it treats all words equally: getting a name, number or medical term wrong matters more than "the" vs "a". Track entity-level accuracy for important terms, latency, and WER per slice (accents, noise, devices).
+
+Q: Why do some assistants still use cascades if native speech models exist?
+A: Cascades are easier to debug, control (you can inspect and filter the text), localise and integrate with existing text tooling, and you can swap components independently. Native models win on latency and expressiveness. Many products use hybrids.
+
+--- exercises
+[estimate] A reference transcript has 50 words. The hypothesis has 3 substitutions, 2 deletions and 4 insertions. WER?
+A: $(3 + 2 + 4)/50 = 18\%$.
+
+[design] Design a call-centre analytics pipeline transcribing 100,000 hours of calls per month and extracting reasons for calling.
+A: Batch ASR (Whisper-class or a tuned Conformer) with speaker diarisation (agent vs customer), custom vocabulary for product names, PII redaction (card numbers, addresses) on transcripts and audio. Then an LLM extracts structured fields (call reason, resolution, sentiment) with a schema, aggregated into dashboards. Cost: batch processing on GPUs at off-peak; WER and extraction accuracy evaluated on a labelled sample per language; retention policies for audio.
+
+[break] A voice assistant feels slow: users wait ~2 seconds after speaking. The LLM's TTFT is 400 ms. Where else is time going?
+A: Likely endpointing waiting too long for silence (e.g. 800 ms), non-streaming ASR finishing only after the end, TTS waiting for the full LLM response before speaking, and network round trips between separate services. Fixes: semantic endpointing, streaming ASR, start TTS on the first sentence of LLM output, co-locate services, or a native speech-to-speech model.
+
+--- pitfalls
+- Ignoring endpointing in latency budgets
+- Reporting a single WER without slices
+- No voice-activity detection (hallucinated transcripts on silence)
+- Voice cloning without consent or watermarking
+- Sending sensitive audio to servers when on-device would do
+
+--- quiz
+Q: What does a log-mel spectrogram represent?
+- Raw waveform samples
+- *Frequency content over time on a perceptual scale
+- Phonemes
+- Text tokens
+W: The standard ASR input.
+
+Q: CTC is useful because?
+- It needs frame-level labels
+- *It trains without knowing which audio frames align to which characters
+- It generates audio
+- It removes noise
+W: The loss sums over all valid alignments.
+
+Q: WER counts?
+- Only substitutions
+- *Substitutions, deletions and insertions relative to the reference length
+- Characters only
+- Speaking speed
+W: (S + D + I)/N.
+
+Q: A major advantage of native speech-to-speech models over cascades?
+- Easier debugging
+- *Lower latency and preserved tone and emotion
+- Cheaper text filtering
+- Simpler evaluation
+W: No text bottleneck between components.
+
+--- sources
+- paper :: Robust Speech Recognition via Large-Scale Weak Supervision (Whisper) :: Radford et al., OpenAI (2022) :: https://arxiv.org/abs/2212.04356
+- paper :: Conformer: Convolution-augmented Transformer for Speech Recognition :: Gulati et al., Google (2020) :: https://arxiv.org/abs/2005.08100
+- paper :: Connectionist Temporal Classification :: Graves et al. (ICML 2006) :: https://www.cs.toronto.edu/~graves/icml_2006.pdf
+- paper :: AudioLM: a Language Modeling Approach to Audio Generation :: Borsos et al., Google (2022) :: https://arxiv.org/abs/2209.03143
+
+=== multimodal-llms
+blurb: How language models see, hear and read documents: connecting vision encoders to LLMs (projection and cross-attention), image tokens and resolution, training stages, natively multimodal models, video and long audio, document understanding, any-to-any generation, and evaluation.
+signals: "How does Gemini or GPT-4o understand images?" | "Design a system that answers questions about screenshots or receipts" | "Why does image resolution affect cost?" | Multimodal product designs
+widgets: vlm-tokens
+prereq: vit-clip, transformer-block
+
+--- lesson
+:::words
+- **VLM** (vision–language model): a language model that also takes images as input.
+- **Vision encoder**: the network turning an image into a sequence of vectors (often a ViT from CLIP/SigLIP).
+- **Projector / adapter**: a small layer mapping vision vectors into the LLM's token space.
+- **Image tokens**: the vectors representing an image inside the LLM's sequence.
+- **Natively multimodal**: trained on mixed text, image, audio and video from the start rather than bolting a vision encoder onto a text model.
+- **Interleaved data**: documents mixing text and images in their natural order.
+:::
+
+## The problem in plain words
+
+Users want to ask about a photo, a chart, a screenshot of an error, a receipt, a whiteboard, a video. A multimodal LLM turns images (and audio and video) into token-like vectors the language model can attend to, and answers in text (and increasingly generates images and audio too). Knowing how the pieces connect explains their costs (images take many tokens), their failure modes (small text, counting, spatial reasoning) and how to build products on them.
+
+:::eli5
+A brilliant writer who can't see is paired with a describer who turns pictures into a stream of detailed notes in the writer's own language. The writer reads the notes alongside your question and answers. Native multimodal models are like a writer who learned to see from the start.
+:::
+
+## Connecting vision to language
+
+- **Projection (LLaVA-style)**: a pretrained vision encoder produces patch embeddings; an MLP projects each into the LLM's embedding space; these **image tokens** are inserted into the text sequence. Simple and effective.
+- **Cross-attention (Flamingo-style)**: the LLM attends to image features through added cross-attention layers between its frozen layers; images don't consume sequence positions.
+- **Query resampling (BLIP-2's Q-Former, Perceiver resampler)**: a small module compresses many patch features into a fixed number of tokens (e.g. 32–64), saving context.
+- **Natively multimodal** (Gemini, GPT-4o-class): images, audio and video are tokenised and trained jointly with text from early in pretraining, which tends to give stronger cross-modal reasoning.
+
+## Image tokens and resolution
+
+A 224×224 image with 14×14 patches is 256 tokens; high-resolution inputs (documents, screenshots) need far more. Approaches: **tiling** (split a large image into crops plus a downscaled overview), **dynamic resolution** (variable patch counts by aspect ratio), and token compression. More tokens mean better detail (small text, fine charts) but higher cost and latency. Explore how resolution and tiling change the token count below:
+
+[[widget:vlm-tokens]]
+
+Video: sample frames (e.g. 1 per second) and encode each, sometimes with temporal compression; an hour of video can be hundreds of thousands of tokens, which is why long-context models matter here. Audio: encoded as audio tokens from a speech encoder (speech-models page).
+
+## Training stages (typical open recipe)
+
+1. **Pretraining alignment**: freeze vision encoder and LLM; train the projector on image–caption pairs so image tokens "make sense" to the LLM.
+2. **Multimodal pretraining** on interleaved web documents and large caption sets (unfreezing more).
+3. **Instruction tuning** on visual Q&A, charts, documents, OCR, grounding (pointing to regions), multi-image reasoning, plus safety data.
+4. **Preference tuning** (RLHF/DPO) to reduce hallucinated details.
+
+## Capabilities and where they fail
+
+- Strong: describing scenes, reading text (OCR), answering questions about charts, tables and screenshots, extracting fields from receipts and forms, UI understanding (for computer-use agents), multi-image comparison.
+- Weak or variable: precise counting, spatial relations, small or dense text at low resolution, fine-grained identification, **visual hallucination** (describing objects that aren't there), and long-video temporal reasoning.
+- Safety: images can carry **prompt injection** (text in images), and person identification raises privacy concerns.
+
+## Document understanding
+
+For PDFs, slides and scans: either parse to text (OCR + layout) and use a text LLM, or send page images directly to a VLM (which reads layout, tables, figures). Hybrid pipelines do both: text for search and citations, images for complex pages (advanced-rag page). Evaluate extraction accuracy per field.
+
+## Generation: any-to-any
+
+Multimodal models increasingly **generate** images and audio: either by calling separate diffusion/TTS models, or natively by producing discrete image/audio tokens (autoregressive image tokens, as in some recent models) decoded back to pixels/waveforms. Native generation enables editing an image by conversation and consistent characters.
+
+## Evaluation
+
+Benchmarks: MMMU (multi-discipline reasoning), DocVQA, ChartQA, TextVQA, MathVista, Video-MME; plus task-specific evaluation sets from your product (receipts, screenshots) with field-level accuracy, and hallucination checks (POPE-style "is there an X in the image?" probes).
+
+## Interview angles
+
+- "How does a VLM work?" Vision encoder → projector → image tokens in the LLM sequence (or cross-attention); staged training; native multimodality.
+- "Design receipt understanding." VLM with high-res tiling, structured output schema, validation (totals add up), fallback OCR, evaluation per field, PII handling.
+- "Why is image input expensive?" Hundreds to thousands of tokens per image depending on resolution and tiling.
+
+--- revise
+### Architecture
+? LLaVA-style connection? :: Vision encoder patch features → MLP projector → image tokens in the text sequence.
+? Flamingo-style connection? :: Cross-attention layers from the LLM to image features.
+? Q-Former / resampler? :: Compresses many patch features into a few query tokens.
+? Natively multimodal? :: Trained jointly on text, image, audio, video from early pretraining.
+
+### Tokens and training
+? Tokens for a 224² image with 14² patches? :: 256.
+? High-resolution strategies? :: Tiling with an overview, dynamic resolution, token compression.
+? Typical training stages? :: Projector alignment → multimodal pretraining → instruction tuning → preference tuning.
+
+### Behaviour
+? Common VLM failures? :: Counting, spatial relations, tiny text at low resolution, fine-grained ID, visual hallucination, long-video reasoning.
+? Image-based prompt injection? :: Instructions written as text inside images.
+? Document understanding options? :: Parse to text (OCR/layout) or page images to a VLM; often both.
+
+--- notes
+## Connect
+LLaVA: encoder → MLP projector → image tokens in sequence. Flamingo: cross-attention to image features (no positions used). BLIP-2 Q-Former / Perceiver: fixed 32–64 tokens. Native multimodal (Gemini, GPT-4o).
+## Tokens
+224², 14² patches → 256 tokens. High-res: tiles + overview, dynamic resolution, compression. Video: frames (~1 fps) + temporal compression; hour → 100k+ tokens. Audio tokens.
+## Training
+Align projector (frozen encoder/LLM) → interleaved multimodal pretraining → instruction tuning (VQA, charts, docs, OCR, grounding, multi-image, safety) → preference tuning (fewer hallucinated details).
+## Capabilities / failures
++ scenes, OCR, charts, tables, screenshots, forms, UI, multi-image. − counting, spatial, tiny text, fine-grained, visual hallucination, long video. Image injection; person ID privacy.
+## Docs
+OCR/layout text vs page images; hybrid. Field-level evaluation.
+## Generation
+Tool calls to diffusion/TTS or native image/audio tokens → conversational editing.
+## Eval
+MMMU, DocVQA, ChartQA, TextVQA, MathVista, Video-MME; product sets; POPE hallucination probes.
+
+--- doubts
+Q: Why not just run OCR and give the text to a normal LLM?
+A: For plain text documents that works well and is cheap. But layout, tables, charts, handwriting, diagrams and the relationships between them are lost or garbled in OCR text; a VLM reading the page image keeps that structure. Many systems use OCR text for search and the image for answering.
+
+Q: How do multimodal models hallucinate visually?
+A: They generate details that are statistically likely ("a fork next to the plate") rather than present, especially in small or ambiguous regions. Preference tuning against such errors, higher resolution, and asking the model to ground answers in regions (bounding boxes) reduce it.
+
+Q: Are image tokens the same as text tokens?
+A: They occupy positions in the same sequence and the transformer processes them the same way, but they're continuous vectors from the vision encoder (or discrete codes in some native models), not vocabulary entries. They count toward context length and cost.
+
+--- exercises
+[estimate] A VLM tiles a 2048×1536 screenshot into 448×448 tiles (plus one overview tile), each producing 256 tokens. How many image tokens? At USD 1 per million input tokens, the cost of 1 million screenshots?
+A: Tiles: ⌈2048/448⌉ × ⌈1536/448⌉ = 5 × 4 = 20, plus overview = 21 tiles × 256 = 5,376 tokens. 1M screenshots ≈ 5.4B tokens ≈ USD 5,400 (plus text tokens). Downscaling or cropping to the relevant region cuts this.
+
+[design] Design an expense-receipt extraction feature for a mobile app.
+A: On-device capture with auto-crop and deskew; send the image (high-res tiles) to a VLM with a structured-output schema (merchant, date, currency, total, tax, line items); validate (line items + tax ≈ total, date plausible, currency matches symbols); low-confidence or failed validation → ask the user to confirm fields. PII: card numbers redacted; retention limited. Evaluate per-field accuracy on 1,000 labelled receipts across languages and receipt styles; compare with OCR + LLM baseline for cost.
+
+[break] A screenshot-reading agent follows instructions written in a phishing page it was asked to summarise. What's the risk and the mitigation?
+A: Image-based prompt injection: text inside the image is treated as instructions. Treat all image content as untrusted data, restrict the agent's capabilities after viewing untrusted content (no sending or purchasing without approval), and include image-injection cases in safety evaluation.
+
+--- pitfalls
+- Feeding low-resolution images for text-heavy tasks
+- Ignoring the token cost of images and video
+- Trusting counts and fine details without verification
+- Treating text in images as trusted instructions
+- Evaluating only on public benchmarks instead of product data
+
+--- quiz
+Q: In a LLaVA-style VLM, image features reach the LLM through?
+- Cross-attention only
+- *A projector that maps patch features to token embeddings inserted into the sequence
+- OCR text
+- The tokenizer
+W: Image tokens sit alongside text tokens.
+
+Q: Why does higher image resolution cost more?
+- Bigger vocabulary
+- *More patches, so more image tokens in the context
+- Slower tokenizer
+- More training needed
+W: Tokens scale with the number of patches or tiles.
+
+Q: A common VLM weakness?
+- Describing scenes
+- Reading large printed text
+- *Counting many small objects precisely
+- Answering simple questions
+W: Counting and spatial relations are hard.
+
+Q: Natively multimodal models differ because?
+- They have no vision encoder
+- *They're trained jointly on multiple modalities from early in pretraining
+- They only output images
+- They can't read text
+W: Rather than attaching vision to a finished text model.
+
+--- sources
+- paper :: Visual Instruction Tuning (LLaVA) :: Liu et al. (2023) :: https://arxiv.org/abs/2304.08485
+- paper :: Flamingo: a Visual Language Model for Few-Shot Learning :: Alayrac et al., DeepMind (2022) :: https://arxiv.org/abs/2204.14198
+- paper :: BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and LLMs :: Li et al. (2023) :: https://arxiv.org/abs/2301.12597
+- paper :: Gemini: A Family of Highly Capable Multimodal Models :: Gemini Team, Google (2023) :: https://arxiv.org/abs/2312.11805
+
+=== gans-vaes
+blurb: The first wave of deep generative models: autoencoders, variational autoencoders with the ELBO and reparameterisation trick derived, GANs with their minimax game, mode collapse and training tricks, conditional generation, and how latent spaces and adversarial losses live on inside modern diffusion systems.
+signals: "Explain VAEs / the reparameterisation trick" | "Why are GANs hard to train?" | "What is the latent space in Stable Diffusion?" | Generative-model breadth questions
+widgets: gan-game
+prereq: probability-ml, backpropagation
+
+--- lesson
+:::words
+- **Generative model**: a model that can produce new samples (images, audio) resembling its training data.
+- **Autoencoder**: an encoder that compresses input to a small code and a decoder that reconstructs it.
+- **Latent space**: the space of those compact codes.
+- **VAE** (variational autoencoder): an autoencoder whose codes follow a probability distribution, so you can sample new codes and decode them.
+- **ELBO**: evidence lower bound, the objective VAEs maximise.
+- **GAN** (generative adversarial network): a generator and a discriminator trained against each other.
+- **Mode collapse**: a GAN producing only a few kinds of outputs.
+:::
+
+## The problem in plain words
+
+Classifiers map images to labels; generative models do the reverse: produce new, realistic images (or sounds, molecules). Before diffusion models took over, two families led: **VAEs**, which learn a smooth space of codes you can sample from, and **GANs**, which learn by fooling a critic. Both still matter: Stable Diffusion runs in a VAE's latent space, and adversarial losses sharpen many decoders. They're also classic interview material for probability and optimisation understanding.
+
+:::eli5
+A VAE is like learning to describe any face with a few sliders (age, smile, hair) and a painter who can paint from any slider setting: move the sliders and you get new faces. A GAN is a forger and an art detective in a contest: the forger keeps improving until the detective can't tell fakes from real paintings.
+:::
+
+## Autoencoders
+
+Encoder $z = f(x)$ to a low-dimensional code, decoder $\hat x = g(z)$, trained to minimise reconstruction error. Useful for compression, denoising and anomaly detection (high reconstruction error = unusual). But the latent space has gaps: random codes don't decode to realistic images, so plain autoencoders aren't good generators.
+
+## Variational autoencoders
+
+Treat the code as random. The encoder outputs a distribution $q_\phi(z \mid x) = \mathcal{N}(\mu(x), \sigma^2(x))$; the decoder models $p_\theta(x \mid z)$; the prior is $p(z) = \mathcal{N}(0, I)$. Maximising the data likelihood directly is intractable, so maximise the **ELBO**:
+
+$$\log p_\theta(x) \ge \underbrace{\mathbb{E}_{q_\phi(z \mid x)}[\log p_\theta(x \mid z)]}_{\text{reconstruction}} - \underbrace{D_{\text{KL}}(q_\phi(z \mid x)\,\|\,p(z))}_{\text{stay close to the prior}}$$
+
+- The reconstruction term makes codes informative; the KL term pulls every code distribution toward the standard normal, filling the latent space without gaps, so sampling $z \sim \mathcal{N}(0, I)$ and decoding gives plausible outputs.
+- **Reparameterisation trick**: sampling isn't differentiable, so write $z = \mu + \sigma \odot \epsilon$ with $\epsilon \sim \mathcal{N}(0, I)$; gradients flow through $\mu$ and $\sigma$.
+- For Gaussians the KL has a closed form: $\tfrac12\sum_j(\mu_j^2 + \sigma_j^2 - \log\sigma_j^2 - 1)$.
+- Weakness: samples tend to be **blurry** (the Gaussian likelihood averages over possibilities). **β-VAE** weights the KL to trade reconstruction for disentangled factors. **VQ-VAE** uses a discrete codebook (no blur from Gaussian decoding) and underlies many image and audio tokenizers.
+
+## Generative adversarial networks
+
+A generator $G$ maps noise $z$ to images; a discriminator $D$ outputs the probability an image is real. The minimax game (Goodfellow et al., 2014):
+
+$$\min_G \max_D\; \mathbb{E}_{x \sim \text{data}}[\log D(x)] + \mathbb{E}_{z}[\log(1 - D(G(z)))]$$
+
+At the optimum the generator's distribution equals the data's and $D = 0.5$ everywhere (the objective then relates to the Jensen–Shannon divergence). In practice the generator uses the **non-saturating** loss $-\log D(G(z))$ for stronger early gradients. Watch the two distributions and the discriminator evolve below, including a collapse:
+
+[[widget:gan-game]]
+
+**Why GANs are hard to train**:
+
+- **Mode collapse**: the generator finds a few outputs that fool $D$ and stops covering the data's variety.
+- **Instability / non-convergence**: two networks chasing each other can oscillate.
+- **Vanishing gradients** when $D$ wins too easily.
+- Fixes: Wasserstein GAN (earth-mover distance with a Lipschitz critic via gradient penalty), spectral normalisation, two-timescale learning rates, progressive growing, careful architecture (DCGAN, StyleGAN).
+
+GANs produced the first photorealistic faces (StyleGAN, with a mapping network and style-based modulation) and are fast at sampling (one forward pass), but they're harder to scale, less diverse and less controllable than diffusion models.
+
+## Conditional generation and where they live on
+
+- **Conditional** VAEs/GANs take a label or text as input (cGAN, pix2pix for image-to-image translation, CycleGAN for unpaired translation).
+- **Latent diffusion** (Stable Diffusion) trains a VAE to compress images 8× per side, then runs diffusion in that latent space (next page).
+- **Adversarial losses** sharpen VAE decoders, audio vocoders (HiFi-GAN), super-resolution and distilled fast diffusion samplers.
+- **VQ tokenizers** turn images and audio into discrete tokens for autoregressive multimodal models.
+
+## Interview angles
+
+- "Explain VAEs." Encoder to a Gaussian, reparameterised sample, decoder; ELBO = reconstruction − KL to the prior; why samples are blurry.
+- "Explain GANs and their problems." Minimax game, non-saturating loss, mode collapse, instability, WGAN-GP and spectral norm.
+- "VAE vs GAN vs diffusion?" Likelihood-based smooth latent (blurry) vs adversarial sharp (unstable, collapse) vs iterative denoising (high quality, diverse, slower sampling).
+
+--- revise
+### Autoencoders and VAEs
+? Why plain autoencoders aren't good generators? :: Their latent space has gaps; random codes don't decode to realistic samples.
+? VAE objective? :: ELBO = E_q[log p(x|z)] − KL(q(z|x) ‖ p(z)).
+? Role of the KL term? :: Pulls code distributions toward N(0, I), filling the latent space for sampling.
+? Reparameterisation trick? :: z = μ + σ ⊙ ε, ε ~ N(0, I), so gradients flow through μ and σ.
+? Why are VAE samples blurry? :: Gaussian likelihood averages over plausible outputs.
+? VQ-VAE? :: Discrete codebook latents; basis of image/audio tokenizers.
+
+### GANs
+? GAN objective? :: min_G max_D E[log D(x)] + E[log(1 − D(G(z)))].
+? Non-saturating generator loss? :: −log D(G(z)): stronger gradients early.
+? Mode collapse? :: Generator produces only a few kinds of outputs.
+? Stabilisation methods? :: WGAN-GP, spectral normalisation, two-timescale LRs, progressive growing.
+
+### Legacy
+? Where do VAEs live on? :: Latent space of latent diffusion; VQ tokenizers.
+? Where do adversarial losses live on? :: Vocoders (HiFi-GAN), super-resolution, sharper decoders, fast distilled samplers.
+
+--- notes
+## Autoencoder
+z = f(x), x̂ = g(z), reconstruction loss. Compression, denoising, anomaly detection. Gappy latent space.
+## VAE
+q(z|x) = N(μ, σ²); prior N(0, I). ELBO = E[log p(x|z)] − KL(q ‖ p).
+Reparameterise z = μ + σε. KL = ½Σ(μ² + σ² − log σ² − 1).
+Blurry samples. β-VAE (disentangling). VQ-VAE (discrete codebook).
+## GAN
+min_G max_D E log D(x) + E log(1 − D(G(z))). Optimum p_G = p_data, D = ½ (JS divergence). Non-saturating −log D(G(z)).
+Problems: mode collapse, oscillation, vanishing gradients. Fixes: WGAN-GP, spectral norm, TTUR, progressive growing, DCGAN/StyleGAN.
+One-pass sampling; hard to scale; less diverse.
+## Conditional & legacy
+cGAN, pix2pix, CycleGAN. Latent diffusion uses VAE latents (8× per side). Adversarial losses in vocoders, SR, distilled samplers. VQ tokens for AR multimodal.
+
+--- doubts
+Q: Why is it called a "lower bound"?
+A: The true log-likelihood $\log p(x)$ equals the ELBO plus $D_{\text{KL}}(q(z \mid x) \,\|\, p(z \mid x))$, the gap between the encoder's approximation and the true posterior. KL is never negative, so the ELBO is always below the true log-likelihood; maximising it raises the likelihood and tightens the approximation.
+
+Q: Why did diffusion models replace GANs for image generation?
+A: Diffusion training is a stable regression objective (predict the noise), covers the data distribution well (no mode collapse), scales with compute and data, and is easy to condition on text with guidance. GANs sample faster but are harder to train and scale; much of their speed advantage has been matched by distilled diffusion samplers.
+
+Q: Are GANs still used?
+A: Yes, in places where one-step generation and sharpness matter: audio vocoders, super-resolution, real-time image effects, and as adversarial losses inside other generative pipelines.
+
+--- exercises
+[estimate] A VAE encoder outputs μ = [0.5, −1.0] and log σ² = [0, −0.5] for one input. Compute the KL term to N(0, I).
+A: σ² = [1, 0.607]. KL = ½[(0.25 + 1 − 0 − 1) + (1 + 0.607 + 0.5 − 1)] = ½[0.25 + 1.107] ≈ 0.68 nats.
+
+[design] Use an autoencoder for anomaly detection on factory sensor readings. Outline training and thresholding.
+A: Train on readings from normal operation only (time-windowed vectors); the autoencoder learns to reconstruct normal patterns. At inference, compute reconstruction error per window; set a threshold from validation normal data (e.g. 99.5th percentile) and tune against labelled incidents for the precision/recall the operators need. Retrain as normal behaviour drifts; inspect which sensors contribute most to the error for explanations.
+
+[break] A GAN trained on handwritten digits produces only convincing 1s and 7s after a while. What's happening and what would you try?
+A: Mode collapse: the generator found a few outputs that fool the discriminator. Try a Wasserstein loss with gradient penalty or spectral normalisation, minibatch discrimination/feature statistics to detect lack of variety, a conditional GAN (label input) to force coverage, adjusted learning rates (two-timescale), or switch to a diffusion model.
+
+--- pitfalls
+- Sampling from a plain autoencoder's latent space
+- Forgetting the reparameterisation trick (no gradient through sampling)
+- Saturating GAN generator loss early in training
+- Ignoring mode collapse because individual samples look good
+- Treating VAE blur as a training bug rather than an objective property
+
+--- quiz
+Q: The KL term in a VAE's loss encourages?
+- Sharper images
+- *Code distributions close to the standard normal prior, making sampling work
+- Bigger latent spaces
+- Mode collapse
+W: It fills the latent space without gaps.
+
+Q: The reparameterisation trick writes z as?
+- A fixed vector
+- *μ + σ ⊙ ε with ε from a standard normal
+- The decoder output
+- A discrete code
+W: Randomness moves into ε so gradients flow through μ, σ.
+
+Q: Mode collapse in GANs means?
+- The discriminator always wins
+- *The generator covers only a few modes of the data
+- Training is too slow
+- Images are blurry
+W: Variety is lost.
+
+Q: Stable Diffusion uses a VAE to?
+- Generate final images directly
+- *Compress images into a smaller latent space where diffusion runs
+- Classify images
+- Tokenise text
+W: Latent diffusion is much cheaper than pixel diffusion.
+
+--- sources
+- paper :: Auto-Encoding Variational Bayes :: Kingma, Welling (2013) :: https://arxiv.org/abs/1312.6114
+- paper :: Generative Adversarial Networks :: Goodfellow et al. (2014) :: https://arxiv.org/abs/1406.2661
+- paper :: Improved Training of Wasserstein GANs (WGAN-GP) :: Gulrajani et al. (2017) :: https://arxiv.org/abs/1704.00028
+- paper :: A Style-Based Generator Architecture for GANs (StyleGAN) :: Karras et al., NVIDIA (2018) :: https://arxiv.org/abs/1812.04948
+- paper :: Neural Discrete Representation Learning (VQ-VAE) :: van den Oord et al., DeepMind (2017) :: https://arxiv.org/abs/1711.00937
+
+=== diffusion-models
+blurb: How diffusion models generate images: the forward noising process, learning to predict noise (DDPM) and the simple loss, sampling and faster samplers (DDIM, distillation), classifier-free guidance, latent diffusion and text conditioning, diffusion transformers and flow matching, and video generation.
+signals: "Explain how Stable Diffusion / Imagen works" | "What is classifier-free guidance?" | "Why is diffusion sampling slow and how is it sped up?" | Text-to-image service designs
+widgets: diffusion
+prereq: gans-vaes, vit-clip
+
+--- lesson
+:::words
+- **Diffusion model**: a generative model that learns to turn pure noise into data by removing noise step by step.
+- **Forward process**: gradually adding Gaussian noise to an image until it's pure noise.
+- **Reverse process / denoising**: the learned process removing noise, one step at a time.
+- **Noise schedule**: how much noise is added at each step $t$.
+- **Classifier-free guidance (CFG)**: steering generation toward the text prompt by combining conditional and unconditional predictions.
+- **Latent diffusion**: running diffusion in a compressed latent space (from a VAE) instead of on pixels.
+- **Flow matching**: a related training method learning a direct path (velocity field) from noise to data.
+:::
+
+## The problem in plain words
+
+Diffusion models power modern image, video and audio generation (Imagen, Stable Diffusion, DALL·E 2/3, Veo, Sora-like video models). The idea is surprisingly simple: take real images, destroy them with noise in many small steps, and train a network to undo one small step at a time. To generate, start from random noise and apply the network repeatedly. Text conditioning and guidance steer the result toward the prompt.
+
+:::eli5
+Watch a sandcastle being slowly blown into a flat pile of sand, frame by frame. Now train someone to look at any frame and guess what the previous, slightly more castle-like frame looked like. Starting from a fresh pile of sand, they can rebuild a castle step by step, and a description ("a castle with two towers") tells them which castle to aim for.
+:::
+
+## The forward process
+
+With a schedule $\beta_1, \dots, \beta_T$ (e.g. $T = 1000$), each step adds a little Gaussian noise:
+
+$$q(x_t \mid x_{t-1}) = \mathcal{N}\big(\sqrt{1 - \beta_t}\,x_{t-1},\ \beta_t I\big)$$
+
+Thanks to Gaussian properties, you can jump straight to any step: with $\bar\alpha_t = \prod_{s \le t}(1 - \beta_s)$,
+
+$$x_t = \sqrt{\bar\alpha_t}\,x_0 + \sqrt{1 - \bar\alpha_t}\,\epsilon, \qquad \epsilon \sim \mathcal{N}(0, I)$$
+
+At $t = T$, $\bar\alpha_T \approx 0$: pure noise.
+
+## Training: predict the noise
+
+DDPM (Ho et al., 2020): a network $\epsilon_\theta(x_t, t)$ (a U-Net, or a transformer) learns to predict the noise that was added:
+
+$$L = \mathbb{E}_{x_0,\,t,\,\epsilon}\big\|\epsilon - \epsilon_\theta(\sqrt{\bar\alpha_t}\,x_0 + \sqrt{1 - \bar\alpha_t}\,\epsilon,\ t)\big\|^2$$
+
+A simple regression loss: pick a random image, a random step, add noise, predict it. It's stable (no adversary) and derived from a variational bound like the VAE's. Equivalent views: predicting the noise ≈ estimating the **score** $\nabla_x \log p(x_t)$ (the direction toward higher data density), linking diffusion to score-based models and stochastic differential equations.
+
+## Sampling
+
+Start from $x_T \sim \mathcal{N}(0, I)$ and repeatedly remove predicted noise:
+
+$$x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\Big(x_t - \frac{\beta_t}{\sqrt{1 - \bar\alpha_t}}\,\epsilon_\theta(x_t, t)\Big) + \sigma_t z$$
+
+Run the denoising process below and see structure emerge from noise:
+
+[[widget:diffusion]]
+
+Original DDPM sampling needs ~1,000 network evaluations: slow. Speed-ups:
+
+- **DDIM**: a deterministic sampler that skips steps (20–50 steps).
+- Better ODE solvers (DPM-Solver): ~10–25 steps.
+- **Distillation**: progressive distillation, consistency models, adversarial diffusion distillation: 1–4 steps for real-time generation.
+
+## Conditioning and classifier-free guidance
+
+Text-to-image models condition the denoiser on a text embedding (from a CLIP or T5 text encoder) via cross-attention. **Classifier-free guidance** (Ho and Salimans): train with the text randomly dropped (so the same model learns conditional and unconditional predictions), then at sampling extrapolate:
+
+$$\tilde\epsilon = \epsilon_\theta(x_t, \varnothing) + w\,\big(\epsilon_\theta(x_t, c) - \epsilon_\theta(x_t, \varnothing)\big)$$
+
+with guidance scale $w$ (e.g. 5–10). Higher $w$ follows the prompt more closely and gives more saturated, less diverse images; it costs two network evaluations per step. Negative prompts replace $\varnothing$ with an undesired description.
+
+## Latent diffusion and architectures
+
+- **Latent diffusion** (Stable Diffusion): a VAE compresses a 512×512×3 image to a 64×64×4 latent (48× fewer values); diffusion runs on latents; the VAE decoder maps back to pixels. Much cheaper training and sampling.
+- **Pixel-space cascades** (Imagen): a base model at 64×64 plus super-resolution diffusion models to 1024×1024, with a large frozen T5 text encoder (Imagen found scaling the text encoder mattered greatly).
+- **Diffusion Transformers (DiT)**: replace the U-Net with a transformer over latent patches; scales better (used in recent image and video models).
+- **Flow matching / rectified flow**: learn a velocity field transporting noise to data along straight paths; simpler and faster sampling; used in Stable Diffusion 3 and other recent models.
+
+## Beyond images
+
+- **Video**: add a time dimension (spatio-temporal patches, temporal attention); consistency over time is the challenge; enormous compute.
+- **Audio** and music; **3D**; molecules and proteins.
+- **Editing**: inpainting, image-to-image (start from a noised version of an input), ControlNet (conditioning on edges, depth, poses), personalisation (DreamBooth, LoRA).
+
+## Safety and product concerns
+
+Training-data provenance and copyright, generating real people's likenesses, harmful content, watermarking and provenance metadata (SynthID, C2PA), and prompt/output filters. A text-to-image service needs all of these, plus cost control (GPU-seconds per image).
+
+## Interview angles
+
+- "Explain diffusion." Forward noising with a closed form; train to predict noise with MSE; sample by iterative denoising; faster samplers.
+- "What's classifier-free guidance?" Combine conditional and unconditional noise predictions with a guidance scale; trade fidelity to prompt vs diversity.
+- "Why latent diffusion?" Diffusion in a compressed VAE latent: far cheaper with little quality loss.
+
+--- revise
+### Forward and training
+? Forward process closed form? :: x_t = √ᾱ_t x₀ + √(1 − ᾱ_t) ε.
+? DDPM training loss? :: MSE between true noise ε and predicted ε_θ(x_t, t).
+? Why is diffusion training stable? :: It's a simple regression objective, no adversary.
+? Noise prediction relates to? :: The score ∇ log p(x_t).
+
+### Sampling
+? Why is naive sampling slow? :: ~1,000 sequential network evaluations.
+? Faster samplers? :: DDIM (20–50 steps), DPM-Solver (~10–25), distillation/consistency models (1–4).
+
+### Conditioning
+? Classifier-free guidance? :: ε̃ = ε(x, ∅) + w(ε(x, c) − ε(x, ∅)).
+? Effect of higher guidance scale? :: Follows prompt more, less diversity, more saturation.
+? How is text injected? :: Cross-attention to text-encoder embeddings (CLIP/T5).
+
+### Architectures
+? Latent diffusion? :: Diffusion in a VAE latent (e.g. 64×64×4 for 512² images).
+? Imagen's lesson? :: Scaling the frozen text encoder matters a lot.
+? DiT? :: Transformer denoiser over latent patches; scales well.
+? Flow matching? :: Learn a velocity field along straight noise→data paths; fewer steps.
+
+--- notes
+## Forward
+q(x_t|x_{t−1}) = N(√(1−β_t)x_{t−1}, β_t I). ᾱ_t = Π(1−β_s). x_t = √ᾱ_t x₀ + √(1−ᾱ_t) ε. T ≈ 1000.
+## Training (DDPM 2020)
+L = E‖ε − ε_θ(x_t, t)‖². U-Net or transformer. Variational bound; score-matching view.
+## Sampling
+x_{t−1} = (x_t − β_t/√(1−ᾱ_t) ε_θ)/√α_t + σ_t z. 1000 steps → DDIM 20–50, DPM-Solver 10–25, distillation/consistency 1–4.
+## Guidance
+Cross-attention to text embeddings. CFG: ε̃ = ε_∅ + w(ε_c − ε_∅), w 5–10; 2× evals; negative prompts.
+## Architectures
+Latent diffusion (VAE 8×/side, 64×64×4). Imagen cascade + big T5. DiT. Flow matching / rectified flow (SD3).
+## Beyond
+Video (spatio-temporal), audio, 3D, molecules. Inpainting, img2img, ControlNet, DreamBooth/LoRA.
+## Safety
+Provenance/copyright, likeness, harmful content, watermarking (SynthID, C2PA), filters, GPU cost.
+
+--- doubts
+Q: Why predict the noise rather than the clean image?
+A: Both are equivalent in principle (one determines the other given $x_t$), but predicting noise gives a well-scaled target at all noise levels and worked better empirically in DDPM. Other parameterisations (predicting $x_0$ or a "velocity" mix) are used too, especially for fewer-step sampling.
+
+Q: Where does the randomness in a generated image come from?
+A: The starting noise $x_T$ (and, for stochastic samplers, noise added each step). Fixing the seed fixes the starting noise, so the same prompt and seed reproduce the same image.
+
+Q: Why does guidance make images over-saturated at high scales?
+A: Extrapolating far beyond the conditional prediction pushes samples toward extreme, high-contrast regions that strongly match the text. Moderate scales balance prompt adherence and natural appearance; techniques like guidance rescaling reduce the artefacts.
+
+--- exercises
+[estimate] A latent diffusion model uses 30 sampling steps with classifier-free guidance; each network evaluation takes 25 ms on a GPU at batch size 1. Time per image, ignoring the VAE decode? With a 4-step distilled model without CFG?
+A: 30 steps × 2 evaluations × 25 ms = 1.5 s. Distilled: 4 × 25 ms = 0.1 s, 15× faster, enabling interactive generation.
+
+[design] Design a text-to-image generation service for 10 million images per day.
+A: Request API with prompt safety filters → queue → GPU workers running a latent diffusion transformer with a distilled 4–8-step sampler, batching requests; CFG where quality needs it; VAE decode; output safety classifiers; watermarking (SynthID-style) and C2PA metadata; storage and CDN. Capacity: at ~0.2 s per image per GPU with batching, ~115 images/s average needs ~25 GPUs, plus peak headroom (3×) ≈ 75. Monitor latency, rejection rates, cost per image; evaluate with human preference ratings and prompt-adherence metrics.
+
+[break] Images from a fine-tuned model all look the same regardless of the seed. What might be wrong?
+A: Overfitting during fine-tuning (e.g. DreamBooth trained too long on few images) collapses diversity; very high guidance scale also reduces diversity; or the sampler was made fully deterministic with a fixed starting noise. Lower training steps/learning rate, use prior-preservation regularisation, reduce guidance, and verify the seed actually changes the initial noise.
+
+--- pitfalls
+- 1,000-step sampling in production
+- Extremely high guidance scales
+- Pixel-space diffusion at high resolution when latents would do
+- No safety filtering or provenance marking
+- Over-fine-tuning on a handful of images
+
+--- quiz
+Q: What does a DDPM network learn to predict during training?
+- The class label
+- *The noise added to the image at step t
+- The next pixel
+- The text prompt
+W: A simple MSE regression.
+
+Q: Classifier-free guidance combines?
+- Two different models
+- *Conditional and unconditional noise predictions from the same model
+- A classifier and a GAN
+- Two images
+W: ε_∅ + w(ε_c − ε_∅).
+
+Q: Why run diffusion in a VAE latent space?
+- Higher resolution
+- *Far fewer values to denoise, so much cheaper training and sampling
+- Better text understanding
+- No need for noise
+W: 512×512×3 → 64×64×4.
+
+Q: Which reduces diffusion sampling steps the most?
+- Higher guidance
+- *Distillation / consistency models
+- Bigger batches
+- More noise
+W: They generate in 1–4 steps.
+
+--- sources
+- paper :: Denoising Diffusion Probabilistic Models :: Ho, Jain, Abbeel (2020) :: https://arxiv.org/abs/2006.11239
+- paper :: High-Resolution Image Synthesis with Latent Diffusion Models :: Rombach et al. (2021) :: https://arxiv.org/abs/2112.10752
+- paper :: Classifier-Free Diffusion Guidance :: Ho, Salimans, Google (2022) :: https://arxiv.org/abs/2207.12598
+- paper :: Photorealistic Text-to-Image Diffusion Models with Deep Language Understanding (Imagen) :: Saharia et al., Google (2022) :: https://arxiv.org/abs/2205.11487
+- paper :: Scalable Diffusion Models with Transformers (DiT) :: Peebles, Xie (2022) :: https://arxiv.org/abs/2212.09748

@@ -1,39 +1,19 @@
 GaUI0MqNx-Q	Predicting Seed Variance, Warmup & LR Decay | Stanford CS312 Quiz Review with Suhas Kotha
-y2cwbmOy12U	Better Data for AI Agents: Data Selection & Quality | Stanford CS329Z Lecture 11 with John Yang
-HbgZFwWj4vY	What Data Do AI Agents Need? | Stanford CS329Z Lecture 10 with John Yang
-tc5AVfyWkVs	Hyperparameter Tuning, Scaling Laws & Debugging | Stanford CS312 Lecture 2 with Tatsunori Hashimoto
-mS2z8yctNkA	Are You Psychic? What a P-Value Can't Predict | Kristin Sainani & Regina Nuzzo
 JLcCYvUawsM	Deep Learning by Prediction: Intro | Stanford CS312 Lecture 1 with Tatsunori Hashimoto & Suhas Kotha
 e1VYwgm9-_s	Stanford CS547 HCI Seminar | Autumn 2026 | What can CSCW Teach us About How to Work with Agents?
-uoSynlTDyMs	Stanford CME295 Transformers & LLMs | Autumn 2026 | Lecture 7 - LLM Evaluation
 GPk0nNuc8S0	Stanford CS547 HCI Seminar | Autumn 2026 | One Developer, Two Decades, and 30 Million Users Later
 Nr-c57iGbCs	Stanford Online Graduate Information Session: Certificates, Individual Courses & Master’s Degrees
 l07K2cdLofM	AI Costs: Tokens, Energy, Model Choice & API Keys | Stanford CS193T Lecture 7 with Cynthia Bailey
-7GW-9ug2nvw	Terminal-Bench: Evaluating AI Agents | Stanford CS329Z Guest Lecture with Alex Shaw & Ryan Marten
 1S5nJp-qRs8	Post-Training Techniques: On-Policy Distillation | Afshine & Shervine Amidi
 TP4UixmOe-I	Why Do We Need Statisticians in the Age of AI? | Kristin Sainani & Regina Nuzzo
-e_m99aR7_3Q	Optimizing AI Agents: Prompts vs. Weights (GEPA, GRPO) | Stanford CS329Z Lecture 9 with Michael Ryan
 0Uk4uLjuEeY	Vibe Coding, AI Risk & AI Evaluation | Stanford CS193T Lecture 6 with Cynthia Bailey
-ho00IesajkY	How AI Agents Work: Connectors, MCP & Agent Safety | Stanford CS193T Lecture 5 with Cynthia Bailey
-TlX_ft_PQIM	Multi-Agent Systems: When More Agents Help or Hurt | Stanford CS329Z Lecture 8 with Michael Ryan
-qh5tP6PBZ6U	How AI Agent Memory Works: MemGPT & Memory Types | Stanford CS329Z Lecture 7 with Michael Ryan
-JC_pLC5EX_w	AI Agent Design Patterns: ReAct, CodeAct & More | Stanford CS329Z Lecture 6 with Michael Ryan
-nU2a2lm6vDE	Stanford CME295 Transformers & LLMs | Autumn 2026 | Lecture 6 - AI Agents
-q0Q-Hy8TTps	DSPy vs. LangGraph: AI Agent Frameworks Explained | Stanford CS329Z Lecture 5 with Michael Ryan
 3vpnwkePGVQ	Why AI Decisions Are Geopolitical Decisions | Francis Fukuyama & Andy Grotto, Stanford
 OT2vep4lYJs	300+ Million Health Questions a Week: Inside OpenAI's Plan for Healthcare
-s0S38lz6O7M	How AI Agents Use Tools: Function Calling & MCP | Stanford CS329Z Lecture 4 with Diyi Yang
 PeRJkvzIEts	Using AI in Research | Stanford CS193T Guest Panel with Mark Algee-Hewitt, Megan Ma & Markus Covert
-psLc-46GqY0	RAG Explained: From BM25 to Agentic RAG | Stanford CS329Z Lecture 3 with Diyi Yang
-8Ok6ZYILp2Q	AI Memory, RAG & Prompt Injection Explained | Stanford CS193T Lecture 3 with Cynthia Bailey
-Vr1NzH8bT44	LLMs for Agent Builders: Context Engineering | Stanford CS329Z Lecture 2 with Michael Ryan
 Qhf1mp74tbk	How to Prompt AI Well: Trust, Evidence & Context Rot | Stanford CS193T Lecture 2 with Cynthia Bailey
-DGI4vucR71w	What Are AI Agents? Agentic Systems Explained | Stanford CS329Z Lecture 1 with Diyi Yang
-I7zvCSGMkoc	How AI Chatbots Work: LLMs, Tokens & Hallucination | Stanford CS193T Lecture 1 with Cynthia Bailey
 0rsms-e5_8s	Stanford AA274A Principles of Robotic Autonomy | Autumn 2019 | Extra Session - Particle Filter SLAM
 25KIyaeI_Fg	Stanford CME295 Transformers & LLMs | Autumn 2026 | Lecture 5 -  LLM Systems
 8vLx1MFVK_4	Stanford AA274A Principles of Robotic Autonomy | Autumn 2019 | Decision Making Under Uncertainty
-GyjB3GYxEj0	Stanford EE292R AI and Data for Science | Autumn 2026 | Multimodal Modeling for Precision Medicine
 l5kwVWOe0OM	Stanford AA274A Principles of Robotic Autonomy | Autumn 2019 | State Machines
 9kKEACFMQEM	Stanford AA274A Principles of Robotic Autonomy | Autumn 2019 | Modern Computer Vision
 6Jo6qO3yFcg	Dan Boneh: Impact of Quantum Computing on Security
@@ -73,7 +53,6 @@ pUF0o57YdL8	AI in Healthcare Series: Have We Already Bent the Healthcare Cost Cu
 HTlf3KNNez0	Andrew Ng: One Skill to Stay Relevant in the Age of AI
 br-guoJ58gA	Stanford Webinar - A Conversation on the Future of Translational Medicine
 k2oGY54IN58	Post-Training Techniques: How LLMs Learn to Follow Instructions
-VJoRSrNHeVk	Agentic AI Program Overview
 KsFSfBeA7tY	Course Overview: Next-Generation Battery Storage
 sFWEZ4B-uWU	Course Overview - Business Opportunities and Applications of Generative AI
 ZlLV9ZHauAM	AI in Healthcare Series: When AI Stops Being a Project
@@ -96,31 +75,15 @@ R4_fHzTo0IM	Stanford AA203 Optimal and Learning-Based Control | Spring 2026 | Le
 duZJ2_ajLso	Stanford AA203 Optimal and Learning-Based Control | Spring 2026 | Lecture 3: Calculus of Variations
 FbkNYklySak	Stanford AA203 Optimal and Learning-Based Control | Spring 2026 | Lecture 2: Optimization Theory
 Au2stLALZew	Stanford AA203 Optimal and Learning-Based Control | Spring 2026 | Lecture 1: Course Overview
-Lxh9RF5S-K0	Stanford CS329A Self-Improving AI Agents | Part 4 | Learning from Feedback with Tools/Code
-6YnLB0XbTnI	Stanford CS329A Self-Improving AI Agents | Part 1 | Course Overview
--Ggc37xLj_Y	Stanford CS329A Self-Improving AI Agents | Part 2 | Test-Time Compute Scaling
-p7TdPUcPoik	Stanford CS329A Self-Improving AI Agents | Part 3 | Robust Verification
-yVnmHSAy3ck	Stanford CS329A Self-Improving AI Agents | Part 6 | Train Time Scaling/Scaling RL
-Uni9dqyuuDM	Stanford CS329A Self-Improving AI Agents | Part 7 | Self-Improvement and Deep Research Agents
-Ml_fp9XkB8Y	Stanford CS329A Self-Improving AI Agents | Part 5 | Planning and Multi-Step Reasoning
-AyO6wyu4DEg	Stanford CS329A Self-Improving AI Agents | Part 9 | Future Research Areas
-8JAqLnTaZu4	Stanford CS329A Self-Improving AI Agents | Part 8 | Agentic Evaluations and Long Horizon Tasks
 vVeCXAFt5f4	Stanford CS547 HCI Seminar | Spring 2026 | Show It or Tell It? Text, Visualization, and Combination
-J7CossjMvEg	Stanford CS229 Machine Learning | Spring 2026 | Lecture 20: GMM (EM), PCA
-xveNBYVTrqw	Stanford CS229 Machine Learning | Spring 2026 | Lecture 18: GMM (EM), PCA
 hHC-SF3utxg	Stanford CS229 Machine Learning | Spring 2026 | Lecture 16: Basic Concept in RL, Policy Gradient
 pwQ0l4hFCVI	Stanford CS229 Machine Learning | Spring 2026 | Lecture 14: Transformers, In-Context Learning
 lNTajqxxOn4	Stanford CS229 Machine Learning | Spring 2026 | Lecture 13: LLMs, Next-Word Prediction Loss
 _kREM2UAiJ8	Stanford CS229 Machine Learning | Spring 2026 | Lecture 12: Representation Learning
-dqUMCzWjZSI	Stanford CS229 Machine Learning | Spring 2026 | Lecture 11: Diffusion Models
-sUS-eTa0l6s	Stanford CS229 Machine Learning | Spring 2026 | Lecture 10: GMM (EM), PCA
-bSmIGBCoffA	Stanford CS229 Machine Learning | Spring 2026 | Lecture 9: K-Means and GMM (non-EM)
-ne2ngVAoMG8	Stanford CS229 Machine Learning | Spring 2026 | Lecture 8: Neural Networks 2 (Backprop)
 fRM41w9jzQo	Stanford CS229 Machine Learning | Spring 2026 | Lecture 7: Neural Networks 1 (Architecture)
 llnEgyyuYkQ	Stanford CS229 Machine Learning | Spring 2026 | Lecture 6: Dataset Split, ML Advice
 zRdE8A4UZes	Stanford CS229 Machine Learning | Spring 2026 | Lecture 5: Gaussian Discriminant Analysis
 8gVi4Rk21Eg	Stanford CS229 Machine Learning | Spring 2026 | Lecture 4: Exponential Family, GLMs Classification
-uJF_gL3jhxI	Stanford CS229 Machine Learning | Spring 2026 | Lecture 3: Weighted Least Squares
 cmNIMjPYdgM	Stanford CS229 Machine Learning | Spring 2026 | Lecture 2: Supervised Learning Setup
 DATnpGoGhM8	Stanford CS229 Machine Learning | Spring 2026 | Lecture 1: Introduction
 byy2DTyho88	Course Overview: AA228 Decision Making Under Uncertainty
@@ -156,7 +119,6 @@ dIFAi87Ws4E	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lectur
 2oH6PWPrYFo	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 15: Mid/Post-Training
 5sxHosTLPF8	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 14: Data
 4k53z3Ysjg0	Stanford MS&E435 Economics of the AI Supercycle | Spring 2026 | Infrastructure, Capstone Case
-jFdH7n6BAl0	Stanford CS25: Transformers United V6 I Advancing Science and Medicine with Collaborative AI Agents
 VeTqsCpcDgg	Stanford CS153 Frontier Systems | The Discipline of Delivering Value per Gigawatt
 LRGX-gTegVA	Stanford MS&E435 Economics of the AI Supercycle | Spring 2026 | Enterprise Internal Knowledge
 3W36pd50Wqw	Stanford Robotics Seminar ENGR319 | Spring 2026 | Integrated Learning and Planning
@@ -166,7 +128,6 @@ Lri2LNYtERM	Stanford CS153 Frontier Systems | The AI Native Company: How One Fou
 Q_UxyEepuQA	Stanford CS547 HCI Seminar | Spring 2026 | HCI and Human-Centered AI for Digital Health
 -qm0ln33G24	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 13: Data (Sources, Datasets)
 JpAxdTWQJxM	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 12: Evaluation
-vTfEyOyzV9E	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 11:  Scaling Laws
 IvXTl3yj-4Y	Stanford CME296 Diffusion & Large Vision Models | Spring 2026 | Lecture 6 - Model Training
 wisccQYTRQc	Stanford CS153 Frontier Systems | Scott Nolan from General Matter on Energy Bottlenecks
 r3x_w3tEmB4	Stanford Robotics Seminar ENGR319 | Spring 2026 | Unlocking Autonomous Medical Robotics
@@ -184,30 +145,23 @@ Cv7uVstoCW8	Stanford Online AI Programs Top Questions: Graduate vs Professional 
 CBaLU0dDEY8	Stanford CS153 Frontier Systems | Andreas Blattmann from Black Forest Labs on Visual Intelligence
 vfF011ko89o	Stanford CS153 Frontier Systems | Mati Staniszewski from ElevenLabs on The Future of Voice Systems
 smSp11lXLJI	Stanford's Code in Place Info Session with Mehran Sahami
-O5PfU_uDhS0	Stanford CS153 Frontier Systems | Anjney Midha from AMP PBC on Frontier Systems
-Q15rhEWZPQ4	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 9: Scaling Laws
 QZ61wToFILM	Stanford CS547 HCI Seminar | Spring 2026 | Observing the User Experience in 2026
 6-cXp-aOmdg	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 8: Parallelism
 SzpOcwdIL0Y	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 7: Parallelism
-xnDHaNUvHBg	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 6: Kernels, Triton, XLA
 WUUq6TVAu8U	Stanford CME296 Diffusion & Large Vision Models | Spring 2026 | Lecture 4 - Latent Space & Guidance
-OyimE74UMF8	Stanford CS25: Transformers United V6 I On the Tradeoffs of State Space Models and Transformers
 GBd7iuJkW08	Stanford CS25: Transformers United V6 I From Representation Learning to World Modeling
 bHSDPgZYie0	Stanford CS25: Transformers United V6 I Overview of Transformers
 b6uxaRL_ipw	Stanford Robotics Seminar ENGR319 | Spring 2026 | Mechanical Intelligence in Locomotion
 NUtaN10cVDc	Stanford Robotics Seminar ENGR319 | Spring 2026 | Robot Learning from Human Experience
 izZba4UA7iY	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 5: GPUs, TPUs
-agN3AlfGFrk	Stanford CME296 Diffusion & Large Vision Models | Spring 2026 | Lecture 3 - Flow matching
 cKSwj_qZ8Jg	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 4: Attention Alternatives
 lVynu4bo1rY	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 3: Architectures
 3OzKjFYDgPQ	Stanford Online: Celebrating 30 Years of Learner Impact
 kuYAsz7zspQ	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 2: PyTorch (einops)
-JuoVZkPBiKk	Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 1: Overview, Tokenization
 _WaR2fjZpEQ	Stanford CME296 Diffusion & Large Vision Models | Spring 2026 | Lecture 2 - Score matching
 tr-CUpw--ck	Stanford CME296 Diffusion & Large Vision Models | Spring 2026 | Lecture 1 - Diffusion
 D7e7oUbtkFM	Stanford Robotics Seminar ENGR319 | Winter 2026 | Gen Control, Action Chunking, Moravec’s Paradox
 yhfuDD3hprA	Stanford CS547 HCI Seminar | Winter 2026 | Computational Ecosystems
-_U0EUX2E3k0	Stanford AA228V I Validation of Safety Critical Systems I Explainability
 I5muBQ3UMHE	Course Overview: Systems Leadership
 dAJGc55XSo0	Course Overview - Web Security
 36jf3D85VIk	AI in Healthcare: Why Hospitals Are Moving Cautiously Toward Consolidation with Bob Wachter, MD
@@ -237,7 +191,6 @@ F-OxHWWg59o	Stanford CS547 HCI Seminar | Winter 2026 | What's Up with AI?
 popjDuA-whA	Stanford Robotics Seminar ENGR319 | Winter 2026 | 𝚿0: An Open Foundation Model
 qHUJHkcYDAI	What Are Biomechanics and Mechanobiology? Associate Professor Marc Levenston Explains
 V2GTzEx_u8s	What Is A Haptic Device? Professor Allison Okamura Explains.
-dyb_cFywuik	Lecture 15 - PCA and ICA | Stanford CS229: Machine Learning Andrew Ng - Autumn 2018
 rYPUpQj0sWs	Course Overview: Design and Control of Haptic Systems (ME327)
 vmwq4w53e9Q	Stanford AA228 Decision Making Under Uncertainty | Autumn 2025 | Offline Belief State Planning
 IydslKdqzYo	Stanford CS547 HCI Seminar | Winter 2026 | Does GenAI Work in Education?
@@ -248,7 +201,6 @@ WL08n97t3Ug	Course Overview: Mastering Difficult Conversations with AI
 LF7Wi_2fJVM	Innovation for Growth and Sustainability in the Era of AI
 o5bW3C5OD6U	Stanford Robotics Seminar ENGR319 | Winter 2026 | Autonomous Navigation and Safe Humanoids
 KGl076xkxG4	AI in Healthcare Series: You Can’t Delegate AI with Andy Slavitt
-u74gb_DCtzo	Stanford CS547 HCI Seminar | Winter 2026 | Visual and Algorithmic Interpretation for Responsible AI
 PYh9k4cy25w	Stanford Robotics Seminar ENGR319 | Winter 2026 | Resilient Autonomy
 RKFRO_G4YkA	Stanford Robotics Seminar ENGR319 | Winter 2026 | Robot Motion Learning w/Physics-Based PDE Priors
 IH-hRdNMIq0	Stanford CS547 HCI Seminar | Winter 2026 | LLM Chatbots in the Online Social World
@@ -288,7 +240,6 @@ NnJ91M9PRYo	Stanford CS193p: iOS Development with SwiftUI | 2025 | L10: Building
 o3D3rqh-IVA	Stanford CS193p: iOS Development with SwiftUI | 2025 | L9: Protocols
 OZK7_p1G8Pw	Stanford CS193p: iOS Development with SwiftUI | 2025 | L8: Animation Demonstration
 RYemrq0e7KM	Stanford CS193p: iOS Development with SwiftUI | 2025 | L7: Animation
-8fNP4N46RRo	Stanford CME295 Transformers & LLMs | Autumn 2025 | Lecture 8 - LLM Evaluation
 MoI6yxW6fuE	Stanford Robotics Seminar ENGR319 | Autumn 2025 | The Graph Physical AI Approach
 -W9hfBc28as	Top 5 Generative AI Trends: James Landay Reacts and Responds
 eKttYyTf_30	Stanford Lecture: The Internal Details of TeX82 - Session 12 (July 30, 1982)
@@ -312,7 +263,6 @@ IvOF3Bmk-94	Stanford CS193p: iOS Development with SwiftUI | 2025 | L4: CodeBreak
 5uWtpDON7Vs	Stanford Robotics Seminar ENGR319 | Autumn 2025 | Embodied Foundation Models
 CHD6DS6f21Y	Stanford Robotics Seminar ENGR319 | Autumn 2025 | General Compliant Robot Interaction
 7oIYnHKj8Z8	Generative AI at a Glance: An Overview from James Landay
-k1njvbBmfsw	Stanford CS230 | Autumn 2025 | Lecture 8: Agents, Prompts, and RAG
 h-7S6HNq0Vg	Stanford CME295 Transformers & LLMs | Autumn 2025 | Lecture 7 - Agentic LLMs
 JbX98G2sSEQ	Stanford CS547 HCI Seminar | Autumn 2025 | What Is a (Future) Designer?
 AbezbsrNMZU	Stanford Webinar - A Toolkit for Decision-Making: Navigating Complex Choices
@@ -332,7 +282,6 @@ yJkLOzuvse0	Stanford CS547 HCI Seminar | Autumn 2025 | Building Control and Trus
 FfT5VTfHj_s	Stanford AA228 Decision Making Under Uncertainty | Autumn 2025 | Bayesian Structure Learning
 VRpK2YtWZ4I	AI-Robotics Frontier
 s6JVGzABKho	Stanford CS230 | Autumn 2025 | Lecture 6: AI Project Strategy
-GX7f17XVmt8	Stanford CS547 HCI Seminar | Autumn 2025 | Reframing Responsible AI
 99wIpauDEmY	Stanford Robotics Seminar ENGR319 | Autumn 2025 | Manipulation Data Pyramid
 4E27qlfYw0A	Stanford CS230 | Autumn 2025 | Lecture 5: Deep Reinforcement Learning
 TfAJZJTPBoY	Stanford Webinar - Building Trustworthy AI: Navigating Security in the Agentic Era
@@ -353,7 +302,6 @@ DNCn1BpCAUY	Stanford CS230 | Autumn 2025 | Lecture 2: Supervised, Self-Supervise
 ivgrovYkyII	Stanford Webinar - Building Human-Centered AI: From Reward Functions to Real Products
 _NLHFoVNlbg	Stanford CS230 | Autumn 2025 | Lecture 1: Introduction to Deep Learning
 YcTytFL1Bc0	Stanford Webinar - From Pixels to Human Impact: Unlocking Real-World Value with Computer Vision
-z7RBPQL0rZ4	Stanford CS229 I Machine Learning I Building Agents That Do the Work of Human Software Engineers
 k3q3xtoT3pk	AI In Healthcare Series: Leveraging GPT-5, Cosmos, and Predictive Models for Better Outcomes
 28jGJfsn5V4	Course Overview - Cloud Security
 NSJ0R8XRNOA	Program Overview - Advanced Cybersecurity
@@ -361,20 +309,12 @@ NSJ0R8XRNOA	Program Overview - Advanced Cybersecurity
 -kdR_7dCcyI	Stanford CS329H: Machine Learning from Human Preferences | Autumn 2024 | Ethics
 VffFArrRSBE	Stanford CS329H: Machine Learning from Human Preferences | Autumn 2024 |  Human-centered Design
 zkHTbb-0Gns	Stanford CS329H: Machine Learning from Human Preferences | Autumn 2024 | Mechanism Design
-7i6WsIzZaeo	Stanford CS329H: ML from Human Preferences | Autumn 2024 | Model-based Preference Optimization
 -bych9RfQvw	Stanford CS329H: Machine Learning from Human Preferences | Autumn 2024 | Preference Models
 ApF2OenMgfc	Stanford CS329H: Machine Learning from Human Preferences | Autumn 2024 | Introduction
 IbY6TLExbpI	Stanford Webinar - Ten Game-Changing Generative AI Uses for Clinical Research
 2fq9wYslV0A	Stanford CS231N Deep Learning for Computer Vision | Spring 2025 | Lecture 1: Introduction
 pdqofxJeBN8	Stanford CS231N | Spring 2025 | Lecture 2: Image Classification with Linear Classifiers
-dyNGd06MWn4	Stanford CS231N | Spring 2025 | Lecture 3: Regularization and Optimization
-25zD5qJHYsk	Stanford CS231N | Spring 2025 | Lecture 4: Neural Networks and Backpropagation
-f3g1zGdxptI	Stanford CS231N | Spring 2025 | Lecture 5: Image Classification with CNNs
-aVJy4O5TOk8	Stanford CS231N Deep Learning for Computer Vision | Spring 2025 | Lecture 6: CNN Architectures
-kG2lAPBF7zA	Stanford CS231N | Spring 2025 | Lecture 7: Recurrent Neural Networks
 RQowiOF_FvQ	Stanford CS231N | Spring 2025 | Lecture 8: Attention and Transformers
-PTypu6GqEd4	Stanford CS231N | Spring 2025 | Lecture 9: Object Detection, Image Segmentation, Visualizing
-9MvD-XsowsE	Stanford CS231N | Spring 2025 | Lecture 11: Large Scale Distributed Training
 4howBU7THbM	Stanford CS231N | Spring 2025 | Lecture 12: Self-Supervised Learning
 zbHXQRUNlH0	Stanford CS231N Deep Learning for Computer Vision | Spring 2025 | Lecture 13: Generative Models 1
 Edr4uZFh4EE	Stanford CS231N Deep Learning for Computer Vision | Spring 2025 | Lecture 14: Generative Models 2
@@ -401,8 +341,6 @@ YGHF8_tf--g	Stanford CS25: V5 I Transformers for Video Generation, Andrew Brown 
 OUAWOiFRqTk	Course Overview: Practicing Sustainable Product Development
 46f2QTDB08Q	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 16: Alignment - RL 1
 05SuBLowwKM	Stanford Seminar - Learning to control large teams of robots
-vXtapCFctTI	Stanford CS25: V5 I Transformers in Diffusion Models for Image Generation and Beyond
-Dfu7vC9jo4w	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 15: Alignment - SFT/RLHF
 H1kZ6_6Z1EQ	Stanford Seminar - Hardware / controls co-design to overcome challenges for aerial robots
 9Cd0THLS1t0	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 14: Data 2
 8kXIaUM3h1E	Stanford CS25: V5 I Multimodal World Models for Drug Discovery,  Eshed Margalit of Noetik.ai
@@ -413,35 +351,28 @@ vRQs7qfIDaU	Stanford CS25: V5 I On the Biology of a Large Language Model, Josh B
 TN1M6vg4CsQ	Stanford Seminar - Multitask Transfer in TRI’s Large Behavior Models for Dexterous Manipulation
 x-R5l2HsXqM	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 12: Evaluation
 e2MBiNOwEcA	Stanford Seminar - Evaluating and Improving Steerability of Generalist Robot Policies
-OSYuUqGBQxw	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 11: Scaling laws 2
 1TonDx9Wh3U	AI in Healthcare Series: AI, Longevity, and the Future of Healthcare, with Dr. Eric Topol
 xDIZIedyy2Y	Stanford Webinar - Managing Team Performance
 v8vUVGXQhEQ	Stanford Seminar - A tentative mea culpa - looking back to help the next gen of CSCW researchers
 ebnX5Ur1hBk	Stanford CS25: V5 I Large Language Model Reasoning, Denny Zhou of Google Deepmind
 fcgPYo3OtV0	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 10: Inference
 P__ikPf-TI8	Program Overview: Modern Construction
-6Q-ESEmDf4Q	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 9: Scaling laws 1
 nEHNwdrbfGA	Stanford CS25: V5 I The Advent of AGI, Div Garg
 LHpr5ytssLo	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 8: Parallelism 2
 _Z0wWY4lfyE	Stanford Seminar - On human-machine interaction games
 Ofwt0l-4ips	Stanford Seminar - Interest-based & Ideological Biases in Online Content Consumption
 l1RJcDjzK8M	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 7: Parallelism 1
-E8Mju53VB00	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 6: Kernels, Triton
 6OBtO9niT00	Stanford CS336 I Language Modeling from Scratch | Spring 2025 | Lecture 5: GPUs
 zRq_3f4qrcU	Stanford Seminar - Towards Open World Robot Safety
 eLAq8yzvu8Q	Generative AI for Healthcare (Part 1): Demystifying Large Language Models
 gLwiPrwUDJ8	Stanford CS25: V5 I RL as a Co-Design of Product and Research, Karina Nguyen
 W8z2o0zV2SA	AI in Healthcare Series: Navigating Medical Innovation, Dr. Amy Abernathy, Highlander Health
-LPv1KfUXLCo	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 4: Mixture of experts
-SQ3fZ1sAqXI	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lecture 1: Overview and Tokenization
 CDMuUsSkvao	Stanford Seminar - AI Audits and Autonomy
 JKbtWimlzAE	Stanford CS25: V5 I Overview of Transformers
 ptFiH_bHnJw	Stanford CS336 Lang. Modeling from Scratch | Spring 2025 | Lec. 3: Architectures, Hyperparameters
 6CicqliQ1nA	Information Session: Artificial Intelligence Online Programs I March 2025
 msHyYioAyNE	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Lec. 2: Pytorch, Resource Accounting
-Rvppog1HZJY	Stanford CS336 Language Modeling from Scratch | Spring 2025 | Overview and Tokenization
 OU67A1tyfmc	Stanford AA228V I Validation of Safety Critical Systems I Guest Lecture: Somil Bansal, Stanford
-IKSQ7IxBLxQ	Stanford AA228V I Validation of Safety Critical Systems I Explainability
 GysI7p6y1Hs	Stanford AA228V I Validation of Safety Critical Systems I Discrete Reachability
 uDaHF-rIXb0	Stanford AA228V I Validation of Safety Critical Systems I Runtime Monitoring
 KsR5zqAS_GE	Stanford AA228V I Validation of Safety Critical Systems I Reachability for Nonlinear Systems
@@ -474,19 +405,14 @@ ux4GRZXFqvo	Stanford Webinar - Managing and Financing the Modern Entrepreneurial
 fkZFCyp-iHs	Stanford Seminar - A Billion Medical Devices - Using far from perfect ML to help patients
 z-5F-b1t1C0	Stanford Seminar - Physical Intelligence and Cognitive Biases Toward AI
 4jlirKUNxOc	Stanford Webinar - The State of Product Management with Anand Subramani
-dnF463_Ar9I	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 15 - After DPO by Nathan Lambert
 I0tj4Y7xaOQ	Stanford CS224N: NLP w/ DL | Spring 2024 | Lecture 14 - Reasoning and Agents by Shikhar Murty
 S8d-7v3f5MQ	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 16 - ConvNets and TreeRNNs
 NxH0Y78xcF4	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 18 - NLP, Linguistics, Philosophy
 tfVgHsKpRC8	Stanford CS224N: NLP w/ DL| Spring 2024 | Lecture 13 - Brain-Computer Interfaces, Chaofei Fan
 UVX7SYGCKkA	Stanford CS224N: NLP w/ DL | Spring 2024 | Lecture 12 - Efficient Training, Shikhar Murty
-TO0CqzqiArM	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 11 - Benchmarking by Yann Dubois
 35X6zlhoCy4	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 10 - Post-training by Archit Sharma
 J7ruSOIzhrE	Stanford CS224N: NLP w/ DL | Spring 2024 | Lecture 7 - Attention, Final Projects and LLM Intro
-Ba6Fn1-Jsfw	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 6 - Sequence to Sequence Models
-fyc0Jzr74y4	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 5 - Recurrent Neural Networks
 KVKvde-_MYc	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 4 - Dependency Parsing
-HnliVHU2g9U	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 3 - Backpropagation, Neural Network
 nBor4jfWetQ	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 2 - Word Vectors and Language Models
 DzpHeXVSC5I	Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 1 - Intro and Word Vectors
 2rimv2a1o3I	Information Session: Code In Place 2025
@@ -511,7 +437,6 @@ Hi8r_63LGyg	Stanford Lecture - Strong Components and Weak Components, Dr. Donald
 PWw7wDOsc4c	Stanford Seminar - Where are the Field Robots?
 NU9AtbHnKU8	Stanford Enterprise Education for Transformation: Unleash Your Organization’s Potential
 Q3McXvrfe4o	Transform Your Organization with Customized Programs | Enterprise Education from Stanford University
-PCOdmcFiT-8	Stanford Seminar - Responsible AI (h)as a Learning and Design Problem
 oaNodDadWyg	Stanford Webinar - Creating Fair, Useful, and Reliable AI in Healthcare
 uQ-5BryUNv8	Stanford Seminar - Modeling Humans for Humanoid Robots
 jeJ4x1EyIFM	Stanford Seminar - Continual Safety Assurances for Learning-Enabled Robotic Systems
@@ -537,12 +462,10 @@ GHXko5-CorQ	Stanford Seminar - The Trouble with Contact: Helping Robots Touch th
 yV3RyiRCwro	Stanford Seminar - Language models as temporary training wheels to facilitate learning
 eenJzay5aLo	Stanford CS234 Reinforcement Learning I Value Alignment I 2024 I Lecture 16
 FOlPpjNbHjE	Stanford CS234 Reinforcement Learning I Emma Brunskill & Dan Webber I 2024 I Lecture 15
-UgANzoWc0nc	Stanford CS234 Reinforcement Learning I Multi-Agent Game Playing I 2024 I Lecture 14
 pc7oayCSZmQ	Stanford CS234 Reinforcement Learning I Exploration 3 I 2024 I Lecture 13
 gFJNsfg_35E	Stanford CS234 Reinforcement Learning I Exploration 2 I 2024 I Lecture 12
 sqYii3nd78w	Stanford CS234 Reinforcement Learning I Exploration 1 I 2024 I Lecture 11
 F6APGIAm5fw	Stanford CS234 Reinforcement Learning I Offline RL 3 I 2024 I Lecture 10
-Q7rl8ovBWwQ	Stanford CS234 I Guest Lecture on DPO: Rafael Rafailov, Archit Sharma, Eric Mitchell I Lecture 9
 IEbuJtjqtMU	Stanford CS234 Reinforcement Learning I Offline RL 1 I 2024 I Lecture 8
 4ngb0IZTg8I	Stanford CS234 Reinforcement Learning I Policy Search 3 I 2024 I Lecture 7
 8PwvNQ5WS-o	Stanford CS234 Reinforcement Learning I Policy Search 2 I 2024 I Lecture 6
@@ -552,7 +475,6 @@ jjq51TRNVvk	Stanford CS234 Reinforcement Learning I Policy Evaluation I 2024 I L
 gHdsUUGcBC0	Stanford CS234 Reinforcement Learning I Tabular MDP Planning I 2024 I Lecture 2
 WsvFL-LjA6U	Stanford CS234 Reinforcement Learning I Introduction to Reinforcement Learning I 2024 I Lecture 1
 3ENnyP7iM1E	Course Overview - Human-Centered Generative AI
-4eXwAd3EXcE	Stanford Seminar - Open-world Segmentation and Tracking in 3D
 wuwpWccNn1w	Celebrating 70 years: Stanford Honors Cooperative Program
 xpFoTcgGgsk	Course Overview: Getting Buy-In for Your Ideas
 SckGKtuG5Ek	Stanford Seminar - Accounting for Human Engagement Behavior to Enhance AI-Assisted Decision Making
@@ -577,7 +499,6 @@ lrCfG2CPDEw	Stanford CS149 I Parallel Computing I 2023 I Lecture 11 - Cache Cohe
 qbKtU0X6-WU	Stanford CS149 I Parallel Computing I 2023 I Lecture 10 - Efficiently Evaluating DNNs on GPUs
 jaMWmLq422U	Stanford CS149 I 2023 I Lecture 9 - Distributed Data-Parallel Computing Using Spark
 Ba3TqxSgnTk	Stanford CS149 I Parallel Computing I 2023 I Lecture 8 - Data-Parallel Thinking
-qQTDF0CBoxE	Stanford CS149 I Parallel Computing I 2023 I Lecture 7 - GPU architecture and CUDA Programming
 Mhdny2JNhmc	Stanford CS149 I Lecture 6 - Performance Optimization II: Locality, Communication, and Contention
 zN6CmdgnxV8	Stanford ECON295/CS323 I 2024 I A World Without Work, Daniel Susskind
 mmO2Ri_dJkk	Stanford CS149 I 2023 I Lecture 5 - Performance Optimization I: Work Distribution and Scheduling
@@ -614,32 +535,23 @@ jm2hyJLFfN8	Stanford CS25: V4 I Behind the Scenes of LLM Pre-training: StarCoder
 oH82bsqPSVo	Stanford Seminar - When Design = Planning
 BySbxr3ZGCo	Demystifying Product Management: Your Questions, Expert Answers
 SgIGX6GaZe0	Stanford Seminar - Online communities as model systems for commons governance
-cYfKQ6YG9Qo	Stanford CS25: V4 I From Large Language Models to Large Multimodal Models
 OiNEBXvwKCY	Stanford Webinar - Embrace the Future: Harnessing Water for Circular Economies
 Xs6h5nNEzyA	Stanford Seminar - Wearing a VR Headset While Driving to Improve Vehicle Safety
 N0kOc30HBJY	Stanford Seminar - Learning-enabled Adaptation to Evolving Conditions for Robotics
 zL9B3eXq0gY	Stanford CS25: V4 I Transformers that Transform Well Enough to Support Near-Shallow Architectures
 rfx5G-zm9Wk	Stanford Webinar - Top Skills of a Product Manager (and How to Develop Them)
 _v0GvqkQ3q4	Stanford Seminar - Pushing the Boundaries of "Doing" Research Papers in Computing
-RcJ1YXHLv5o	Stanford CS25: V4 I Demystifying Mixtral of Experts
 V3X7oeqRjpQ	Stanford Seminar - Engineering physical principles of embryonic morphogenesis in robotic collectives
 AdLgPmcrXwQ	Stanford CS25: V4 I Aligning Open Language Models
 wBRtEQ02-HI	Stanford Seminar - The Human Factors of Formal Methods
-VsllsC2JMGY	Stanford CS236: Deep Generative Models I 2023 I Lecture 16 - Score Based Diffusion Models
 vBv7Mf1zsg8	Stanford CS236: Deep Generative Models I 2023 I Lecture 17 - Discrete Latent Variable Models
-mCaRNnEnYwA	Stanford CS236: Deep Generative Models I 2023 I Lecture 18 - Diffusion Models for Discrete Data
 MJt_ahtO-to	Stanford CS236: Deep Generative Models I 2023 I Lecture 15 - Evaluation of Generative Models
 E69Lp_T9nVg	Stanford CS236: Deep Generative Models I 2023 I Lecture 14 - Energy Based Models
 8G-OsDs1RLI	Stanford CS236: Deep Generative Models I 2023 I Lecture 13 - Score Based Models
 Nci1Bepcy0g	Stanford CS236: Deep Generative Models I 2023 I Lecture 12 - Energy Based Models
 m61KiAMCJ5Q	Stanford CS236: Deep Generative Models I 2023 I Lecture 11 - Energy Based Models
-M3Fkvu78ZXc	Stanford CS236: Deep Generative Models I 2023 I Lecture 10 - GANs
-3Zv-gokhLu8	Stanford CS236: Deep Generative Models I 2023 I Lecture 9 - GANs
 qgTvgBCOyn8	Stanford CS236: Deep Generative Models I 2023 I Lecture 8 - Normalizing Flows
 m6dKKRsZwBQ	Stanford CS236: Deep Generative Models I 2023 I Lecture 7 - Normalizing Flows
-8cO61e_8oPY	Stanford CS236: Deep Generative Models I 2023 I Lecture 6 - VAEs
-MAGBUh77bNg	Stanford CS236: Deep Generative Models I 2023 I Lecture 5 - VAEs
-bt3dqcbMLa0	Stanford CS236: Deep Generative Models I 2023 I Lecture 4 - Maximum Likelihood Learning
 tRArbBf-AbI	Stanford CS236: Deep Generative Models I 2023 I Lecture 3 - Autoregressive Models
 rNEujZmD2Tg	Stanford CS236: Deep Generative Models I 2023 I Lecture 2 - Background
 XZ0PMRWXBEU	Stanford CS236: Deep Generative Models I 2023 I Lecture 1 - Introduction
@@ -649,9 +561,6 @@ Fazl5mHm9H8	Information Session: Leading People, Culture, and Innovation Program
 fKMB5UlVY1E	Stanford CS25: V4 I Overview of Transformers
 HfkcXxC-JUs	Stanford Seminar - Towards Safe and Efficient Learning in the Physical World
 uKnEZKpZKVA	Stanford EE274: Data Compression I 2023 I Lecture 18 - Video Compression
-tGPF2nw5Exc	Stanford EE274: Data Compression I 2023 I Lecture 8 - Beyond IID distributions: Conditional entropy
-kbAif7XhlTI	Stanford EE274: Data Compression I 2023 I Lecture 3 - Kraft Inequality, Entropy, Introduction to SCL
-YEF0iCiQlOg	Stanford EE274: Data Compression I 2023 I  Lecture 11 - Lossy Compression Basics; Quantization
 L4n2u1TTkO4	Stanford EE274: Data Compression I 2023 I Lecture 6 - Arithmetic Coding
 H7dvh35xNuE	Stanford EE274: Data Compression I 2023 I Lecture 16 - Learnt Image Compression
 FF7DRogZZdY	Stanford EE274: Data Compression I 2023 I Lecture 1 - Course Intro, Lossless Data Compression Basics
@@ -717,7 +626,6 @@ RajTLcrJDOo	Stanford EE259 I Waveform orthogonality in MIMO radar, radar noise a
 zfrudmIQvik	Stanford EE259 I Radar range and velocity estimation, performance tradeoffs I 2023 I Lecture 12
 tWqFcSbD8FA	Stanford EE259 I Radar antenna designs and characteristics I 2023 I Lecture 11
 eY4y8Ge6Z6o	Stanford Webinar - How to Stay Competitive Through Disruption
-mE7IDf2SmJg	Stanford CS25: V3 I Retrieval Augmented Language Models
 CPkht7C0tEY	Stanford EE259 I Radar principle of operation & architectures (pulsed, FMCW, PMCW) I 2023 I Lec. 10
 AkTkEEfeXLA	Stanford EE259 I Sonar ranging and bearing angle estimation I 2023 I Lecture 9
 ImD-NDy2iHA	Stanford Seminar - Robots that aren't afraid of contact, an embodied approach
@@ -737,50 +645,30 @@ qt2G9LQMuXg	Stanford Webinar - Democratizing Model Discovery with Neural Network
 ncKxHum5NRA	Transforming Healthcare Through Big Data, Analytics, and AI I Stanford Online Course Overview
 pe-4W1-mdIQ	Stanford Professor Chris Manning: Ask About AI - Full Version
 L3cdMDIJqWs	Stanford Seminar - Foundations of Spatial Perception for Robotics
-ylEk1TE1uBo	Stanford CS25: V3 I Beyond LLMs: Agents, Emergent Abilities, Intermediate-Guided Reasoning, BabyLM
 ckNMsUuLryM	Stanford CS25: V3 I No Language Left Behind: Scaling Human-Centered Machine Translation
-mcep6W8oB1I	Stanford CS25: V3 I Recipe for Training Helpful Chatbots
 IX3C-C9Stws	Stanford Seminar - Algorithmic Governance: Auditing Search & Rec. Algorithms for Problematic Content
 wwQ1LQA3RCU	Stanford CS25: V3 I Generalist Agents in Open-Ended Worlds
 fz8wf9hN20c	Stanford CS25: V3 I Low-level Embodied Intelligence w/ Foundation Models
 O6eTvxWy07A	Stanford CS224W: Machine Learning w/ Graphs I 2023 I Trustworthy Graph AI,  Rex Ying
 hDnlfTx4dZs	Stanford CS224W: Machine Learning w/ Graphs I 2023 I Geometric Graph Learning, Minkai Xu
 xVQN2aSNQhU	Stanford CS224W: Machine Learning w/ Graphs I 2023 I Advanced Topics in GNNs
-OV2VUApLUio	Stanford CS224W: Machine Learning w/ Graphs I 2023 I GNNs for Recommender Systems
-isI_TUMoP60	Stanford CS224W: Machine Learning w/ Graphs I 2023 I Knowledge Graph Embeddings
 uvrlKxj8HVU	Stanford CS224W: Machine Learning w/ Graphs I 2023 I Machine Learning with Heterogeneous Graphs
 1E8fie5KSl0	Stanford CS224W: Machine Learning w/ Graphs I 2023 I Label Propagation on Graphs
 ZfK4FDk9uy8	Stanford CS224W: Machine Learning w/ Graphs I 2023 I Graph Neural Networks
 o7lT0z1fLx4	Course Overview: Human-Centered Design for Digital Transformation - with Julie Stanford
 3zXLRrPf3iI	Stanford Seminar - How to change environments to regulate problematic behaviors
-RM-MkwkGUSI	Statistical Learning: 10.Py Document Classification and Recurrent Neural Networks I 2023
-c9-zvw3AY3Q	Statistical Learning: 13.Py False Discovery Rate I 2023
 SBeMlJvijbQ	Statistical Learning: 13.Py Multiple Testing I 2023
 aygQSHAbMFQ	Statistical Learning: 12.Py Application: NCI60 Data I 2023
-xhLD4nEEVlE	Statistical Learning: 12.Py Clustering I 2023
-3zpISnhksqQ	Statistical Learning: 12.Py Principal Components I 2023
 mMFT44ra-Rg	Statistical Learning: 13.Py Multiple Testing and Resampling I 2023
 csmHZGEsONU	Statistical Learning: 10.Py Multilayer Model: MNIST Digit Data I 2023
-94wKFGS4Zm4	Statistical Learning: 9.Py Support Vector Machines I 2023
 HUBmWuxu68M	Statistical Learning: 11.Py Cox Model: Brain Cancer Data I 2023
-NJ0gKDGdchQ	Statistical Learning: 10.Py Convolutional Neural Network: CIFAR Image Data I 2023
-1fmHMmoa47g	Statistical Learning: 9.Py ROC Curves I 2023
 -ZHEnz-emcQ	Statistical Learning: 10.Py Single Layer Model: Hitters Data I 2023
 AVTfC5WnDTo	Statistical Learning: 8.Py Tree-Based Methods I 2023
 H2AE2KS89-w	Statistical Learning: 11.Py Cox Model: Publication Data I 2023
 C9h-o6AfNX0	Statistical Learning: 7.Py Splines I 2023
-_0omkfNiU2c	Statistical Learning: 7.Py Polynomial Regressions and Step Functions I 2023
-dI7xi5kRwwM	Statistical Learning: 6.Py Ridge Regression and the Lasso I 2023
 EJ-haQArGzU	Statistical Learning: 6.Py Stepwise Regression I 2023
-1BxtC6ZOvJQ	Statistical Learning: 5.Py Bootstrap I 2023
-oYzo95sFoSY	Statistical Learning: 5.Py Cross-Validation I 2023
-yLEx1FnYyOo	Statistical Learning: 4.Py K-Nearest Neighbors (KNN) I 2023
-9pfRgzM1oCQ	Statistical Learning: 4.Py Linear Discriminant Analysis (LDA) I 2023
 hQx84r2maaE	Statistical Learning: 7.Py Generalized Additive Models (GAMs) I 2023
-wOGBlLLuc4I	Statistical Learning: 4.Py Logistic Regression I 2023
 d0K2mDclyXM	Statistical Learning: 3.Py Interactions, Qualitative Predictors and Other Details I 2023
-pGOr3HZhUZQ	Statistical Learning: 3.Py Multiple Linear Regression Package I 2023
-mKalBNrxToU	Statistical Learning: 3.Py Linear Regression and statsmodels Package I 2023
 Zcb-1JmmO_U	Statistical Learning: 2.Py Indexing and Dataframes I 2023
 JykmuvCY130	Statistical Learning: 2.Py.3 Graphics I 2023
 Cv1sx_HNRHM	Statistical Learning: 2.Py Data Types, Arrays, and Basics I 2023
@@ -812,46 +700,32 @@ tpZnb9-Hlbc	Questions and Answers for Your Product Management Interview
 Ht9yUPtppwY	Stanford CS109 I Algorithmic Analysis I 2022 I Lecture 20
 SoXygq5LtiM	Stanford CS109 I Future of Probability I 2022 I Lecture 28
 BquE8Z9htws	Stanford CS109 I Advanced Probability I 2022 I Lecture 27
-cbzwbr5H_LA	Stanford CS109 I Fairness I 2022 I Lecture 26
 MSfI6TTgyl4	Stanford CS109 I Deep Learning I 2022 I Lecture 25
-6Q9wT6JGMMM	Stanford CS109 I Central Limit Theorem I 2022 I Lecture 18
 U8DxtCPjoXY	Stanford Seminar - Leveraging Social Theories to Enhance Human-AI Interaction
 eHr_jA8HnkA	Stanford Seminar - Perception-Rich Robot Autonomy with Neural Environment Models
-ILqZWvDWKEc	Stanford CS109 Probability for Computer Scientists I Logistic Regression I 2022 I Lecture 24
-yqF3DvDVpvw	Stanford CS109 Probability for Computer Scientists I Naive Bayes I 2022 I Lecture 23
 sL1zOr-P4xc	Stanford CS109 Probability for Computer Scientists I  M.A.P. I 2022 I Lecture 22
 utFEufMXHgw	Stanford CS109 Probability for Computer Scientists I M.L.E. I 2022 I Lecture 21
-NXJwyPT1vsc	Stanford CS109 Probability for Computer Scientists I Bootstraping and P-Values  I 2022 I Lecture 19
-UEyHbI9FRtM	Stanford CS109 Probability for Computer Scientists I Adding Random Variables I 2022 I Lecture 17
 aOhk9mFrHdU	Stanford CS109 Probability for Computer Scientists I Beta I 2022 I Lecture 16
 c0QGjtu9GZg	Stanford CS109 Probability for Computer Scientists I General Inference I 2022 I Lecture 15
 q9lk8l8P-E4	Stanford CS109 Probability for Computer Scientists I Modelling I 2022 I Lecture 14
 d0ImA7m4BEg	Stanford CS109 Probability for Computer Scientists I Inference II I 2022 I Lecture 13
 fvgQBAsg5Zo	Stanford CS109 Probability for Computer Scientists I Inference I 2022 I Lecture 12
-rpB_NNXiWlM	Stanford CS109 Probability for Computer Scientists I Normal Distribution I 2022 I Lecture 10
 8Il2M7kbQSc	Stanford CS109 Probability for Computer Scientists I Joint Distributions I 2022 I Lecture 11
-OFgBn4rQkqc	Stanford CS109 Probability for Computer Scientists I Continuous Random Variables I 2022 I Lecture 9
 QV3IRiG6dVs	Stanford CS109 Probability for Computer Scientists I Poisson I 2022 I Lecture 8
 I2UBspTNAG0	Stanford CS109 Probability for Computer Scientists I Variance Bernoulli Binomial I 2022 I Lecture 7
-8QCg2ur-3fo	Stanford CS109 I Random Variables and Expectation I 2022 I Lecture 6
 zTJDZ2wmaRU	Stanford CS109 Probability for Computer Scientists I Independence I 2022 I Lecture 5
-NHRoXvPaZqY	Stanford CS109 I Conditional Probability and Bayes I 2022 I Lecture 4
 EGgMCE2AgyU	Stanford CS109 Probability for Computer Scientists I What is Probability? I 2022 I Lecture 3
 2MuDZIAzBMY	Stanford CS109 Probability for Computer Scientists I Counting I 2022 I Lecture 1
 L_y-J4bolzs	Stanford Webinar - Building Decarbonization: Pathways to a Carbon-Neutral Future
 XCoGZOnCPtg	Stanford ENGR1: Physics and Engineering I Pat Burchat
 hfjs3MOifA0	Stanford Webinar - Accelerating Clean Energy Transition (and Why it Matters), Dr. Diana Gragg
 b80by3Xk_A8	Stanford CS224N NLP with Deep Learning | 2023 | Hugging Face Tutorial, Eric Frankel
-Uv0AIRr3ptg	Stanford CS224N NLP with Deep Learning | 2023 | PyTorch Tutorial,  Drew Kaul
 8j4wpU98Q74	Stanford CS224N NLP with Deep Learning | 2023 | Python Tutorial, Manasi Sharma
 5vfIT5LOkR0	Stanford CS224N NLP with Deep Learning | 2023 | Lecture 16 - Multimodal Deep Learning, Douwe Kiela
-cd3pRpEtjLs	Stanford CS224N NLP with Deep Learning | 2023 | Lec. 19 - Model Interpretability & Editing, Been Kim
 JlK46EzImM8	Stanford CS224N NLP with Deep Learning | 2023 | Lecture 15 - Code Generation
 NvIWF82Fw4E	Stanford CS224N NLP with Deep Learning | 2023 | Lecture 14 - Insights between NLP and Linguistics
 N9L32bFieEY	Stanford CS224N NLP with Deep Learning | 2023 | Lecture 11 - Natural Language Generation
-SXpJ9EmG3s4	Stanford CS224N | 2023 | Lecture 10 - Prompting, Reinforcement Learning from Human Feedback
 DGfCRXuNA2w	Stanford CS224N NLP with Deep Learning | 2023 | Lecture 9 - Pretraining
-LWMzyfvuehA	Stanford CS224N NLP with Deep Learning | 2023 | Lecture 8 - Self-Attention and Transformers
 tEBe2UMbvvg	Stanford Online I Geophysical Imaging to Recharge Groundwater - Course Overview
 hSP5T6X69xA	Stanford ENGR1: Materials Science and Engineering I Dr. Rajan Kumar
 L4DC7e6g2iI	Stanford CS25: V2 I Neuroscience-Inspired Artificial Intelligence
@@ -900,12 +774,9 @@ enRb6fp5_hw	Stanford XCS224U: NLU I Information Retrieval, Part 1: Guiding Ideas
 NQUxBVOJM14	Stanford XCS224U: Natural Language Understanding I Homework 2 I Spring 2023
 ni3T4vStzBI	Stanford XCS224U: NLU I Contextual Word Representations, Part 10: Wrap-up I Spring 2023
 f9cfLq9T6MI	Stanford XCS224U: NLU I Contextual Word Representations, Part 9: Distillation I Spring 2023
-ymKWRZgHwPc	Stanford XCS224U: NLU I Contextual Word Representations, Part 8: Seq2seq Architectures I Spring 2023
 QFMBRk26AjU	Stanford XCS224U: NLU I Contextual Word Representations, Part 7: ELECTRA I Spring 2023
 ZIRQM-W02Cs	Stanford XCS224U: NLU I Contextual Word Representations, Part 6: RoBERTa I Spring 2023
-H0Zw0_22JRg	Stanford XCS224U: NLU I Contextual Word Representations, Part 5: BERT I Spring 2023
 sNw40lEhaIQ	Stanford XCS224U: NLU I Contextual Word Representations, Part 4: GPT I Spring 2023
-JERXX2Byr90	Stanford XCS224U: NLU I Contextual Word Representations, Part 3: Positional Encoding I Spring 2023
 yqV_YfBBtK0	Stanford XCS224U: NLU I Contextual Word Representations, Part 2: Transformer I Spring 2023
 FEFeeRONEdw	Stanford XCS224U: NLU I Contextual Word Representations, Part 1: Guiding Ideas I Spring 2023
 PzvvtyK0QOk	Stanford XCS224U: Natural Language Understanding I Homework 1 I Overview: Bake Off
@@ -913,19 +784,10 @@ J52Dtu40esQ	Stanford XCS224U: Natural Language Understanding I Course Overview, 
 K_Dh0Sxujuc	Stanford XCS224U: NLU I Intro & Evolution of Natural Language Understanding, Pt. 1 I  Spring 2023
 6ZYx_1NlYbI	Stanford CS229 I Basic concepts in RL, Value iteration, Policy iteration I 2022 I Lecture 17
 6N3OAWIsUOU	Stanford CS229 Machine Learning I Self-supervised learning I 2022 I Lecture 16
-FVLZG_oHUIw	Stanford CS229 Machine Learning I PCA/ICA I 2022 I Lecture 15
-o2KzJdbOwMc	Stanford CS229 Machine Learning I Factor Analysis/PCA I 2022 I Lecture 14
-khTGx7m3Y8A	Stanford CS229 Machine Learning I GMM (EM) I 2022 I Lecture 13
-LMZZPneTcP4	Stanford CS229 I K-Means, GMM (non EM), Expectation Maximization I 2022 I Lecture 12
 NirZnqwYfYU	Stanford CS229 Machine Learning I Feature / Model selection, ML Advice I 2022 I Lecture 11
-7AQYw5FOVcw	Stanford CS229 Machine Learning I Bias - Variance, Regularization I 2022 I Lecture 10
-UbtTv7j1tzU	Stanford CS229 Machine Learning I Neural Networks 2 (backprop) I 2022 I Lecture 9
 ZMxfDWPXmjc	Stanford CS229 Machine Learning I Neural Networks 1 I 2022 I Lecture 8
 dzDOqrac9Ks	Stanford CS229 Machine Learning I Kernels I 2022 I Lecture 7
-ADj95edZc0w	Stanford CS229 Machine Learning I Naive Bayes, Laplace Smoothing I 2022 I Lecture 6
-RMy_1mO4HLk	Stanford CS229 Machine Learning I Gaussian discriminant analysis, Naive Bayes I 2022 I Lecture 5
 goDDnBbJQ4g	Stanford CS229 Machine Learning I Exponential family, Generalized Linear Models I 2022 I Lecture 4
-k_pDh_68K6c	Stanford CS229 I Weighted Least Squares, Logistic regression, Newton's Method I 2022 I Lecture 3
 wVMDUbsZCHs	Product Management: How to Answer the Top 5 Interview Questions
 gqKaVgQxEJ0	Stanford CS229 Machine Learning I Supervised learning setup, LMS I 2022 I Lecture 2
 Bl4Feh_Mjvo	Stanford CS229 Machine Learning I Introduction I 2022 I Lecture 1
@@ -955,7 +817,6 @@ ct4tdyyNDY4	Stanford CS25: V2 I Robotics and Imitation Learning
 OXHyVNTcY2k	Stanford Webinar - How [You] Can Use ChatGPT to Increase Your Creative Output
 phWxl0nkgKk	Stanford CS25: V2 I Strategic Games
 IT734HriiHQ	AI and Robotics - Chelsea Finn & Andrew Ng
-tVtOevLrt5U	Stanford CS25: V2 I Emergent Abilities and Scaling in LLMs
 DJ1Yy6Aquug	Stanford CS25: V2 I Language and Human Alignment
 d2RIsD0cFi0	Stanford Webinar - How ChatGPT and Generative AI Will Shape the Future of Work
 wnPNRh-jtZM	Stanford Seminar - Connecting Robotics and Foundation Models, Brian Ichter of Google DeepMind
@@ -983,7 +844,6 @@ tCGS5I9ow0k	Stanford CS330 I Advanced Meta-Learning 2: Large-Scale Meta-Optimiza
 4z3ijI9QacE	Stanford CS330 I Advanced Meta-Learning TopicsTask Construction l 2022 I Lecture 9
 Vs85VCzug0I	Stanford CS330 I Unsupervised Pre-training for Few-shot Learning l 2022 I Lecture 8
 8jI6el_ng6I	Stanford Webinar - What Product Managers Should Know About Product Strategy (But are Afraid to Ask)
-jDzuGEcnRkA	Stanford CS330 I Unsupervised Pre-Training:Contrastive Learning l 2022 I Lecture 7
 lQrTGAxZZio	Stanford Webinar - The Future of Metal 3D Printing
 SUJCgisKW1Y	Stanford CS330 Deep Multi-Task & Meta Learning - Non-Parametric Few-Shot Learning l 2022 I Lecture 6
 Gj5SEpFIv8I	Stanford CS330 Deep Multi-Task & Meta Learning - Optimization-Based Meta-Learning l 2022 I Lecture 5
@@ -1004,7 +864,6 @@ Z-2ka33IPRk	Stanford Seminar - Designing the Interactive Paper
 zlH0MvgiMYo	Stanford Webinar - Engineering a Safer Internet with Alex Stamos
 EBq5y5GuTxA	Stanford Seminar - Hidden Histories - The Lost Women of Interaction Design
 W5C4_pjeOmQ	Stanford Seminar - Robotics algorithms that take people into account
-ZxPV_KVq-tI	Stanford Seminar - Human-Centered Explainable AI: From Algorithms to User Experiences
 ZZkc5mtda8I	Stanford Seminar - Intellectual Property and Artificial Intelligence
 N5ts_HdOLMU	Stanford Seminar - Challenges in AI Safety: A Perspective from an Autonomous Driving Company
 mCsAEjGd7d0	Stanford Seminar - Using Narrative to Transform Publishing and Business Analytics
@@ -1017,13 +876,11 @@ cgLZbs85sOg	Stanford Seminar - Data Imaginaries
 zUGkek9gPac	Stanford Seminar - The History of Crypto Art
 7OWnJR1H4dQ	Stanford Seminar - Crypto Entrepreneurship 101
 tuoHL-CWhfY	Stanford Seminar - From open-source to safety-certified robotic software
-UQ8W5oqEGmE	Stanford Seminar - Content Moderation as Systems Thinking
 Gvf8oQDcLsQ	Stanford Seminar - Systems for Supporting Intent Formation and Human-AI Communication
 -DdRQNibqKk	Stanford Seminar - Remembering Carl Hewitt
 Xig_Kn31R2M	Stanford Seminar - Incorporating Sample Efficient Monitoring into Learned Autonomy
 L0C6igkq32k	Stanford Seminar - Designing Robotic Grippers for Interaction with Real-World Environments
 -lnHHWRCDGk	Stanford Webinar - GPT-3 & Beyond
-PXzdn-Ig904	Stanford Seminar - Why would we want a multi-agent system unstable
 rUSa054dN-0	Stanford Seminar - The Future is Not What it Used to Be: Fun Stuff in Technical HCI is Ahead of Us
 KthjE_2sHRY	Stanford Seminar - Fireside Chat between David Farber and Dennis Allison
 C8quP1r-5So	Course Preview: Clean, Renewable Energy & Storage for a Sustainable Future
@@ -1039,14 +896,8 @@ fE_cJID7GeA	Andrew Pelosi talks about his experience in Stanford's Digital Trans
 XRmq__SgHOc	Stanford Seminar - Understanding the Utility of Haptic Feedback in Telerobotic Devices
 vJgJfcwxmQQ	Stanford Seminar - Democratizing Robot Learning
 nBgKL72ZBUE	Stanford Webinar - From Product Management to Venture Capital: A Conversation with Ashmeet Sidana
-UYBRLG64oSQ	Stanford CS229M - Lecture 20: Spectral clustering
-E6rZeGIKdRY	Stanford CS229M - Lecture 19: Mixture of Gaussians, spectral clustering
 4xDEsLUkdG4	Stanford CS229M - Lecture 18: Unsupervised learning, mixture of Gaussians, moment methods
-60GqpISCtCU	Stanford CS229M - Lecture 17: Implicit regularization effect of the noise
-mham4hHpo7A	Stanford CS229M - Lecture 16: Implicit regularization in classification problems
-l-CR_TLihdg	Stanford CS229M - Lecture 15: Implicit regularization effect of initialization
 jklv4kuOIOg	Stanford Seminar - Highly optimized quantum circuits synthesized via data-flow engines
-xpT1ymwCk9w	Stanford CS229M - Lecture 14: Neural Tangent Kernel, Implicit regularization of gradient descent
 -xoT7fk6kRw	Stanford Seminar - Anytime Anywhere All At Once: Data Analytics in the Metaverse
 btphvvnad0A	Stanford CS229M - Lecture 13: Neural Tangent Kernel
 GeXBfyrKfM4	Stanford CS229M - Lecture 11: All-layer margin
@@ -1067,14 +918,10 @@ Vx0q0q1KXb8	Stanford Webinar - The Digital Future of Health
 m1kyG7a4EG8	Stanford Seminar - Alphy and Alphy Reflect: creating a reflective mirror to advance women
 1yg-Gw6vOfI	Stanford Seminar: Social Media Scrutiny of Frontline Professionals & Implications for Accountability
 5YplPv5mE_c	Meet Joe Lapin, Innovation and Entrepreneurship Program Completer
-2HUYwCflwI8	Stanford Seminar - ML Explainability Part 5 I Future of Model Understanding
 9GLR1tVRcKs	Stanford Seminar - Adaptable Robotic Manipulation Using Tactile Sensors
-htjpbbvHJQo	Stanford Seminar - ML Explainability Part 4 I Evaluating Model Interpretations/Explanations
 VowMdZYvh0Q	Stanford Seminar - Making Teamwork an Objective Discipline - Sid Sijbrandij CEO & Chairman of GitLab
 3rTUouPByNw	Stanford Webinar - CRISPR - 10 Years of Genome Editing and More
 _5jtMZXqP5k	Kratika Gupta talks about Stanford's Product Management Program
-_6n8r523QP8	Stanford Seminar - ML Explainability Part 3 I Post hoc Explanation Methods
-9Th86_3Ea7o	Stanford Seminar - ML Explainability Part 2 I Inherently Interpretable Models
 M8LAIiU7VPA	Stanford Seminar -  Towards Generalizable Autonomy: Duality of Discovery & Bias
 xbES1armuJY	Stanford Seminar - Ethics Governance-in-the-Making: Bridging Ethics Work & Governance Menlo Report
 -DhXHubx6YM	Stanford Webinar - Web3 Considered: Possible Futures for Decentralization and Digital Ownership
@@ -1106,24 +953,14 @@ yfMz9cIS36E	Stanford Seminar - Perceiving, Understanding, and Interacting throug
 dYmJd_fJLW0	Stanford CS330: Deep Multi-Task & Meta Learning I 2021 I Lecture 1
 lpjeewvxzsM	Stanford Seminar - Designing Equitable Online Experiences
 QXwa-khJXcg	Stanford Seminar - Introduction to Web3
-ti9NFdjf3sM	Statistical Learning: 13.1 Introduction to Hypothesis Testing
-ded_NQqOe7I	Statistical Learning: 12.3 k means Clustering
-yktzn-Mr2Nw	Statistical Learning: 12.4 Hierarchical Clustering
 InBhMLEx6sU	Statistical Learning: 12.6 Breast Cancer Example
 BLDCLw4ke-Q	Statistical Learning: 13.R.1 Bonferroni and Holm II
-YCwSrtSoZ9M	Statistical Learning: 12.R.1 Principal Components
-j6aM9ITqLIY	Statistical Learning: 12.R.2 K means Clustering
-dJr7wBUYNgw	Statistical Learning: 12.R.3 Hierarchical Clustering
-klFG10_XajI	Statistical Learning: 13.1 Introduction to Hypothesis Testing II
 -6zM6mydlfA	Statistical Learning: 13.2 Introduction to Multiple Testing and Family Wise Error Rate
 xML6pCgPv2c	Statistical Learning: 13.3 Bonferroni Method for Controlling FWER
 8r_pMRnG97s	Statistical Learning: 13.4 Holm's Method for Controlling FWER
-4RPUrwzgO6c	Statistical Learning: 13.5 False Discovery Rate and Benjamini Hochberg Method
 BwjVTbU6is0	Statistical Learning: 13.6 Resampling Approaches
 Zylc7K3hZoA	Statistical Learning: 13.6 Resampling Approaches II
 3pelOJpcnxA	Statistical Learning: 13.R.1 Bonferroni and Holm
-O30nHhyBiAs	Statistical Learning: 12.2 Higher order principal components
-kpuQqOzQXfM	Statistical Learning: 12.1 Principal Components
 w6VAT8jqTjk	Statistical Learning: 11.R.3 Cox Models II   Call Center Data
 j3rcoz4u7m8	Statistical Learning: 11.R.2 Cox Models I  Publication Data
 hfKYYexJfuY	Statistical Learning: 11.R.1 Survival Curves   Brain Cancer Data
@@ -1131,29 +968,14 @@ rRYfWAsG4RI	Statistical Learning: 11.4 Model Evaluation and Further Topics
 ujIMPpl2Tr0	Statistical Learning: 11.3 Estimation of Cox Model with Examples
 lP42Vly2MVg	Statistical Learning: 11.2 Proportional Hazards Model
 7_XK7mGMm1E	Statistical Learning: 11.1 Introduction to Survival Data and Censoring
-bi34fBER1ds	Statistical Learning: 10.R.4 Recurrent Neural Networks
 SFHNg2X9o60	Statistical Learning: 10.R.3 Document Classification
-cVtL_ITG8po	Statistical Learning: 10.R.2 Convolutional Neural Networks in R
 Ut647c_aZoc	Statistical Learning: 10.R.1 Neural Networks in R and the MNIST data
-qRHdQz_P_Lo	Statistical Learning: 10.7 Interpolation and Double Descent
 07zslA8BXZY	Statistical Learning: 10.6 Fitting Neural Networks
 ogx1q2xBHkc	Statistical Learning: 10.5 Time Series Forecasting
-MexNVKPwu7g	Statistical Learning: 10.4 Recurrent Neural Networks
 Zw3L-0ZP_DA	Statistical Learning: 10.3 Document Classification
-ggOZuZnA6is	Statistical Learning: 10.2 Convolutional Neural Networks
 jJb2qytbcNg	Statistical Learning: 10.1 Introduction to Neural Networks
-VuQOjKk0_tE	Statistical Learning: 9.R.2 Nonlinear Support Vector Machine
-WCRwbrNWrpw	Statistical Learning: 9.R.1 Support Vector Classifier
-m5d7-URGnVY	Statistical Learning: 9.4 Example and Comparison with Logistic Regression
-02icdqOJsH4	Statistical Learning: 9.3 Feature Expansion and the SVM
-pjvnCEfAswc	Statistical Learning: 9.2.Support Vector Classifier
 Op0OyOuDjcQ	Statistical Learning: 9.1 Optimal Separating Hyperplane
-98mnFELJ8z8	Statistical Learning: 8.R.2 Random Forests and Boosting
 GHXUm7GnGGE	Statistical Learning: 8.R.1 Fitting Trees
-xWhPwHZF4c0	Statistical Learning: 8.6 Bayesian Additive Regression Trees
-cdl4C2eCOHk	Statistical Learning: 8.5 Boosting
-_cKAxjnInfA	Statistical Learning: 8.4 Bagging
-gLcfKSMKOb0	Statistical Learning: 8.3 Classification Trees
 JaoTOfTNOVk	Statistical Learning: 8.2 More details on Trees
 QNnayf--_yk	Statistical Learning: 8.1 Tree based methods
 RkSrnBBx8sg	Statistical Learning: 7.R.2 Splines and GAMs
@@ -1162,48 +984,27 @@ ywQviM69DKI	Statistical Learning: 7.R.1 Polynomials in GLMs
 b_HSFOnrGLI	Statistical Learning: 7.3 Smoothing Splines
 FrVaxvwCLYM	Statistical Learning: 7.2 Piecewise Polynomials and Splines
 F-D3lZzYn50	Statistical Learning: 7.1 Polynomials and Step Functions
-KUIIgUwxGxs	Statistical Learning: 6.R.4 Ridge Regression and Lasso
-x7b9gmP-L7Q	Statistical Learning: 6.R.3 Model Selection and Cross-Validation
 XiCXmecCMB4	Statistical Learning: 6.R.2 Forward Stepwise Regression
 r2uSyYTMfnU	Statistical Learning: 6.R.1 Markdown in RStudio and Best Subset Regression
-Uo19ST0IEZI	Statistical Learning: 6.10 Principal Components Regression and Partial Least Squares
 bpto4g5l_go	Statistical Learning: 6.9 Dimension Reduction Methods
 KV1Kt6I8rYs	Statistical Learning: 6.8 Tuning parameter selection
 0tfPuddPhEY	Statistical Learning: 6.7 The Lasso
-lLlG5xkyqIA	Statistical Learning: 6.6 Shrinkage methods and ridge regression
-mzb5Xs58bb0	Statistical Learning: 6.5 Validation and cross validation
 48P-oV6cH44	Statistical Learning: 6.4 Estimating test error
 c5aI9cowjRI	Statistical Learning: 6.3 Backward stepwise selection
 ynXq-Gw1xfE	Statistical Learning: 6.2 Stepwise Selection
 nsv5rEV3mVI	Statistical Learning: 6.1 Introduction and Best Subset Selection
-sM_Gve1K4II	Statistical Learning: 5.R.2 Bootstrap
-nwD-03ncOZ8	Statistical Learning: 5.R.1 Cross Validation
-OKREmw6YP64	Statistical Learning: 5.5 More on the Bootstrap
-h_LweqiIotE	Statistical Learning: 5.4 The Bootstrap
-jgoa28FR__Y	Statistical Learning: 5.3 Cross Validation the wrong and right way
-AMfvd_hLssE	Statistical Learning: 5.2 K-fold Cross Validation
-6eWODQJrMKs	Statistical Learning: 5.1 Cross Validation
 JRxKBj5ArgU	Statistical Learning: 4.R.3 Nearest Neighbor Classification
 WXhku-ISml8	Statistical Learning: 4.R.2 Linear Discriminant Analysis
-QEUtuHSipNE	Statistical Learning: 4.R.1 Logistic Regression
-giCZkipHEmA	Statistical Learning: 4.9 Quadratic Discriminant Analysis and Naive Bayes
 n8Nj64FyjSo	Statistical Learning: 4.8 Generalized Linear Models
 aUlTqhDtpnw	Statistical Learning: 4.7 Gaussian Discriminant Analysis (Many Variables)
 14JVlzWHKgk	Statistical Learning: 4.6 Gaussian Discriminant Analysis (One Variable)
 oJc2r246VoQ	Statistical Learning: 4.5 Discriminant Analysis
-sYDDk6R-be0	Statistical Learning: 4.4 Logistic Regression Case Control Sampling and Multiclass
-1uJVE8bkabc	Statistical Learning: 4.3 Multivariate Logistic Regression
-kr_Be9NVXOM	Statistical Learning: 4.2 Logistic Regression
 ju3J7iRy6xI	Statistical Learning: 4.1 Introduction to Classification Problems
 gNZfqHhq_B4	Statistical Learning: 3.R Regression in R
 dEBQmiXv9fk	Statistical Learning: 3.5 Extensions of the Linear Model
 50sv4UTjE90	Statistical Learning: 3.4 Some important questions
-o9hoLdylWKo	Statistical Learning: 3.3 Multiple Linear Regression
-3GiWpRfkSjc	Statistical Learning: 3.2 Hypothesis Testing and Confidence Intervals
-vCHtY6Me5FI	Statistical Learning: 3.1 Simple linear regression
 L03A81OgLlk	Statistical Learning: 2.R Introduction to R
 BMJQ3LQ_QKU	Statistical Learning: 2.4 Classification
-pvcEQfcO3pk	Statistical Learning: 2.3 Model Selection and Bias Variance Tradeoff
 uFwbrdvrAJs	Statistical Learning: 2.2 Dimensionality and Structured Models
 ox0cKk7h4o0	Statistical Learning: 2.1 Introduction to Regression Models
 B9s8rpdNxU0	Statistical Learning: 1.2 Examples and Framework
@@ -1232,11 +1033,8 @@ KQHhZlENhxg	Crypto vs. Tokens vs. ICO | Blockchain and Cryptocurrency Course: Wh
 wvE2n8u3drA	Stanford CS25: V1 I Audio Research: Transformers for Applications in Audio, Speech, Music
 BPlcdRI2-lg	Introducton of Joe Grundfest | Blockchain and Cryptocurrency: What You Need to Know | 2019
 pC4zRb_5noQ	Stanford CS25: V1 I Transformer Circuits, Induction Heads, In-Context Learning
-zejXBg-2Vpk	Stanford CS25: V1 I Self Attention and Non-parametric transformers (NPTs)
 wTZ3o36lXoQ	Stanford CS25: V1 I DeepMind's Perceiver and Perceiver IO: new data family architecture
-U8J32Z3qV8s	Stanford CS25: V1 I Mixture of Experts (MoE) paradigm and the Switch Transformer
 kUxMx0eX2_U	Blockchains Summary | Blockchain and Cryptocurrency: What You Need to Know | 2019
-w4Bw8WYL8Ps	Stanford CS25: V1 I Decision Transformer: Reinforcement Learning via Sequence Modeling
 rWx2ogovsX4	Proof of Work (PoW) Blockchain and Cryptocurrency: What You Need to Know | 2019
 BP5CM0YxbP8	Stanford CS25: V1 I Transformers in Vision: Tackling problems in Computer Vision
 WJ46poA5IVQ	How to Choose Miner | Blockchain and Cryptocurrency: What You Need to Know | 2019
@@ -1245,7 +1043,6 @@ qGkzHFllWDY	Stanford CS25: V1 I Transformers in Language: The development of GPT
 P127jhj-8-Y	Stanford CS25: V1 I Transformers United: DL Models that have revolutionized NLP, CV, RL
 oMICUKYf2Dc	Record Asset Ownership on a Blockchain | 2019
 xqBmAv0gmgA	Successful Examples Decentralized Apps | Blockchain and Cryptocurrency Course | 2019
--TPFg-RG-KY	Stanford CS229: Machine Learning | Summer 2019 | Lecture 20 - Variational Autoencoder
 SwqQUXJyJY0	Decentralized Apps | Blockchain and Cryptocurrency: What You Need to Know | 2019
 27q2OWwAm7M	What Are Crypto Currencies For? | Blockchain and Cryptocurrency Courses | 2019
 dpClOYpdWZo	Crypto Protection, Protecting Your Crypto Assets | Blockchain and Cryptocurrency | 2019
@@ -1307,25 +1104,20 @@ fA7zP6EcVdw	Bayesian Networks 1 - Overview | Stanford CS221: AI (Autumn 2021)
 k6aZZF2pk7k	Markov Networks 2 - Gibbs Sampling | Stanford CS221: AI (Autumn 2021)
 neeaJb3wCYw	Markov Networks 1 - Overview | Stanford CS221: Artificial Intelligence (Autumn 2021)
 VwZKPlK6jUg	Constraint Satisfaction Problems (CSPs) 7 - Local Search | Stanford CS221: AI (Autumn 2021)
-XuWMeIHGkus	Constraint Satisfaction Problems (CSPs) 6 - Beam Search | Stanford CS221: AI (Autumn 2021)
 5rlIYGJdPy4	Constraint Satisfaction Problems (CSPs) 5 - Arc Consistency | Stanford CS221: AI (Autumn 2021)
 Lyu8VzbIe_A	Constraint Satisfaction Problems (CSPs) 4 - Dynamic Ordering | Stanford CS221: AI (Autumn 2021)
 Tu6BiZhMDCc	Constraint Satisfaction Problems (CSPs) 3 - Examples | Stanford CS221: AI (Autumn 2021)
 uj5wCcHsSlA	Constraint Satisfaction Problems (CSPs) 2 - Definitions | Stanford CS221: AI (Autumn 2021)
 -IO4fPO0rxk	Constraint Satisfaction Problems (CSPs) 1 - Overview | Stanford CS221: AI (Autumn 2021)
-5-Fn8R9fH7A	Machine Learning 13 - K-means | Stanford CS221: AI (Autumn 2021)
 ouvGV2YZEEM	Artificial Intelligence & Machine Learning 12 - Best Practices | Stanford CS221: AI (Autumn 2021)
 Gq-Ah-QrOQM	Artificial Intelligence & Machine Learning 11 - Generalization | Stanford CS221: AI (Autumn 2021)
 c5btEEisp_g	Machine Learning 10 - Differentiable Programming | Stanford CS221: AI (Autumn 2021)
-OcAF-l2xB9Y	Machine Learning 9 - Backpropagation | Stanford CS221: AI (Autumn 2021)
 pnKXgBHuN58	Artificial Intelligence & Machine Learning 8 - Neural Networks | Stanford CS221: AI (Autumn 2021)
 2QfSBLtvioE	Artificial Intelligence & Machine Learning 7 - Feature Templates | Stanford CS221: AI (Autumn 2021)
 TnReMLKSQQc	Grace, Humor and Success: How 3 managers applied what they learned in "Leading from Home"
 eIxbNkB4byY	Artificial Intelligence & Machine Learning 6 - Non Linear Features | Stanford CS221: AI(Autumn 2021)
 ZFK2XtWqUbw	Artificial Intelligence and Machine Learning 5 - Group DRO | Stanford CS221: AI (Autumn 2021)
-bl2WgBLH0tI	Artificial Intelligence & Machine Learning 4 - Stochastic Gradient Descent | Stanford CS221 (2021)
 WcaMiqJR09s	Artificial Intelligence & Machine learning 3 - Linear Classification | Stanford CS221 (Autumn 2021)
-nEWNNt2KmfQ	Artificial Intelligence & Machine Learning 2 - Linear Regression | Stanford CS221: AI (Autumn 2021)
 mtrYwgIrRNk	Artificial Intelligence and Machine Learning 1 - Overview | Stanford CS221: AI (Autumn 2021)
 C0IhR4D5KYc	Artificial Intelligence Today | Stanford CS221: AI (Autumn 2021)
 z8fEXuH0mu0	AI History | Stanford CS221: AI (Autumn 2021)
@@ -1354,7 +1146,6 @@ PkqaDCgfZw4	Stanford Seminar: Robot Manipulation in the Logistics Industry- Sami
 0E1fC9nECiQ	Stanford Seminar - The What & Why of Continuous Discovery, Teresa Torres
 Q7Vq5V0NgDo	Building an AI-Enabled Organization
 caZyFlSSKtI	Stanford Seminar - Representation Learning for Autonomous Robots, Anima Anandkumar
-3lOq87aiV8I	Stanford Seminar - The FATE of AI Ethics, Anna Bethke
 rc-N0Wi6N68	Spotlight: Liliana Niunim - Digital Transformation Program
 62ZJh_hNFLc	Spotlight: Liliana Niunim
 G3VHEPF7dZw	Stanford Webinar - If I build it, will they come? Understanding Product-Market Fit
@@ -1437,7 +1228,6 @@ NAMNv4M2j3g	SNLI, MultiNLI, and Adversarial NLI | Stanford CS224U Natural Langua
 6-NV9lzm8qw	Natural Language Inference | Stanford CS224U Natural Language Understanding | Spring 2021
 aTEX9C2JBsE	Neural RSA | Stanford CS224U Natural Language Understanding | Spring 2021
 pkT0g7utr70	The Rational Speech Acts Model | Stanford CS224U Natural Language Understanding | Spring 2021
-3CTttlN8l4o	Varieties of contextual grounding | Stanford CS224U Natural Language Understanding | Spring 2021
 xrsc0IOLFSY	Listeners | Stanford CS224U Natural Language Understanding | Spring 2021
 -s5B_7_oeiU	Speakers | Stanford CS224U Natural Language Understanding | Spring 2021
 OW7aDflHdG0	Grounded Language Understanding | Stanford CS224U Natural Language Understanding | Spring 2021
@@ -1445,10 +1235,8 @@ OW7aDflHdG0	Grounded Language Understanding | Stanford CS224U Natural Language U
 Ns0JHUXyLE0	Practical Fine-tuning | Stanford CS224U Natural Language Understanding | Spring 2021
 6NSRLEiqsoE	ELECTRA | Stanford CS224U Natural Language Understanding | Spring 2021
 EZMOBbu_5b8	RoBERTa | Stanford CS224U Natural Language Understanding | Spring 2021
-TKcSSwKNg7w	BERT | Stanford CS224U Natural Language Understanding | Spring 2021
 Nsc0Yluf2yc	Transformers | Stanford CS224U Natural Language Understanding | Spring 2021
 ZrmEcrmmXCg	Contextual Representation Models | Stanford CS224U Natural Language Understanding | Spring 2021
-7n9zQ169b8Q	RNN Classifiers | Stanford CS224U Natural Language Understanding | Spring 2021
 L9ajfq6PJBI	Feature Representation | Stanford CS224U Natural Language Understanding | Spring 2021
 sO3gWU7y9Ws	Hyperparameter Search | Stanford CS224U Natural Language Understanding | Spring 2021
 _T5q5fIfzww	sst.py | Stanford CS224U Natural Language Understanding | Spring 2021
@@ -1459,7 +1247,6 @@ sRw3Dtjhlk0	Sentiment Analysis | Stanford CS224U Natural Language Understanding 
 e5zRhwc-SqI	Homework 2: Sentiment Analysis | Stanford CS224U Natural Language Understanding | Spring 2021
 K7wM6FUV0ds	Static Representations | Stanford CS224U Natural Language Understanding | Spring 2021
 2dVdZ4GPQIk	Retrofitting | Stanford CS224U Natural Language Understanding | Spring 2021
-5Bx5UhrJbJI	Dimensionality Reduction | Stanford CS224U Natural Language Understanding | Spring 2021
 dv559tVBQRk	Basic Reweighting | Stanford CS224U Natural Language Understanding | Spring 2021
 eKvbYOc2rOs	Vector Comparison | Stanford CS224U Natural Language Understanding | Spring 2021
 ladnEW0ntEM	Matrix Designs | Stanford CS224U Natural Language Understanding | Spring 2021
@@ -1483,18 +1270,13 @@ Tq8cq_d21AA	Stanford Seminar - Rethinking the AI-UX Boundary for Designing Human
 f_qmSSBWV_E	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 17 - Model Analysis and Explanation
 -Ldg4qFL6bU	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 16 - Social & Ethical Considerations
 y68RJVfGoto	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 15 - Add Knowledge to Language Models
-iHWkLvoSpTg	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 14 - T5 and Large Language Models
 FFRnDRcbQQU	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 13 - Coreference Resolution
 1uMo8olr5ng	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 12 - Natural Language Generation
 NcqfHa0_YmU	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 12 - Question Answering
 j9AcEI98C0o	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 10 - Transformers and Pretraining
 ptuGllU5SQQ	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 9 - Self- Attention and Transformers
 gKD7jPAdbpE	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 8 - Final Projects; Practical Tips
-wzfWHP6SXxY	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 7 - Translation, Seq2Seq, Attention
-0LixFSa7yts	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 6 - Simple and LSTM RNNs
-PLryWeHPcBs	Stanford CS224N -  NLP w/ DL | Winter 2021 | Lecture 5 - Recurrent Neural networks (RNNs)
 PSGIodTN3KE	Stanford CS224N - NLP w/ DL | Winter 2021 | Lecture 4 - Syntactic Structure and Dependency Parsing
-X0Jw4kgaFlg	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 3 - Backprop and Neural Networks
 gqaHkPEZAew	Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 2 - Neural Classifiers
 rmVRLeJRkl4	Stanford CS224N: NLP with Deep Learning | Winter 2021 | Lecture 1 - Intro & Word Vectors
 hSyA_Ar6C3c	Stanford Seminar - Imagine All The People On A Trustworthy Internet, Marshini Chetty
@@ -1596,7 +1378,6 @@ yT5PziOXxQg	Stanford CS224W: ML with Graphs | 2021 | Lecture 16.1 - Limitations 
 SJqWQGh__N8	Stanford CS224W: ML with Graphs | 2021 | Lecture 16.3 - Identity-Aware Graph Neural Networks
 6ZFvToZUjGA	Stanford CS224W: ML with Graphs | 2021 | Lecture 16.2 - Position-Aware Graph Neural Networks
 SdBk8fMmwUU	Stanford CS224W: ML with Graphs | 2021 | Lecture 15.4 - Applications of Deep Graph Generation
-xGDUYQGvRac	Stanford CS224W: ML with Graphs | 2021 | Lecture 15.2 - Graph RNN: Generating Realistic Graphs
 kDu5YY9d1TM	Stanford CS224W: ML with Graphs | 2021 | Lecture 15.3 - Scaling Up & Evaluating Graph Gen
 IMpkHvQ0LA4	Stanford CS224W: ML with Graphs | 2021 | Lecture 15.1 - Deep Generative Models for Graphs
 ZrDpzzVWwFs	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 14.3 - The Small World Model
@@ -1615,13 +1396,9 @@ lRCDpfJoMiE	Stanford CS224W: ML with Graphs | 2021 | Lecture 12.1-Fast Neural Su
 0vo-JOqNpJE	The Inspiration Discipline: A talk from the Stanford d.school
 qaRIBNE-4Ho	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 11.2 - Answering Predictive Queries
 Nt66M2OsbCw	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 11.3 - Query2box: Reasoning over KGs
-X9yl0pTP9fY	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 11.1 - Reasoning in Knowledge Graphs
 4Ia5QzQ_QNI	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 12.2 - Neural Subgraph Matching
 gTNbgxnilKE	Stanford Seminar - Should you believe Wikipedia?
 vKikt2d9PE0	Stanford Webinar with Dan Boneh - Hacking AI: Security & Privacy of Machine Learning Models
-xop5tC9T5xM	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 10.2 - Knowledge Graph Completion
-Xm5VrxZYhu4	Stanford CS224W: ML with Graphs | 2021 | Lecture 10.3 - Knowledge Graph Completion Algorithms
-Rfkntma6ZUI	Stanford CS224W: ML with Graphs | 2021 | Lecture 10.1-Heterogeneous & Knowledge Graph Embedding
 JjRx3ZC-lZE	David Kelley of the Stanford d.school: Everyone is creative.
 B5y47gWt3co	Stanford CS224W: ML with Graphs | 2021 | Lecture 9.2 - Designing the Most Powerful GNNs
 5vMEgYbka0A	Stanford CS224W: ML with Graphs | 2021 | Lecture 9.1 - How Expressive are Graph Neural Networks
@@ -1638,28 +1415,22 @@ F3PgltDzllc	Stanford CS224W: ML with Graphs | 2021 | Lecture 6.1 - Introduction 
 kh3I_UTtUOo	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 5.3 - Collective Classification
 QUO-HQ44EDc	Stanford CS224W: ML with Graphs | 2021 | Lecture 5.2 - Relational and Iterative Classification
 6g9vtxUmfwM	Stanford CS224W: ML with Graphs | 2021 | Lecture 5.1 - Message passing and Node Classification
-r12qJZZVtqc	Stanford CS224W: ML with Graphs | 2021 | Lecture 4.4 - Matrix Factorization and Node Embeddings
 HbzQzUaJ_9I	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 4.3 - Random Walk with Restarts
 rK2ZBmQHVVs	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 4.2 - PageRank: How to Solve?
 TU0ankRcHmo	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 4.1 - PageRank
 _-uzSvC5m60	Stanford CS229: Machine Learning | Summer 2019 | Lecture 23 - Course Recap and Wrap Up
 OftHZYlrK-E	Stanford CS229: Machine Learning | Summer 2019 | Lecture 22 - Practical Tips and Course Recap
 Lb1-iNIOLBw	Stanford CS229: Machine Learning | Summer 2019 | Lecture 21 - Evaluation Metrics
-i6d5QTmPXiw	Stanford CS229: Machine Learning | Summer 2019 | Lecture 19 - Maximum Entropy and Calibration
 7pJ6XNvpO8M	Stanford CS229: Machine Learning | Summer 2019 | Lecture 18 - Principal & Independent CA
-pA-bo8_HNy4	Stanford CS229: Machine Learning | Summer 2019 | Lecture 17 - Factor Analysis & ELBO
 AbhV49lfaWw	Stanford CS229: Machine Learning | Summer 2019 | Lecture 13-Statistical Learning Uniform Convergence
 4BbHU2_wphg	Stanford CS229: Machine Learning | Summer 2019 | Lecture 15 - Reinforcement Learning - II
 jNevGGOkklE	Stanford CS229: Machine Learning | Summer 2019 | Lecture 14 - Reinforcement Learning - I
-XhyOAX6oSX4	Stanford CS229: Machine Learning | Summer 2019 | Lecture 12 - Bias and Variance & Regularization
 eliMLfJeu7A	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 3.3 - Embedding Entire Graphs
 Xv0wRy66Big	Stanford CS224W: ML with Graphs | 2021 | Lecture 3.2-Random Walk Approaches for Node Embeddings
 rMq21iY61SE	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 3.1 - Node Embeddings
-LmpkKwsyQj4	Stanford CS229: Machine Learning | Summer 2019 | Lecture 16 - K-means, GMM, and EM
 4wmqDaFhs9E	Stanford CS229: Machine Learning | Summer 2019 | Lecture 11 - Deep Learning - II
 mpJ2bFF6o8s	Stanford CS229: Machine Learning | Summer 2019 | Lecture 10 - Deep learning - I
 IgUi7BDe1DQ	Stanford CS229: Machine Learning | Summer 2019 | Lecture 9 - Bayesian Methods - Parametric &  Non
-yieIOW9Kaw4	Stanford CS229: Machine Learning | Summer 2019 | Lecture 7 - GDA, Naive Bayes & Laplace Smoothing
 sj0iPn03i7Q	Stanford CS229: Machine Learning | Summer 2019 | Lecture 6 - Exponential Family & GLM
 lnPZe2EYWlY	Stanford Seminar - Reckoning with Design
 buzsHTa4Hgs	Stanford CS224W: ML with Graphs | 2021 | Lecture 2.3 - Traditional Feature-based Methods: Graph
@@ -1668,9 +1439,6 @@ buzsHTa4Hgs	Stanford CS224W: ML with Graphs | 2021 | Lecture 2.3 - Traditional F
 GOrBgltIEF8	Stanford Digital Transformation Program
 weH4Au21T_M	Stanford Seminar - Social Comparison and Social Connectedness,  Nicole Ellison
 KzH1ovd4Ots	Stanford CS229: Machine Learning | Summer 2019 | Lecture 1 - Introduction and Linear Algebra
-p61QzJakQxg	Stanford CS229: Machine Learning | Summer 2019 | Lecture 8 - Kernel Methods & Support Vector Machine
-WViuTuAOPlM	Stanford CS229: Machine Learning | Summer 2019 | Lecture 5 - Perceptron and Logistic Regression
-lNHaZlZJATw	Stanford CS229: Machine Learning | Summer 2019 | Lecture 4 - Linear Regression
 Mi8wnYc1m04	Stanford CS229: Machine Learning | Summer 2019 | Lecture 3 - Probability and Statistics
 P-m1Qv6-8cI	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 1.3 - Choice of Graph Representation​
 aBHC6xzx9YI	Stanford CS224W: Machine Learning with Graphs | 2021 | Lecture 1.2 - Applications of Graph ML
@@ -1684,25 +1452,7 @@ bZbfUP2OEE4	Certificate Overview: Advanced Cybersecurity
 6G5GqWHhD9Q	Stanford Webinar - Key Takeaways from Recent Cyberattacks with Neil Daswani
 vsk_75RcCN0	Course Overview: Mastering Medical Teaching
 Wc6QKGh5jiM	Stanford Seminar - Thesis Defense: Smart Tutoring Through Conversational Interfaces
-c9JDVyUazKE	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 19 - principal components analysis
-B3OimYsCH9w	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 18 - unsupervised learning
-qHGk2KU-_EI	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 17-erm for probabilistic classif.
 e0Pa5PC_8mQ	Stanford EE104: Intro to Machine Learning | 2020 | Lecture 16 - probabilistic classification
-xX-hnw2lFBI	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 15 - multiclass classification
-MT91YDjIQcg	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 14 - Boolean classification
-jqTsIHFQOX8	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 13 - erm for classifiers
-_hfGEcA5zoA	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 12 - classifiers
-NUUfXaGl5Lg	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 11 - neural networks
-7BWI-58W42E	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 10 - non quadratic regularizers
-zpD4omYRleA	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 9 - house prices example
-ED8ufzNGuag	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 8 - non quadratic losses
-opjG0pQi_yo	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 7 - constant predictors
-SwH0rs5TW_Q	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 6 - empirical risk minimization
-FcWpqMTz9jk	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 5 - features
-N2lwsB1qfJw	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 4 - validation
-8EfqiUVBI9s	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 3 - predictors
-zGTrvVtk7MI	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture - 2 overview
-jbNVUCRMUP0	Stanford EE104: Introduction to Machine Learning | 2020 | Lecture 1 - course information
 QjrS-XiaNdk	Stanford Seminar - Designing for Human - AI Complementarity
 SM_ZieyKicU	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 53-VMLS cstrd nonlinear LS
 maCbeyno_mI	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 46-VMLS solve cstr LS prob
@@ -1720,7 +1470,6 @@ NS0jvPLtgGc	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Le
 6zWKMTVGkgQ	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 25 - VMLS linear equations
 8SD2zRNWQcU	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 24-VMLS linear func models
 tQ3nrT6cZGE	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 23-VMLS vector linear func
-kTg0vKppOl8	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 22 - VMLS convolution
 vOFsja_YmJc	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 45-VMLS constrained LS
 XTdzAMf0gG0	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 44-VMLS reg data fitting
 y44HXBjCZ0Q	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 43-MLS est & inversion
@@ -1729,8 +1478,6 @@ WFx4oV2JcRM	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Le
 lWEJPWFIgtw	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 31-VMLS solving linear eqs
 R6sObXmPqXw	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 36-VMLS fit univariate fnc
 R69sATXr1lM	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 32 - VMLS pseudo inverse
-q7tuWtK2wWY	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 33 - VMLS least squares
-5XhCN-44ua0	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 34-VMLS least squares ex.
 1UssEuFDxd4	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 35-VMLS LS data fitting
 SaERMg6BhWk	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 37 - VMLS validation
 3LGyi_9Yn8s	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 38 - VMLS classification
@@ -1743,8 +1490,6 @@ JbtNJM1hM_4	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Le
 OgPYgzSk41M	Stanford Webinar - Bringing AI into Healthcare Safely and Ethically
 IZhpqYeKZEM	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 16-VMLS Gram Schmidt algo.
 RikEADik56Q	Stanford ENGR108: Intro to Applied Linear Algebra | 2020 | Lecture 15-VMLS linear ind.
-liaZ_SCuE1w	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 13 - VMLS k means
-a4GjONqojzM	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 14-VMLS k means app.
 4shS22XxZYw	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 12 - VMLS angle
 Gdl92kGR8Ho	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 11-VMLS std. deviation
 w77MlgsylqY	Stanford ENGR108: Introduction to Applied Linear Algebra | 2020 | Lecture 10 - VMLS distance
@@ -1764,11 +1509,9 @@ S9q2ozmkUOw	Stanford Seminar - Considerations for Collaborative Robotics, Monroe
 HFHLxzaNYBM	Stanford Seminar-Design of Online Environments and the Quality of Democratic Discourse At-Scale
 KMvm_h6Elks	Stanford Seminar-Building Chairables: Designing Technologies for Accessibility and Engagement
 mp95Z5yM92c	Stanford CS224N: NLP with Deep Learning | Winter 2020 | Low Resource Machine Translation
-knTc-NQSjKA	Stanford CS224N: NLP with Deep Learning | Winter 2020 | BERT and Other Pre-trained Language Models
 a0sqE7y53W8	Conclusion | Stanford CS221: AI (Autumn 2019)
 _Iz83hfkFds	Logic 2 - First-order Logic | Stanford CS221: AI (Autumn 2019)
 xL0kNw5TudI	Logic 1 - Propositional Logic | Stanford CS221: AI (Autumn 2019)
-Fa-rr6AXMwg	Bayesian Networks 3 - Maximum Likelihood | Stanford CS221: AI (Autumn 2019)
 GPoj3zfX60g	Bayesian Networks 2 - Forward-Backward | Stanford CS221: AI (Autumn 2019)
 U23yuPEACG0	Bayesian Networks 1 - Inference | Stanford CS221: AI (Autumn 2019)
 Yo-xat4cn8M	Factor Graphs 1 - Constraint Satisfaction Problems | Stanford CS221: AI (Autumn 2019)
@@ -1820,24 +1563,14 @@ HpaHTfY52RQ	Markov Decision Processes 2 - Reinforcement Learning | Stanford CS22
 o0mKSvbMunA	Factor Graphs 2 - Conditional Independence | Stanford CS221: AI (Autumn 2019)
 IW2g3jv0Z5A	Stanford Webinar - How to Be a Good Boss During Trying Times
 pLhPQynL0tY	RL Debugging and Diagnostics | Stanford CS229: Machine Learning Andrew Ng - Lecture 20 (Autumn 2018)
-0rt2CsEQv6U	Lecture 19 - Reward Model & Linear Dynamical System | Stanford CS229: Machine Learning (Autumn 2018)
 QFu5nuc-S0s	Lecture 18 - Continous State MDP & Model Simulation | Stanford CS229: Machine Learning (Autumn 2018)
 d5gaWTo6kDM	Lecture 17 - MDPs & Value/Policy Iteration | Stanford CS229: Machine Learning Andrew Ng (Autumn2018)
 YQA9lLdLig8	Lecture 16 - Independent Component Analysis & RL | Stanford CS229: Machine Learning (Autumn 2018)
 tw6cmL5STuY	Lecture 14 - EM Algorithm & Factor Analysis | Stanford CS229: Machine Learning Andrew Ng -Autumn2018
-rVfZHWTwXSA	Lecture 13 - Expectation-Maximization Algorithms | Stanford CS229: Machine Learning (Autumn 2018)
 ORrStCArmP4	Lecture 12 - Debugging ML Models and Error Analysis | Stanford CS229: Machine Learning (Autumn 2018)
 MfIjxPh6Pys	Lecture 10 - Introduction to Neural Networks | Stanford CS229: Machine Learning (Autumn 2018)
-zUazLXZZA2U	Lecture 11 - Backprop & Improving Neural Networks | Stanford CS229: Machine Learning (Autumn 2018)
-wr9gUr-eWdA	Lecture 9 - Decision Trees and Ensemble Methods | Stanford CS229: Machine Learning (Autumn 2018)
 iVOxMcumR4A	Discussion Section: Learning Theory | Stanford CS229: Machine Learning (Autumn 2018)
-rjbkWSTjHzM	Lecture 8 - Data Splits, Models & Cross-Validation | Stanford CS229: Machine Learning (Autumn 2018)
 8NYoQiRANpg	Lecture 7 - Kernels | Stanford CS229: Machine Learning Andrew Ng (Autumn 2018)
-lDwow4aOrtg	Lecture 6 - Support Vector Machines | Stanford CS229: Machine Learning Andrew Ng (Autumn 2018)
-nt63k3bfXS0	Lecture 5 - GDA & Naive Bayes | Stanford CS229: Machine Learning Andrew Ng (Autumn 2018)
-iZTeva0WSTQ	Lecture 4 - Perceptron & Generalized Linear Model | Stanford CS229: Machine Learning (Autumn 2018)
-het9HFqo1TQ	Locally Weighted & Logistic Regression | Stanford CS229: Machine Learning - Lecture 3 (Autumn 2018)
-4b4MUYve_U8	Stanford CS229: Machine Learning - Linear Regression and Gradient Descent |  Lecture 2 (Autumn 2018)
 jGwO_UgTS7I	Stanford CS229: Machine Learning Lecture 1 - Andrew Ng (Autumn 2018)
 hLJgz5OYs48	Building Energy Efficiency: Technology, Policy & Policy (bee.stanford.edu)
 GRtCXZkpyRo	Stanford CS330: Multi-Task and Meta-Learning, 2019 | Student Literature Review 1
@@ -1885,15 +1618,12 @@ DmVZv-2SmMA	Stanford Faculty Interview: Robotics and Autonomous Systems Graduate
 4AudRBdZVV0	Stanford Seminar - Robotic Autonomy and Perception in Challenging Environments
 hqcs6ChtNPc	Stanford Seminar - What can HCI learn from Architecture about interaction?
 M8Zk3XaUpcE	Stanford Seminar - Surviving the Startup Grind
-G5P8eu6gUSo	Stanford Seminar - Lenia: Biology of Artificial Life, Bert Wang-Chak Chan
 1n3GJV7xifc	Stanford Seminar - Distributed Perception and Learning Between Robots and the Cloud
 gmc4wEL2aPQ	Stanford Seminar - Mind in Motion: How Action Shapes Thought
 K_MGWHiEeMk	Stanford Seminar - Algorithmic Extremism: Examining YouTube's Rabbit Hole of Radicalization
 9g32v7bK3Co	Markov Decision Processes 1 - Value Iteration | Stanford CS221: AI (Autumn 2019)
 aIsgJJYrlXk	Search 1 - Dynamic Programming, Uniform Cost Search | Stanford CS221: AI (Autumn 2019)
-O9vCb30sHBA	Machine Learning 3 - Generalization, K-means | Stanford CS221: AI (Autumn 2019)
 BRgKyNdD9qU	Machine Learning 2 - Features, Neural Networks | Stanford CS221: AI (Autumn 2019)
-zrT2qETJilw	Machine Learning 1 - Linear Classifiers, SGD | Stanford CS221: AI (Autumn 2019)
 J8Eh7RqggsU	Overview Artificial Intelligence Course | Stanford CS221: Learn AI (Autumn 2019)
 3DKo219ZHMw	Stanford Lecture: Don Knuth - "Pi and The Art of Computer Programming" (2019)
 cUzBV8SSxcY	Stanford Webinar - The Innovator’s Guide to Ethics, Tom Byers and Jack Fuchs
@@ -1920,7 +1650,6 @@ yRcWtZ_ZIFI	Stanford Seminar - Current Status of tinyML and the Enormous Opportu
 DHAL2qyz7jg	Stanford Seminar - Quo Vadis Augmented Reality?
 bQsVqfakHms	Stanford Seminar - Learning and Predictions in Autonomous Systems
 yb0_GwRvF4k	Stanford Seminar - Persistent and Unforgeable Watermarks for DeepNeural Networks
-mjqTpahgkGs	Stanford Seminar - Federated Learning in Medicine: Breaking Down Silos to Advance Medical Research
 klIn8dEzuAA	Stanford Seminar - Edge Computing in Autonomous Vehicles (panel discussion)
 LVCHidbq9Xg	Stanford Seminar - Three Lessons Towards Ethical Tech
 SbPerGOte5s	Stanford Seminar - Field-hardened Robotic Autonomy
@@ -1951,7 +1680,6 @@ lzBB7xoZ3Q8	Lecture 14 – Contextual Vectors | Stanford CS224U: Natural Languag
 YygGzfkhtJc	Lecture 13 – Evaluation Metrics | Stanford CS224U: Natural Language Understanding | Spring 2019
 3UGti9Ju5j8	Lecture 12 – Evaluation Methods | Stanford CS224U: Natural Language Understanding | Spring 2019
 C5bdflsg7rs	Lecture 11 – Semantic Parsing | Stanford CS224U: Natural Language Understanding | Spring 2019
-7b2_3dDTKMc	Lecture 10 – Grounding | Stanford CS224U: Natural Language Understanding | Spring 2019
 JLFGfIAOw9c	MATSCI Demo
 tZ_Jrc_nRJY	Lecture 1  –  NLU Course Overview | Stanford CS224U: Natural Language Understanding | Spring 2019
 IYMYI9AJpQs	Lecture 2  – Word Vectors 1 | Stanford CS224U: Natural Language Understanding | Spring 2019
@@ -1981,7 +1709,6 @@ BWlJFy3Waro	Stanford Seminar - Jupyter Notebooks and Academic Publication
 Ku_nFNYc4Jw	Stanford Seminar - Spatial Reasoning for Human-Robot Interaction
 FvK-9aZ7cFo	Stanford Seminar: The Present & Future of Cross-border Entrepreneurship Between South Korea and U.S.
 QJqfCME8BTk	Stanford Webinar - Debriefing Medical Scenarios, Lou Halamek, M.D. & Nicole Yamada, M.D.
-XWHNZEQdFlA	Stanford Idea-to-Market (I2M) Program Student Testimonial
 QuW7L-vZKjU	Stanford Seminar - The Zen of Entrepreneurship
 omR7R4wvK8g	Stanford Seminar: Virtual & Mixed Reality for Security of Critical City-Scale Cyber-Physical Systems
 fFFfD7-11YE	Stanford Webinar - How and Why Successful Organizations Embrace Sustainability, Julia Novy-Hildesley
@@ -1993,7 +1720,6 @@ jJ7JbQBTChM	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 12 - 
 RN8qpSs8ozY	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 11 - Fast Reinforcement Learning
 o_i5F1zGPLs	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 10 - Policy Gradient III & Review
 E-_ecpD5PkE	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 9 - Policy Gradient II
-XXtpJxZBa2c	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 8 – Translation, Seq2Seq, Attention
 yorNTtNiuLI	Stanford Seminar - Inclusive Design, Ethical Tech, and All of Us
 S-CbhOsGKdw	Stanford Seminar - The Role of Technology in Understanding Perspectives on Aging and Health
 Opf9CBwP5R8	Stanford Seminar - Nanosecond-level Clock Synchronization in a Data Center
@@ -2002,23 +1728,19 @@ hUBtWUHYpbk	Stanford Seminar - Sustaining a Startup’s Growth
 nUk_P3G29tk	Stanford Seminar - Deep Learning for Medical Diagnoses
 SshzlYIuw2E	Stanford Seminar - Understanding the Situation for Startups in India
 3wWZBGN-iX8	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 20 – Future of NLP + Deep Learning
-iWea12EAu6U	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 6 – Language Models and RNNs
 IbBZc2amI9Y	Defining Problems as a Tool for Maximizing Systemic Impact
 3d_fULqmszc	Stanford Seminar - Closing Tech’s Diversity Gap
 IIzLxKzFU9Y	Stanford Seminar - Asia Entrepreneurship Update 2019
 V7CY68zH6ps	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 7 - Imitation Learning
 8LEuyYXGQjU	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 8 - Policy Gradient I
-gOV8-bC1_KU	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 6 - CNNs and Deep Q Learning
 SEERWBLRY3c	Stanford Seminar - Japan’s Innovation Ecosystem: Current Trends and Outlook for 2019
 7hWWyuesmhs	Stanford Seminar - Saving energy and increasing density in information processing using photonics
 4mqqtDd1u34	Stanford Seminar - Designing Culturally-relevant Educational Technology at a Global Scale
-XR8YSRcuVLE	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 19 – Bias in AI
 6Z4A3RSf-HY	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 18 – Constituency Parsing, TreeRNNs
 9oTHFx0Gg3Q	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 12 – Subword Models
 IFLstgCNOA4	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 10 - Chatbots / Closing Remarks
 G5FNYxbW_Qw	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 6 - Deep Learning Project Strategy
 NP2XqpgTJyo	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 9 - Deep Reinforcement Learning
-gCJCgQW_LKc	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 7 - Interpretability of Neural Network
 PKaOcV-4JVg	Idea-to-Market (I2M) Testimonial - Zach Scheel
 dRIhrn8cc9w	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 3 -  Model-Free Policy Evaluation
 E3f2Camj0Is	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 2 - Given a Model of the World
@@ -2028,14 +1750,9 @@ FgzM3zpZ55o	Stanford CS234: Reinforcement Learning | Winter 2019 | Lecture 1 - I
 M8dsZsEtEsg	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 17 – Multitask Learning
 i19m4GzBhfc	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 16 – Coreference Resolution
 4uG1NMKNWCU	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 15 – Natural Language Generation
-5vcj8kSwBCY	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 14 – Transformers and Self-Attention
-S-CspeZ8FHc	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 13 – Contextual Word Embeddings
-EAJoRA0KX7I	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 11 – Convolutional Networks for NLP
 yIdF-17HwSk	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 10 – Question Answering
 fyqm8fRDgl0	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 9 – Practical Tips for Projects
-QEw0qEa0E50	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 7 – Vanishing Gradients, Fancy RNNs
 IM9ANAbufYM	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 5 - AI + Healthcare
-ANszao6YQuM	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 4 - Adversarial Attacks / GANs
 JUJNGv_sb4Y	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 3 - Full-Cycle Deep Learning Projects
 AwQHqWyHRpU	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 2 - Deep Learning Intuition
 PySo_6S4ZAg	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 1 - Class Introduction & Logistics, Andrew Ng
@@ -2044,7 +1761,6 @@ PySo_6S4ZAg	Stanford CS230: Deep Learning | Autumn 2018 | Lecture 1 - Class Intr
 jys3JXh5hPU	Stanford Seminar - The Material of the 21st Century: Moving beyond Moore and Weiser
 jrxCfAjkT_U	Stanford Seminar - Extending the theory of ML for human-centric applications
 nC9_RfjYwqA	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 5 – Dependency Parsing
-yLYHDSv-288	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 4 – Backpropagation
 8CWyBNX6eDo	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 3 – Neural Networks
 kEMJRjEdNzM	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 2 – Word Vectors and Word Senses
 8rXD5-xhemo	Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 1 – Introduction and Word Vectors
@@ -2154,7 +1870,6 @@ E5IlNYbXzLI	Stanford Seminar - How is AI Evolving? A Look at the Startup Landsca
 pf4LY7Oiqu4	Stanford Seminar - Future Ethics
 235jcE4a_bI	Stanford Seminar - Microgenres: (Mis)Classifying Disciplinary Style
 Ss3P7tXH-gc	Stanford Seminar - Let Your Customers Educate You
-TsenczivhLQ	Stanford Seminar - Human-in-the-loop Computational Design
 C_throYeOTQ	Stanford Seminar - Focus on Forward Momentum
 s_zbROcui6U	Stanford Seminar - Learning, Memory, and Metacognitive Control
 mtBB3vY8ZQo	Stanford Seminar - Innovation Driven by Sustainability
@@ -2233,13 +1948,11 @@ oWoWriobqXE	Stanford Seminar - Exploring the implications of machine learning fo
 _cjIXhI4Xd0	Stanford Seminar - The End of Privacy
 CW3PNpRNV3o	Stanford Seminar - Asia Entrepreneurship Update 2018
 cIIVa4gSnV0	Stanford Seminar - Designing for Teens' & Young Adults' Engagement with Digital Health
-XL07WEc2TRI	Stanford Seminar - Information Theory of Deep Learning, Naftali Tishby
 11UKXaELg8M	Stanford Seminar - Bounced Checks at the UI/AI Intersection
 RyTBIF-yzko	Stanford Seminar - Scoring (automatically) news articles to fight misinformation
 XeXRPslin9E	Stanford Seminar - Revealing Data: Creepy or Curious?
 VdX-zHByfxc	Stanford Seminar - Building and Leading Organizations, Marc Tessier-Lavigne
 _2Wiql4QSLQ	Stanford Seminar - Computational memory: A stepping-stone to non-von Neumann computing?
-nj5t1Q_ANlw	Stanford Seminar - Human in the Loop Reinforcement Learning
 RwWEw-ppnWQ	Stanford Seminar - Intense Moments of a Startup Life
 4O6wjkW1U3Y	Stanford Seminar - Sustainable Conservation
 fa1gfFCz_AA	Stanford Seminar - Digital Technologies and Intimate Partner Violence
@@ -2262,7 +1975,6 @@ BTsTb9-k5vI	Stanford Seminar - Entrepreneurial Lessons from Self-Driving Cars
 _BOhD_3ntlo	Stanford Seminar - An architect's point of view on emerging technologies
 BxQw4CdxLr8	Stanford Lecture: Don Knuth—"A Conjecture That Had To Be True" (2017)
 4nSn0JhZX18	Stanford Seminar - Petascale Deep Learning on a Single Chip
-RBgfLvAOrss	Stanford Seminar - Deep Learning in Speech Recognition
 KmjklPj0ob0	Stanford Seminar - Productive Efficiency, Ideology, and AI in Wikipedia
 s3yvxCQR7D4	Stanford Seminar - Entrepreneurial Journey in Healthcare
 iH8X6Bcs7w8	Stanford Seminar - Design Fiction
@@ -2297,7 +2009,6 @@ qk5ghOwediQ	Stanford Seminar - My Story as a Korean Woman Entrepreneur
 ZavCg_DcSiU	Stanford Webinar - Strong Brain Connections = Better Learning
 3gn_rrC3rMA	Stanford Webinar: How to Build a Sustainable Organization
 EZJ7PXk9xnM	Stanford Webinar:  The Pursuit of Sustainability
--7qT_38iRSc	Stanford Seminar - Unethical Algorithms of Massive Scale
 5ZXU84_sGXo	How to Raise Money, and How to Succeed Long-Term - Stanford CS183F: Startup School
 TsEeAi7WccU	Stanford Seminar - Antisocial Computing
 CDkUDpsUI1E	Stanford Seminar - A Brainy Approach to Innovation, David Eagleman
@@ -2334,7 +2045,6 @@ qZl0cNupZBU	Stanford Seminar - Software-centric Visible Light Communication for 
 q6ndgl_85gQ	Stanford Seminar: Forcing Impact through the Gauntlet of an Emerging Ecosystem
 HU4tf26i1Gk	Stanford Seminar: Disrupting the Pink Aisle
 qRt7mFuKwQY	How to Build a Product II - Aaron Levie, co-founder of Box - Stanford CS183F: Startup School
-dkdKeoFYpn4	Stanford Seminar: PyWren - Pushing Microservices to Teraflops
 RQuOxxd5RL8	Stanford Seminar: The Increasing Globalization of Asia Startups Outside China
 6IFR3WYSBFM	How to Build a Product I -  Michael Seibel, Steve Huffman, Emmett Shear - Stanford CS183F
 YHC4ZXlBwK8	Stanford Seminar: Writing Software Faster with Crowds, Anand Kulkarni of Crowbotics
@@ -2342,7 +2052,6 @@ KrJgwKiEpaI	Stanford Seminar: Solve the Problem You Have
 abtHadERzXU	Live Office Hours with Yuri Sagalov and Sam Altman - Stanford CS183F: Startup School
 1TGqGeyri8Q	Stanford Seminar: Living in Information Everywhere
 oF5gr5eIZZA	Stanford Seminar: Asia Entrepreneurship Update 2017 - Current Ecosystem Trends
-zsBjAuexPq4	How to Get Ideas & Measure - Stewart Butterfield of Slack & Adam D'Angelo of Quora - Stanford CS183F
 2_IpVq6vKR0	Startup Mechanics - Kirsty Nathoo, Partner and CFO at Y Combinator - Stanford CS183F
 vHlbC74RJGU	Stanford Seminar: Neuromorphic Chips: Addressing the Nanostransistor Challenge
 f1hYg2tyVD0	Stanford Seminar - Emergence of Entrepreneurship Ecosystems Across Southeast Asia
@@ -2353,7 +2062,6 @@ n63K3crV_hs	Stanford Webinar: Regulation & Health-Eco Value Assess. - Two Critic
 ZY9VDxMtleI	Stanford Seminar: Autonomous Driving, are we there yet? - Technology, Business, Legal Considerations
 cHpdvQjC2ys	Stanford Seminar: Hesaam Esfandyarpour, Genapsys
 cmlC_t4_LkA	Stanford Seminar:  Roger Melen, Stanford University
-AJX4W3MwKzU	Stanford Seminar: Peeking at A/B Tests - Why It Matters and What to Do About It
 nR74lBO5M3s	Stanford Seminar: Google's Multilingual Neural Machine Translation System
 iPEsVB8G4xQ	Stanford Webinar:  Need-finding and Empathy - Why Your Customers Can't Tell You What They Want
 2R9122IAYvo	Stanford Seminar: Service Robots Are Here II
@@ -2448,7 +2156,6 @@ ivzpaiw26wQ	Stanford Seminar - Propositions as Types
 OLZGWSOQvao	Stanford Seminar - A Sharing Economy Solution for Childcare in Japan
 6s7hDxVGfFk	Stanford Webinar - The Design Thinking Hybrid: An Evolution of Innovation
 FXWsmHoFs6Y	Stanford Seminar - Cryptology and Security: the view from 2016 -  Whitfield Diffie
-VIRCybGgHts	Stanford Seminar - Can the brain do back-propagation? Geoffrey Hinton
 vlFdBizNC8E	Stanford Seminar - Understanding and Reducing the User Burdens in Applications
 1OHl2HbBNM8	Stanford Seminar - SE Asia Entrepreneurship Update: Trends and Dynamics in ASEAN
 JFa_k3bXsQI	Stanford Instructor - Meet Neil Daswani
@@ -2632,7 +2339,6 @@ zEcJhDgyTow	Stanford Seminar - Applying Theory to Practice (and Practice to Theo
 OOuxO4EGXuY	Stanford Seminar - Entrepreneurial Thought Leaders: Jeanne Gang of Studio Gang Architects
 T1ypVVi2DlU	Stanford Seminar - Entrepreneurial Thought Leaders: Shah Selbe of National Geographic Society
 Tfi-P7Wh_j4	Stanford Seminar - Entrepreneurial Thought Leaders: Jennifer Pahlka of Code for America
-P9GLDezYVX4	Stanford Seminar - Deep Speech: Scaling up end-to-end speech recognition
 dn74oHbhRuk	Stanford Seminar - Service Robots are Here
 7TMdHEcw_eY	Stanford Course - Genomics and the Other Omics
 JrhRTRYDAUE	Stanford Course - Fundamentals of Genetics: The Genetics You Need to Know
@@ -2696,7 +2402,6 @@ VGQNTTV65U0	Stanford Instructor - Meet Barry Starr
 Cxwk9CvjbF0	Stanford Instructor - Meet Hinco Gierman
 a5HhZGq5Cvg	Stanford Instructor - Meet Ruth Tennen
 8RyAxWTV0L4	Stanford Faculty - Meet Jonathan Pritchard
-qjCApNPevVU	Stanford Faculty - Meet Anne Brunet
 S6OefLQh-sQ	Stanford Faculty - Meet Gavin Sherlock
 9XpLZFjp11I	Stanford Faculty - Meet Will Greenleaf
 WtrhukvHDgw	Stanford Faculty - Meet Monte Winslow
@@ -2948,11 +2653,9 @@ mteo9XYRuBE	Stanford Webinar: How to Lead Innovation Through Implementation
 3oMbyHOKR2A	Graduate Student Orientation - September 2012
 1JdSMlhjTDM	Stanford Webinar - Design Thinking and the Art of Innovation
 at7QPmrZ8Rc	Stanford Course - Creating Demand: Driving Growth Using Traditional, Social and Viral Marketing
-NvS0PrDyvY0	Young Entrepreneurs for Society Student Testimonial - Innovation Masters Series
 U7zt_wMU6p8	Entrepreneurship in Engineering and Science-Based Industries
 5G1OrNLxoIY	Stanford At Your Fingertips
 fwZqkq-Ch-s	Stanford Course: Marketing Innovation
-cJyB9CSvkDQ	Student Testimonial - Innovation Masters Series - Angelica
 JMOBVuba8z0	Neil Daswani - A Conversation on Stanford, Twitter, and Mobile Security
 uxUSCK6PXQI	A Conversation About Energy, Ricardo Levy and Howie Rosen
 upPCH9HP2nA	Stanford Webinar - Project-Based Work -- Your Key to Innovation

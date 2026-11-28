@@ -18,18 +18,24 @@ const hasWork = (s: BrainState) => s.turns >= 4 || Object.values(s.digests).some
 
 export const CURVEBALLS: Curveball[] = [
   {
-    id: "requirement-change", label: "Requirement change", kinds: ["coding", "hld", "lld"], window: [0.55, 0.8],
+    id: "requirement-change", label: "Requirement change", kinds: ["coding", "hld", "lld", "ml", "mlcode"], window: [0.55, 0.8],
     eligible: hasWork,
     cue: (q) => q.kind === "coding"
       ? "Change one constraint of the problem now (for example: the input no longer fits in memory and arrives as a stream, or values can be negative, or it must run in O(1) extra space). State the change plainly and ask how their solution adapts."
+      : q.kind === "mlcode"
+      ? "Change one constraint now (for example: the data no longer fits in memory and arrives in mini-batches, the inputs can contain very large values that overflow, or it must run batched on a GPU without Python loops). Ask how their code adapts."
+      : q.kind === "ml"
+      ? "Change one requirement now, in a way that stresses their current design: labels arrive 30 days late, the latency budget drops to 20 ms, a new market launches with almost no data, or a regulator requires explanations for every decision. Pick the one that hurts their design most and ask how it changes."
       : "Change one requirement now, in a way that stresses their current design: traffic grows 100×, a new region with strict data residency, or a new feature that needs strong consistency. Pick the one that hurts their design most. Ask how it changes.",
     scoreNote: "Requirement change: did the candidate adapt the design rather than restart, and identify what breaks?",
   },
   {
-    id: "bad-idea", label: "Bad-idea bait", kinds: ["coding", "hld", "lld"], window: [0.35, 0.65],
+    id: "bad-idea", label: "Bad-idea bait", kinds: ["coding", "hld", "lld", "ml", "mlcode"], window: [0.35, 0.65],
     eligible: hasWork,
     cue: (q) => q.kind === "coding"
       ? "Casually suggest a plausible but worse approach (for example brute force with a sort inside a loop, or a recursion that is exponential) as if you like it: 'Couldn't we just…?'. See whether they push back with reasons."
+      : q.kind === "ml" || q.kind === "mlcode"
+      ? "Casually suggest a plausible but flawed ML choice as if you favour it (for example a random train/test split on time-ordered data, optimising accuracy on a 1%-positive problem, a softmax without subtracting the max, or jumping straight to a large model with no baseline). See whether they push back politely with reasons."
       : "Casually suggest a plausible but flawed design choice as if you favour it (for example a single relational database for everything at this scale, synchronous calls for fan-out, or storing blobs in the database). See whether they push back politely with reasons.",
     scoreNote: "Bad-idea bait: did the candidate push back with reasons instead of agreeing?",
   },
@@ -42,19 +48,19 @@ export const CURVEBALLS: Curveball[] = [
     scoreNote: "Interviewer slip: did the candidate notice and correct a wrong claim from the interviewer?",
   },
   {
-    id: "explain-pm", label: "Explain it to a PM", kinds: ["hld", "lld", "coding"], window: [0.75, 0.92],
+    id: "explain-pm", label: "Explain it to a PM", kinds: ["hld", "lld", "coding", "ml", "mlcode"], window: [0.75, 0.92],
     eligible: hasWork,
     cue: () => "Ask them to explain their solution in under two minutes, as they would to a product manager with no engineering background.",
     scoreNote: "Explain to a PM: was the explanation clear, short and free of jargon?",
   },
   {
-    id: "time-crunch", label: "Time crunch", kinds: ["hld", "lld", "coding"], window: [0.82, 0.95],
+    id: "time-crunch", label: "Time crunch", kinds: ["hld", "lld", "coding", "ml", "mlcode"], window: [0.82, 0.95],
     eligible: hasWork,
     cue: () => "Tell them you are short on time and ask what they would cut or simplify to ship a first version, and what risk that leaves.",
     scoreNote: "Time crunch: did the candidate prioritise sensibly and name the risk they accept?",
   },
   {
-    id: "ceiling-probe", label: "Ceiling probe", kinds: ["hld", "coding", "lld"], window: [0.7, 0.9],
+    id: "ceiling-probe", label: "Ceiling probe", kinds: ["hld", "coding", "lld", "ml", "mlcode"], window: [0.7, 0.9],
     eligible: hasWork,
     cue: () => "Ask one follow-up that is a level above the stated bar (an L6-style question about global scale, failure domains or a hard algorithmic optimisation). Keep going deeper while they keep up.",
     scoreNote: "Ceiling probe: how far above the bar did the candidate get? Report separately; do not penalise.",
@@ -67,7 +73,7 @@ export const CURVEBALLS: Curveball[] = [
   },
   // Out-of-curriculum replaces the question before the round starts (see questions.ts); it never fires mid-round.
   {
-    id: "out-of-curriculum", label: "Out-of-curriculum question", kinds: ["hld", "lld", "coding"], window: [0, 0],
+    id: "out-of-curriculum", label: "Out-of-curriculum question", kinds: ["hld", "lld", "coding", "ml", "mlcode"], window: [0, 0],
     eligible: () => false, cue: () => "", scoreNote: "Out-of-curriculum question: the candidate had not studied this design.",
   },
 ];

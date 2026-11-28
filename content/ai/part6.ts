@@ -27,14 +27,22 @@ export const aiTopics6: Record<string, Topic> = {
     signals: ["'Design YouTube recommendations / a news feed / ads ranking'", "'How do you handle a brand-new video?'", "'Your recommender keeps showing the same things'"],
     lesson: "Recommendation and ranking systems, from collaborative filtering to multi-stage funnels.",
     pitfalls: ["One model scoring all billion items", "Optimising clicks alone", "Ignoring position bias in the training data"],
-    quiz: [],
+    quiz: [
+      Q("Why do large recommenders use a retrieval stage before ranking?", ["Ranking models can't use embeddings", "*Scoring hundreds of millions of items with a heavy model per request is far too slow", "Retrieval is more accurate than ranking", "To avoid needing labels"], "Retrieval cheaply narrows billions to hundreds; the heavy ranker then scores only those."),
+      Q("A two-tower model is trained with in-batch negatives. What bias does that introduce?", ["Towards new items", "*Popular items appear as negatives more often, so they get penalised", "Towards long videos", "None"], "Items are sampled as negatives in proportion to how often they appear in batches; correct with log-frequency (logQ) correction."),
+      Q("Items at the top of a list get more clicks whatever their quality. The standard fix in training is?", ["Drop the top position from the data", "*Model position separately (a position feature or bias tower) and neutralise it at serving", "Train only on the bottom positions", "Shuffle the results for every user"], "The model learns quality separately from where the item was shown."),
+    ],
     prereq: ["ai-embeddings", "ai-metrics"],
   }),
   "ai-production": T("ai", "ai-production", "ML in production", 1, 35, "Serving models, watching them decay, retraining them, and the pipelines that make all of it repeatable.", {
     signals: ["'How would you deploy this model?'", "'Accuracy dropped three months after launch'", "'How do you make training reproducible?'"],
     lesson: "Taking a model from a notebook to a system that serves, is monitored and keeps learning.",
     pitfalls: ["No monitoring beyond uptime", "Retraining on a schedule nobody can justify", "Shipping a model without a rollback path"],
-    quiz: [],
+    quiz: [
+      Q("Features are computed by one code path in training and another in serving. The risk is called?", ["Concept drift", "*Training–serving skew", "Overfitting", "Label leakage"], "The model sees different inputs live than it learned from; share one feature definition (a feature store)."),
+      Q("Inputs look the same as last month, but the right answer for the same input has changed. This is?", ["Data drift", "*Concept drift", "Covariate shift", "Label noise"], "Concept drift changes P(y | x); data drift changes P(x)."),
+      Q("A new model is scored on live traffic without its predictions being used. This is called?", ["A/B testing", "Canary release", "*Shadow deployment", "Blue–green deployment"], "Shadow mode compares behaviour safely before any user is affected."),
+    ],
     prereq: ["ai-metrics"],
   }),
 };

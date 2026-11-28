@@ -26,6 +26,13 @@ export const MISTAKES: PlantedMistake[] = [
   M("no-edge-cases", ["coding"], "problemSolving", "Never considered edge cases or tested the code.", "Never walk through a test case or mention edge cases unless asked twice.", /edge case|test(ed|ing)?|walk ?through|dry.?run|corner/i),
   M("brute-force-claim", ["coding"], "algorithms", "Presented a brute-force solution as optimal.", "Propose a brute-force approach and claim it cannot be improved, even though it can.", /brute|optimal|better approach|improv|faster/i),
   M("mutate-input", ["coding"], "coding", "Mutated the input without asking whether that is allowed.", "Sort or modify the input in place without asking if that is allowed.", /mutat|in.?place|modif(y|ies|ied) the input|side effect/i),
+  M("no-baseline", ["ml"], "modeling", "Jumped to a complex model without a simple baseline.", "Propose a large deep model straight away and never mention a simple baseline or heuristic to beat.", /baseline|heuristic|simple(r)? model|logistic|start simple/i),
+  M("leaky-split", ["ml"], "data", "A random split on time-ordered data, leaking the future into training.", "Split the data randomly into train and test even though it is time-ordered, and use a feature computed after the label time.", /leak|time.?based|temporal|split by time|future|point.?in.?time/i),
+  M("wrong-metric", ["ml"], "framing", "Optimised a metric that does not match the product goal.", "Choose accuracy as the main metric even though positives are rare, and never connect it to an online metric.", /precision|recall|auc|imbalanc|online metric|business metric|accuracy/i),
+  M("no-monitoring", ["ml"], "production", "No plan for drift, monitoring or retraining.", "Say the model is done once deployed; never mention monitoring, drift or retraining.", /monitor|drift|retrain|freshness|stale|alert/i),
+  M("unstable-softmax", ["mlcode"], "testing", "A softmax or log that overflows on large inputs.", "Write softmax as exp(x) / sum(exp(x)) without subtracting the max, and take log of probabilities directly.", /overflow|stab|subtract.{0,10}max|log.?sum.?exp|nan|inf/i),
+  M("shape-bug", ["mlcode"], "coding", "A broadcasting or shape mistake.", "Make one broadcasting mistake (for example sum over the wrong axis) and do not check shapes.", /shape|axis|broadcast|dimension|transpose/i),
+  M("wrong-gradient", ["mlcode"], "ml", "A gradient with a wrong sign or a missing term.", "Derive the gradient with one error (a wrong sign or a missing 1/n) and do not check it numerically.", /gradient|sign|derivat|numerical check|finite difference|1\/n/i),
   M("no-estimates", ["hld"], "scoping", "Skipped capacity estimates and never pinned the scale.", "Skip capacity estimates entirely; say 'it should scale' without numbers.", /estimat|capacity|qps|numbers|scale|back.of/i),
   M("single-db", ["hld"], "design", "One database with no replication or sharding at a scale that needs it.", "Put everything in a single relational database with no replicas or sharding, and say it will be fine.", /single (db|database)|shard|replica|partition|single point/i),
   M("no-cache", ["hld"], "design", "No cache on a read-heavy path.", "Serve every read straight from the database; do not mention caching unless asked.", /cach|redis|memcache|read.heavy/i),
@@ -61,9 +68,9 @@ export function candidatePrompt(kind: Kind, level: Level, q: InterviewQuestion, 
 
 Your name is ${candidateName(seed)}. You do not know the question until the interviewer asks it. For your own reference, the question will be close to: ${q.statement}
 
-${kind === "coding" || kind === "lld"
-    ? `When you write ${kind === "coding" ? "code" : "classes"}, put them between <doc> and </doc>. That text appears in the shared doc the interviewer sees${voice ? " and is not read aloud; say what you are writing in one short sentence instead" : ""}. Each <doc> block replaces the doc's whole content, so always include the full current version.`
-    : kind === "hld" ? `When you sketch your design, put the components and connections between <board> and </board>, one per line like "Client -> API -> DB". That appears on the shared whiteboard${voice ? " and is not read aloud" : ""}. Each block replaces the whole board.` : ""}
+${kind === "coding" || kind === "lld" || kind === "mlcode"
+    ? `When you write ${kind === "lld" ? "classes" : "code"}, put them between <doc> and </doc>. That text appears in the shared doc the interviewer sees${voice ? " and is not read aloud; say what you are writing in one short sentence instead" : ""}. Each <doc> block replaces the doc's whole content, so always include the full current version.`
+    : kind === "hld" || kind === "ml" ? `When you sketch your design, put the components and connections between <board> and </board>, one per line like "Client -> API -> DB". That appears on the shared whiteboard${voice ? " and is not read aloud" : ""}. Each block replaces the whole board.` : ""}
 ${voice ? "This is spoken: reply in one to four short sentences, no lists or markdown outside the blocks." : "Keep each message under 150 words outside the blocks."}`;
 }
 

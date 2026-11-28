@@ -19,6 +19,9 @@ Format, any number of designs:
     --- flow                markdown: how the 45 minutes go
     --- req | est | api | hl | deep | wrap     markdown model answer per stage (HLD)
     --- req | model | patterns | code | ext    markdown model answer per stage (LLD: ids d-lld-*)
+    --- frame | data | model | eval | serve | deep   ML system design (ids d-ml-*)
+    --- req | est | api | hl | deep | wrap     GenAI system design (ids d-gen-*, and the d-ai-* ones)
+    --- clarify | approach | code | test       ML coding, Python (ids d-mlc-*; no diagram)
     --- boxes               LLD class diagram: "Name:kind|field;field|method;method" per line
     --- rels                LLD relations: "A>B:extends|implements|has|uses:label" per line
     --- variants            Q: the variation / A: what changes (A may continue)
@@ -36,7 +39,7 @@ import json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-STAGES = ["req", "est", "api", "hl", "deep", "wrap", "model", "patterns", "code", "ext"]
+STAGES = ["req", "est", "api", "hl", "deep", "wrap", "model", "patterns", "code", "ext", "frame", "data", "eval", "serve", "clarify", "approach", "test"]
 
 def qa(body):
     out, q, a = [], None, None

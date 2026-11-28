@@ -12,8 +12,8 @@ export interface MockRecommendation {
   readiness?: boolean;
 }
 
-const KIND_AREA: Record<Kind, Area> = { coding: "dsa", hld: "hld", lld: "lld", behavioral: "craft" };
-const KIND_LABEL: Record<Kind, string> = { coding: "Coding", hld: "System design", lld: "Object-oriented design", behavioral: "Googleyness" };
+const KIND_AREA: Record<Kind, Area> = { coding: "dsa", hld: "hld", lld: "lld", ml: "ai", mlcode: "ai", behavioral: "craft" };
+const KIND_LABEL: Record<Kind, string> = { coding: "Coding", hld: "System design", lld: "Object-oriented design", ml: "ML system design", mlcode: "ML coding", behavioral: "Googleyness" };
 
 export const W = { coverage: 3, weakness: 2.5, lapses: 1.5, miscalibration: 1.5, staleness: 1, repeat: 2 };
 
@@ -34,7 +34,7 @@ export function recommendMocks({ items, progress, attempts, areas, now = Date.no
   const mocks = attempts.filter((a) => a.kind.startsWith("mock:"));
   const out: { score: number; rec: MockRecommendation }[] = [];
 
-  for (const kind of ["coding", "hld", "lld", "behavioral"] as Kind[]) {
+  for (const kind of ["coding", "hld", "lld", "ml", "mlcode", "behavioral"] as Kind[]) {
     const area = KIND_AREA[kind];
     if (!areas[area]) continue;
     const inArea = items.filter((i) => i.area === area && i.kind !== "mock");

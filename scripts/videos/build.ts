@@ -13,7 +13,7 @@ import { resolve } from "node:path";
 import { CHANNELS } from "./channels";
 import { lcIndex, questionsIn } from "./questions";
 import { homeOf, type LcRow } from "./rules";
-import { BROAD_NO, BROAD_OK, DSA_CONCEPTS, DSA_FALLBACK, HLD_CONCEPTS, HLD_DESIGNS, HLD_SKIP, LLD_ALLOW, LLD_CONCEPTS, LLD_DESIGNS, LLD_SKIP, SKIP, type ConceptRule } from "./concepts";
+import { AI_CONCEPTS, AI_SKIP, BROAD_NO, BROAD_OK, DSA_CONCEPTS, DSA_FALLBACK, HLD_CONCEPTS, HLD_DESIGNS, HLD_SKIP, LLD_ALLOW, LLD_CONCEPTS, LLD_DESIGNS, LLD_SKIP, SKIP, type ConceptRule } from "./concepts";
 import { DESIGNS } from "../../content";
 import { OVERRIDES } from "./overrides";
 import { cfIndex, contestHome, type CfRow } from "./contests";
@@ -96,6 +96,14 @@ CHANNELS.forEach((c, ci) => {
       to.push(...LLD_CONCEPTS.filter(([re]) => re.test(raw)).map(([, t]) => t));
       to.push(...LLD_DESIGNS.filter(([re, t]) => re.test(raw) && PAGES.has(t)).map(([, t]) => t));
       to = [...new Set(to)];
+    }
+    if (c.areas.includes("ai") && !AI_SKIP.test(raw)) {
+      const broad = BROAD.has(c.file);
+      if (!broad || (BROAD_OK.test(raw) && !BROAD_NO.test(raw))) {
+        // at most 5 pages per video (multi-topic explainers like "LLaMA explained: KV cache, GQA, RoPE")
+        to.push(...AI_CONCEPTS.filter(([re, t]) => re.test(raw) && PAGES.has(t)).map(([, t]) => t).slice(0, 5));
+        to = [...new Set(to)];
+      }
     }
     if (!to.length) to = DSA_FALLBACK.filter(([re]) => re.test(raw)).map(([, t]) => t).slice(0, 2);
     if (to.length) {
