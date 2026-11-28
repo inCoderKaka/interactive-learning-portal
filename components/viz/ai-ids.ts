@@ -13,3 +13,5 @@ export const AI_DEEP_WIDGET_IDS = new Set([
   "adapt-decision", "distill-temp", "constrained-decoding", "speculative", "kv-cache", "continuous-batching", "quantization", "llm-capacity", "prompt-eval", "memory-store", "ivf-pq", "hybrid-search", "rerank", "agentic-rag", "rag-eval", "plan-execute", "orchestrator", "agent-permissions",
   "serving-modes", "drift-monitor", "eval-pipeline", "fairness-threshold", "gan-game", "spectrogram", "vlm-tokens", "judge-bias", "injection-lab", "guardrail-stack", "ml-design-flow", "genai-design-flow", "ml-coding-plan", "ml-pipeline", "rnn-unroll", "seq2seq-align",
 ]);
+/** Widget ids served by components/viz/Craft.tsx (the req3 Interview Craft visuals). */
+export const CRAFT_WIDGET_IDS = new Set(["level-map", "variance-sim", "prep-planner", "parallel-timeline", "offer-compare", "story-bank", "round-clock"]);

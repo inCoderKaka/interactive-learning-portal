@@ -224,3 +224,23 @@ i declined by mistake ... these are the answers: You won't be around to approve 
 · ML interviews also include ML coding rounds (implement attention, k-means or a training loop from scratch). Should AI mock interviews get a Python Code tab, as LLD got a Java one, and should I add ML-coding questions? (Code tab + ML coding questions (Recommended))
 · How should the AI work ship, and what comes after it? (Midway + end, stop after AI)
 · How much of this session's budget should the 4:55 AM run use? as much as it takes to finish the ai part (the craft in not updated in this session)
+
+[2026-11-28, session 8, the user's request (verbatim)]
+interview craft comes next, deep research well on how to face interviews, biases to be removed, various situations and how to handle them, what all things depend on the interviewers, and more things I can't think of right now. Also, I started off with only facing for google interviews and everything, but we have to incorporate all the biggest names in tech industry like Google, Amazon, Meta, Netflic, Adobe, Goldmann Sachs, Morgan Stanley, DE Shaw, Apple, Uber, Microsoft, intuit (add more and more top paying companies). for now, only incorporate the interview craft with all these companies, later, I'll ask the coding, hld, lld, ai things to be updated in the future sessions... if you have any doubts ask me. dont make any assumptionsalso, from the AI topic tree, when I click on an interview checkpoint (/interviews?at=backpropagation), it also shows me questions of HLD, LLD which is not intended... the AI pages should only show AI things (exercise/interview questions of AI) and there should be a clear separation of learning items.
+
+[2026-11-28, session 8, answers to clarifying questions]
+"Which hiring market should the Craft pages describe for each company?"="India offices first, note US"
+"Which levels should the company pages target?"="Mid and senior, mapped" (mid = Google L4 equivalent, senior = L5 equivalent, with a level-mapping table across companies)
+"Which roles should the company pages cover?"="Software engineer, ML / AI engineer"
+"Besides the 12 you named, which groups of top-paying companies should I add?"="Other big tech, High-paying product and AI, Indian product companies, Trading and quant firms" + "for the trading and quant firms, we only focus on the software and ml roles' interviews for these firm."
+"How should the Craft area be organised?"="use company first approach, but also include general chapters some things that might be common across nearly all companies."
+"Which should the bias chapter cover?"="Your biases while interviewing, Interviewer biases against you, Biases in how you prepare, Biases in evaluating offers"
+"The mock room has one behavioural interview type, called 'Googleyness'. What should it become?"="Pick a company (Recommended)" (the AI interviewer asks that company's style and scores against that company's rubric)
+"Should Craft also get mock-interview checkpoints?"="No checkpoints for Craft"
+"What should one company look like in the topic tree?"="Chapter for big names, page for the rest" (the 12 named companies get a full chapter; added companies one deep page each)
+"Where should the general chapters sit?"="General first, then companies"
+"Approve the outline first?"="No, research and proceed" (outline written to a reviewable file)
+"How should the Craft work ship?"="Midway + end (Recommended)" (the AI checkpoint fix ships with the first one)
+
+[2026-11-28, session 9, the user's request (verbatim)]
+continue the interview craft research and implementation work. restart research or look at previous session's transcript if at all required. but make sure to not miss anything.

@@ -186,6 +186,34 @@ class Account:
   ],
 
   /* ---------------- Interview craft ---------------- */
+  "craft-hiring": [
+    order("Order the usual big-tech hiring pipeline.", ["Application or referral", "Recruiter call", "Technical screen", "Onsite loop", "Decision (committee or debrief)", "Team match and offer"], "Some companies add an online assessment before the screen; team match happens at Google and Meta."),
+    match("Match the company level to its rung.", [["Amazon SDE II", "Mid (Google L4)"], ["Meta E5", "Senior (Google L5)"], ["Goldman Sachs Analyst", "Entry level"], ["Microsoft 65–67", "Principal (above senior)"]]),
+    tf("At Google, the interviewers who met you make the final hiring decision.", false, "A hiring committee that didn't interview you decides from the written packet."),
+    pick("Which rounds mainly decide whether you're levelled senior?", ["Coding rounds", "*System design and behavioural", "The recruiter call", "The online assessment"], "Uncertain loops are levelled down."),
+    guess("In interviewing.io's data, how often did a solid candidate (about 3 of 4 on average) fail a single round?", { min: 0, max: 60, answer: 22, tol: 6, unit: "%" }, "Up to about 22% of the time: one round is one noisy draw."),
+  ],
+  "craft-search": [
+    pick("In Ashby's data, referred applicants were interviewed at about what rate, versus 3% for online applicants?", ["5%", "*40%", "90%", "3%"], "Referrals are about 1% of applications but convert far better."),
+    tf("Most applicant tracking systems automatically reject resumes for formatting.", false, "In Enhancv's 2025 recruiter interviews, 23 of 25 said theirs don't; knockout questions and volume do the filtering."),
+    order("Order the parallel-search plan.", ["List 8–12 companies in tiers", "Apply to all within a week, referrals first", "Start slow processes and warm-ups first", "Batch phone screens in 2–3 weeks", "Stack onsites so offers land together"]),
+    odd("Which does NOT belong on an Indian tech resume for a product company?", ["Impact bullets with numbers", "Company names and titles", "Skills you can be quizzed on", "*Your photo and date of birth"], "Modern Indian tech resumes omit photo, date of birth and CTC."),
+    blank("Google's resume formula: accomplished X, as measured by ___, by doing Z.", ["*Y", "salary", "years", "keywords"], "The X-Y-Z formula."),
+  ],
+  "craft-situations": [
+    pick("Your internet drops mid-round. What should you do first?", ["Wait silently", "*Tell the interviewer, switch to a phone or hotspot, and inform the recruiter in writing", "End the interview", "Email next week"], "Google's guide: tell them, camera off, phone as a last resort, reschedule if needed."),
+    tf("A humblebrag weakness like 'I'm a perfectionist' scores better than a real weakness.", false, "Sezer, Gino & Norton (2018): raters preferred honest weaknesses."),
+    match("Match the situation to the move.", [["Silent interviewer", "Narrate checkpoints, pause a beat"], ["Hint seems wrong", "Test it on your example and ask"], ["Question switched mid-way", "Summarise part one, then ask what changes"], ["Approach breaks", "Name the failing case, pivot out loud"]]),
+    odd("Which technique failed replication?", ["Practising with an observer", "Reappraising nerves as excitement", "Slow breathing", "*Power posing"], "Power posing did not replicate on hormones or behaviour."),
+    pick("Why is calling a firing a 'layoff' risky in India?", ["It's not risky", "*Background checks compare exit records and provident-fund dates", "Recruiters can't ask", "Layoffs sound worse"], "Discrepancies found later can cost the offer."),
+  ],
+  "craft-offers": [
+    order("Order the safe steps from offer to joining in India.", ["Written offer received", "Buyout or joining date agreed in writing", "Background check started, dates match", "Resign in writing", "Relieving letter", "Join"]),
+    pick("Amazon's most flexible offer component is usually…", ["Base salary", "*The sign-on bonus", "The level", "Holidays"], "Base is capped; RSUs vest 5/15/40/40."),
+    tf("A ₹30 LPA CTC is always better than a ₹24 LPA CTC.", false, "Split CTC into fixed, variable, one-time and stock; a fixed-heavy lower CTC can win."),
+    match("Match the term to its meaning.", [["Cliff", "Nothing vests until a set date"], ["Clawback", "Repay a bonus if you leave early"], ["Buyout", "Pay to shorten your notice period"], ["Refresher", "Extra stock in later years"]]),
+    guess("Amazon's RSU vesting in year one is about what percent of the grant?", { min: 0, max: 50, answer: 5, tol: 3, unit: "%" }, "5/15/40/40, offset by a two-year sign-on bonus."),
+  ],
   "google-loop": [
     order("Order the usual Google hiring process.", ["Recruiter screen", "Technical screen", "Interview loop (coding, design, Googleyness and leadership)", "Hiring committee review", "Team match and offer"], "Interviewers write feedback; a committee decides. Confirm the exact steps with your recruiter."),
     tf("A single interviewer doesn't make the final hiring decision at Google.", true, "Written feedback from every round goes to a hiring committee."),

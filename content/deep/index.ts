@@ -167,9 +167,41 @@ import { notes as n_ai_sysdesign } from "./ai/notes/sysdesign";
 import { rnn } from "./ai/rnn";
 import { notes as n_ai_rnn } from "./ai/notes/rnn";
 
-const NOTES: Record<string, string> = { ...n_ai_rnn, ...n_ai_sysdesign, ...n_ai_production, ...n_ai_evalsafety, ...n_ai_multimodal, ...n_ai_agents, ...n_ai_retrieval, ...n_ai_prompting, ...n_ai_inference, ...n_ai_decoding, ...n_ai_finetune, ...n_ai_reasoning, ...n_ai_alignment, ...n_ai_llmtrain, ...n_ai_transformers, ...n_ai_tokens, ...n_ai_recsys, ...n_ai_embeddings, ...n_ai_cnn, ...n_ai_pytorch, ...n_ai_nn, ...n_ai_metrics, ...n_ai_classic, ...n_ai_data, ...n_ai_basics, ...n_ai_math, ...n_lld_concurrency2, ...n_lld_concurrency, ...n_lld_quality, ...n_lld_patterns2, ...n_lld_patterns1, ...n_lld_oop, ...n_lld_framework, ...n_hld_papers, ...n_hld_multiregion, ...n_hld_security, ...n_hld_ops, ...n_hld_storage, ...n_hld_protection, ...n_hld_streams, ...n_hld_messaging, ...n_hld_transactions, ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
+import { biases } from "./craft/biases";
+import { notes as n_craft_biases } from "./craft/notes/biases";
+
+import { hiring } from "./craft/hiring";
+import { notes as n_craft_hiring } from "./craft/notes/hiring";
+
+import { search } from "./craft/search";
+import { notes as n_craft_search } from "./craft/notes/search";
+
+import { situations } from "./craft/situations";
+import { notes as n_craft_situations } from "./craft/notes/situations";
+
+import { situations2 } from "./craft/situations2";
+import { notes as n_craft_situations2 } from "./craft/notes/situations2";
+
+import { rounds } from "./craft/rounds";
+import { notes as n_craft_rounds } from "./craft/notes/rounds";
+
+import { behavioural } from "./craft/behavioural";
+import { notes as n_craft_behavioural } from "./craft/notes/behavioural";
+
+import { offers } from "./craft/offers";
+import { notes as n_craft_offers } from "./craft/notes/offers";
+
+const NOTES: Record<string, string> = { ...n_craft_offers, ...n_craft_behavioural, ...n_craft_rounds, ...n_craft_situations2, ...n_craft_situations, ...n_craft_search, ...n_craft_hiring, ...n_craft_biases, ...n_ai_rnn, ...n_ai_sysdesign, ...n_ai_production, ...n_ai_evalsafety, ...n_ai_multimodal, ...n_ai_agents, ...n_ai_retrieval, ...n_ai_prompting, ...n_ai_inference, ...n_ai_decoding, ...n_ai_finetune, ...n_ai_reasoning, ...n_ai_alignment, ...n_ai_llmtrain, ...n_ai_transformers, ...n_ai_tokens, ...n_ai_recsys, ...n_ai_embeddings, ...n_ai_cnn, ...n_ai_pytorch, ...n_ai_nn, ...n_ai_metrics, ...n_ai_classic, ...n_ai_data, ...n_ai_basics, ...n_ai_math, ...n_lld_concurrency2, ...n_lld_concurrency, ...n_lld_quality, ...n_lld_patterns2, ...n_lld_patterns1, ...n_lld_oop, ...n_lld_framework, ...n_hld_papers, ...n_hld_multiregion, ...n_hld_security, ...n_hld_ops, ...n_hld_storage, ...n_hld_protection, ...n_hld_streams, ...n_hld_messaging, ...n_hld_transactions, ...n_hld_partitioning, ...n_hld_replication, ...n_hld_databases, ...n_hld_caching, ...n_hld_traffic, ...n_hld_networking, ...n_hld_foundations, ...n_advanced_graphs, ...n_complexity, ...n_arrays_hashing, ...n_linear, ...n_search_lists, ...n_trees_heaps, ...n_graphs_core, ...n_dp, ...n_greedy_math, ...n_strings_structures };
 
 const BODIES: Record<string, Deep> = {
+  ...offers,
+  ...behavioural,
+  ...rounds,
+  ...situations2,
+  ...situations,
+  ...search,
+  ...hiring,
+  ...biases,
   ...rnn,
   ...sysdesign,
   ...production,

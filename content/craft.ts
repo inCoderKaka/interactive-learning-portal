@@ -2,6 +2,127 @@ import { Q, T } from "./h";
 import type { Design, Topic } from "@/lib/types";
 
 export const craftTopics: Topic[] = [
+  T("craft", "craft-hiring", "How tech hiring works", 1, 25, "The pipeline from application to offer, who decides, how levels map across companies and how they are set, how you are scored, and how much depends on luck.", {
+    signals: ["Before you apply anywhere", "A recruiter mentions a level, a committee or a bar raiser", "You were rejected and want to know what it means"],
+    lesson: "How tech hiring works, explained from zero.",
+    pitfalls: ["Comparing titles instead of levels", "Treating one rejection as a verdict on your skill", "Doing good work silently, so nothing is written down"],
+    quiz: [
+      Q("Who decides at Google after the loop?", ["The friendliest interviewer", "The recruiter", "*A hiring committee that reads the written packet", "The candidate's referrer"], "Committee members did not interview you."),
+      Q("Meta E5 maps most closely to…", ["Google L4", "*Google L5", "Amazon SDE II", "Microsoft 61"], "E5 is Meta's senior rung, like Google L5 and Amazon SDE III."),
+      Q("A solid candidate (about 3 of 4 on average) failed single rounds up to what share of the time in interviewing.io's data?", ["Never", "2%", "*About 22%", "60%"], "Single rounds are noisy; judge the loop and apply widely."),
+    ],
+  }),
+  T("craft", "craft-search", "Getting interviews", 1, 25, "Resumes, referrals, the recruiter call, how long to prepare and in what order, and running many processes at once so offers land together.", {
+    signals: ["You are starting a job search", "Online applications get no replies", "An offer arrived while other processes are still running"],
+    lesson: "Getting interviews and planning the search.",
+    pitfalls: ["Relying only on online applications", "Naming an expected CTC before the level is set", "Interviewing at your dream company first"],
+    quiz: [
+      Q("In Ashby's data, referred applicants were interviewed about how often compared with inbound applicants?", ["The same", "Twice as often", "*About 13 times as often (40% vs 3%)", "Less often"], "Referrals are about 1% of applications but convert far better."),
+      Q("Which processes should start first in a parallel search?", ["The fastest startup", "*The slowest processes and lower-priority warm-ups", "Only the dream company", "Whichever replies first"], "So that offers land close together."),
+    ],
+  }),
+  T("craft", "coding-round", "Facing each round", 1, 30, "How to run every round type: online assessments, coding out loud, system design, object-oriented and machine-coding rounds, ML rounds, AI-tool rules and onsite logistics.", {
+    signals: ["Every coding interview and every practice session here"],
+    lesson: `**Minute-by-minute**
+
+| Time | Do | Say |
+|---|---|---|
+| 0–5 | Restate, ask 3–4 clarifying questions, write 2 examples (one edge) | "Let me make sure I understand… Can the input be empty? Are values bounded?" |
+| 5–10 | Brute force + complexity, then propose the better idea | "The straightforward way is O(n²) because… I think we can do better by…" |
+| 10–12 | Get buy-in before coding | "I'll go with X: O(n log n) time, O(n) space. Sound good?" |
+| 12–30 | Code top-down with helper names; narrate intent, not syntax | "This loop maintains the invariant that…" |
+| 30–37 | Dry run on your example; fix bugs calmly | "Let me trace i = 0…" |
+| 37–45 | Edge cases, complexity, follow-ups | "If the data were a stream, I would…" |
+
+**When stuck**
+- Solve a smaller or simpler version; hand-simulate an example and watch what *you* do.
+- Enumerate candidate tools by constraint (see Complexity lesson).
+- Say what you are considering and why it fails: silence scores zero.
+- Take the hint gracefully: using a hint well is positive signal.
+
+**Clarifying-question checklist:** input size and ranges · duplicates · sortedness · empty/null · negative numbers · output format and ties · mutability of input · single vs many queries · memory limits · character set.
+
+**Testing checklist:** empty, single element, all equal, already sorted / reverse, max size, negative/zero, duplicates, off-by-one boundaries.
+
+**Code quality tells:** meaningful names, no magic numbers, early returns, small helpers, const-correctness, no dead code.`,
+    pitfalls: ["Coding before agreement on the approach", "Silent thinking for minutes", "Declaring done without a dry run", "Arguing with hints"],
+    quiz: [
+      Q("You see the optimal solution immediately. What do you still do first?", ["Start coding", "*State brute force briefly, then the optimal idea with complexity, and get agreement", "Ask for a harder problem", "Write tests"], "It demonstrates structured reasoning and avoids solving the wrong problem."),
+      Q("Best response when completely stuck?", ["Stay silent and think", "*Work a concrete example aloud and look for structure", "Guess a pattern", "Ask for the answer"], "The interviewer can only credit reasoning they hear."),
+    ],
+  }),
+  T("craft", "behavioral", "Behavioural interviews", 1, 30, "STAR answers, a story bank that covers every prompt, how each company's values shape the questions, and what senior answers sound like.", {
+    signals: ["The G&L round, plus the first five minutes of every other round"],
+    lesson: `**Format: STAR(L)**: Situation (2 sentences) → Task (your responsibility) → **Action (60% of the answer: what *you* did and why)** → Result (numbers) → Learning.
+
+**What is being probed**
+- *Ambiguity:* did you create clarity or wait for it?
+- *Ownership & bias to action:* did you go beyond your ticket?
+- *Collaboration & conflict:* disagree with data, commit, keep the relationship.
+- *Leadership without authority:* influencing peers, mentoring, unblocking.
+- *Growth mindset:* real failures, specific lessons, changed behaviour.
+- *Users and ethics:* doing the right thing under pressure.
+
+**Build a story bank of 6–8 stories**, each tagged with the themes it can serve: biggest technical challenge · conflict with a teammate/manager · failure or production incident · leading without authority · ambiguous project · tight deadline trade-off · mentoring/helping someone grow · disagreeing with a decision · going beyond scope · receiving hard feedback.
+
+**Rules**
+- "I", not "we", for actions; credit the team for results.
+- Quantify: latency −40%, on-call pages 12 → 2/week, 3 teams unblocked.
+- 2–3 minutes per answer; expect two follow-ups ("what would you do differently?", "what did the other person think?").
+- No villain stories; show empathy for the other side.
+- Prepare hypotheticals too: "what would you do if a teammate was not delivering?"
+
+**Questions to ask them:** team's biggest technical bet, how decisions are made, what a great L4/L5 does in their first six months.`,
+    pitfalls: ["Rambling context, tiny action section", "Hypothetical answers to 'tell me about a time' questions", "Blaming others", "No measurable result"],
+    quiz: [
+      Q("Which part of a STAR answer deserves the most time?", ["Situation", "Task", "*Action", "Result"], "Actions reveal your judgement; context is only setup."),
+      Q("'Tell me about a time you disagreed with your manager.' Strong answers show…", ["That you were right", "*Data-driven disagreement, openness to their view, and commitment after the decision", "That you escalated", "That you avoided conflict"], "Disagree-and-commit with the relationship intact."),
+    ],
+  }),
+  T("craft", "craft-situations", "Situations and how to handle them", 1, 30, "What to do when you go blank, meet a difficult interviewer, make a mistake, lose your connection, face an awkward question, think in a second language, feel nervous, or reach the last five minutes.", {
+    signals: ["Your mind goes blank", "The interviewer is silent, rude or disagrees", "Your internet drops mid-round", "You dread the gap or layoff question"],
+    lesson: "Situations in interviews and how to handle them.",
+    pitfalls: ["Long silences", "Arguing with the interviewer", "Not telling anyone after an outage", "Humblebrag weaknesses"],
+    quiz: [
+      Q("Your internet drops mid-round. Google's official guidance includes…", ["Ending the interview", "*Telling the interviewer, turning the camera off and switching to a phone call as a last resort", "Waiting silently", "Emailing a week later"], "And a reschedule if problems persist."),
+      Q("Which 'biggest weakness' answer does the research favour?", ["I'm a perfectionist", "I work too hard", "*A real, non-core weakness with a concrete fix and evidence of improvement", "I have no weaknesses"], "Raters preferred honest weaknesses to humblebrags."),
+    ],
+  }),
+  T("craft", "craft-offers", "Offers and negotiation", 1, 25, "Reading an Indian CTC and a US package year by year, negotiating in both markets, India's offer-stage norms (notice periods, buyouts, background checks, revocations), and comparing offers beyond money.", {
+    signals: ["You have an offer in hand", "Two offers with different shapes", "Your notice period is longer than the joining date allows"],
+    lesson: "Offers and negotiation, India and US.",
+    pitfalls: ["Comparing year-one CTC instead of four-year pay", "Resigning before a written offer and buyout agreement", "Accepting on the call"],
+    quiz: [
+      Q("Why compare offers year by year over four years?", ["Tax law requires it", "*Vesting schedules and one-time bonuses make year one misleading", "Recruiters prefer it", "It is not useful"], "Back-loaded stock and joining bonuses change the shape."),
+      Q("What should be in writing before you resign in India?", ["Nothing", "*The offer and any notice-buyout commitment", "Only the joining date", "Your manager's approval"], "Revocations and refused buyouts happen."),
+    ],
+  }),
+  T("craft", "biases", "Biases: yours, the interviewer's, in preparation and in offers", 1, 25, "The predictable ways judgement tilts on both sides of the table, how strong the evidence is for each, and the countermeasures that work.", {
+    signals: ["When practice feels productive but mock performance does not improve"],
+    lesson: `| Trap | What it looks like | Countermeasure here |
+|---|---|---|
+| **Illusion of competence (recognition ≠ recall)** | Reading a solution and thinking "I knew that" | Recall drills: state the approach before any reveal; spaced reviews |
+| **Pattern anchoring from context** | Solving a problem *inside* the "Sliding Window" chapter | **Blind mode**: topic tags hidden, reviews interleaved across topics |
+| **Familiarity bias** | Re-solving favourite topics, avoiding DP/graphs | Scheduler weights weak and avoided topics; readiness radar shows the gaps |
+| **Overconfidence / underconfidence** | Feeling ready (or hopeless) without data | **Calibration**: predict confidence before, compare to graded result after |
+| **Anchoring on the first idea** | Forcing the first approach even when it struggles | Every problem lists ≥ 2 approaches; "why not X?" prompts in AI review |
+| **Einstellung (known solution blocks a better one)** | Using the memorised LeetCode solution after constraints change | Twists and follow-ups for every problem |
+| **Confirmation bias in testing** | Only trying inputs that work | Edge-case checklist; AI reviewer hunts for counter-examples |
+| **Sunk cost** | 40 minutes on one bug | Timers; hint ladder; move on and schedule a review |
+| **Hindsight bias** | "Obvious!" after seeing the answer | Write your attempt first; attempts are saved and compared |
+| **Outcome bias** | Judging a session by pass/fail only | Rubric scores for process: communication, testing, complexity |
+| **Language/tool comfort** | Only ever practising with an IDE | Plain editor, no run button; verification by reasoning |
+| **Planning fallacy** | "I'll catch up on the weekend" | Daily budget, automatic re-planning, visible buffer |
+
+**Desirable difficulties:** spacing, interleaving, retrieval practice and generation feel slower and worse, and produce far better retention. If practice feels smooth, it is probably too easy.
+
+**In the room:** state assumptions out loud (so the interviewer can correct them), ask "is there a constraint I am missing?", and treat the interviewer's doubt as data, not as an attack.`,
+    pitfalls: ["Tracking 'problems solved' as the only metric", "Looking at the topic tag before attempting", "Skipping reviews because the item 'feels known'"],
+    quiz: [
+      Q("Why does interleaving topics feel worse but work better?", ["It is not better", "*It forces you to identify the pattern, which is the actual interview skill", "It saves time", "It avoids hard problems"], "Blocked practice hands you the pattern for free."),
+      Q("You rate yourself 5/5 confident, and the review finds two bugs. The useful reaction is…", ["Ignore it", "*Log the calibration gap and schedule an earlier review", "Lower all future ratings", "Stop rating"], "Calibration data corrects over- and under-confidence over time."),
+    ],
+  }),
   T("craft", "google-loop", "The Google loop & how you are scored", 1, 25, "Rounds, levels, the hiring committee, and the rubric behind 'hire / no hire'.", {
     signals: ["Before you plan anything else"],
     lesson: `**Levels:** SWE II = L3, SWE III = L4, Senior = L5. With ~5 years of experience you are typically considered for **L4**, sometimes L5. The level is decided from interview signal: strong system design and leadership signal pushes up; coding alone does not.
@@ -32,90 +153,7 @@ export const craftTopics: Topic[] = [
       Q("You are not allowed to run code. What replaces the compiler?", ["Nothing", "*A deliberate dry run on a small input plus edge cases", "Asking the interviewer", "Rewriting twice"], "Manual verification is an explicitly scored behaviour."),
     ],
   }),
-  T("craft", "coding-round", "Running a coding round out loud", 1, 25, "A script for the 45 minutes, including what to say when stuck.", {
-    signals: ["Every coding interview and every practice session here"],
-    lesson: `**Minute-by-minute**
 
-| Time | Do | Say |
-|---|---|---|
-| 0–5 | Restate, ask 3–4 clarifying questions, write 2 examples (one edge) | "Let me make sure I understand… Can the input be empty? Are values bounded?" |
-| 5–10 | Brute force + complexity, then propose the better idea | "The straightforward way is O(n²) because… I think we can do better by…" |
-| 10–12 | Get buy-in before coding | "I'll go with X: O(n log n) time, O(n) space. Sound good?" |
-| 12–30 | Code top-down with helper names; narrate intent, not syntax | "This loop maintains the invariant that…" |
-| 30–37 | Dry run on your example; fix bugs calmly | "Let me trace i = 0…" |
-| 37–45 | Edge cases, complexity, follow-ups | "If the data were a stream, I would…" |
-
-**When stuck**
-- Solve a smaller or simpler version; hand-simulate an example and watch what *you* do.
-- Enumerate candidate tools by constraint (see Complexity lesson).
-- Say what you are considering and why it fails: silence scores zero.
-- Take the hint gracefully: using a hint well is positive signal.
-
-**Clarifying-question checklist:** input size and ranges · duplicates · sortedness · empty/null · negative numbers · output format and ties · mutability of input · single vs many queries · memory limits · character set.
-
-**Testing checklist:** empty, single element, all equal, already sorted / reverse, max size, negative/zero, duplicates, off-by-one boundaries.
-
-**Code quality tells:** meaningful names, no magic numbers, early returns, small helpers, const-correctness, no dead code.`,
-    pitfalls: ["Coding before agreement on the approach", "Silent thinking for minutes", "Declaring done without a dry run", "Arguing with hints"],
-    quiz: [
-      Q("You see the optimal solution immediately. What do you still do first?", ["Start coding", "*State brute force briefly, then the optimal idea with complexity, and get agreement", "Ask for a harder problem", "Write tests"], "It demonstrates structured reasoning and avoids solving the wrong problem."),
-      Q("Best response when completely stuck?", ["Stay silent and think", "*Work a concrete example aloud and look for structure", "Guess a pattern", "Ask for the answer"], "The interviewer can only credit reasoning they hear."),
-    ],
-  }),
-  T("craft", "biases", "Bias traps in learning & interviewing", 1, 25, "The predictable ways a smart brain fools itself, and the countermeasure built into this portal.", {
-    signals: ["When practice feels productive but mock performance does not improve"],
-    lesson: `| Trap | What it looks like | Countermeasure here |
-|---|---|---|
-| **Illusion of competence (recognition ≠ recall)** | Reading a solution and thinking "I knew that" | Recall drills: state the approach before any reveal; spaced reviews |
-| **Pattern anchoring from context** | Solving a problem *inside* the "Sliding Window" chapter | **Blind mode**: topic tags hidden, reviews interleaved across topics |
-| **Familiarity bias** | Re-solving favourite topics, avoiding DP/graphs | Scheduler weights weak and avoided topics; readiness radar shows the gaps |
-| **Overconfidence / underconfidence** | Feeling ready (or hopeless) without data | **Calibration**: predict confidence before, compare to graded result after |
-| **Anchoring on the first idea** | Forcing the first approach even when it struggles | Every problem lists ≥ 2 approaches; "why not X?" prompts in AI review |
-| **Einstellung (known solution blocks a better one)** | Using the memorised LeetCode solution after constraints change | Twists and follow-ups for every problem |
-| **Confirmation bias in testing** | Only trying inputs that work | Edge-case checklist; AI reviewer hunts for counter-examples |
-| **Sunk cost** | 40 minutes on one bug | Timers; hint ladder; move on and schedule a review |
-| **Hindsight bias** | "Obvious!" after seeing the answer | Write your attempt first; attempts are saved and compared |
-| **Outcome bias** | Judging a session by pass/fail only | Rubric scores for process: communication, testing, complexity |
-| **Language/tool comfort** | Only ever practising with an IDE | Plain editor, no run button; verification by reasoning |
-| **Planning fallacy** | "I'll catch up on the weekend" | Daily budget, automatic re-planning, visible buffer |
-
-**Desirable difficulties:** spacing, interleaving, retrieval practice and generation feel slower and worse, and produce far better retention. If practice feels smooth, it is probably too easy.
-
-**In the room:** state assumptions out loud (so the interviewer can correct them), ask "is there a constraint I am missing?", and treat the interviewer's doubt as data, not as an attack.`,
-    pitfalls: ["Tracking 'problems solved' as the only metric", "Looking at the topic tag before attempting", "Skipping reviews because the item 'feels known'"],
-    quiz: [
-      Q("Why does interleaving topics feel worse but work better?", ["It is not better", "*It forces you to identify the pattern, which is the actual interview skill", "It saves time", "It avoids hard problems"], "Blocked practice hands you the pattern for free."),
-      Q("You rate yourself 5/5 confident, and the review finds two bugs. The useful reaction is…", ["Ignore it", "*Log the calibration gap and schedule an earlier review", "Lower all future ratings", "Stop rating"], "Calibration data corrects over- and under-confidence over time."),
-    ],
-  }),
-  T("craft", "behavioral", "Googleyness & leadership (behavioural)", 1, 30, "STAR stories, what interviewers probe, and a story bank that covers every prompt.", {
-    signals: ["The G&L round, plus the first five minutes of every other round"],
-    lesson: `**Format: STAR(L)**: Situation (2 sentences) → Task (your responsibility) → **Action (60% of the answer: what *you* did and why)** → Result (numbers) → Learning.
-
-**What is being probed**
-- *Ambiguity:* did you create clarity or wait for it?
-- *Ownership & bias to action:* did you go beyond your ticket?
-- *Collaboration & conflict:* disagree with data, commit, keep the relationship.
-- *Leadership without authority:* influencing peers, mentoring, unblocking.
-- *Growth mindset:* real failures, specific lessons, changed behaviour.
-- *Users and ethics:* doing the right thing under pressure.
-
-**Build a story bank of 6–8 stories**, each tagged with the themes it can serve: biggest technical challenge · conflict with a teammate/manager · failure or production incident · leading without authority · ambiguous project · tight deadline trade-off · mentoring/helping someone grow · disagreeing with a decision · going beyond scope · receiving hard feedback.
-
-**Rules**
-- "I", not "we", for actions; credit the team for results.
-- Quantify: latency −40%, on-call pages 12 → 2/week, 3 teams unblocked.
-- 2–3 minutes per answer; expect two follow-ups ("what would you do differently?", "what did the other person think?").
-- No villain stories; show empathy for the other side.
-- Prepare hypotheticals too: "what would you do if a teammate was not delivering?"
-
-**Questions to ask them:** team's biggest technical bet, how decisions are made, what a great L4/L5 does in their first six months.`,
-    pitfalls: ["Rambling context, tiny action section", "Hypothetical answers to 'tell me about a time' questions", "Blaming others", "No measurable result"],
-    quiz: [
-      Q("Which part of a STAR answer deserves the most time?", ["Situation", "Task", "*Action", "Result"], "Actions reveal your judgement; context is only setup."),
-      Q("'Tell me about a time you disagreed with your manager.' Strong answers show…", ["That you were right", "*Data-driven disagreement, openness to their view, and commitment after the decision", "That you escalated", "That you avoided conflict"], "Disagree-and-commit with the relationship intact."),
-    ],
-  }),
 ];
 
 function B(id: string, title: string, prompt: string, guidance: string, probes: [string, string][]): Design {

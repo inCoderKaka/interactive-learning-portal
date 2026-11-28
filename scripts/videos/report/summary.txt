@@ -1,34 +1,34 @@
-NeetCode                     376 uploads ·  312 problem ·   23 concept ·    5 skipped ·   36 unmatched
+NeetCode                     376 uploads ·  312 problem ·   24 concept ·    4 skipped ·   36 unmatched
 NeetCodeIO                   650 uploads ·  551 problem ·   22 concept ·   13 skipped ·   64 unmatched
-Aryan Mittal                 953 uploads ·  667 problem ·  192 concept ·   39 skipped ·   55 unmatched
+Aryan Mittal                 953 uploads ·  667 problem ·  193 concept ·   38 skipped ·   55 unmatched
 codestorywithMIK            1598 uploads · 1357 problem ·  102 concept ·   39 skipped ·  100 unmatched
 WilliamFiset                 144 uploads ·    2 problem ·  118 concept ·   24 skipped ·    0 unmatched
 Abdul Bari                   116 uploads ·    0 problem ·   89 concept ·   20 skipped ·    7 unmatched
 Techdose                     847 uploads ·  490 problem ·  231 concept ·   25 skipped ·  101 unmatched
 Techdose Engineering          51 uploads ·    0 problem ·   46 concept ·    0 skipped ·    5 unmatched
 codeWithAryan                 64 uploads ·    0 problem ·   49 concept ·    1 skipped ·   14 unmatched
-Concept && Coding            346 uploads ·    0 problem ·  196 concept ·   23 skipped ·  127 unmatched
-Krish Naik                  1849 uploads ·    0 problem ·  421 concept ·  231 skipped · 1197 unmatched
+Concept && Coding            346 uploads ·    0 problem ·  204 concept ·   18 skipped ·  124 unmatched
+Krish Naik                  1849 uploads ·    0 problem ·  444 concept ·  213 skipped · 1192 unmatched
 ByteByteGo                   145 uploads ·    0 problem ·   86 concept ·    2 skipped ·   57 unmatched
 Hussein Nasser               878 uploads ·    0 problem ·  309 concept ·   19 skipped ·  550 unmatched
-Gaurav Sen                   273 uploads ·    0 problem ·  139 concept ·    8 skipped ·  126 unmatched
-Hello Interview               67 uploads ·    1 problem ·   50 concept ·    1 skipped ·   15 unmatched
-Jordan has no life           325 uploads ·    0 problem ·  196 concept ·    4 skipped ·  125 unmatched
+Gaurav Sen                   273 uploads ·    0 problem ·  145 concept ·    8 skipped ·  120 unmatched
+Hello Interview               67 uploads ·    1 problem ·   52 concept ·    0 skipped ·   14 unmatched
+Jordan has no life           325 uploads ·    0 problem ·  197 concept ·    4 skipped ·  124 unmatched
 Arpit Bhayani                252 uploads ·    0 problem ·  127 concept ·    3 skipped ·  122 unmatched
 Tech Dummies Narendra L       40 uploads ·    0 problem ·   25 concept ·    0 skipped ·   15 unmatched
-sudoCODE                      94 uploads ·    0 problem ·   43 concept ·    5 skipped ·   46 unmatched
+sudoCODE                      94 uploads ·    0 problem ·   45 concept ·    3 skipped ·   46 unmatched
 Martin Kleppmann              39 uploads ·    0 problem ·   28 concept ·    0 skipped ·   11 unmatched
 MIT 6.824                     20 uploads ·    0 problem ·   16 concept ·    0 skipped ·    4 unmatched
 CMU Database Group           599 uploads ·    0 problem ·  125 concept ·    0 skipped ·  474 unmatched
 Google Cloud Tech           1794 uploads ·    0 problem ·  114 concept ·   36 skipped · 1644 unmatched
 Christopher Okhravi          210 uploads ·    0 problem ·   46 concept ·    0 skipped ·  164 unmatched
-Udit Agarwal                  58 uploads ·    0 problem ·   25 concept ·    7 skipped ·   26 unmatched
+Udit Agarwal                  58 uploads ·    0 problem ·   27 concept ·    7 skipped ·   24 unmatched
 Coder Army                   427 uploads ·    3 problem ·  207 concept ·   13 skipped ·  204 unmatched
-Engineering Digest           612 uploads ·  112 problem ·  192 concept ·    8 skipped ·  300 unmatched
+Engineering Digest           612 uploads ·  112 problem ·  196 concept ·    5 skipped ·  299 unmatched
 Andrej Karpathy               17 uploads ·    0 problem ·   12 concept ·    0 skipped ·    5 unmatched
 3Blue1Brown                  155 uploads ·    0 problem ·   49 concept ·    5 skipped ·  101 unmatched
 StatQuest                    265 uploads ·    0 problem ·  130 concept ·    1 skipped ·  134 unmatched
-CampusX                     1277 uploads ·    0 problem ·  452 concept ·   67 skipped ·  758 unmatched
+CampusX                     1277 uploads ·    0 problem ·  455 concept ·   64 skipped ·  758 unmatched
 Umar Jamil                    25 uploads ·    0 problem ·   24 concept ·    0 skipped ·    1 unmatched
 Yannic Kilcher               467 uploads ·    0 problem ·  100 concept ·    9 skipped ·  358 unmatched
 Welch Labs                    81 uploads ·    0 problem ·   14 concept ·    0 skipped ·   67 unmatched
@@ -37,5 +37,11 @@ Stanford Online             3046 uploads ·    0 problem ·  325 concept ·   19
 Google DeepMind              390 uploads ·    0 problem ·   60 concept ·    0 skipped ·  330 unmatched
 Google for Developers       4658 uploads ·    0 problem ·   32 concept ·   58 skipped · 4568 unmatched
 Anthropic                    147 uploads ·    0 problem ·   20 concept ·    0 skipped ·  127 unmatched
+Life at Google               266 uploads ·    0 problem ·    8 concept ·    0 skipped ·  258 unmatched
+Jeff H Sipe                  370 uploads ·    0 problem ·  213 concept ·    0 skipped ·  157 unmatched
+Dan Croitor                 1171 uploads ·    0 problem ·  455 concept ·    0 skipped ·  716 unmatched
+A Life Engineered            147 uploads ·    0 problem ·   18 concept ·    0 skipped ·  129 unmatched
+Keerti Purswani              203 uploads ·    0 problem ·   17 concept ·    0 skipped ·  186 unmatched
+takeUforward                 513 uploads ·    0 problem ·    6 concept ·    0 skipped ·  507 unmatched
 
-problems with videos: 1714 (32 not DSA: SQL / JS / untagged) · pages with concept videos: 424
+problems with videos: 1714 (32 not DSA: SQL / JS / untagged) · pages with concept videos: 446

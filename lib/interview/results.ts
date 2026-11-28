@@ -12,7 +12,7 @@ import { profileFor, resolved, runTask } from "./tasks";
 export async function scoreSession(settings: Settings, cfg: SessionConfig, s: BrainState, log: LoggedEvent[]): Promise<Scorecard> {
   const p = scorecardPrompt(cfg, s, log);
   const n = Math.max(1, Math.min(5, profileFor(settings, "scorecard").samples ?? 1));
-  const runs = await Promise.allSettled(Array.from({ length: n }, () => runTask(settings, "scorecard", p.system, [{ role: "user", content: p.user }]).then((t) => parseScorecard(cfg.kind, t))));
+  const runs = await Promise.allSettled(Array.from({ length: n }, () => runTask(settings, "scorecard", p.system, [{ role: "user", content: p.user }]).then((t) => parseScorecard(cfg.kind, t, cfg.company))));
   const ok = runs.filter((r): r is PromiseFulfilledResult<Scorecard> => r.status === "fulfilled").map((r) => r.value);
   if (!ok.length) throw (runs[0] as PromiseRejectedResult).reason;
   return aggregateScorecards(ok);

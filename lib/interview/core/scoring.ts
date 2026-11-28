@@ -1,6 +1,7 @@
 import type { BrainState, Kind, LoggedEvent, SessionConfig } from "./types.ts";
 import { curveballById } from "./curveballs.ts";
 import { fragment } from "./templates.ts";
+import { companyById } from "./companies.ts";
 
 export type Decision = "strong_no_hire" | "no_hire" | "leaning_no_hire" | "leaning_hire" | "hire" | "strong_hire";
 export const DECISIONS: Decision[] = ["strong_no_hire", "no_hire", "leaning_no_hire", "leaning_hire", "hire", "strong_hire"];
@@ -80,13 +81,19 @@ export function evidenceTranscript(log: LoggedEvent[]): string {
   return lines.join("\n");
 }
 
+/** Scorecard dimensions for a round: behavioural rounds use the chosen company's rubric. */
+export function dimsFor(kind: Kind, company?: string) {
+  return kind === "behavioral" && company ? companyById(company).dims : DIMENSIONS[kind];
+}
+
 export function scorecardPrompt(cfg: SessionConfig, s: BrainState, log: LoggedEvent[]): { system: string; user: string } {
-  const dims = DIMENSIONS[cfg.kind];
+  const dims = dimsFor(cfg.kind, cfg.company);
+  const co = companyById(cfg.company);
   const fired = s.curveballs.filter((c) => c.fired).map((c) => curveballById.get(c.id)?.scoreNote).filter(Boolean);
   const final = Object.entries(s.digests).map(([k, v]) => `FINAL ${k.toUpperCase()}:\n${v}`).join("\n\n");
   return {
-    system: fragment("scorecard.system", cfg.prompts, { level: cfg.level }) + (cfg.format === "peer" ? `\n${fragment("peer.observer", cfg.prompts)}` : ""),
-    user: `Interview: ${cfg.kind}, ${cfg.minutes} min, interviewer tone ${s.tone}.
+    system: fragment("scorecard.system", cfg.prompts, { level: cfg.level, company: co.name, decider: co.decider }) + (cfg.format === "peer" ? `\n${fragment("peer.observer", cfg.prompts)}` : ""),
+    user: `Interview: ${cfg.kind}${cfg.kind === "behavioral" ? ` (${co.name}: ${co.round})` : ""}, ${cfg.minutes} min, interviewer tone ${s.tone}.
 Question: ${s.question.statement}
 Reference notes (not the only valid answer): ${s.question.reference.slice(0, 2500)}
 Hints given: ${s.hints}.
@@ -114,9 +121,9 @@ const median = (xs: number[]) => {
   return a.length ? (a.length % 2 ? a[(a.length - 1) / 2] : (a[a.length / 2 - 1] + a[a.length / 2]) / 2) : 0;
 };
 
-export function parseScorecard(kind: Kind, text: string): Scorecard {
+export function parseScorecard(kind: Kind, text: string, company?: string): Scorecard {
   const j = parse(text) as Partial<Scorecard> & { ratings?: Partial<Rating>[] };
-  const dims = DIMENSIONS[kind];
+  const dims = dimsFor(kind, company);
   const ratings: Rating[] = dims.map((d) => {
     const r = (j.ratings ?? []).find((x) => x?.dimension === d.key);
     return { dimension: d.key, score: Math.max(1, Math.min(4, Math.round(Number(r?.score) || 2))), evidence: (r?.evidence ?? []).filter((x) => x && Number.isFinite(Number(x.seq))).map((x) => ({ seq: Number(x.seq), quote: String(x.quote ?? "") })), note: String(r?.note ?? "") };

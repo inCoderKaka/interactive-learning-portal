@@ -22,7 +22,7 @@ Source format, any number of pages:
     Q: question
     A: answer (may continue on following lines)
     --- exercises
-    [estimate|break|choose|design] prompt (may continue)
+    [estimate|break|choose|design|say|plan|fix] prompt (may continue)
     A: model answer (may continue)
     --- pitfalls
     - one per line
@@ -120,7 +120,7 @@ def page_ts(pid, meta, parts):
     if parts.get("exercises"):
         L.append("    exercises: [")
         for q, a in qa_blocks(parts["exercises"], "[", "A:"):
-            m = re.match(r"(estimate|break|choose|design)\]\s*(.*)", q, re.S)
+            m = re.match(r"(estimate|break|choose|design|say|plan|fix)\]\s*(.*)", q, re.S)
             if not m:
                 raise SystemExit(f"{pid}: exercise needs [kind]: {q[:60]}")
             L.append(f"      [{js(m.group(1))}, {js(m.group(2).strip())}, {js(a)}],")

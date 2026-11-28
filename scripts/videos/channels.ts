@@ -54,4 +54,11 @@ export const CHANNELS: Channel[] = [
   { file: "GoogleDeepMind", name: "Google DeepMind", areas: ["ai"] },
   { file: "GoogleDevelopers", name: "Google for Developers", areas: ["ai", "hld"] },
   { file: "anthropic-ai", name: "Anthropic", areas: ["ai"] },
+  // Interview Craft, picked from research (req3 Craft pass): only the Craft rules apply to these channels
+  { file: "lifeatgoogle", name: "Life at Google", areas: ["craft"] },
+  { file: "JeffHSipe", name: "Jeff H Sipe", areas: ["craft"] },
+  { file: "DanCroitor", name: "Dan Croitor", areas: ["craft"] },
+  { file: "ALifeEngineered", name: "A Life Engineered", areas: ["craft"] },
+  { file: "KeertiPurswani", name: "Keerti Purswani", areas: ["craft"] },
+  { file: "takeUforward", name: "takeUforward", areas: ["craft"] },
 ];

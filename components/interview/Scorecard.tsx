@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Check, Gauge, Lightbulb, Quote, Shuffle, UserRound } from "lucide-react";
 import { Bar, Pill, cn } from "@/components/ui";
-import { DECISIONS, DECISION_LABEL, DIMENSIONS, type Decision } from "@/lib/interview/core/scoring";
+import { DECISIONS, DECISION_LABEL, dimsFor, type Decision } from "@/lib/interview/core/scoring";
 import { curveballById } from "@/lib/interview/core/curveballs";
 import type { SessionRecord } from "@/lib/interview/results";
 import { calibrationGap } from "@/lib/interview/results";
@@ -26,7 +26,7 @@ export function PredictDecision({ onPick }: { onPick: (d: Decision | undefined) 
 export function ScorecardView({ r }: { r: SessionRecord }) {
   const c = r.scorecard!;
   const [open, setOpen] = useState<number | null>(null);
-  const dims = DIMENSIONS[r.cfg.kind];
+  const dims = dimsFor(r.cfg.kind, r.cfg.company);
   const color = COLOR(c.decision);
   const gap = calibrationGap(r.predicted, c.decision);
   const st = r.stats;

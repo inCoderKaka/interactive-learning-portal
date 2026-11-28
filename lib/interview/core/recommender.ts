@@ -13,7 +13,7 @@ export interface MockRecommendation {
 }
 
 const KIND_AREA: Record<Kind, Area> = { coding: "dsa", hld: "hld", lld: "lld", ml: "ai", mlcode: "ai", behavioral: "craft" };
-const KIND_LABEL: Record<Kind, string> = { coding: "Coding", hld: "System design", lld: "Object-oriented design", ml: "ML system design", mlcode: "ML coding", behavioral: "Googleyness" };
+const KIND_LABEL: Record<Kind, string> = { coding: "Coding", hld: "System design", lld: "Object-oriented design", ml: "ML system design", mlcode: "ML coding", behavioral: "Behavioural" };
 
 export const W = { coverage: 3, weakness: 2.5, lapses: 1.5, miscalibration: 1.5, staleness: 1, repeat: 2 };
 

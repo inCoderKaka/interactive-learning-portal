@@ -2,6 +2,7 @@ import type { BrainState, Kind, LoggedEvent, SessionConfig } from "./types.ts";
 import { arcBudget, expectedStage } from "./policy.ts";
 import { curveballById } from "./curveballs.ts";
 import { fragment } from "./templates.ts";
+import { companyById } from "./companies.ts";
 
 export const PROMPT_VERSION = "interviewer@1";
 export const SILENCE = "[silence]";
@@ -12,8 +13,23 @@ export const KIND_NAME: Record<Kind, string> = {
   lld: "object-oriented design",
   ml: "machine learning system design (ML and generative-AI systems)",
   mlcode: "ML coding (implementing machine learning from scratch in Python with NumPy or PyTorch)",
-  behavioral: "behavioural (Googleyness and leadership)",
+  behavioral: "behavioural",
 };
+
+/** The round's name: behavioural rounds carry the company's own name for them. */
+export const kindName = (cfg: SessionConfig) => cfg.kind === "behavioral" ? `behavioural (${companyById(cfg.company).round})` : KIND_NAME[cfg.kind];
+
+/** How the chosen company runs its behavioural round (req3 Craft: "pick a company"). */
+function companySection(cfg: SessionConfig): string {
+  const c = companyById(cfg.company);
+  return `# ${c.name}'s behavioural round
+${c.style}
+Values the answers are judged against: ${c.values}
+Ask the main question below in ${c.name}'s style; across the round you may draw on questions like: ${c.prompts.join(" | ")}
+Probe each story at least twice before moving on.
+
+`;
+}
 
 /** Instructions that do not change during a session (kept first, so provider prompt caching applies). */
 export function systemPrompt(cfg: SessionConfig, s: BrainState, voice: boolean): string {
@@ -21,7 +37,7 @@ export function systemPrompt(cfg: SessionConfig, s: BrainState, voice: boolean):
   const b = arcBudget(cfg);
   const p = s.persona;
   const o = cfg.prompts;
-  return `${fragment("interviewer.identity", o, { name: p.name, role: p.role, years: p.years, team: p.team, minutes: cfg.minutes, kind: KIND_NAME[cfg.kind] })}
+  return `${fragment("interviewer.identity", o, { name: p.name, role: p.role, years: p.years, team: p.team, minutes: cfg.minutes, kind: kindName(cfg), company: companyById(cfg.company).name })}
 
 # Your manner
 ${fragment(`interviewer.tone.${s.tone}`, o)}
@@ -36,7 +52,7 @@ Title (do not read the title out): ${q.title}
 Question: ${q.statement}
 ${q.constraints ? `Numbers to hold the design to (reveal only when asked): ${q.constraints}\n` : ""}Reference notes (for you only, one good answer among many): ${q.reference || "none"}
 ${q.followUps.length ? `Follow-ups you can use: ${q.followUps.join(" | ")}\n` : ""}${q.redFlags.length ? `Common mistakes worth probing: ${q.redFlags.join(" | ")}\n` : ""}
-${cfg.steer && !cfg.redo ? `# Direction for this round\n${cfg.steer}\n\n` : ""}${cfg.redo ? `# This is a drill\nYou are replaying one moment of an earlier round so the candidate can retry their answer. The conversation up to that moment, for context only:\n<<<\n${cfg.redo.context}\n>>>\nListen to the new answer and follow up once or twice exactly as you would have in the real round. When they have answered, say in one sentence that the drill is done. No feedback.\n` : `# Round plan
+${cfg.kind === "behavioral" ? companySection(cfg) : ""}${cfg.steer && !cfg.redo ? `# Direction for this round\n${cfg.steer}\n\n` : ""}${cfg.redo ? `# This is a drill\nYou are replaying one moment of an earlier round so the candidate can retry their answer. The conversation up to that moment, for context only:\n<<<\n${cfg.redo.context}\n>>>\nListen to the new answer and follow up once or twice exactly as you would have in the real round. When they have answered, say in one sentence that the drill is done. No feedback.\n` : `# Round plan
 ${[b.intro && "1. Introductions (about 1 minute): say hello, your first name and team in one sentence, and how the round works.", b.aboutYou && `2. Ask them to introduce themselves briefly (about ${b.aboutYou} minutes). Listen; at most one follow-up.`, `3. The main question (about ${b.problem} minutes).`, b.questions && `4. Last ${b.questions} minutes: ask "Is there anything you'd like to ask me?" and answer as yourself: you like that ${p.likes}; a downside is that ${p.dislikes}; your advice to new joiners: ${p.advice}. Keep answers short and honest. Do not invent confidential details.`].filter(Boolean).join("\n")}
 ${fragment("interviewer.closing", o)}`}`;
 }

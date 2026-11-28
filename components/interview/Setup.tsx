@@ -17,6 +17,7 @@ import { RoundRecorder } from "@/lib/interview/recorder";
 import { useStore } from "@/lib/store";
 import { cloudEnabled } from "@/lib/supabase";
 import { defaultLoop } from "@/lib/interview/core/loop";
+import { COMPANIES, companyById } from "@/lib/interview/core/companies";
 import { flowsFor, privacyBlocker } from "@/lib/interview/privacy";
 import { CalendarPlus, ShieldCheck } from "lucide-react";
 
@@ -35,11 +36,11 @@ export const KINDS: { id: Kind; label: string; desc: string; min: number; icon: 
   { id: "lld", label: "Object-oriented design", desc: "Model a small system with classes on the whiteboard, then extend it.", min: 40, icon: Boxes, color: "var(--color-lld)" },
   { id: "ml", label: "ML system design", desc: "An ML or generative-AI product end to end: framing, data, model, evaluation, serving. Whiteboard, notes and a Python tab.", min: 45, icon: BrainCircuit, color: "var(--color-ai)" },
   { id: "mlcode", label: "ML coding", desc: "Implement a model, loss or algorithm from scratch in Python (NumPy or PyTorch), then test it.", min: 45, icon: FlaskConical, color: "var(--color-ai)" },
-  { id: "behavioral", label: "Googleyness", desc: "Behavioural questions with follow-ups that probe your actual role.", min: 30, icon: MessagesSquare, color: "var(--color-craft)" },
+  { id: "behavioral", label: "Behavioural", desc: "Pick a company: the interviewer asks in its style and scores against its values. Follow-ups probe your actual role.", min: 30, icon: MessagesSquare, color: "var(--color-craft)" },
 ];
 
 const TONES: { id: Tone | "surprise"; label: string; desc: string }[] = [
-  { id: "neutral", label: "Neutral", desc: "The Google norm: you can't tell how it's going" },
+  { id: "neutral", label: "Neutral", desc: "The big-tech norm: you can't tell how it's going" },
   { id: "guide", label: "Friendly guide", desc: "Warmer, nudges a little sooner" },
   { id: "tough", label: "Tough", desc: "Challenges every vague claim" },
   { id: "notetaker", label: "Quiet note-taker", desc: "Says little; long silences" },
@@ -123,7 +124,7 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
   const isPeer = fmt === "peer", isLoop = fmt === "loop", isRev = fmt === "reverse";
   const privacyWhy = privacyBlocker(settings);
   const flows = useMemo(() => flowsFor(cfg, settings, !!user), [cfg, settings, user]);
-  const plan = isLoop ? defaultLoop(cfg.level, "preview") : null;
+  const plan = isLoop ? defaultLoop(cfg.level, "preview", cfg.company) : null;
 
   const recs = useMemo(() => recommendMocks({ items, progress, attempts, areas: settings.areas }), [items, progress, attempts, settings.areas]);
   const questions = useMemo(() => allQuestions(cfg.kind, custom), [cfg.kind, custom]);
@@ -160,7 +161,7 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
 
       {!isLoop && <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {KINDS.map((k) => (
-          <button key={k.id} onClick={() => setCfg((c) => ({ ...BASE(k.id, c.engine), tone: c.tone, level: c.level, pressure: c.pressure, mode: c.mode, voice: c.voice }))} aria-pressed={cfg.kind === k.id}
+          <button key={k.id} onClick={() => setCfg((c) => ({ ...BASE(k.id, c.engine), tone: c.tone, level: c.level, pressure: c.pressure, mode: c.mode, voice: c.voice, company: c.company }))} aria-pressed={cfg.kind === k.id}
             className={cn("card card-hover flex flex-col items-start p-5 text-left", cfg.kind === k.id && "!border-accent/60")} style={cfg.kind === k.id ? { background: `color-mix(in srgb, ${k.color} 7%, var(--color-panel))` } : undefined}>
             <span className="grid h-10 w-10 place-items-center rounded-xl" style={{ background: `color-mix(in srgb, ${k.color} 16%, transparent)`, color: k.color }}><k.icon size={19} /></span>
             <div className="display mt-3 text-lg font-semibold">{k.label}</div>
@@ -180,6 +181,11 @@ export function Setup({ settings, progress, custom, attempts, items, initial, on
           {plan && <p className="mt-3 text-[12.5px] leading-relaxed text-mute">Your {cfg.level} loop: {plan.rounds.map((r) => `${r.title} (${r.minutes} min)`).join(" → ")}, with {plan.breakMin}-minute breaks. Each round has a different interviewer, tone and voice. Scorecards stay sealed until the committee decides, as in a real loop.</p>}
           {isRev && <p className="mt-3 text-[12.5px] leading-relaxed text-mute">You get the question and an interviewer packet; the AI candidate makes three mistakes on purpose. Afterwards you write the feedback and see which mistakes you caught. It is the quickest way to learn what interviewers look for.</p>}
         </Group>
+
+        {(cfg.kind === "behavioral" || isLoop) && !isPeer && !isRev && (<Group label="Company" hint={isLoop ? "the loop follows this company's onsite" : "style, values and scorecard"}>
+          <div className="flex flex-wrap gap-1.5">{COMPANIES.map((c) => <Chip key={c.id} on={(cfg.company ?? "google") === c.id} onClick={() => set({ company: c.id })}>{c.name}</Chip>)}</div>
+          <p className="mt-2 text-[12.5px] leading-relaxed text-mute">{companyById(cfg.company).name}: {companyById(cfg.company).round}. Judged on {companyById(cfg.company).dims.map((d) => d.label.toLowerCase()).join(", ")}.</p>
+        </Group>)}
 
         {!isPeer && !isRev && !isLoop && (<Group label="Presets">
           <div className="flex flex-wrap gap-2">

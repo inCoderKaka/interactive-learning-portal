@@ -1,5 +1,6 @@
 import type { Kind, Persona, Tone } from "./types.ts";
 import { pick, rng, type Rng } from "./rng.ts";
+import { COMPANIES } from "./companies.ts";
 
 // Fictional interviewer profiles, assembled from a seed so the same session always gets the same
 // person. Names are deliberately common first names only; no real people are implied.
@@ -32,13 +33,13 @@ const ADVICE = [
   "get one solid launch out before chasing the big project",
 ];
 
-export function makePersona(seed: number, kind: Kind): Persona {
+export function makePersona(seed: number, kind: Kind, company?: string): Persona {
   const r: Rng = rng(seed ^ 0x9e3779b9);
   const years = 3 + Math.floor(r() * 9);
   return {
     name: pick(r, NAMES),
     role: years >= 8 ? "Staff Software Engineer" : years >= 5 ? "Senior Software Engineer" : "Software Engineer",
-    team: pick(r, TEAMS[kind]),
+    team: pick(r, (company && company !== "google" ? COMPANIES.find((c) => c.id === company)?.teams : undefined) ?? TEAMS[kind]),
     years,
     likes: pick(r, LIKES),
     dislikes: pick(r, DISLIKES),
