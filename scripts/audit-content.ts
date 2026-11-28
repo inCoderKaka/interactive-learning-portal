@@ -14,7 +14,7 @@ import { DESIGN_REFS, LC, PROBLEM_VIDEO, TOPIC_REFS } from "@/content/refs";
 import { AI_REFS } from "@/content/ai/refs";
 import { DRILLS } from "@/content/drills";
 import { checkDrill } from "@/lib/drills";
-import { AI_DEEP_WIDGET_IDS, AI_WIDGET_IDS } from "@/components/viz/ai-ids";
+import { AI_DEEP_WIDGET_IDS, AI_WIDGET_IDS, CRAFT_WIDGET_IDS } from "@/components/viz/ai-ids";
 import { HLD_WIDGET_IDS } from "@/components/viz/sd/ids";
 import { ALGOS } from "@/components/viz/algos";
 
@@ -29,7 +29,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const src = (f: string) => readFileSync(f, "utf8");
 const hldBlock = /export const WIDGETS[^{]*\{([^}]*)\}/.exec(src("components/viz/Hld.tsx"))?.[1] ?? "";
 const hldIds = [...hldBlock.matchAll(/"?([\w-]+)"?\s*:/g)].map((m) => m[1]);
-const WIDGETS = new Set([...Object.keys(ALGOS), ...hldIds, ...AI_WIDGET_IDS, ...AI_DEEP_WIDGET_IDS, ...HLD_WIDGET_IDS]);
+const WIDGETS = new Set([...Object.keys(ALGOS), ...hldIds, ...AI_WIDGET_IDS, ...AI_DEEP_WIDGET_IDS, ...CRAFT_WIDGET_IDS, ...HLD_WIDGET_IDS]);
 
 // ---- topics ----
 const seen = new Set<string>();

@@ -583,3 +583,52 @@ export const AI_CONCEPTS: ConceptRule[] = [
   A(/ml coding (interview|round)|machine learning coding interview|implement .* from scratch|from scratch in (python|numpy|pytorch)/i, "ml-coding-round"),
   A(/alphago|alphafold|alphazero|alphacode|alphageometry|gemini (paper|technical report|architecture)|\bpalm\b|lamda|google brain|deepmind (lecture|x ucl)/i, "ai-at-google"),
 ];
+
+// ───────────── Interview Craft (req3 Craft pass) ─────────────
+// Career and interview-process videos appear across many channels, so these rules run for every channel.
+// At most 3 Craft pages per video; product demos, tutorials and problem walkthroughs are skipped.
+const C = (re: RegExp, to: string) => [re, to] as ConceptRule;
+export const CRAFT_SKIP = /\bpip (freeze|install)|data science interview questions?|announcing|leetcode \d|\bdp\b|dynamic programming|binary tree|linked list|spring boot|design pattern|\blld\b|low level design|tutorial|course #|full course|playlist|explained in|chat feature|agent chats/i;
+export const CRAFT_CONCEPTS: ConceptRule[] = [
+  C(/(software|sde|swe|engineering|tech|google|amazon|meta|microsoft|faang) (hiring|interview) process|what happens inside a .*interview|hiring committee|how (google|amazon|meta|microsoft) hires/i, "hiring-pipeline"),
+  C(/\b(sde|swe) ?(i{1,3}|[123])\b.*\b(vs|to|level)|levels? (at|in) (google|amazon|meta|microsoft|big tech)|down[- ]?level(l?ing|ed)?|engineering levels/i, "level-map"),
+  C(/\bresume (tips|mistakes|review|building|template|writing|that)|\bcv tips|resume (for|that got)|best resume|good resume|resume.*shortlist|shortlisted.*resume|ats[- ]friendly/i, "resume"),
+  C(/referral|cold (message|msg|email|outreach)|linkedin (outreach|message|cold)/i, "referrals-outreach"),
+  C(/how (i|to) (prepare|prep) for (coding |tech |technical |sde |faang |product[- ]based )?(interviews?|faang|google|amazon|meta|microsoft|placements?|sde)|(interview|sde\d?) preparation (strategy|plan|roadmap)|interview prep(aration)? (plan|roadmap|strategy|guide)|study plan for (faang|interviews?)|how (i|to) crack(ed)? (google|amazon|meta|microsoft|faang|product)/i, "prep-timeline"),
+  C(/online assessment|\boa\b (round|questions)|hackerrank test|codesignal/i, "online-assessments"),
+  C(/coding interview (tips|mistakes|framework|strategy|advice)|how to (ace|pass|approach|solve) (a |the |any |your )?coding interview|think(ing)? out loud/i, "coding-out-loud"),
+  C(/how to (prepare for|ace|pass|answer) (a |the |any |your )?system design interview|system design interview (tips|framework|mistakes|guide)|delivery framework/i, "design-round-craft"),
+  C(/machine coding (round|interview)/i, "lld-machine-coding"),
+  C(/(machine learning|\bml\b|deep learning) (engineer )?interviews? (tips|prep|preparation|guide|process)|ml (engineer )?interview prep|ml system design interview (tips|guide|framework)/i, "ml-rounds"),
+  C(/\bai (in|during) (job )?interviews?|cheat(ing)? (in|on|with ai in) (coding )?interviews?|in[- ]person interviews?|ai[- ](assisted|enabled) (coding )?interview/i, "ai-tools-policy"),
+  C(/behaviou?ral interview|tell me about yourself|star (method|technique|format)|leadership principles?|googleyness/i, "star-stories"),
+  C(/conflict with (your|a) (manager|colleague|teammate)|tell me about a time|biggest weakness|why (do you want to|should we hire)/i, "common-prompts"),
+  C(/career gaps?|employment gaps?|after (getting |being )?laid[- ]?off|after (a )?layoff|got fired|performance improvement plan/i, "awkward-questions"),
+  C(/interview (anxiety|nerves|stress)|nervous (in|during|before) (an |the )?interviews?|fear of interviews?|blank (in|during) (an |the )?interview/i, "nerves-energy"),
+  C(/questions to ask (at the end|your interviewer|the interviewer|in an interview)/i, "closing-questions"),
+  C(/rejected (by|from|at|in)|interview rejection|failed (my|the) (google|amazon|meta|microsoft) interview/i, "interviewer-variance"),
+  C(/salary (structure|breakdown|slip)|\bctc\b|in[- ]hand salary|offer letter|\brsus?\b|\besops?\b|stock options/i, "offer-anatomy"),
+  C(/(offer|salary) negotiat|negotiat(e|ing|ion) (your |an |the )?(offer|salary|job)|counter[- ]?offer|rules for offer/i, "negotiation"),
+  C(/notice period|notice buy ?out|serving notice|relieving letter|background (verification|check)/i, "india-offer-norms"),
+  C(/(product|service)[- ]based (vs|or|company)|which offer|startup vs (big|mnc|faang)|faang vs|junior makes|should i (quit|switch|join)/i, "comparing-offers"),
+];
+
+/** Broader Craft rules, applied only to the Craft-only channels (their uploads are all about interviewing and careers). */
+export const CRAFT_CHANNEL_CONCEPTS: ConceptRule[] = [
+  C(/story banks?|star (answers?|overhaul|method)|fix your star|behaviou?ral (question|loop|round|interview)|stop rambling|rambling|speak like|communication skills|selling yourself|sell yourself|5th grader|write your answers/i, "star-stories"),
+  C(/trick questions|questions that get you stuck|top \d+ (interview )?questions|hardest behaviou?ral questions|most common .*questions|hypothetical (questions?|answers?|interview)|q ?& ?a|question (&|and) answer|interview question/i, "common-prompts"),
+  C(/googl[ey]+ness|amazon (bar raiser|interviews?|leadership)|leadership principles|microsoft'?s? .*(questions|interviews?)|netflix .*(questions|interviews?)|meta'?s? .*(hiring|interviews?)|apple'?s? .*(questions|interviews?)|nvidia .*interviews?|palantir|anthropic interview/i, "values-map"),
+  C(/senior (candidates|interview loops?|interviews?|roles?)|directors? (&|and) senior managers|over-?qualified|skip lead|leadership interviews?/i, "senior-behavioural"),
+  C(/rejection (email|reasons)|why did they reject|candidates (secretly )?fail|why you fail|can'?t pass (your )?(job )?interviews|serial losers|interviews aren'?t fair|went well\. but|great candidates fail|hard to pass interviews/i, "interviewer-variance"),
+  C(/read (your|the) interviewer|interviewer'?s agenda|disinterested interviewer|underestimate your interviewer|win the panel/i, "difficult-interviewers"),
+  C(/anxiety|emotions in (job )?interviews|pressure cooker|stress or pressure|right before an interview|focus on your upcoming/i, "nerves-energy"),
+  C(/questions for them|golden questions|asking questions during an interview|stay in touch after (job )?rejection|after (job )?rejection/i, "closing-questions"),
+  C(/\bai\b.*\binterviews?\b|\binterviews?\b.*\bai\b|chatgpt (interview|advice)|cheat(ing)? in .*interviews|use ai to speed up/i, "ai-tools-policy"),
+  C(/layoffs?|laid off|topics to never touch|things to hide|never get personal|flight risk|job hoppers?|toxic candidates/i, "awkward-questions"),
+  C(/linkedin profile|stop applying to hundreds|get a new job|easiest way to network|networking|cold (email|message)|referral/i, "referrals-outreach"),
+  C(/resume|\bcv\b|ats\b/i, "resume"),
+  C(/job offer|compensation (model|package)|refresher stocks?|salary|negotiat/i, "negotiation"),
+  C(/how many hours|interview prep checklist|get good at interviewing|prepare .* in \d+ days|interview in 48 hours|preparing the wrong interview|interview prep/i, "prep-timeline"),
+  C(/on camera|body language|use your hands|visuals in a job interview/i, "onsite-logistics"),
+  C(/internal transfer|30, 60, 90 day plan|first 90 days/i, "comparing-offers"),
+];

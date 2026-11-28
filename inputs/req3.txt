@@ -214,3 +214,6 @@ interview craft comes next, deep research well on how to face interviews, biases
 "Where should the general chapters sit?"="General first, then companies"
 "Approve the outline first?"="No, research and proceed" (outline written to a reviewable file)
 "How should the Craft work ship?"="Midway + end (Recommended)" (the AI checkpoint fix ships with the first one)
+
+[2026-11-28, session 9, the user's request (verbatim)]
+continue the interview craft research and implementation work. restart research or look at previous session's transcript if at all required. but make sure to not miss anything.

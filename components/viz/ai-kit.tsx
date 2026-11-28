@@ -8,7 +8,7 @@ import { cn } from "../ui";
 
 export type Drive = (ctx: ReadCtx, $: (sel?: string) => Element | null) => ReadStep[];
 
-export function Frame({ title, about, children, drive, className }: { title: string; about: string; children: ReactNode; drive?: Drive; className?: string }) {
+export function Frame({ title, about, children, drive, className, tone = "var(--color-ai)" }: { title: string; about: string; children: ReactNode; drive?: Drive; className?: string; tone?: string }) {
   const root = useRef<HTMLElement | null>(null);
   const $ = (sel?: string) => (sel ? root.current?.querySelector(sel) ?? root.current : root.current);
   const adapter = useReadable<HTMLElement>((ctx) => {
@@ -19,8 +19,8 @@ export function Frame({ title, about, children, drive, className }: { title: str
   const ref = useCallback((el: HTMLElement | null) => { root.current = el; adapter(el); }, [adapter]);
   return (
     <section ref={ref} data-read-block className={cn("card overflow-hidden", className)}>
-      <div className="border-b border-line px-5 py-3.5" style={{ background: "linear-gradient(90deg, color-mix(in srgb, var(--color-ai) 8%, transparent), transparent 70%)" }}>
-        <div className="eyebrow" style={{ color: "var(--color-ai)" }}>Play with it</div>
+      <div className="border-b border-line px-5 py-3.5" style={{ background: `linear-gradient(90deg, color-mix(in srgb, ${tone} 8%, transparent), transparent 70%)` }}>
+        <div className="eyebrow" style={{ color: tone }}>Play with it</div>
         <div className="display text-[17px] font-semibold">{title}</div>
         <p className="mt-1 text-[13px] text-mute">{about}</p>
       </div>
@@ -45,13 +45,14 @@ export const Slider = ({ label, value, min, max, step = 1, onChange, fmt, hint }
   </label>
 );
 
-export function Chips<T extends string | number>({ value, options, onChange, label }: { value: T; options: { id: T; label: ReactNode }[]; onChange: (v: T) => void; label?: string }) {
+export function Chips<T extends string | number>({ value, options, onChange, label, tone }: { value: T; options: { id: T; label: ReactNode }[]; onChange: (v: T) => void; label?: string; tone?: string }) {
   return (
     <div className="flex flex-wrap items-center gap-1.5" role="radiogroup" aria-label={label}>
       {label && <span className="mr-1 text-[12px] text-faint">{label}</span>}
       {options.map((o) => (
         <button key={String(o.id)} role="radio" aria-checked={value === o.id} onClick={() => onChange(o.id)}
-          className={cn("rounded-full border px-2.5 py-1 text-[12px] font-medium transition", value === o.id ? "border-ai/60 bg-ai/15 text-text" : "border-line text-mute hover:text-text")}>{o.label}</button>
+          style={tone && value === o.id ? { borderColor: `color-mix(in srgb, ${tone} 60%, transparent)`, background: `color-mix(in srgb, ${tone} 15%, transparent)` } : undefined}
+          className={cn("rounded-full border px-2.5 py-1 text-[12px] font-medium transition", value === o.id ? (tone ? "text-text" : "border-ai/60 bg-ai/15 text-text") : "border-line text-mute hover:text-text")}>{o.label}</button>
       ))}
     </div>
   );

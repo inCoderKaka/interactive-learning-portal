@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Calculator, Check, Eye, GitFork, PenLine, Siren, X } from "lucide-react";
+import { CalendarClock, Calculator, Check, Eye, GitFork, MessageSquareQuote, PenLine, Siren, Wrench, X } from "lucide-react";
 import type { Exercise, ExerciseKind } from "@/lib/types";
 import { Button, Md, cn } from "./ui";
 
@@ -10,6 +10,9 @@ const KIND: Record<ExerciseKind, { label: string; icon: typeof Calculator; tone:
   break: { label: "What breaks?", icon: Siren, tone: "var(--color-bad)" },
   choose: { label: "Choose", icon: GitFork, tone: "var(--color-lld)" },
   design: { label: "Mini design", icon: PenLine, tone: "var(--color-accent)" },
+  say: { label: "Say it", icon: MessageSquareQuote, tone: "var(--color-craft)" },
+  plan: { label: "Plan it", icon: CalendarClock, tone: "var(--color-hld)" },
+  fix: { label: "Fix it", icon: Wrench, tone: "var(--color-bad)" },
 };
 
 /**

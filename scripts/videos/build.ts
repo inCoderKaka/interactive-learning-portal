@@ -13,7 +13,7 @@ import { resolve } from "node:path";
 import { CHANNELS } from "./channels";
 import { lcIndex, questionsIn } from "./questions";
 import { homeOf, type LcRow } from "./rules";
-import { AI_CONCEPTS, AI_SKIP, BROAD_NO, BROAD_OK, DSA_CONCEPTS, DSA_FALLBACK, HLD_CONCEPTS, HLD_DESIGNS, HLD_SKIP, LLD_ALLOW, LLD_CONCEPTS, LLD_DESIGNS, LLD_SKIP, SKIP, type ConceptRule } from "./concepts";
+import { AI_CONCEPTS, AI_SKIP, CRAFT_CHANNEL_CONCEPTS, CRAFT_CONCEPTS, CRAFT_SKIP, BROAD_NO, BROAD_OK, DSA_CONCEPTS, DSA_FALLBACK, HLD_CONCEPTS, HLD_DESIGNS, HLD_SKIP, LLD_ALLOW, LLD_CONCEPTS, LLD_DESIGNS, LLD_SKIP, SKIP, type ConceptRule } from "./concepts";
 import { DESIGNS } from "../../content";
 import { OVERRIDES } from "./overrides";
 import { cfIndex, contestHome, type CfRow } from "./contests";
@@ -74,12 +74,21 @@ CHANNELS.forEach((c, ci) => {
       if (manual.length) nc++; else nskip++;
       continue;
     }
+    if (c.areas.length === 1 && c.areas[0] === "craft") {
+      // Craft-only channels: interview-process and career videos only, never problem or concept pages
+      const hit = CRAFT_SKIP.test(raw) ? [] : [...new Set([...CRAFT_CONCEPTS, ...CRAFT_CHANNEL_CONCEPTS].filter(([re, t]) => re.test(raw) && PAGES.has(t)).map(([, t]) => t))].slice(0, 3);
+      if (hit.length) { for (const t of hit) (pages[t] ??= []).push(v); nc++; } else unmatched.push(`${id}\t${raw}`);
+      continue;
+    }
     const qs = c.q || /leet\s*code/i.test(raw) ? questionsIn(raw, ix) : [];
     if (qs.length) {
       for (const q of qs) (lc[q] ??= []).push(v);
       nq++;
       continue;
     }
+    // interview-process and career videos, from any channel, before the general skip list drops career titles (req3 Craft)
+    const craft = CRAFT_SKIP.test(raw) ? [] : [...new Set(CRAFT_CONCEPTS.filter(([re, t]) => re.test(raw) && PAGES.has(t)).map(([, t]) => t))].slice(0, 3);
+    if (craft.length) { for (const t of craft) (pages[t] ??= []).push(v); nc++; continue; }
     if (SKIP.some((re) => re.test(raw))) { nskip++; continue; }
     const contest = contestHome(raw, cf);
     if (contest) { (pages[contest] ??= []).push(v); nc++; continue; }

@@ -50,7 +50,7 @@ export interface Topic {
 }
 
 /** estimate: work out numbers · break: what fails and why · choose: a trade-off under a constraint · design: a 5–10 minute component design */
-export type ExerciseKind = "estimate" | "break" | "choose" | "design";
+export type ExerciseKind = "estimate" | "break" | "choose" | "design" | "say" | "plan" | "fix";
 export type Exercise = [kind: ExerciseKind, prompt: string, answer: string];
 
 export interface Approach {

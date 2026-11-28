@@ -7,6 +7,38 @@ import type { Card } from "@/lib/types";
  * Optional third item tags a card: "pattern" (recognise the technique), "variation" (a twist on a base problem), "pitfall" (a bug or edge case).
  */
 export const craftCards: Record<string, Card[]> = {
+  "craft-hiring": [
+    ["Who decides after the loop at Google, Amazon and Meta?", "Google: a hiring committee of non-interviewers. Amazon: a bar raiser with the hiring manager after a debrief. Meta: a debrief and calibration, then team match."],
+    ["What do Amazon SDE II, Meta E4 and Microsoft 61–62 have in common?", "They're the mid rung, equivalent to Google L4."],
+    ["What sets your level: years or interviews?", "Years set the range you're considered for; system design and behavioural signal set the rung. Uncertain loops are levelled down."],
+    ["Why say complexity, trade-offs and tests out loud?", "Interviewers can only score what they can write down; committees read notes, not your thoughts."],
+    ["What's the maths for applying to several companies?", "P(at least one offer) = 1 − (1 − p)ⁿ: an upper bound, since your weaknesses are shared across companies."],
+    ["What predicts job performance best in hiring research?", "Structured interviews (same questions, rubric, independent write-ups), per Sackett et al. 2022."],
+  ],
+  "craft-search": [
+    ["What really filters resumes?", "Knockout questions (location, visa, notice period) and a ~30-second human skim, not keyword-hunting software."],
+    ["What's the shape of a strong resume bullet?", "Accomplished X, as measured by Y, by doing Z (Google's X-Y-Z formula), with real numbers."],
+    ["Who should you ask for a referral?", "People who've worked with you or know your work; cold referrals from strangers help little."],
+    ["How should you handle 'expected CTC?' in the first call?", "Defer until the level is clear, then anchor on market data for that level, not a hike on current CTC."],
+    ["How long does interview preparation take?", "About 100 hours to be well prepared (TIH); 8–10 weeks mid, 10–12 senior while working, plus a buffer."],
+    ["Which companies go first in a parallel search?", "Slow processes (committees, team match) and lower-priority warm-ups, so offers land together."],
+  ],
+  "craft-situations": [
+    ["What's the unsticking routine?", "More examples → simplify → constraints to complexity → scan tools → decompose → ask a clarifying question."],
+    ["What does a very specific hint tell you?", "You were heading the wrong way; vague hints mean you're close."],
+    ["How do you report a bad interviewer?", "Same day, by email to the recruiter, factually: what happened, time lost, one clear ask."],
+    ["What's the shape of a 'biggest weakness' answer?", "A real, non-core weakness, a concrete fix, and evidence it's improving."],
+    ["What helps nerves, per the evidence?", "Practising under observation, reappraising nerves as excitement, slow breathing, sleep; not power posing."],
+    ["How many questions should you ask at the end of a round?", "About three, matched to the interviewer (engineer, manager, bar raiser); pay and leave go to the recruiter."],
+  ],
+  "craft-offers": [
+    ["How do you split an Indian CTC?", "Fixed · PF/gratuity inside CTC · variable · one-time (joining, buyout) · listed stock · unlisted ESOPs."],
+    ["How does Amazon's vesting work?", "5/15/40/40 over four years, offset by a sign-on bonus paid over years one and two."],
+    ["What must you have before resigning in India?", "A written offer and a written buyout or joining-date agreement; ideally BGV started."],
+    ["Which offer components are most flexible?", "Stock and sign-on/joining bonus; base less so; level hardest to move late."],
+    ["When might accepting a counter-offer make sense?", "Only if pay was the only reason you were leaving."],
+    ["What should you compare between offers?", "Four-year pay year by year (and the lowest year), level, manager, team, growth, brand, stability."],
+  ],
   "google-loop": [
     ["What four attributes does Google assess?", "General cognitive ability · Role-related knowledge · Leadership · Googleyness"],
     ["Who makes the Google hiring decision?", "A hiring committee reading written interviewer feedback: evidence on paper is what counts"],

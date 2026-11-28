@@ -1,0 +1,700 @@
+=== stuck-blank
+blurb: What to do when your mind goes blank, when you cannot find the approach, and when the clock is running out: a fixed unsticking routine, how to take hints, how to bank partial credit, and what to say in the last five minutes.
+signals: Your mind goes blank on a problem you should know | Ten minutes have passed and you have no approach | Fifteen minutes left and the code isn't working | The interviewer asks "can we do better?"
+prereq: coding-out-loud
+
+--- lesson
+:::words
+- **Going blank**: a sudden inability to recall or think, caused by stress taking over working memory (the small mental desk where you hold what you're thinking about).
+- **Brute force**: the simplest correct solution, usually by trying all possibilities, even if slow.
+- **Decomposition**: splitting a problem into smaller named pieces (helper functions) so you can solve one at a time.
+- **Hint ladder**: the order in which trained interviewers give hints, from vague ("think about the order of the input") to specific ("what if you sorted it first?").
+- **Partial credit**: interviewers score process, not just the final answer, so a clear, correct but incomplete solution still earns signal.
+:::
+
+## The problem in plain words
+
+Getting stuck is not failure; it is the normal middle of a hard problem. What separates strong candidates is not that they never get stuck, but that they have a *routine* for getting unstuck, and that they keep the interviewer informed while doing it. Silence is the worst outcome: it gives the interviewer nothing to write and nothing to help with.
+
+:::eli5
+If you are lost while driving, you do not stop in the middle of the road and stare. You pull over, look at a map, try the nearest landmark, and if needed ask someone. Interviews are the same: pull over (say you're thinking), look at the map (examples), try landmarks (known tools), and ask (use hints).
+:::
+
+## When your mind goes blank
+
+Stress uses up working memory (Beilock and Carr, 2001). The fix is to move thinking *out of your head onto the page*, where it does not need working memory.
+
+1. **Say it plainly and buy ten seconds**: "Let me take a moment to think about this." That is a completely normal sentence in an interview.
+2. **Restate the problem in your own words** and write the input and output types down.
+3. **Write one small example by hand** and solve it manually, slowly. Watch what *you* do; your manual steps are often the algorithm.
+4. **Write the brute force**, even if it is obviously slow. It turns a blank page into a starting point and earns credit. Tech Interview Handbook: a brute-force version is "a start which will give you some credit" (reputable).
+
+## The unsticking routine (when you have no approach)
+
+Work through these in order, out loud. Tech Interview Handbook recommends most of them (reputable).
+
+| Step | Ask yourself | Example |
+|---|---|---|
+| 1. More examples | What happens on 3–4 different examples, including edge cases? | Solve [1], [1,2], [2,1], [] by hand |
+| 2. Simplify | Can I solve a smaller version? Sorted input? One dimension? k = 1? | "If the array were sorted, I could use two pointers…" |
+| 3. Constraints → complexity | What does n tell me? n ≤ 20 → exponential is fine; n ≤ 10⁵ → O(n log n) | See the [complexity budget page](/learn/constraints-budget) |
+| 4. Cycle through tools | Would a hash map, sorting, two pointers, a heap, binary search, BFS/DFS, DP, a stack or union-find help? | Say each quickly and why it does or doesn't fit |
+| 5. Decompose | Can I write a high-level function with helpers I'll fill in later? | `solve() → buildGraph(), shortestPath()` |
+| 6. Ask | "I'm considering X and Y; is there a constraint I'm missing?" | A good question often triggers a hint |
+
+## Taking hints well
+
+Interviewer training guides describe a **hint ladder**: steer toward or away from an approach, then give a general direction, then point at a possible bug, then ask about a specific input, and only last explain exactly what is wrong (Holloway's hiring guide, reputable). This tells you two things:
+
+- **A hint is information about how far off you are.** A vague hint means you are close; a very specific one means you were heading the wrong way.
+- **Using a hint well is positive signal at most companies.** Repeat it in your words, connect it to the problem, and act on it: "So if I sort first, equal elements are adjacent and I can count runs in one pass. That gives O(n log n)."
+
+Don't argue with a hint, and don't ignore it. If a hint seems wrong, test it on your example out loud (see [Difficult interviewers](/learn/difficult-interviewers)).
+
+## When the clock is running out
+
+Big-tech coding rounds are usually 45 minutes, with about 35 minutes for the problem. Keep your own clock.
+
+**With 15 minutes left and no working code:**
+- Tell the interviewer your plan: "I'll get the brute force working first, then optimise if time allows."
+- Write the main function with clearly named helpers. A clean decomposition shows the approach even if not every helper is finished (Tech Interview Handbook).
+- Skip boilerplate the interviewer doesn't care about: "I'll assume the input is already parsed."
+
+**With 5 minutes left:**
+- Stop coding new parts. Walk through your code with one example and fix visible bugs.
+- State the complexity and the edge cases you would test.
+- Say what you would do next: "With more time I'd replace the inner loop with a hash map to make it linear."
+
+That closing summary turns "didn't finish" into "clear plan, partially implemented", which is a very different write-up.
+
+## "Can we do better?"
+
+This is usually an invitation, not a criticism. Tech Interview Handbook notes that stating the best possible complexity "will be taken as a positive signal" (reputable).
+
+- Name the bottleneck: "The nested loop is the O(n²) part."
+- Name the lower bound if you can: "We have to read every element, so O(n) is the best possible."
+- Then search for the tool that removes the bottleneck: precomputation (prefix sums, hash maps), sorting, a better data structure.
+
+## What a stuck moment sounds like when done well
+
+> "I don't see the efficient approach yet. Let me do a small example: [3, 1, 4, 1]. By hand I'd… keep the smallest value so far and compare. So a single pass with a running minimum works for this case. Let me check it on a decreasing array… yes. That's O(n) time, O(1) space. Shall I code it?"
+
+Thirty seconds of narrated thinking, one example, one check, a proposal. The interviewer can write all of it down.
+
+## Interview angles
+
+- Senior candidates get stuck too; what is judged is the *process*. A narrated, structured search is itself evidence of problem-solving skill.
+- Design rounds have their own version of stuck (running out of time before deep dives); see [The system design round](/learn/design-round-craft).
+
+--- revise
+### Blank and stuck
+? First three moves when your mind goes blank? :: Say you're thinking; restate the problem in writing; solve one small example by hand.
+? Why does writing things down help when stressed? :: It moves thinking out of working memory, which stress consumes.
+? Six steps of the unsticking routine? :: More examples, simplify, constraints → complexity, cycle through tools, decompose, ask.
+? Why write the brute force early? :: It turns a blank page into a start and earns some credit.
+
+### Hints
+? What is the hint ladder? :: Interviewers hint from vague to specific: steer, direction, possible bug, specific input, exact explanation.
+? What does a very specific hint tell you? :: You were heading the wrong way; adjust.
+? How do you take a hint well? :: Restate it, connect it to the problem, act on it out loud.
+
+### Time
+? With 15 minutes left and no working code? :: Say the plan; get brute force working; write the main function with named helpers.
+? With 5 minutes left? :: Stop new code; dry run, fix bugs, state complexity, tests and next step.
+? How should you treat "can we do better?" :: As an invitation: name the bottleneck, the lower bound, then the tool that removes it.
+
+--- notes
+## Blank
+"Let me take a moment" · restate in writing · small example by hand · brute force (some credit).
+Stress eats working memory (Beilock & Carr 2001) → put thinking on the page.
+## Unsticking routine
+Examples (incl. edges) → simplify (sorted, 1-D, k=1) → constraints → complexity → tools (hash, sort, 2-ptr, heap, binary search, BFS/DFS, DP, stack, union-find) → decompose → ask.
+## Hints
+Ladder: steer → direction → bug → specific input → explanation (Holloway). Vague = close; specific = far.
+Restate, connect, act. Never argue or ignore; test doubtful hints on your example.
+## Clock (45-min round, ~35 on problem)
+15 min left: brute force first, helpers named, skip boilerplate.
+5 min left: dry run, fix, complexity, edge cases, "with more time I'd…".
+## "Can we do better?"
+Bottleneck → lower bound → tool that removes it. Best-possible complexity = positive signal (TIH).
+
+--- doubts
+Q: Is it bad to sit silently for a minute to think?
+A: Short silences are fine if announced: "Let me think for a moment." Long, unannounced silence is the problem, because the interviewer cannot tell whether you are stuck or progressing and has nothing to write. Every minute or so, say where your thinking is.
+
+Q: Does taking a hint lower my score?
+A: Usually a little, compared with needing no hint, but much less than staying stuck. Many rubrics explicitly reward responding well to hints. Needing many very specific hints is what hurts.
+
+Q: Should I code the brute force or just describe it?
+A: Describe it first. If you have a better idea within a minute or two, code that. If you are stuck or short on time, code the brute force so something correct exists, then improve it.
+
+--- exercises
+[say] You've been silent for 90 seconds on a graph problem and have no approach. Write what you say next.
+A: Suggested wording (not from a source): "I don't have the efficient idea yet, so let me think out loud. Let me draw a small example with four nodes… The question is the shortest number of steps, which sounds like breadth-first search on an unweighted graph. Brute force would try all paths, exponential. BFS from the start gives O(V + E). Does that direction make sense?"
+
+[plan] Write your personal unsticking checklist as six lines you can memorise.
+A: Example: (1) Say it: "let me think aloud". (2) Two more examples, one edge case. (3) Simplify: sorted? smaller n? one dimension? (4) Constraints → complexity budget. (5) Tool scan: hash, sort, two pointers, heap, binary search, graph, DP, stack. (6) Decompose into helpers, or ask a clarifying question.
+
+[fix] With 6 minutes left, a candidate is still writing a complex optimisation and the code doesn't compile in their head. What should they do instead?
+A: Stop adding code. Say: "I'll stop here and verify what I have." Dry run the current version on a small example, fix obvious bugs, state its complexity, then describe the remaining optimisation in words with its complexity. A verified, explained partial solution scores better than an unverified half-written optimal one.
+
+--- pitfalls
+- Long unannounced silences
+- Refusing to write a brute force because it feels too easy
+- Arguing with or ignoring hints
+- Coding new features in the last five minutes instead of verifying
+- Ending without stating complexity and next steps
+
+--- quiz
+Q: The interviewer gives a very specific hint ("what if you sorted the input first?"). What does that most likely mean?
+- You were very close
+- *You were heading in the wrong direction and they redirected you
+- You have failed the round
+- They want you to stop coding
+W: Hints go from vague to specific; a specific one means you were far.
+
+Q: Five minutes remain and your optimal solution is half-written. Best move?
+- Keep typing as fast as possible
+- *Stop, dry-run what you have, state complexity and describe the rest
+- Start over with brute force
+- Ask for extra time
+W: A verified partial solution with a clear plan is better evidence.
+
+Q: "Can we do better?" usually means…
+- Your answer is wrong
+- *They want to see if you can find a more efficient approach and name the bottleneck
+- The round is over
+- You should switch language
+W: Treat it as an optimisation prompt.
+
+--- sources
+- article :: Coding interview techniques :: Tech Interview Handbook :: https://www.techinterviewhandbook.org/coding-interview-techniques/
+- book :: Hinting and helping candidates shine :: Holloway Guide to Technical Recruiting and Hiring :: https://holloway.com/g/technical-recruiting-hiring/sections/hinting-and-helping-candidates-shine
+- paper :: On the fragility of skilled performance: what governs choking under pressure? (2001) :: Beilock & Carr :: https://doi.org/10.1037/0096-3445.130.4.701
+
+=== difficult-interviewers
+blurb: Silent, distracted, rude, rushed, inexperienced or argumentative interviewers; hints that seem wrong; a question switched halfway; disagreeing with a correct answer. Why each happens, what to say, and when and how to report a bad interviewer to the recruiter.
+signals: The interviewer says nothing for twenty minutes | They keep typing while you talk | They push back on an answer you're sure is right | The hint they gave seems wrong | They change the question halfway
+prereq: stuck-blank
+
+--- lesson
+:::words
+- **Shadow interviewer**: a trainee who watches a real interviewer to learn. A **reverse shadow** is a trainee running the interview while an experienced interviewer watches.
+- **De-escalate**: lower the tension in a disagreement instead of winning it.
+- **Off-ramp**: a polite phrase that lets both sides move on without anyone losing face.
+- **Redo**: a repeated round with a new interviewer, sometimes granted after a genuinely bad experience or technical failure.
+:::
+
+## The problem in plain words
+
+Interviewers are engineers doing a side job, usually with a few hours of training. Most are fine. Some are tired, distracted, nervous, rushed or, occasionally, rude. You cannot choose your interviewer, but you can recognise the type quickly and adjust. Hello Interview's guide (Stefan Mai, 2025) traces most bad interviews to three causes: the interviewer's **ego**, their **inexperience or lack of preparation**, or **poor training** (reputable). In every case, the advice is the same at heart: de-escalate, narrate your reasoning, keep your own clock, and report facts to the recruiter afterwards, never during the round.
+
+:::eli5
+Some teachers are strict, some are quiet, some talk too much, and some have a bad day. A good student doesn't argue with the teacher during the exam; they write clear answers anyone could mark, and if something truly unfair happens they tell the principal calmly afterwards.
+:::
+
+## The interviewer types and what to do
+
+### Silent or stone-faced
+
+Silence is mostly an interviewer-skill issue, not a verdict. Holloway's interviewer guide warns that a stone-faced interviewer intimidates candidates into underperforming, which is why interviewers are taught *not* to do it (reputable). Gayle Laakmann McDowell (2011) notes that candidates can't read much from reactions (reputable).
+
+- Narrate checkpoints and pause briefly: "I'll go with the hash map approach unless you'd like me to explore something else." *(pause one beat)*
+- Recap progress occasionally: "So far: brute force is O(n²), I'm now writing the linear version with a running sum."
+- Don't fish for approval after every line. Constantly asking "is this OK?" can make you seem inexperienced (Hello Interview).
+
+### Typing, looking away, seemingly distracted
+
+Usually they are taking notes. Google's interviewer training tells interviewers to take thorough notes and submit feedback within 48 hours because detailed, prompt notes are much better (official). So typing is often a *good* sign: they are writing down evidence.
+
+- Speak in clear, quotable sentences: approach, complexity, trade-off.
+- If they are genuinely absent (not responding at all), ask a direct question: "Would you like me to continue with the optimisation or test what I have?"
+
+### Rude, snide or ego-driven
+
+Hello Interview: "Most people aren't complete jerks. But if the interviewer makes a sneer or drops a snide remark, that's your signal to course correct." Don't get into a logic battle; take the off-ramp: "Sounds good, let me walk you through how I'd approach it that way." (reputable). Avoid "religious" topics (language wars, framework wars); an interviewer may use them to justify a rejection.
+
+Stay professional regardless. If behaviour crosses a line (personal comments, questions about family plans, religion, caste or marriage, mocking), finish the round calmly and report it.
+
+### Disagrees with you, even when you're right
+
+"You're there to get hired, not to fix their worldview" (Hello Interview). Two cases:
+
+- **They are testing you.** Some interviewers deliberately challenge correct answers to see whether you can justify them, so "be careful of reversing course" (Hello Interview). Restate your reasoning with evidence: "With input [2, 2, 3], the window shrinks here, so the count stays correct. Am I missing a case?"
+- **They are wrong.** Show it with an example rather than an argument, and let them conclude. If they still disagree and it's not central, accommodate: "Happy to do it your way; I'll note that it costs O(n) extra memory."
+
+### A hint that seems wrong
+
+Test the hint on your example out loud and ask: "Let me check that against my example… with input X it would give Y, but we need Z. Am I misreading the hint?" (suggested wording, not from a source). This lets either of you correct without confrontation. A Blind candidate later realised an interviewer who kept pointing in a different direction was himself confused (anecdotal); calm testing protects you in that case.
+
+### Rushed, late or interrupting
+
+Keep your own clock (Hello Interview). If they joined late, ask early: "We have about 30 minutes; shall I prioritise a working solution, then discuss optimisations?" If they interrupt, stop, listen fully, and answer the question before returning to your plan.
+
+### Inexperienced, junior or shadow interviewers
+
+Inexperienced interviewers struggle with time and structure, so clarify the expected flow at the start (Hello Interview). Treat a shadow as an evaluator too: at Amazon, at least one shadow reports entering notes and a vote in the debrief; elsewhere shadows may not count (anecdotal, company-specific). You can't tell from outside, so assume everyone in the room is evaluating.
+
+### Wants one specific answer, or asks a riddle
+
+Some interviewers ask contrived questions because nobody trained them otherwise (Hello Interview). Explain *why* you make each decision; even if you don't hit their pet answer, your reasoning is on the page.
+
+### The question changes halfway
+
+Usually this is a planned second part or an added constraint ("now the data doesn't fit in memory"), not a verdict. A Microsoft engineer's old post describes interviewers changing one requirement on purpose to see if the candidate notices which earlier decisions it breaks (reputable, practitioner). Before switching, bank what you did: "Sure. Quick summary of where I got to on the first part: O(n log n) with sorting, tested on these cases." Then ask what changes: "With a stream, I can't sort; do I know the range of values?"
+
+## Reporting a bad interviewer
+
+If an experience was truly bad (biased or personal questions, hostility, a round cut badly short), tell the recruiter **the same day, by email, factually**:
+
+- What happened, when, and how much time was affected.
+- One clear ask: that it be considered, or that the round be reviewed or redone.
+
+Hello Interview's example flags a biased question about family schedule and asks that it not be considered in the evaluation; recruiters "sometimes offer a redo with someone competent" (reputable). Committees that lack signal can also request a follow-up round. There is no public big-tech redo policy and no data on how often redos happen. Karat, a vendor that runs first-round interviews for many companies, lets any candidate request a redo within 24 hours with a new interviewer and questions (official for Karat).
+
+Suggested email (not from a source):
+
+> Hi Priya, thank you for organising today's loop. I want to flag one thing about the 2 pm round: the interviewer joined 15 minutes late and the round ended on time, so we didn't reach the follow-up part of the question. If the panel needs more coding signal, I'd be glad to do another session. Thanks, Arun.
+
+Keep it about missing signal or specific behaviour, not about the interviewer's personality.
+
+## Interview angles
+
+- Your calm under a difficult interviewer is itself observed, especially in senior and behavioural rounds where handling disagreement is part of the rubric.
+- One difficult interviewer rarely decides alone in a well-run loop; see [Interviewer variance](/learn/interviewer-variance).
+
+--- revise
+### Types
+? Three root causes of bad interviews (Hello Interview)? :: Ego, inexperience or lack of preparation, poor training.
+? Silent interviewer: what do you do? :: Narrate checkpoints, pause a beat, recap progress; don't fish for approval constantly.
+? Why do interviewers type so much? :: They take notes for the write-up; Google trains thorough notes submitted within 48 hours.
+? Rude interviewer: what's the off-ramp phrase? :: "Sounds good, let me walk you through how I'd approach it that way."
+
+### Disagreements and hints
+? Interviewer challenges a correct answer. What might be happening? :: A deliberate test of whether you can justify it; don't reverse course without evidence.
+? How do you handle a hint that seems wrong? :: Test it on your example out loud and ask whether you're misreading it.
+? Question changes halfway. First move? :: Bank a summary of the first part, then ask what changes.
+? Should you assume a shadow interviewer doesn't count? :: No; at some companies shadows vote, so treat everyone as an evaluator.
+
+### Reporting
+? When and how do you report a bad interviewer? :: Same day, by email to the recruiter, factual: what, when, impact, one clear ask.
+? Is there a published big-tech redo policy? :: No; redos are possible but not guaranteed (Karat, a vendor, has one).
+
+--- notes
+## Causes
+Ego · inexperience/unprepared · poor training (Hello Interview 2025). Response: de-escalate, narrate, own clock, report facts later.
+## Silent
+Skill problem, not verdict (Holloway). Checkpoints + one-beat pause; occasional recap; no constant "is this OK?".
+## Typing
+Note-taking (Google: thorough notes, feedback within 48 h). Speak in quotable sentences.
+## Rude / ego
+Course-correct on snide remarks; no logic battles; off-ramp; avoid language/framework wars. Personal/illegal questions → finish calmly, report.
+## Disagrees
+Testing you → justify with an example. Wrong → show by example, accommodate if non-central, note the cost.
+## Wrong hint
+Test on example: "with X it gives Y, but we need Z; am I misreading?"
+## Rushed / junior / shadow
+Ask time budget early; clarify flow; shadows may vote (Amazon anecdote).
+## Switch mid-way
+Planned part 2 or added constraint. Bank summary, then ask what changes.
+## Report
+Same day, email, facts, time lost, one ask (consider / review / redo). Redo possible, not guaranteed; Karat: 24 h redo policy.
+
+--- doubts
+Q: Should I point out that the interviewer is wrong?
+A: Show, don't tell. Walk through a concrete input that demonstrates the behaviour and ask a question. If they still disagree on something that doesn't change correctness, accommodate and note the trade-off. If it does change correctness, stay polite but don't write code you believe is wrong; say "I think this case breaks; can we check it together?"
+
+Q: Can reporting an interviewer hurt my chances?
+A: A calm, factual note about time lost or inappropriate questions is routine for recruiters and rarely hurts. A long complaint about personality or about being rejected looks defensive. Report what happened and its effect, not how you felt about the person.
+
+Q: The interviewer asked whether I'm planning to get married soon. What do I do?
+A: In many places such questions are inappropriate or unlawful in hiring, and company training forbids them. You can deflect politely ("I'm fully committed to this role and its schedule") and continue. Afterwards, tell the recruiter factually and ask that it not be considered.
+
+--- exercises
+[say] An interviewer has said nothing for 20 minutes while you code. Write two sentences you might say at a natural checkpoint.
+A: Suggested wording (not from a source): "Quick checkpoint: the brute force is done and I'm now replacing the inner loop with a hash map, which brings it to O(n). I'll continue with that unless you'd like me to test the current version first." Then pause briefly before continuing.
+
+[choose] The interviewer insists your O(n) solution is O(n²). You're confident it's linear. Options: (a) agree and move on, (b) argue the definition of amortised analysis, (c) walk through how many times each element is pushed and popped, then ask if they see a case you've missed.
+A: (c). It shows evidence calmly and lets them conclude. (a) reverses a correct answer, which some interviewers are testing for; (b) turns it into a battle.
+
+[fix] Rewrite this report email: "Your interviewer was rude and clearly didn't want to be there. This process is a joke."
+A: "Hi [recruiter], thanks for today. One concern about the 3 pm round: the interviewer joined 20 minutes late and we only covered the first part of the question. If more signal is needed, I'd welcome another session. Thank you." Facts, impact, one ask; no judgement of the person.
+
+--- pitfalls
+- Reading silence or typing as a negative verdict
+- Arguing tool or language preferences
+- Reversing a correct answer under pushback without checking
+- Following a doubtful hint without testing it
+- Complaining about personality instead of reporting facts
+- Assuming shadows don't evaluate
+
+--- quiz
+Q: An interviewer keeps typing while you explain. Most likely?
+- They are bored
+- *They are writing notes for their feedback
+- They are messaging the recruiter to reject you
+- They are using AI
+W: Interviewers are trained to take thorough notes.
+
+Q: Hello Interview's advice when an interviewer disagrees with a correct answer?
+- Concede immediately
+- *Don't battle; justify with reasoning, and be careful about reversing course
+- Ask for a different interviewer
+- Stop talking
+W: Some challenges are deliberate tests.
+
+Q: Best way to report a genuinely bad round?
+- Post on social media
+- Tell the next interviewer
+- *A same-day factual email to the recruiter with one clear ask
+- Say nothing
+W: Recruiters can sometimes arrange a redo or ask that the round be reviewed.
+
+--- sources
+- article :: Dealing with bad interviewers :: Stefan Mai, Hello Interview (2025) :: https://www.hellointerview.com/blog/dealing-with-bad-interviewers
+- article :: What happens after the interview? :: Hello Interview (2025) :: https://hellointerview.substack.com/p/what-happens-after-the-interview
+- book :: Best practices for interviewers :: Holloway Guide to Technical Recruiting and Hiring :: https://holloway.com/g/technical-recruiting-hiring/sections/best-practices-for-interviewers
+- article :: Effective interviewer training :: Google re:Work :: https://rework.withgoogle.com/intl/en/guides/effective-interviewer-training-for-better-candidate-experiences
+- article :: 1,000 hires can't be wrong (redo policy) :: Karat :: https://karat.com/?p=1823
+
+=== mistakes-recovery
+blurb: How to recover from a wrong approach, a bug you find late, a misread problem, or a design you realise doesn't scale, and what to do when you have seen the question before. The narrated pivot, banking partial credit, and the honest options on seen questions.
+signals: You realise halfway that your approach is wrong | You find a bug after saying "done" | You misread the problem | You recognise the question from LeetCode
+prereq: stuck-blank
+
+--- lesson
+:::words
+- **Pivot**: changing approach in the middle of a problem.
+- **Narrated pivot**: a pivot you explain out loud: what broke, why, and what you'll do instead.
+- **Dry run**: tracing your code by hand on a small input, line by line.
+- **Seen question**: a question you've already solved or seen solved before the interview.
+:::
+
+## The problem in plain words
+
+Mistakes in interviews are certain. The question is whether the interviewer writes "made an error" or "found and fixed their own error". The second is positive evidence: testing your own work, responding to evidence, and staying calm are all on the rubric. Content-farm advice and interviewer guides agree that interviewers focus "less on the flaw itself and more on how you talk about the change" (anecdotal, but consistent with how rubrics are written).
+
+:::eli5
+A chef who drops an egg and quietly hides it looks careless when it's found. A chef who says "dropped one, cracking a fresh one" looks professional. Same mistake, different impression.
+:::
+
+## Wrong approach, discovered halfway
+
+1. **Say it as soon as you know**: "I've just noticed this breaks when the array has duplicates."
+2. **Show the case**: "With [2, 2, 1], the pointer skips the second 2."
+3. **Explain why, in one sentence**: "Because the greedy choice isn't safe when values repeat."
+4. **Propose the new approach and its cost**: "I'll switch to counting with a hash map: O(n) time and space."
+5. **Reuse what you can**: "The parsing helper I wrote still works."
+
+Suggested wording for the whole move (not from a source): "I've just noticed this breaks when [case]. I'm going to step back: the better idea is [X] because [reason]. I'll keep the helper I wrote for [part]." Naming the failing case shows exactly the self-testing interviewers look for.
+
+Set yourself a checkpoint so a failing approach doesn't eat the round: if there's no progress after 5–8 minutes, or a counterexample appears, pivot (see [Your biases while interviewing](/learn/your-biases)).
+
+## A bug found late, or after saying "done"
+
+- Fix it out loud: "I see an off-by-one: the loop should stop at n − 1. Fixing it." Visible self-correction gives the interviewer counter-evidence to write down, which counters the "horn effect" (one flaw colouring the whole judgement).
+- Then re-run your dry run on the example to show the fix works.
+- Never say "done" without a dry run. Build the habit: write code → trace a small example → check two edge cases → state complexity → *then* say you're finished.
+
+If the interviewer points out the bug, thank them and fix it calmly; don't defend it. "Good catch. The empty array returns −1 here; I'll add a guard."
+
+## You misread the problem
+
+Usually discovered when your example doesn't match theirs. Restate the corrected understanding, check it ("So we return the indices, not the values?"), and reuse as much as you can. Ten lost minutes are recoverable; misreading and pressing on is not. This is also why the first five minutes (restating, examples, clarifying questions) matter so much.
+
+## A design that doesn't scale
+
+In design rounds, the equivalent is realising your single database can't take the write load, or your cache strategy breaks consistency. Say so and evolve the design: "At 50,000 writes a second, a single primary won't keep up. Let me shard by user ID; that changes the leaderboard query, which I'll handle with a separate aggregated store." Interviewers expect designs to evolve; they score whether you notice your own bottlenecks.
+
+## Questions you've seen before
+
+There is **no consensus and no official guidance**. The research found only forum discussion (anecdotal):
+
+- Some candidates who disclosed got a much harder replacement question and failed it.
+- Some interviewers switch questions anyway, because a memorised answer gives them little signal.
+- Some interviewers say they penalise candidates they suspect knew the question but hid it; one Meta-focused thread says interviewers disliked candidates who signalled prior exposure.
+
+Your realistic options:
+
+| Option | Upside | Risk |
+|---|---|---|
+| Say "I've seen something similar" and let them choose | Honest; builds trust | A harder replacement |
+| Don't mention it; solve it properly with full reasoning | Uses your preparation | If it looks recited, they may suspect and push harder |
+| Mention it only if you know it word for word | Honest where it matters most | Judgement call |
+
+Whatever you choose, **don't recite**. Interviewers can tell a memorised answer: no clarifying questions, the optimal solution with no path to it, no hesitation on follow-ups. Even on a familiar question, clarify, give the brute force, explain *why* the optimal works, and handle follow-ups thoughtfully. The follow-ups are usually where the signal is anyway.
+
+The lowest-risk honest approach (an inference from the anecdotes): briefly say you've seen something similar, and let the interviewer decide.
+
+## Interview angles
+
+- Senior rounds reward judgement: noticing your own mistakes early is a senior behaviour.
+- In behavioural rounds, the same skill shows up as "tell me about a mistake you made", see [Awkward questions](/learn/awkward-questions).
+
+--- revise
+### Pivots
+? Five steps of a narrated pivot? :: Say it now, show the failing case, explain why, propose the new approach and cost, reuse what you can.
+? When should you pivot? :: When there's no progress after about 5–8 minutes or a counterexample appears.
+? What do interviewers focus on when you change approach? :: How you talk about the change more than the flaw.
+
+### Bugs and misreads
+? Bug found late: what do you do? :: Fix it out loud, then re-run the dry run.
+? What must happen before you say "done"? :: Trace a small example, check two edge cases, state complexity.
+? Interviewer points out your bug. Response? :: Thank them and fix it calmly; don't defend it.
+? Misread the problem: recovery? :: Restate the corrected understanding, confirm it, reuse what you can.
+
+### Seen questions
+? Is there official guidance on disclosing a seen question? :: No; only conflicting forum reports.
+? Lowest-risk honest option? :: Briefly say you've seen something similar and let them choose.
+? How can interviewers tell a recited answer? :: No clarifying questions, optimal with no path, weak on follow-ups.
+
+--- notes
+## Wrong approach
+Say it → failing case → why → new approach + cost → reuse helpers. Checkpoint 5–8 min.
+"Less about the flaw, more about how you talk about the change."
+## Bugs
+Out-loud fix + re-run trace. Counters horn effect. Habit: code → trace → 2 edge cases → complexity → done.
+Interviewer finds it: "Good catch", fix, no defence.
+## Misread
+Restate, confirm, reuse. First 5 minutes (restate, examples, clarify) prevent it.
+## Design
+Notice own bottleneck, evolve design (e.g. shard by user ID); scored positively.
+## Seen question
+No consensus (Blind). Options: disclose and let them choose · solve properly · disclose if verbatim.
+Never recite: clarify, brute force, why optimal works, handle follow-ups.
+## Words to use
+"I've just noticed this breaks when…" · "Good catch, fixing it" · "Let me restate the corrected understanding".
+## Why it scores
+Self-testing, responding to evidence and calm under pressure are rubric signals; a narrated fix counters the horn effect.
+Senior signal: noticing your own mistakes and bottlenecks early.
+
+--- doubts
+Q: If I pivot, will the interviewer think I'm indecisive?
+A: Not if you explain the reason with a concrete case. Drifting between approaches without reasons looks indecisive; a single, justified pivot looks like good judgement.
+
+Q: I solved it perfectly because I'd seen it. Was that cheating?
+A: No. Preparation is expected, and questions repeat. The risks are practical, not ethical: a recited answer gives weak signal and may draw harder follow-ups. Solve it as if fresh and engage fully with follow-ups.
+
+Q: The interviewer found a bug I'd have found in my dry run. Does it count against me?
+A: A little more than if you'd found it, which is why the dry run should come before "done". Fixing it calmly limits the damage.
+
+--- exercises
+[say] Halfway through a design for a chat app you realise storing all messages in one relational table won't scale to 10 billion messages a day. Say how you evolve the design.
+A: Suggested wording (not from a source): "One correction: at about 10 billion messages a day, roughly 115,000 writes a second, a single relational table won't keep up. I'll move messages to a wide-column store partitioned by conversation ID and ordered by time, so reading a chat is one partition scan. User profiles can stay relational. That changes search, which I'll handle with a separate index fed from a stream."
+
+[fix] A candidate finishes coding and says "Done, it's O(n)". The interviewer asks "What about an empty array?" and the code crashes. What should the candidate's habit have been?
+A: Code → dry run a small example → check edge cases (empty, single element, duplicates, extremes) → state complexity → then "done". Here: "Before I finish, let me check the empty case… index 0 doesn't exist, so I'll return 0 early."
+
+[choose] You're given a problem you solved last week. You remember the optimal solution exactly. What do you do?
+A: Either say "I've seen something similar" and let them choose, or solve it properly as if fresh. In both cases: clarify, state brute force, explain why the optimal works, test it, and engage with follow-ups. Never recite the final code silently.
+
+--- pitfalls
+- Silently patching a broken approach
+- Saying "done" without a dry run
+- Defending a bug the interviewer points out
+- Pressing on after misreading the problem
+- Reciting a memorised solution with no path to it
+
+--- quiz
+Q: What makes a pivot look like good judgement rather than indecision?
+- Doing it quickly without explanation
+- *Naming the failing case and the reason, then the new approach and its cost
+- Asking the interviewer which approach to use
+- Pivoting several times
+W: A justified, narrated pivot is positive evidence.
+
+Q: Which is the strongest habit before saying "done"?
+- Re-reading the problem statement
+- *Dry-running a small example and checking edge cases
+- Renaming variables
+- Asking if it's correct
+W: Self-testing is scored.
+
+Q: On disclosing a seen question, the research found…
+- An official Google policy requiring disclosure
+- *No consensus, only conflicting forum reports
+- That disclosure always helps
+- That disclosure is forbidden
+W: Choose an honest approach and never recite.
+
+--- sources
+- article :: Coding interview techniques :: Tech Interview Handbook :: https://www.techinterviewhandbook.org/coding-interview-techniques/
+- article :: Being honest about a seen question (discussion) :: Blind :: https://www.teamblind.com/post/being-honest-about-seen-question-in-interview-xc5ngr5o
+- article :: Interview tip: what's the real question :: Mike Stall, Microsoft (archived) :: https://learn.microsoft.com/en-us/archive/blogs/jmstall/interview-tip-whats-the-real-question
+
+=== tech-failures
+blurb: Power cuts, dropped internet, a crashed shared editor, an online assessment that flags you, a take-home that's far too big, an unfamiliar coding language, and a question far above your level. Official guidance where it exists, India-specific backups, and what to tell the recruiter.
+signals: Your internet drops mid-round | The shared editor freezes | A family member walks in during a proctored test | The take-home looks like two days of work | You're asked to code in a language you rarely use
+prereq: online-assessments
+
+--- lesson
+:::words
+- **Proctoring**: monitoring a test to stop cheating: webcam, screen recording, tab-switch logging.
+- **Integrity flag**: a note in the test report that something suspicious happened (a tab switch, a second face). It goes to the employer, who decides what it means.
+- **Take-home**: a project you build on your own time and submit, instead of or in addition to live coding.
+- **Hotspot**: using your phone's mobile data to give your laptop internet.
+- **UPS / inverter**: a battery that keeps power running during a power cut (common in Indian homes).
+:::
+
+## The problem in plain words
+
+Remote interviews add a new class of problems that have nothing to do with skill: power, internet, software, proctoring rules. In India, power cuts and patchy broadband are real risks. The good news: interviewers and recruiters deal with these constantly, and there is clear official guidance from at least one major company. What hurts candidates is usually not the failure itself but **silence** about it.
+
+:::eli5
+If your car breaks down on the way to an exam, the examiner wants a phone call the moment it happens, not an explanation a week later. Have a spare tyre (backup internet), the examiner's number (recruiter contact), and call immediately.
+:::
+
+## Outages during a live round
+
+**Google's official virtual-interview guide** is the clearest source (official): have a phone ready in case audio or video fails; "we understand that internet outages can be unpredictable"; if you expect a problem *before* the interview, contact the recruiting coordinator; during the interview, tell your interviewer, turn off your camera to save bandwidth, switch to a phone call as a last resort, and expect a reschedule if problems persist. Google's guide also asks for a laptop, a headset with microphone, a webcam, ideally a mouse, and your smartphone nearby as an audio backup.
+
+Candidate reports (anecdotal): reconnecting within about two minutes is usually fine; a Meta candidate who dropped several times was told it wouldn't count against them; a candidate who missed a phone screen after a power cut and didn't inform anyone promptly was dropped.
+
+**India backup checklist** (an inference from the above, plus common practice):
+- Router on a UPS or inverter; laptop fully charged.
+- Phone hotspot tested in advance as a second connection.
+- The coordinator's email or phone open on your phone, so you can write within a minute.
+- Join 5–10 minutes early; close everything else that uses bandwidth.
+- Quiet room; tell family the exact times.
+
+Suggested message after a mid-round cut (not from a source), sent within minutes:
+
+> We lost power at about 11:20, roughly 25 minutes into the round with Rahul. I rejoined by phone hotspot but we had only 10 minutes left. I'd appreciate a chance to complete the round if the panel needs more signal.
+
+**Never fake an outage.** Interviewers notice, for example a candidate who "lost video" and then appeared to look up answers (anecdotal).
+
+## The shared editor crashes
+
+Tell the interviewer immediately, copy your code somewhere safe if you can, and agree on a fallback (a new link, a Google Doc, reading code aloud). Keep talking about the approach while it's being fixed; the time isn't wasted if you're still giving evidence.
+
+## Online assessments and proctoring flags
+
+Proctoring is documented officially (see [Online assessments](/learn/online-assessments)). HackerRank's Proctor Mode flags tab switches, leaving full screen, a missing or extra face, phones visible in the webcam, extra monitors, and AI or tutorial sites in periodic screenshots; the employer gets an integrity report and decides; the documentation does not say flags reject you automatically (official). CodeSignal records video, audio and screen, and human proctors review recordings within one to three business days (official).
+
+If something innocent happens (a power cut, a parent walking in, a phone notification), **tell the employer in writing immediately** with the time. A flag with an explanation is a human judgement; a flag without one looks like what it looks like.
+
+## A take-home that's far too big
+
+interviewing.io surveyed almost 700 engineers: over 80% said a take-home should take **4 hours or less** (the most common answer was about 2 hours); about 85% had received one; only 4% had ever been paid for one; only 10% were offered a choice between a take-home and live interview (reputable, company survey). Multi-day unpaid assignments are widely criticised in the press.
+
+What to do:
+- **Ask before you start**, not at the deadline. Suggested wording (not from a source): "This looks like 8–10 hours of work as written. I can give it about 4 hours this week. Would you prefer I cover the core API with tests and describe the rest in the README, or is there a part you most want to see?"
+- **Submit a focused, high-quality subset** with a README: what you built, what you'd do with more time, trade-offs, how to run it and its tests. Leaving notes on what you'd add is standard (company engineering blogs; anecdotal).
+- Quality beats breadth: tests, clear structure and a readable README are what reviewers look at first.
+
+## An unfamiliar language
+
+Tech Interview Handbook: use "a language that you are extremely familiar with"; learning a new language just for interviews "is hardly a good idea"; most companies allow any mainstream language, though domain roles (front end, mobile) require theirs (reputable). If a data structure is missing in your language, ask to assume one with stated methods and costs: "I'll assume a min-heap with push and pop in O(log n)." Ask the recruiter about language rules before the round. Some banks and trading firms test a specific language deeply (Java at many banks, C++ at trading firms); see their chapters.
+
+## A question far above your level
+
+An off-level question is the interviewer's calibration problem (Will Larson, engineering executive, argues problems should test job-relevant skill, not tricks), but you still have to handle it. Partial credit matters "if you are directionally right" (anecdotal); brute-forcing a few special cases gives little signal.
+
+- Name the hard part: "The difficulty is handling overlapping intervals efficiently."
+- Solve a constrained version fully: "Let me solve it when intervals don't overlap, then extend."
+- Extend step by step, narrating trade-offs.
+
+This converts "couldn't solve" into visible, directional evidence.
+
+## An unknown technology in a design round
+
+Be honest and transfer your reasoning. Suggested wording (not from a source): "I haven't used Kafka in production. What I'd expect it to need here is ordering per key, replay and partitioning; the tool I've used for that is RabbitMQ, so here's how I'd reason about it."
+
+## Interview angles
+
+- How you handle a failure is observed: calm, prompt communication reads as professional.
+- Rescheduling for a real reason is normally fine; Blind commenters think rescheduling a Google round is unlikely to hurt (anecdotal). Ask early, not on the day if you can avoid it.
+
+--- revise
+### Outages
+? Google's official steps for a connection failure? :: Tell the interviewer, camera off, phone call as last resort, expect a reschedule if it persists.
+? India backup checklist? :: Router on UPS, charged laptop, tested hotspot, coordinator contact ready, join early, quiet room.
+? Biggest mistake after an outage? :: Not informing the recruiter promptly in writing.
+? What should the post-outage message include? :: Time, how much of the round was lost, how you rejoined, a request to complete if needed.
+
+### Assessments and take-homes
+? What does HackerRank Proctor Mode flag? :: Tab switches, leaving full screen, missing/extra faces, phones, extra monitors, AI or tutorial sites.
+? Do proctoring flags auto-reject? :: Not per HackerRank's docs; the employer reviews the integrity report.
+? What did interviewing.io find on take-home length? :: Over 80% say 4 hours or less; only 4% were ever paid.
+? Oversized take-home: what do you do? :: Ask about scope before starting; deliver a focused, tested subset plus a README.
+
+### Language and level
+? Coding language advice? :: Use one you know extremely well; assume missing structures with stated costs.
+? Question far above level: strategy? :: Name the hard part, solve a constrained version fully, extend step by step.
+
+--- notes
+## Outage (Google official guide)
+Phone ready; tell interviewer; camera off; phone call last resort; reschedule if persists; contact coordinator beforehand if expected.
+Kit: laptop, headset+mic, webcam, mouse, phone nearby.
+India: UPS on router, tested hotspot, contact ready, join early. Inform in writing within minutes. Never fake.
+## Editor crash
+Tell at once, save code, agree fallback, keep explaining.
+## OA flags
+HackerRank: tabs, full screen, faces, phones, monitors, AI sites; employer judges. CodeSignal: recorded, human review 1–3 days.
+Innocent incident → written explanation immediately.
+## Take-homes (interviewing.io, ~700)
+>80% ≤4 h; ~85% got one; 4% paid; 10% offered a choice.
+Ask scope first; focused tested subset; README (built, next, trade-offs, how to run).
+## Language
+Strongest language (TIH); assume missing structures; check rules; banks = Java depth, trading = C++.
+## Above level
+Name hard part → constrained version fully → extend. Directional partial credit.
+## Unknown tech
+Honest + transfer reasoning from a tool you know.
+
+--- doubts
+Q: Will an outage count against me?
+A: At most well-run companies, not if you handle it well: tell them immediately, reconnect or switch to phone, and ask to complete the round if it was cut short. Google's guide explicitly says outages are understood and may lead to a reschedule. There is no public data on how often redos are granted.
+
+Q: Should I refuse a take-home?
+A: You can (6% of interviewing.io's respondents refuse them outright), but it may end that process. A middle path is to ask about scope or offer a live session instead. Decide by how much you want the role and how much time you have.
+
+Q: Can I use my IDE's autocomplete in a live round?
+A: Only if the format allows it. Many rounds use a plain shared editor with no autocomplete or compiler. Ask the recruiter in advance and practise in the same environment.
+
+--- exercises
+[plan] Write your setup checklist for a four-round virtual onsite from home in Bengaluru.
+A: Example: router on UPS and laptop charged the night before; phone hotspot tested; headset, webcam and mouse tested on the meeting platform; coordinator's email and phone saved; family told the exact times; quiet room with a door; water and snacks; notifications off; only the interview tab open; join each round 5–10 minutes early; a paper notepad for design sketches if allowed (tell the interviewer at the start).
+
+[say] Your internet dies 20 minutes into a 45-minute round. You rejoin by phone 5 minutes later. What do you say to the interviewer on rejoining?
+A: Suggested wording (not from a source): "Sorry about that, my connection dropped and I'm back on a hotspot. Where we were: I'd finished the brute force and was about to write the hash-map version. Shall I continue from there?" Then, after the round, send the recruiter a short note with the time lost.
+
+[fix] A take-home says "build a full ride-sharing backend with matching, payments and admin dashboard; due in 48 hours". The candidate spends 20 hours and submits everything half-working. What should they have done?
+A: Ask about scope at the start; agree on a core (for example matching with tests) and a time budget of around 4 hours; submit a clean, tested core with a README listing what was left out, trade-offs and next steps. Reviewers value a working, tested core over a half-working everything.
+
+--- pitfalls
+- Not telling anyone promptly after an outage
+- Faking a technical problem
+- Ignoring proctoring rules or leaving innocent incidents unexplained
+- Accepting an oversized take-home without discussing scope
+- Learning a new language just for interviews
+- Giving up on a hard question instead of solving a constrained version
+
+--- quiz
+Q: Google's official guidance if your connection fails mid-interview includes…
+- Ending the interview immediately
+- *Telling the interviewer, turning off the camera, and switching to a phone call as a last resort
+- Waiting silently for it to return
+- Emailing after a week
+W: And a reschedule if the problem persists.
+
+Q: In interviewing.io's survey, what share of engineers said take-homes should take 4 hours or less?
+- About 20%
+- About 50%
+- *Over 80%
+- 100%
+W: The most common answer was about 2 hours.
+
+Q: Your sibling walks in during a proctored online assessment. Best action?
+- Ignore it
+- Close the test and restart
+- *Continue, then write to the employer immediately explaining what happened and when
+- Turn off the webcam
+W: Flags go to a human who decides; an explanation helps.
+
+--- sources
+- article :: Candidate guide: guidelines for virtual interviews at Google (PDF) :: Google :: https://services.google.com/fh/files/misc/general_virtual_interviews_candidate_resource.pdf
+- tool :: Proctor Mode documentation :: HackerRank :: https://hackerrank-knowledge-base.help.usepylon.com/articles/5663779659-proctor-mode
+- article :: What engineers think about take-home assignments (survey) :: interviewing.io :: https://interviewing.io/blog/why-engineers-dont-like-take-homes-and-how-companies-can-fix-them
+- article :: Picking a programming language for interviews :: Tech Interview Handbook :: https://techinterviewhandbook.org/programming-languages-for-coding-interviews/
+- article :: Appropriate programming problems :: Will Larson :: https://lethain.com/appropriate-programming-problems/

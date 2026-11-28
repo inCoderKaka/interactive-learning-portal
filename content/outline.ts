@@ -405,6 +405,58 @@ export const OUTLINE: Record<string, Sub[]> = {
     ["timers-scheduling", "Timers and scheduling: delay queues and timing wheels", 2, 20],
     ["concurrency-puzzles", "Classic concurrency puzzles: ordering threads, dining philosophers, H2O", 2, 30],
   ],
+  // ───────────── CRAFT ─────────────
+  "craft-hiring": [
+    ["hiring-pipeline", "The pipeline from application to offer", 1, 20],
+    ["level-map", "Levels across companies: what mid and senior mean", 1, 25],
+    ["levels-decided", "How your level is decided, and downlevelling", 1, 20],
+    ["how-evaluated", "How interviewers score you: rubrics, write-ups and committees", 1, 25],
+    ["interviewer-variance", "Interviewer variance: luck, noise and what you control", 1, 20],
+  ],
+  "craft-search": [
+    ["resume", "Resumes that get past screening", 1, 25],
+    ["referrals-outreach", "Referrals and cold outreach", 1, 20],
+    ["recruiter-call", "The recruiter call", 1, 20],
+    ["prep-timeline", "Preparation plans: how long and in what order", 1, 25],
+    ["parallel-processes", "Running many processes at once", 1, 25],
+  ],
+  "coding-round": [
+    ["online-assessments", "Online assessments and proctoring", 1, 20],
+    ["coding-out-loud", "The coding round, out loud", 1, 30],
+    ["design-round-craft", "The system design round: running the hour", 1, 25],
+    ["lld-machine-coding", "Object-oriented design and machine-coding rounds", 1, 25],
+    ["ml-rounds", "ML and AI engineer rounds", 1, 25],
+    ["ai-tools-policy", "AI tools, cheating checks and in-person rounds", 1, 20],
+    ["onsite-logistics", "Virtual and in-person onsites: setup and logistics", 1, 15],
+  ],
+  behavioral: [
+    ["star-stories", "STAR answers and a story bank", 1, 30],
+    ["common-prompts", "The prompts every company asks", 1, 25],
+    ["values-map", "Company values side by side", 1, 25],
+    ["senior-behavioural", "Senior behavioural: scope, influence and conflict", 1, 25],
+  ],
+  "craft-situations": [
+    ["stuck-blank", "Going blank, getting stuck, running out of time", 1, 20],
+    ["difficult-interviewers", "Difficult interviewers", 1, 25],
+    ["mistakes-recovery", "Mistakes, wrong turns and questions you've seen before", 1, 20],
+    ["tech-failures", "Technical failures and other candidate-side problems", 1, 20],
+    ["awkward-questions", "Awkward questions: gaps, layoffs, exits, weaknesses", 1, 25],
+    ["language-accent", "Language, accent and thinking aloud in a second language", 1, 20],
+    ["nerves-energy", "Nerves, energy and recovering from a bad round", 1, 20],
+    ["closing-questions", "The last five minutes and after the interview", 1, 15],
+  ],
+  "craft-offers": [
+    ["offer-anatomy", "Reading an offer: India CTC and US packages", 1, 25],
+    ["negotiation", "Negotiating, India and US", 1, 25],
+    ["india-offer-norms", "India offer-stage norms: notice, buyouts, checks, revocations", 1, 20],
+    ["comparing-offers", "Comparing offers beyond money", 1, 20],
+  ],
+  biases: [
+    ["your-biases", "Your biases while interviewing", 1, 25],
+    ["interviewer-biases", "Interviewer biases against you", 1, 25],
+    ["prep-biases", "Biases in how you prepare", 1, 20],
+    ["offer-biases", "Biases in evaluating offers", 1, 20],
+  ],
   // ───────────── AI ─────────────
   "ai-math": [
     ["linear-algebra-ml", "Linear algebra for ML: vectors, matrices, eigenvectors and SVD", 1, 30],

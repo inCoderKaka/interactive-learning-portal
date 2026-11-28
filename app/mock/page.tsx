@@ -107,7 +107,8 @@ export default function Mock() {
     // roadmap links pass a recommended configuration
     const kind = q.get("kind") as Kind | null;
     const topics = q.get("topics")?.split(",").filter(Boolean);
-    if (kind && ["coding", "hld", "lld", "ml", "mlcode", "behavioral"].includes(kind)) setInitial({ kind, ...(topics?.length ? { selection: { mode: "random-pool", pool: { topics } } } : {}) });
+    const company = q.get("company") ?? undefined;
+    if (kind && ["coding", "hld", "lld", "ml", "mlcode", "behavioral"].includes(kind)) setInitial({ kind, ...(company ? { company } : {}), ...(topics?.length ? { selection: { mode: "random-pool", pool: { topics } } } : {}) });
     // course checkpoints link straight to one design question and remember where to return
     const qid = q.get("q"), d = qid ? interviewById.get(qid) : undefined;
     if (d) setInitial({ kind: kindOfDesign(d), level: "L5", selection: { mode: "exact", questionId: d.id } });
@@ -270,7 +271,7 @@ export default function Mock() {
 
   // ---- loop day ----
   const startLoop = async (base: SessionConfig) => {
-    const plan = defaultLoop(base.level, crypto.randomUUID());
+    const plan = defaultLoop(base.level, crypto.randomUUID(), base.company);
     const l: LoopState = { plan, base, seed: base.seed, index: 0, ids: [], cards: {}, breakUntil: 0 };
     setLoop(l);
     await startLoopRound(l, 0);

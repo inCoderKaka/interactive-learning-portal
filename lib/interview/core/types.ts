@@ -55,6 +55,7 @@ export interface SessionConfig {
   privacy?: boolean; // MI-X-6: only on-device speech and a local model
   redo?: { atMs: number; context: string; prompt: string }; // MI-FB-4: a micro-drill from a replay moment
   steer?: string; // course checkpoints: the interview path to take after the high-level design (req3)
+  company?: string; // req3 Craft: the company whose style, values and rubric the round follows (default google)
 }
 
 export interface InterviewQuestion {

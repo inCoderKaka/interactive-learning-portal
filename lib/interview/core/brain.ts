@@ -13,7 +13,7 @@ export function initBrain(cfg: SessionConfig, question: InterviewQuestion, start
     phaseStartedAt: 0,
     startedAt,
     tone: resolveTone(cfg.tone, cfg.seed),
-    persona: makePersona(cfg.seed, cfg.kind),
+    persona: makePersona(cfg.seed, cfg.kind, cfg.company),
     question,
     curveballs: scheduleCurveballs(cfg),
     lastCandidateAt: 0,

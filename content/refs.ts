@@ -735,6 +735,31 @@ export const TOPIC_REFS: Record<string, Ref[]> = {
     {"kind": "video", "title": "Prepare for your Google interview: leadership", "by": "Life at Google", "url": "https://www.youtube.com/watch?v=2Cr3-et4xkI", "yt": "2Cr3-et4xkI"},
     {"kind": "article", "title": "Behavioural interview guide", "by": "Tech Interview Handbook", "url": "https://www.techinterviewhandbook.org/behavioral-interview/"},
   ],
+  "craft-hiring": [
+    {"kind": "video", "title": "What happens inside a software interview? Algorithms, data structures, system design and behavioural", "by": "Gaurav Sen", "url": "https://www.youtube.com/watch?v=g4Y-CRS_QRI", "yt": "g4Y-CRS_QRI", "featured": true},
+    {"kind": "video", "title": "Why great candidates fail in a tough job market", "by": "Dan Croitor", "url": "https://www.youtube.com/watch?v=7w9e4xT5ip0", "yt": "7w9e4xT5ip0"},
+    {"kind": "article", "title": "Technical interview performance is kind of arbitrary: here's the data", "by": "interviewing.io", "url": "https://interviewing.io/blog/technical-interview-performance-is-kind-of-arbitrary-heres-the-data"},
+    {"kind": "tool", "title": "Software engineer levels and salaries", "by": "levels.fyi", "url": "https://www.levels.fyi/companies/google/salaries/software-engineer"},
+  ],
+  "craft-search": [
+    {"kind": "video", "title": "Stop applying to hundreds of jobs: do this first", "by": "Jeff H Sipe", "url": "https://www.youtube.com/watch?v=jFf5OlpLJnE", "yt": "jFf5OlpLJnE", "featured": true},
+    {"kind": "video", "title": "The resume that got me into Google", "by": "NeetCode", "url": "https://www.youtube.com/watch?v=bwgjvzMSlMQ", "yt": "bwgjvzMSlMQ"},
+    {"kind": "video", "title": "LinkedIn cold message for an SDE referral: the right and wrong way", "by": "Concept && Coding", "url": "https://www.youtube.com/watch?v=ahqFp9Ly9zs", "yt": "ahqFp9Ly9zs"},
+    {"kind": "article", "title": "Talent Trends Report: referrals", "by": "Ashby", "url": "https://www.ashbyhq.com/talent-trends-report/reports/referrals"},
+    {"kind": "article", "title": "Coding interview preparation study plan", "by": "Tech Interview Handbook", "url": "https://www.techinterviewhandbook.org/coding-interview-prep/"},
+  ],
+  "craft-situations": [
+    {"kind": "video", "title": "How to overcome pacing and performance anxiety in job interviews", "by": "Dan Croitor", "url": "https://www.youtube.com/watch?v=-beLxQBNT9o", "yt": "-beLxQBNT9o", "featured": true},
+    {"kind": "video", "title": "How to handle career gaps in job interviews", "by": "Krish Naik", "url": "https://www.youtube.com/watch?v=XRdUseXutPU", "yt": "XRdUseXutPU"},
+    {"kind": "video", "title": "How to read between the lines of a rejection email", "by": "Dan Croitor", "url": "https://www.youtube.com/watch?v=7uDXt3VBfp0", "yt": "7uDXt3VBfp0"},
+    {"kind": "article", "title": "Dealing with bad interviewers", "by": "Hello Interview", "url": "https://www.hellointerview.com/blog/dealing-with-bad-interviewers"},
+  ],
+  "craft-offers": [
+    {"kind": "video", "title": "8 rules for offer negotiations", "by": "Gaurav Sen", "url": "https://www.youtube.com/watch?v=Gr861i8aB3k", "yt": "Gr861i8aB3k", "featured": true},
+    {"kind": "video", "title": "CTC vs in-hand salary: understanding the components", "by": "Krish Naik", "url": "https://www.youtube.com/watch?v=Kp4jAI732Ts", "yt": "Kp4jAI732Ts"},
+    {"kind": "video", "title": "Your job offer is the long game", "by": "Jeff H Sipe", "url": "https://www.youtube.com/watch?v=ZXisZcjGwlA", "yt": "ZXisZcjGwlA"},
+    {"kind": "article", "title": "Ten rules for negotiating a job offer", "by": "Haseeb Qureshi", "url": "https://haseebq.com/my-ten-rules-for-negotiating-a-job-offer/"},
+  ],
 };
 
 export const DESIGN_REFS: Record<string, Ref[]> = {

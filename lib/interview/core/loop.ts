@@ -5,14 +5,16 @@ import type { Kind, Level, SessionConfig, Tone } from "./types.ts";
 import { DECISIONS, DECISION_LABEL, type Decision, type Scorecard } from "./scoring.ts";
 import { fragment, type Overrides } from "./templates.ts";
 import { rng, pick } from "./rng.ts";
+import { companyById } from "./companies.ts";
 
 export interface LoopRound { kind: Kind; minutes: number; title: string }
-export interface LoopPlan { id: string; level: Level; rounds: LoopRound[]; breakMin: number }
+export interface LoopPlan { id: string; level: Level; rounds: LoopRound[]; breakMin: number; company?: string }
 
 const R = (kind: Kind, minutes: number, title: string): LoopRound => ({ kind, minutes, title });
 
-/** A Google-style onsite for the level: more design at senior levels, always one Googleyness round. */
-export function defaultLoop(level: Level, id: string): LoopPlan {
+/** The chosen company's onsite for the level (req3 Craft); Google's by default. */
+export function defaultLoop(level: Level, id: string, company?: string): LoopPlan {
+  if (company && company !== "google") return { id, level, rounds: companyById(company).loop(level), breakMin: 5, company };
   const rounds: LoopRound[] =
     level === "L3" ? [R("coding", 45, "Coding 1"), R("coding", 45, "Coding 2"), R("coding", 45, "Coding 3"), R("behavioral", 30, "Googleyness")]
     : level === "L4" ? [R("coding", 45, "Coding 1"), R("coding", 45, "Coding 2"), R("lld", 40, "Object-oriented design"), R("behavioral", 30, "Googleyness")]
@@ -62,7 +64,7 @@ export function committeeDecision(outcomes: RoundOutcome[]): Decision | null {
 
 export function committeePrompt(plan: LoopPlan, outcomes: RoundOutcome[], overrides?: Overrides): { system: string; user: string } {
   return {
-    system: fragment("committee.system", overrides, { level: plan.level }),
+    system: fragment("committee.system", overrides, { level: plan.level, company: companyById(plan.company).name, decider: companyById(plan.company).decider }),
     user: `${outcomes.map((o, i) => o.card ? `ROUND ${i + 1}: ${o.title} (${o.kind})\nDecision: ${DECISION_LABEL[o.card.decision]}; supports ${o.card.level || "?"}\nSummary: ${o.card.summary}\nRatings: ${o.card.ratings.map((r) => `${r.dimension} ${r.score}/4`).join(", ")}\nStrengths: ${o.card.strengths.join("; ")}\nConcerns: ${o.card.improvements.join("; ")}` : `ROUND ${i + 1}: ${o.title} (${o.kind}): no scorecard`).join("\n\n")}\n\nReturn ONLY JSON: {"decision":"strong_no_hire"|"no_hire"|"leaning_no_hire"|"leaning_hire"|"hire"|"strong_hire","level":"the level the loop supports","summary":"3-4 sentences","concerns":["..."],"next":["what to practise before the real loop"]}`,
   };
 }

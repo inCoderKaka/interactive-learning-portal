@@ -1,0 +1,923 @@
+=== hiring-pipeline
+blurb: The path from application to offer at a large tech company, and the people on it: sourcer, recruiter, hiring manager, interviewers, bar raiser, hiring committee, team match. What happens at each stage, how long it takes, and what each person needs from you.
+signals: You are about to apply and don't know what comes next | A recruiter says "hiring committee" or "team match" | You passed the onsite and are waiting weeks | You want to know who actually decides
+
+--- lesson
+:::words
+- **Sourcer**: a person who finds candidates (on LinkedIn, at events) and passes them to a recruiter.
+- **Recruiter**: your guide through the process. They schedule rounds, explain the format, and later present and negotiate the offer. They do not usually judge your technical skill.
+- **Hiring manager (HM)**: the manager of the team that will employ you. At some companies they interview you and decide; at others they only appear at the end.
+- **Online assessment (OA)**: a timed coding test you take alone on a platform such as HackerRank or CodeSignal.
+- **Phone or technical screen**: a 45–60 minute live interview, usually coding, on a video call with a shared editor.
+- **Onsite / loop**: the final set of 4–6 interviews, usually in one day or spread over a week. "Onsite" is used even when it happens on video.
+- **Bar raiser**: at Amazon (and Uber and some others), an experienced interviewer from *outside* the hiring team whose job is to keep the hiring bar high.
+- **Hiring committee (HC)**: at Google (and some others), a group of senior employees who did *not* interview you; they read the written feedback and decide.
+- **Debrief**: a meeting where the interviewers discuss you after the loop.
+- **Team match**: finding a specific team after you pass, at companies (Google, Meta) that interview for the company first and the team second.
+- **Headcount**: an approved, funded position. No headcount, no offer, however well you did.
+:::
+
+## The problem in plain words
+
+From the outside, a big-tech hiring process looks like a black box: you apply, things happen, and weeks later you hear yes or no. Inside, it is a pipeline with a small number of stages, each with a different person and a different question. Once you know the stages, you can prepare for each one, ask the right questions, and stop misreading silence.
+
+:::eli5
+Think of a cricket team selecting a player. A scout spots you (sourcer), the team coordinator arranges trials (recruiter), several coaches each watch one skill (interviewers), a selector who did not watch the trials reads all the reports (hiring committee), and finally you are assigned to a franchise that has a slot (team match and headcount).
+:::
+
+## The common pipeline
+
+| Stage | Who | Typical length | What they need from you |
+|---|---|---|---|
+| Application or referral | Sourcer, recruiter | Days to weeks | A resume that shows the level in 30 seconds |
+| Recruiter call | Recruiter | 20–30 min | Motivation, rough level, timeline, location, notice period |
+| Online assessment (some companies) | Platform, auto-graded | 60–120 min | Correct, efficient code under time |
+| Technical screen | One engineer | 45–60 min | Coding signal good enough to justify a loop |
+| Onsite / loop | 4–6 interviewers | 1 day or spread over 1–2 weeks | Coding, design, behavioural evidence |
+| Decision | Debrief, hiring committee or bar raiser + HM | Days to weeks | Nothing more from you, usually |
+| Team match (some companies) | Managers | Days to months | Interest, fit, questions |
+| Offer | Recruiter, compensation team | Days | Your decision and negotiation |
+
+Typical end-to-end time is 4–8 weeks, longer when team matching or approvals are slow. Time-to-hire varies a lot by company and season; ask your recruiter for their usual timeline at the first call.
+
+## Who decides, at different companies
+
+The single most useful question about a company's process is *who makes the decision*. It changes what matters.
+
+- **Google**: interviewers write independent feedback against a rubric; a **hiring committee** of people who did not interview you reviews the whole packet; then team match and an offer review. Interviewers do not decide alone. (Google's own descriptions and third-party guides; see the [Google chapter](/learn/google-loop).)
+- **Amazon**: each interviewer submits written feedback; a **bar raiser** from outside the team takes part, asks Leadership Principle questions and leads the debrief. Amazon describes the bar raiser as an "objective third party"; the bar raiser and hiring manager decide together, so no single person decides (official). Whether the bar raiser has a formal veto is disputed (anecdotal).
+- **Meta**: interviewers score separately; a debrief and calibration step decides; then **team matching** for most engineers.
+- **Indian product companies** (Flipkart, PhonePe, Swiggy and others): usually a debrief with the hiring manager and often a senior or director round; the hiring manager has more weight.
+- **Banks and trading firms**: often many rounds with the team, then a managerial and HR round; team managers have strong influence.
+
+Details are in each company's chapter.
+
+## What "independent feedback" means for you
+
+Most big-tech companies ask interviewers to write their feedback *before* discussing you with anyone. This is deliberate: it stops one confident voice from anchoring the rest (see [How interviewers score you](/learn/how-evaluated)). Two practical consequences:
+
+1. **Each round is a fresh start.** Your round-two interviewer does not know round one went badly.
+2. **What gets written down is what counts.** The committee reads notes, not your face. Say your reasoning, complexity, trade-offs and tests out loud so the interviewer can quote them.
+
+## Waiting, and what silence means
+
+After the loop, silence for one to three weeks is normal, especially with committees and team matching. Reasons include: feedback not yet written, the committee meeting weekly, headcount approval, or the recruiter handling many candidates. Silence is rarely a signal about your performance.
+
+It is reasonable to send a short, polite check-in to the recruiter after about a week past the date they gave you. If you have another offer with a deadline, tell them; it often speeds things up.
+
+## Headcount and things outside your control
+
+A strong loop does not guarantee an offer. A team's headcount can be frozen, a requisition can be filled by another candidate, or the company can pause hiring. India's large global capability centres (GCCs, the India engineering centres of foreign companies, about 2,100 of them employing about 2.4 million people in 2026 per Nasscom–Zinnov) increasingly hire against planned budgets rather than urgent backfills (reputable). This is why running several processes at once is the standard advice (see [Running many processes at once](/learn/parallel-processes)).
+
+## India-specific stages
+
+- **Notice period**: Indian employment contracts usually require 30, 60 or 90 days' notice before you can leave. Recruiters ask early, because a 90-day notice delays your joining date. See [India offer-stage norms](/learn/india-offer-norms).
+- **Current and expected CTC**: often asked in the first call. See [The recruiter call](/learn/recruiter-call).
+- **Background verification (BGV)**: after the offer, a third-party agency checks education, previous employers and sometimes references. Your stated dates and titles must match your records.
+- **Document collection**: payslips, relieving letters and offer letters from past employers are commonly requested.
+
+## What to ask at the first recruiter call
+
+- How many rounds, what type, and in what order? Is any round in person? Are AI tools allowed in any round?
+- Which level am I being considered for?
+- Who makes the final decision, and how long does it usually take?
+- Is there team matching after the loop?
+- What language or environment will I code in (shared editor, IDE, whiteboard)?
+
+## Interview angles
+
+- At every stage, a different person needs a different kind of evidence. Prepare for the person in front of you: the recruiter needs clarity and a timeline; the interviewer needs written-down evidence; the hiring manager needs to believe you will be productive on their team.
+- Senior candidates should expect more weight on system design and behavioural scope. Level is discussed in [How your level is decided](/learn/levels-decided).
+
+--- revise
+### Stages
+? The usual big-tech pipeline? :: Application → recruiter call → (online assessment) → technical screen → onsite loop → decision → (team match) → offer.
+? Typical end-to-end time? :: About 4–8 weeks; longer with committees, team match or approvals.
+? What does a recruiter need from the first call? :: Motivation, rough level, timeline, location, notice period.
+? What is headcount? :: An approved, funded position; without it there is no offer.
+
+### People
+? What is a bar raiser? :: An experienced interviewer from outside the team (Amazon, Uber) who keeps the bar high and takes part in the decision.
+? What is a hiring committee? :: A group (Google) that did not interview you; they decide from the written packet.
+? Why do interviewers write feedback before the debrief? :: So no one is anchored by another's opinion.
+? Two consequences of independent feedback? :: Each round is a fresh start; only what is written down counts.
+
+### India
+? Why do Indian recruiters ask about notice period early? :: 30–90 day notice periods delay joining.
+? What is BGV? :: Background verification by an agency after the offer: education, employers, dates.
+? Is two weeks of silence after the loop bad news? :: Usually not; committees, team match and approvals take time.
+
+--- notes
+## Pipeline
+Apply/referral → recruiter call → OA (some) → tech screen → loop (4–6) → decision → team match (some) → offer. 4–8 weeks typical.
+## People
+Sourcer finds · recruiter guides and negotiates · HM owns the team · interviewers each score one area.
+Bar raiser (Amazon): outside the team, LP questions, decides with HM; veto disputed.
+Hiring committee (Google): non-interviewers decide from the packet.
+Meta: debrief + calibration, then team match. Indian product cos: HM + senior round weigh more.
+## Implications
+Independent written feedback: each round fresh; say reasoning so it can be quoted.
+Silence 1–3 weeks normal; check in after a week past the promised date; mention competing deadlines.
+Headcount freezes are outside your control → run parallel processes.
+## India
+Notice 30/60/90 days. Current/expected CTC asked early. BGV after offer: dates and titles must match. Payslips, relieving letters.
+GCCs ~2,100 employing ~2.4 M (Nasscom–Zinnov 2026); hiring follows planned budgets.
+## Ask the recruiter
+Rounds, order, in-person, AI rules · level · who decides, timeline · team match · coding environment.
+
+--- doubts
+Q: Can I talk to the hiring manager before the loop?
+A: Sometimes. At companies where the hiring manager owns the role (many Indian product companies, Microsoft, banks), a short HM call early is common. At Google-style committee companies you usually meet managers only at team match. You can ask the recruiter; it signals interest.
+
+Q: If interviewers don't decide, does building rapport matter?
+A: Less than people think for the decision, but it still helps: a relaxed interviewer gives clearer hints and writes fuller notes. Spend your effort on making evidence easy to write down; rapport is a bonus.
+
+Q: Should I apply to several teams at the same company at once?
+A: Usually one application per company is enough, because recruiters can route you. Many companies discourage multiple simultaneous processes; ask the recruiter. At team-match companies you are interviewing for the company, not one team.
+
+--- exercises
+[plan] List the five questions you will ask at your next recruiter call, and what you will do with each answer.
+A: (1) Rounds, order and format, including in-person and AI rules → tailor prep and book travel. (2) Level considered → raise level evidence now if it is low. (3) Who decides and the usual timeline → set expectations, plan other processes. (4) Team match? → prepare team questions. (5) Coding environment → practise in the same environment.
+
+[choose] Your Google loop ended 12 days ago and the recruiter promised an update "within two weeks". You have a Flipkart offer expiring in five days. What do you do?
+A: Email the Google recruiter now: thank them, say you have an offer with a deadline in five days, ask whether the committee timeline can be expedited. Ask Flipkart for a short extension in parallel. Committees often move faster when a real deadline exists.
+
+[say] The recruiter asks why you want to join. Give a 30-second answer that helps them place you.
+A: Suggested wording (not from a source): "I've spent four years building payment APIs at a mid-size fintech and I want to work on larger-scale distributed systems. Your payments platform and the India team's ownership of settlement interest me most. I'm looking at senior backend roles, and I can join in about 60 days." Motivation, level, interest, timeline.
+
+--- pitfalls
+- Treating silence after the loop as rejection
+- Not asking who decides and how long it takes
+- Assuming a great loop guarantees an offer (headcount, team match)
+- Mismatched dates or titles that fail background verification
+- Forgetting to mention notice period and competing deadlines
+
+--- quiz
+Q: At Google, who usually makes the hire/no-hire decision after the loop?
+- The interviewer who liked you most
+- The recruiter
+- *A hiring committee that reviews the written packet
+- The candidate's referrer
+W: Committee members did not interview you; written evidence is what they see.
+
+Q: Why does independent written feedback make each round a fresh start?
+- Interviewers are forbidden from reading your resume
+- *Interviewers write their verdict before hearing others, so one bad round does not anchor the next
+- Rounds are scored by a computer
+- Only the last round counts
+W: It reduces anchoring and groupthink.
+
+Q: Which is most clearly outside a candidate's control?
+- Clarifying the problem
+- Testing their code out loud
+- *A team's headcount freeze
+- Their story bank
+W: Run several processes so one freeze doesn't decide your year.
+
+--- sources
+- article :: Bar raiser: how Amazon raises the hiring bar :: About Amazon :: https://www.aboutamazon.com/news/workplace/amazon-bar-raiser
+- article :: Google: how we hire (third-party copy) :: Bright Network :: https://www.brightnetwork.co.uk/employer-advice/google/google-how-we-hire/
+- article :: GCC hiring boom scales new peak (2026) :: Business Today :: https://www.businesstoday.in/jobs/story/at-5-1-lakh-jobs-indias-global-capability-centre-hiring-boom-scales-new-peak-540328-2026-07-01
+- article :: Don't sabotage your negotiation before it starts :: Aline Lerner, interviewing.io :: https://interviewing.io/blog/sabotage-salary-negotiation-before-even-start
+
+=== how-evaluated
+blurb: What happens to your performance after the round: structured interviews and rubrics, the attributes companies score, written feedback, debriefs, hiring committees and bar raisers. Why structured interviews predict better than gut feel, and how to make your evidence easy to write down.
+signals: You wonder why a "good conversation" ended in rejection | You want to know what the interviewer writes | You hear "Lean Hire" or "Strong No Hire" | You want to know whether one bad round sinks you
+prereq: hiring-pipeline
+
+--- lesson
+:::words
+- **Rubric**: a written scoring guide listing what to look for and what each score means.
+- **Signal**: a piece of evidence about a skill ("solved the follow-up without hints" is a problem-solving signal).
+- **Attribute / competency**: a skill the company scores, such as coding, problem solving, communication, system design or leadership.
+- **Write-up / feedback packet**: the interviewer's notes, scores and verdict for one round; the packet is all rounds together.
+- **Hire scale**: many companies use labels like Strong Hire, Hire, Lean Hire, Lean No Hire, No Hire, Strong No Hire. The exact wording differs and is rarely published.
+- **Validity**: how well a method predicts later job performance, often reported as a correlation from 0 (none) to 1 (perfect).
+- **Calibration**: aligning interviewers so the same performance gets the same score.
+:::
+
+## The problem in plain words
+
+An interview feels like a conversation. It is scored like an exam. After you leave, the interviewer turns 45 minutes into a page of notes and a verdict against a rubric. Later, people who never met you read those pages and decide. If you understand what goes onto that page, you can make sure your best work is on it.
+
+:::eli5
+A cooking competition judge tastes your dish, but the scores go on a card: taste, presentation, technique, creativity. A chef who only says "I made it with love" scores badly on technique even if the dish was good. Tell the judge what you did ("I seared it at high heat to keep it juicy") so the card gets filled.
+:::
+
+## Why companies use structure
+
+Research on hiring, going back decades, strongly favours **structured interviews**: the same kind of questions for every candidate, scored against predefined criteria, by interviewers writing independently.
+
+- Schmidt and Hunter's 1998 meta-analysis (85 years of research) ranked structured interviews well above unstructured ones in predicting job performance (strong).
+- Sackett and colleagues (2022) re-ran the numbers with better corrections; most estimates fell, and **structured interviews came out as the single best predictor** (about 0.42), ahead of job-knowledge tests (0.40) and cognitive-ability tests (0.31). They also found wide spread: some structured interviews predict far better than others (strong; the "best predictor" framing is debated, the ranking of structure is not).
+- Dana, Dawes and Peterson (2013) showed the danger of unstructured interviews: interviewers predicting students' grades felt just as confident after interviews in which the student secretly answered *randomly*, and their predictions were *worse* than using past grades alone (moderate).
+
+Google's people-analytics team found that brainteasers ("how many golf balls fit in a plane?") predicted nothing, and dropped them; it also found that about **four interviews** were enough to reach a reliable hire/no-hire decision, with each extra interview adding about 1% (moderate; reported by Laszlo Bock in *Work Rules!*; the 86% figure is agreement with the final decision, not with job performance).
+
+## What gets scored
+
+Every company names its attributes differently, but the families are stable:
+
+| Family | Typical names | What earns the signal |
+|---|---|---|
+| Coding | Coding, code quality, "craft" | Correct, readable code; good names; handles edge cases; tests |
+| Problem solving | Algorithms, general cognitive ability | Clarifying, examples, brute force → better, complexity, using hints well |
+| Communication | Communication, collaboration | Thinking aloud, structured explanation, responding to questions |
+| Design | System design, architecture, OOD | Requirements, trade-offs, scaling, failure handling, depth on demand |
+| Behavioural / values | Leadership, Googleyness, Leadership Principles, culture | Specific past situations, your own actions, measurable results, reflection |
+| Role knowledge | ML depth, domain, language internals | Correct depth at the right level |
+
+Company-specific rubrics (Google's four attributes, Amazon's Leadership Principles, Microsoft's competencies, Meta's signals) are in each company's chapter.
+
+## What an interviewer actually writes
+
+Interviewers are typically asked for: the question asked, a timeline of what you did, evidence for each attribute, the hints given, the final code or diagram, and a verdict with a level recommendation. They can only write what they saw or heard.
+
+That leads to the most practical rule in this chapter: **say the evidence out loud**.
+
+- "Brute force is O(n²) because every pair is checked." → problem-solving evidence
+- "I'll use a heap of size k; that makes it O(n log k)." → algorithm and complexity evidence
+- "Let me test with an empty array and with all duplicates." → testing evidence
+- "Trade-off: the cache can serve stale data for up to 30 seconds; for a feed that's acceptable." → design judgement evidence
+- "I decided to roll back without waiting for my manager because users were losing payments." → ownership evidence
+
+Silent good work is often scored as if it did not happen.
+
+## Debriefs, committees and bar raisers
+
+After all rounds, the packet goes to a decision step:
+
+- **Debrief** (Amazon, Meta, many others): interviewers meet. At Amazon, a bar raiser from outside the team leads it and decides with the hiring manager (official). Interviewers reportedly submit written feedback before the meeting so no one is anchored (anecdotal, but consistent across reports).
+- **Hiring committee** (Google): senior people who did not interview you read the packet and decide, then an offer review sets level and pay.
+- **Hiring manager decision** (many Indian product companies, banks, startups): the HM weighs feedback, often after a final senior round.
+
+## How rounds combine
+
+- Combined judgements beat single ones, which is why loops have four or more rounds. One weak round is often survivable if others are strong and the weak round's notes show reasonable process.
+- One **Strong No Hire** with clear evidence (a serious red flag such as dishonesty, rudeness, or a fundamental gap) can sink a candidacy at most companies.
+- Level is decided from the same packet: design and behavioural rounds carry most of the level signal for senior roles (see [How your level is decided](/learn/levels-decided)).
+
+## Red flags that rubrics punish hard
+
+- Coding before agreeing on the approach, then getting lost
+- Arguing with hints, or ignoring them
+- Claiming team results as your own, or blaming others
+- Inconsistencies between your resume and your answers
+- Rudeness to anyone, including recruiters and coordinators
+- Using forbidden tools (AI assistants, notes) during a round
+
+## Interview angles
+
+- Think of each round as filling the interviewer's page. Before you finish a round, ask yourself: could they write evidence for each attribute from what I said?
+- End with a 20-second summary: final complexity, what you tested, what you would improve. It gives the interviewer a clean closing paragraph.
+
+--- revise
+### Structure and validity
+? What is a structured interview? :: Same kind of questions, predefined rubric, independent written scoring.
+? Best predictor in Sackett et al. (2022)? :: Structured interviews (≈0.42), ahead of job-knowledge tests and cognitive-ability tests.
+? What did Dana et al. (2013) show about unstructured interviews? :: Interviewers felt confident even after random answers, and predictions got worse than using past grades.
+? Google's findings on brainteasers and interview count? :: Brainteasers predicted nothing; about four interviews were enough for a reliable decision.
+
+### Scoring
+? Six families of attributes companies score? :: Coding, problem solving, communication, design, behavioural/values, role knowledge.
+? What can an interviewer write in feedback? :: Only what they saw or heard: question, timeline, evidence per attribute, hints, code, verdict.
+? The most practical rule of this page? :: Say the evidence out loud: complexity, trade-offs, tests, your decisions.
+? What usually sinks a candidacy outright? :: A clear Strong No Hire: dishonesty, rudeness, a fundamental gap, forbidden tools.
+
+### Decision
+? Who decides at Amazon? :: The bar raiser and the hiring manager after a debrief.
+? Who decides at Google? :: A hiring committee of non-interviewers, then offer review.
+? How should you end a round? :: A short summary: final complexity, what you tested, what you'd improve.
+
+--- notes
+## Why structure
+Structured > unstructured (Schmidt & Hunter 1998). Sackett 2022: structured ≈ .42 top; job knowledge .40; cognitive .31; wide spread.
+Unstructured: confident after random answers, worse than GPA alone (Dana 2013).
+Google: brainteasers useless; ~4 interviews enough (Bock, Work Rules!).
+## Scored families
+Coding · problem solving · communication · design · behavioural/values · role knowledge.
+## Write-up
+Question, timeline, evidence per attribute, hints, final code/diagram, verdict + level.
+Say complexity, trade-offs, tests, decisions out loud: silent work isn't scored.
+## Decision
+Debrief (Amazon bar raiser + HM; Meta calibration) · hiring committee (Google) · HM decides (Indian product cos, banks).
+One weak round survivable; one clear Strong No Hire usually fatal.
+## Red flags
+Code before agreement · fighting hints · "we" stealing credit / blaming · resume inconsistencies · rudeness · forbidden tools.
+## Close
+20-second summary: complexity, tests, improvements.
+
+--- doubts
+Q: If rubrics are fixed, why do outcomes vary so much between companies?
+A: Different rubrics, different bars, different question pools, and interviewer variance. The same performance can be a Hire at one company and a Lean No Hire at another. See [Interviewer variance](/learn/interviewer-variance).
+
+Q: Do interviewers see my resume and other rounds' feedback?
+A: They usually see your resume. At companies with independent feedback they do not see other rounds' verdicts before writing their own. Some companies give later interviewers focus areas ("probe design depth") based on gaps, without scores.
+
+Q: Does the "tell me about yourself" part count?
+A: It is rarely a rubric item, but it shapes first impressions (see [Interviewer biases](/learn/interviewer-biases)). Keep it short and relevant.
+
+--- exercises
+[fix] Rewrite this silent-coder habit into spoken evidence: you write a correct two-pointer solution without saying anything, then say "done".
+A: Before coding: "Sorted input, so two pointers from both ends: O(n) time, O(1) space; brute force would be O(n²)." While coding: "Moving the left pointer when the sum is too small keeps the invariant that no pair to the left works." After: "Testing an empty array, a single element and a case with duplicates… Final: O(n), O(1)." Each sentence is quotable evidence.
+
+[say] Write the 20-second summary you would give at the end of a design round for a URL shortener.
+A: Suggested wording (not from a source): "To summarise: a write path through the API to a key-generation service and a sharded key-value store; reads served from a CDN and Redis cache, so about 99% never touch the database. Main trade-off: pre-generated keys cost some wasted IDs but avoid collisions. Next I would add analytics through a stream and per-user rate limits."
+
+[choose] Which of these is the strongest problem-solving signal? (a) instantly naming the LeetCode problem, (b) solving with an unexplained trick, (c) giving a brute force, then improving it with a stated reason and complexity.
+A: (c). It shows structured progress and justifies the result; (a) shows recall, not skill, and (b) gives the interviewer nothing to write.
+
+--- pitfalls
+- Treating the round as a chat instead of a scored exam
+- Doing good work silently
+- Ignoring hints or arguing with them
+- Inflating "we" into "I" or the reverse
+- Ending a round without a summary
+
+--- quiz
+Q: In Sackett et al.'s 2022 reanalysis, which method had the highest average validity?
+- Cognitive-ability tests
+- Unstructured interviews
+- *Structured interviews
+- Brainteasers
+W: About 0.42, with wide variation between interviews.
+
+Q: Why should you say complexity and tests out loud?
+- To fill silence
+- *The interviewer can only score what they can write down as evidence
+- It is required by law
+- It makes the round shorter
+W: Committees read notes, not your thoughts.
+
+Q: What did Google find about brainteaser questions?
+- They predicted leadership
+- *They did not predict job performance
+- They predicted coding skill
+- They reduced bias
+W: Google dropped them in favour of structured questions.
+
+--- sources
+- paper :: The validity and utility of selection methods in personnel psychology (Psychological Bulletin 1998) :: Schmidt & Hunter :: https://doi.org/10.1037/0033-2909.124.2.262
+- article :: Is cognitive ability the best predictor of job performance? (Sackett et al. 2022 summary) :: SIOP TIP :: https://www.siop.org/tip-article/is-cognitive-ability-the-best-predictor-of-job-performance
+- paper :: Belief in the unstructured interview: the persistence of an illusion (JDM 2013) :: Dana, Dawes & Peterson :: https://jbaron.org/journal/12/121130a/jdm121130a.pdf
+- article :: Google admits brainteasers were useless for hiring :: Quartz :: https://qz.com/96206/google-admits-those-infamous-brainteasers-were-completely-useless-for-hiring
+- article :: Hire power: how Amazonians raise the bar with every interview :: About Amazon :: https://www.aboutamazon.com/news/workplace/hire-power-how-amazonians-raise-the-bar-with-every-interview
+
+=== interviewer-variance
+blurb: How much your result depends on which interviewer and question you get: interviewing.io's data on volatile performance, why a solid engineer fails one round in five, what the interviewer controls and what you control, and why applying to several companies is maths, not pessimism.
+signals: You failed a round you expected to pass | Two companies gave opposite verdicts on similar performance | You're deciding how many companies to apply to | You're wondering whether to reapply after a rejection
+widgets: variance-sim
+prereq: how-evaluated
+
+--- lesson
+:::words
+- **Variance**: how spread out results are. High variance means the same person can score very differently on different days.
+- **Volatile performer**: someone whose interview scores jump around a lot from interview to interview.
+- **Pass probability**: the chance of passing one round (or a whole loop) given your true skill.
+- **Interviewer strictness**: how high a particular interviewer sets the bar compared with colleagues.
+- **Re-interview / reapply**: trying the same company again, usually after a cool-down period.
+:::
+
+## The problem in plain words
+
+People treat an interview result as a measurement of skill, like a weighing scale. It is closer to a single throw of loaded dice: skill loads the dice, but each throw still varies. The question you get, the interviewer's strictness, how you slept and how the first five minutes went all move the result. Understanding this changes how you plan (several companies, not one) and how you react to rejection (data point, not verdict).
+
+:::eli5
+A good batsman's average is 50, but some innings he scores 5 and some 120. Selectors look at many innings, not one. A single interview is one innings.
+:::
+
+## What the data says
+
+**interviewing.io** runs mock technical interviews with engineers from top companies and scores them 1–4 (3 or more usually means "advance"). Their analyses:
+
+- First analysis (299 interviews, 2016): only about **25%** of people performed consistently. How volatile someone was had almost nothing to do with how good they were on average. Candidates with a solid average around 3 **failed an individual interview (scored 2 or less) as much as 22% of the time** (moderate, company data).
+- Follow-up with more than 1,000 interviews: about **20%** consistent and about 12% highly volatile; many people who scored a 4 also scored a 2, and some a 1. About half of the volatile candidates worked at top companies (moderate).
+- The author's recommendation to companies: judge on aggregate performance and re-interview borderline candidates.
+
+Other evidence points the same way:
+- Being *watched* roughly halved performance in a randomised study (Behroozi and colleagues, 2020), and some people are affected far more than others (moderate).
+- Interviewers spread grades across a day: after strong candidates, later ones score a little lower (Simonsohn and Gino, 2013, moderate).
+- Interview anxiety is linked to modestly lower ratings in meta-analyses (see [Nerves and energy](/learn/nerves-energy)).
+
+There is no published inter-rater reliability figure for big-tech coding interviews; companies do not release it.
+
+## Feel it: the variance simulator
+
+Set your true skill, the bar, how noisy each round is, and how many rounds a loop has. The simulator runs thousands of loops and shows how often a candidate of that skill passes a loop, and how many companies they need to apply to for a high chance of at least one offer.
+
+[[widget:variance-sim]]
+
+Notice two things. First, a candidate slightly above the bar still fails many loops when rounds are noisy, especially when the company requires *every* round to be good. Second, the chance of at least one offer rises quickly with the number of companies.
+
+## What depends on the interviewer
+
+- **Strictness**: one interviewer's 4 can be another's 2.
+- **The question drawn**: some questions suit you; some interviewers prefer hard or unusual ones.
+- **Hints**: how early and how much they help.
+- **Pace and talkativeness**: some interrupt; some are silent.
+- **Follow-up depth**: some push optimisations, scaling, edge cases; some stop at a working solution.
+- **Their domain and seniority**: a senior ML interviewer probes theory a generalist would skip.
+- **Note-taking quality**: thin notes weaken your packet even if you did well.
+
+## What depends on you
+
+- Preparation depth, and practising under observation.
+- Clarifying the problem and stating assumptions.
+- Brute force first, then improvement with reasons.
+- Thinking aloud so evidence can be written down.
+- Testing your own code.
+- Asking for and using hints well.
+- Managing time, and your stress response.
+- **How many independent chances you give yourself**: number of companies, timing, reapplying.
+
+## What depends on the company
+
+- The bar and how rounds are combined ("all rounds must pass" vs "strong overall").
+- Headcount, freezes and team match.
+- Level calibration and pay bands.
+- Cool-down periods before reapplying.
+
+## The maths of applying widely
+
+If your chance of passing a given company's loop is *p*, and companies are roughly independent, the chance of at least one offer from *n* companies is 1 − (1 − p)ⁿ.
+
+| Loop pass chance p | 1 company | 3 companies | 5 companies | 8 companies |
+|---|---|---|---|---|
+| 30% | 30% | 66% | 83% | 94% |
+| 50% | 50% | 88% | 97% | 99.6% |
+| 70% | 70% | 97% | 99.8% | ~100% |
+
+Companies are not fully independent (if your system design is weak, it is weak everywhere), so treat the table as an upper bound. The direction still holds: **more independent chances turn a coin flip into a near-certainty**. That is why the usual advice is to run several processes in parallel (see [Running many processes at once](/learn/parallel-processes)).
+
+## Reading a rejection correctly
+
+- **One rejection is one draw.** Ask the recruiter for feedback (many companies give little, but some do), note which rounds felt weak, and adjust practice.
+- **Patterns across companies are signal.** Failing design rounds at three companies says more than one bad coding round.
+- **Reapplying works.** Most big companies allow reapplying after a cool-down (commonly reported as 6–12 months after an onsite; ask the recruiter for the actual rule). Many engineers at big tech were rejected at least once by the same company.
+- **Do not quit after one bad round.** On interviewing.io, women quit practising about seven times as often as men after one bad interview, which explained the whole gender gap in advancement there (moderate).
+
+## Interview angles
+
+- In the room, variance is a reason to stay calm: a bad interviewer or a strange question is part of the noise, and the next round is a fresh draw.
+- Outside the room, it is a reason to plan: enough companies, practice companies first, and a plan to reapply.
+
+--- revise
+### Data
+? What share of interviewing.io candidates performed consistently? :: About 20–25%.
+? How often did a solid (~3/4 average) candidate fail one round? :: Up to about 22% of the time.
+? Did volatility relate to average skill? :: Almost not at all (R² ≈ 0.03).
+? interviewing.io's advice to companies? :: Judge aggregate performance; re-interview borderline candidates.
+
+### What depends on whom
+? Five things that depend on the interviewer? :: Strictness, question drawn, hints, pace, follow-up depth (also domain and note quality).
+? Biggest lever you control outside the room? :: How many independent chances you give yourself: companies, timing, reapplying.
+? Three things that depend on the company? :: The bar and how rounds combine, headcount/team match, cool-down rules.
+
+### Planning
+? Formula for at least one offer from n companies? :: 1 − (1 − p)ⁿ, an upper bound because companies are correlated.
+? p = 50%, five companies: chance of at least one offer? :: About 97% (upper bound).
+? One rejection vs a pattern? :: One is noise; the same weak round across companies is signal.
+? Typical reported cool-down after an onsite? :: Commonly 6–12 months; ask the recruiter for the real rule.
+
+--- notes
+## Data (interviewing.io, 1–4 scale)
+299 interviews: ~25% consistent; volatility ≈ unrelated to skill (R² ≈ .03); ~3 average fails a round up to 22%.
+1,000+ interviews: ~20% consistent, ~12% highly volatile; 4s and 2s from the same person.
+Observed ≈ half performance (Behroozi 2020). Day bracketing (Simonsohn & Gino 2013). No public big-tech inter-rater figure.
+## Interviewer controls
+Strictness · question · hints · pace · follow-up depth · domain · notes.
+## You control
+Prep, observed practice · clarify · brute force → better · think aloud · test · use hints · time · stress · number of chances.
+## Company controls
+Bar and combination rule · headcount, team match · level bands · cool-downs.
+## Maths
+P(≥1 offer) = 1 − (1 − p)ⁿ (upper bound). p=.5: 3 cos 88%, 5 cos 97%.
+## Rejection
+One draw; ask for feedback; patterns = signal; reapply after cool-down (6–12 months reported); don't quit after one bad round.
+
+--- doubts
+Q: If results are so noisy, is preparation pointless?
+A: No. Preparation raises your average and reduces your volatility; the data show experienced, higher-rated engineers are also better at judging themselves. Noise means a strong candidate can still lose a round, not that skill doesn't matter. Skill loads the dice.
+
+Q: Can I ask to redo a round with a different interviewer?
+A: You can tell the recruiter factually if something went wrong (an unprofessional interviewer, a technical failure). Some companies offer a redo; it is not guaranteed and there is no public data on how often it happens. Simply having a bad round is not a reason to ask.
+
+Q: Is it bad to interview at many companies at once?
+A: Not if you can sustain the preparation and energy. Interviewing at 5–8 companies over a few weeks is common. The real limits are your energy, your notice period and the need to align offer dates.
+
+--- exercises
+[estimate] Your mock data suggest you pass about 40% of full loops at top companies. How many companies should you apply to for at least an 80% chance of one offer (ignoring correlation)? What does correlation change?
+A: 1 − 0.6ⁿ ≥ 0.8 → 0.6ⁿ ≤ 0.2 → n ≥ log 0.2 / log 0.6 ≈ 3.15, so 4 companies. Correlation (the same weakness everywhere) makes the real chance lower, so aim for 5–6 and fix any repeated weak round type.
+
+[plan] You were rejected by your top choice after the onsite. Write your next three steps.
+A: (1) Ask the recruiter for any feedback and the cool-down date; note which rounds felt weak. (2) Compare with other loops: is there a pattern (design depth, behavioural scope)? Put that round type at the centre of the next month's practice with mocks. (3) Keep other processes running, and diarise the reapply date.
+
+[choose] Company A requires every round to be at least "Hire". Company B decides on overall strength. You are slightly above the bar but volatile. Which loop is riskier for you, and why?
+A: A. With an "every round" rule, each round is a separate chance to fail, so volatility hurts more. With an overall rule, one weaker round can be offset by strong ones.
+
+--- pitfalls
+- Reading one rejection as a final verdict on your skill
+- Applying to one dream company only
+- Quitting practice after one bad round
+- Ignoring a weak round type that repeats across companies
+- Assuming correlation-free odds when your weakness is the same everywhere
+
+--- quiz
+Q: In interviewing.io's first analysis, how often did solid candidates (about 3 out of 4 on average) fail a single interview?
+- Never
+- About 2% of the time
+- *Up to about 22% of the time
+- More than 60% of the time
+W: Single rounds are noisy even for strong candidates.
+
+Q: Your chance of passing a loop is 50%. Applying to three similar companies gives at least one offer with probability about…
+- 50%
+- 67%
+- *88% (an upper bound)
+- 150%
+W: 1 − 0.5³ = 0.875; correlation lowers the real figure.
+
+Q: Which of these mostly depends on the interviewer, not you?
+- Whether you test your code
+- *How early they give hints
+- Whether you clarify requirements
+- How many companies you apply to
+W: Hint style is the interviewer's; using hints well is yours.
+
+--- sources
+- article :: Technical interview performance is kind of arbitrary: here's the data :: Aline Lerner, interviewing.io :: https://interviewing.io/blog/technical-interview-performance-is-kind-of-arbitrary-heres-the-data
+- article :: After a lot more data, technical interview performance really is kind of arbitrary :: interviewing.io :: https://interviewing.io/blog/after-a-lot-more-data-technical-interview-performance-really-is-kind-of-arbitrary
+- article :: Voice modulation and gender in technical interviews :: interviewing.io :: https://interviewing.io/blog/voice-modulation-gender-technical-interviews
+- paper :: Does Stress Impact Technical Interview Performance? (ESEC/FSE 2020) :: Behroozi et al. :: https://www.sciencedaily.com/releases/2020/07/200714101228.htm
+
+=== level-map
+blurb: Every company names its levels differently. This page maps mid (Google L4 equivalent) and senior (Google L5 equivalent) across 26 companies, with typical years of experience in India and the US, median pay ratios, and why titles mislead in both directions.
+signals: A recruiter says "we're considering you for SDE II" or "E4" | You hold a "Senior" title at a services company or bank | You're comparing offers at different levels | You want to know which level to target
+widgets: level-map
+prereq: hiring-pipeline
+
+--- lesson
+:::words
+- **Level**: a company's internal rung on its career ladder. It sets your pay band, expectations and scope. Google calls them L3, L4, L5…; Amazon SDE I, II, III; Meta E3, E4, E5.
+- **Title**: the name on your business card ("Senior Software Engineer"). Titles are not standard across companies; levels matter more.
+- **Mid level** (in this Craft area): the rung equivalent to Google L4: delivers features independently inside an existing system.
+- **Senior level**: the rung equivalent to Google L5: owns a project or service end to end and leads its design.
+- **TC (total compensation)**: base salary + bonus + yearly value of stock. In India, the closest everyday word is CTC (cost to company), which can also include benefits.
+- **Median**: the middle value: half the reported salaries are above, half below.
+- **levels.fyi**: a website where engineers self-report level, location and pay; the standard public source for level comparisons. Its numbers are crowd-sourced, not official.
+:::
+
+## The problem in plain words
+
+"Software Engineer II" means mid at Microsoft and junior at some startups. "Senior" at an IT-services company or bank often maps to mid at Google. If you don't know the mapping, you may target the wrong level, misread an offer, or accept a downlevel without noticing. No company publishes an official cross-company mapping; the mapping below is built from levels.fyi data (titles plus pay alignment with Google L4/L5 in both India and the US), as researched in November 2026.
+
+:::eli5
+School grades in different countries use different names: Class 10, Year 11, Grade 10, Sophomore. To compare, you line them up by age and what is taught. Company levels are the same: line them up by scope and pay, not by name.
+:::
+
+## The map
+
+Explore the ladders below: pick companies to see their full ladder, where mid and senior sit, and median total pay in India and the US.
+
+[[widget:level-map]]
+
+| Company | Mid ≈ Google L4 | Senior ≈ Google L5 |
+|---|---|---|
+| Google | L4 (SWE III) | L5 (Senior SWE) |
+| Amazon | SDE II (L5) | SDE III (L6) |
+| Meta | E4 | E5 |
+| Microsoft | 61–62 (SDE II) | 63–64 (Senior SDE) |
+| Apple | ICT3 | ICT4 |
+| Netflix | L4 (Engineer II) | L5 (Senior) |
+| Uber | SWE II (L4) | Senior SWE (L5a) |
+| Adobe | P30–P40 (SWE 3–4) | P40–P50 (SWE 4–5) |
+| Intuit | SWE 2 (possibly Senior SWE) | Senior SWE / Staff |
+| Salesforce | Senior MTS | Lead MTS |
+| Atlassian | P40 | P50 |
+| LinkedIn | IC2 (SWE) | IC3 (Senior); IC4 Staff at the top end |
+| Nvidia | IC3 | IC4–IC5 |
+| Oracle | IC-3 (Senior MTS) | IC-4 (Principal MTS) |
+| Walmart Global Tech | SE III | Senior SE |
+| Stripe | L2 | L3 |
+| Databricks | L4 | L5 |
+| Airbnb | G8 | G9 |
+| Coinbase | IC4 | IC5 |
+| Goldman Sachs | Associate | Vice President |
+| Morgan Stanley | Associate | Vice President |
+| D. E. Shaw (India) | Senior Member Technical | Lead Member Technical |
+| Flipkart | SDE 2 | SDE 3 |
+| PhonePe | SE 2 | Senior SE |
+| Swiggy | SE II (L7) | SE III (L8) |
+| Razorpay | SDE 2 | Senior SDE |
+
+Sources: levels.fyi level and salary data (queried 2026-11-28) for the first 19 big-tech and product companies (except Intuit and Walmart); company research notes for Intuit, Walmart, the banks, D. E. Shaw and Indian product companies. The mid/senior pick per company is an inference (reputable data, inferred mapping).
+
+## Years of experience
+
+levels.fyi's comparison article (November 2026) gives US-centric bands: entry **0–2 years**, mid **2–4**, senior **4–7**, staff **7–10+** (reputable, based on years only, not scope). An ex-Amazon recruiter gives deliberately wide Amazon bands: SDE I (L4) 1–3 years, SDE II (L5) 3–10, SDE III (L6) 8–10+, wide "because interview signal decides" (reputable).
+
+India skews more experienced at the same level (anecdotal and inference): Flipkart self-reports put SDE 2 at about 4–5 years and SDE 3 at about 7–8; Google India posters report many external hires with 10+ years landing at L5. A practical rule of thumb:
+
+| Level | US | India |
+|---|---|---|
+| Mid (L4 equivalent) | ~2–4 years | ~3–6 years |
+| Senior (L5 equivalent) | ~4–8 years | ~6–10 years |
+
+Why India skews: IT-services experience is often discounted at product companies, and competition for senior roles in India is intense. Years only set the *range*; interviews set the level (next page: [How your level is decided](/learn/levels-decided)).
+
+## Pay: ratios, not exact numbers
+
+Median total pay in India is roughly **20–35% of US pay** at the same level (levels.fyi data). Some examples of medians (USD, last 12 months, crowd-sourced):
+
+| Level | India | US |
+|---|---|---|
+| Google L4 → L5 | ~69K → ~126K | ~315K → ~417K |
+| Amazon SDE II → SDE III | ~65K → ~135K | ~270K → ~371K |
+| Meta E4 → E5 | ~87K → ~125K | ~300K → ~430K |
+| Databricks L4 → L5 | ~111K → ~183K | ~413K → ~588K |
+| Stripe L2 → L3 | ~105K → ~162K | ~274K → ~420K |
+
+Teach yourself the *ladder and the ratio*, not exact figures: medians are self-reported and small samples make some cells odd (for example only junior Netflix data exists for India). Always check current numbers on levels.fyi for your city and level before negotiating.
+
+Notice also that the jump from mid to senior is large, often 1.5–2× in India. That is why levelling matters as much as negotiation.
+
+## Titles mislead in both directions
+
+- **Titles that sound higher than they are**: Salesforce and Oracle "Senior MTS" and "Principal MTS", LinkedIn's "Senior", and Intuit's titles sit lower than Google's same-sounding rung by pay (Blind claims "huge title inflation" at Intuit; anecdotal). A "Senior Engineer" or "Lead" at an IT-services company or bank often maps to mid at big tech.
+- **Levels that pay more than the name suggests**: Netflix, Databricks, Stripe and Airbnb pay more than Google at the same rung.
+- Gergely Orosz (The Pragmatic Engineer): compensation for the same title can differ **3–5×** across tiers of companies, and down-levels are common when moving "up a tier" (reputable).
+
+## How to use the map
+
+1. Find your current level's equivalent by **scope and pay**, not title.
+2. Decide your **target level** at each company before applying.
+3. Confirm the target with the recruiter at the first call (see [The recruiter call](/learn/recruiter-call)).
+4. When comparing offers, compare level *and* four-year pay (see [Reading an offer](/learn/offer-anatomy)).
+
+## ML and AI engineers
+
+Most big-tech companies put ML engineers on the same ladder as software engineers (Google SWE-ML, Meta MLE, Amazon SDE or Applied Scientist ladders). Applied Scientist (Amazon) and Research Engineer/Scientist (Google DeepMind, Microsoft Research) ladders have their own names but similar rungs. Specifics are in each company chapter.
+
+--- revise
+### Mapping
+? Google L4 equivalents at Amazon, Meta and Microsoft? :: Amazon SDE II (L5), Meta E4, Microsoft 61–62.
+? Google L5 equivalents at Amazon, Meta and Microsoft? :: Amazon SDE III (L6), Meta E5, Microsoft 63–64.
+? Mid and senior at Goldman Sachs or Morgan Stanley? :: Associate and Vice President.
+? Mid and senior at Flipkart? :: SDE 2 and SDE 3.
+? Is there an official cross-company level map? :: No; mappings are inferred from levels.fyi titles and pay.
+
+### Experience and pay
+? US years for mid and senior (levels.fyi)? :: Mid about 2–4 years, senior about 4–7.
+? Typical India years for mid and senior? :: Roughly 3–6 and 6–10 years.
+? India pay as a share of US pay at the same level? :: Roughly 20–35%.
+? How much can pay differ for the same title across tiers (Orosz)? :: Up to 3–5×.
+
+### Titles
+? Why can "Senior" at a services company map to mid at big tech? :: Titles aren't standard; scope and pay at product companies are higher.
+? Which companies pay more than Google at the same rung? :: For example Netflix, Databricks, Stripe and Airbnb.
+? What sets your level: years or interviews? :: Years set the range; interviews set the level.
+
+--- notes
+## Mid ≈ Google L4
+Amazon SDE II (L5) · Meta E4 · Microsoft 61–62 · Apple ICT3 · Netflix L4 · Uber SWE II · Adobe P30–40 · Salesforce SMTS · Atlassian P40 · LinkedIn IC2 · Nvidia IC3 · Oracle IC-3 · Stripe L2 · Databricks L4 · Airbnb G8 · Coinbase IC4 · GS/MS Associate · DE Shaw Senior Member · Flipkart SDE 2 · PhonePe SE 2 · Swiggy L7.
+## Senior ≈ Google L5
+Amazon SDE III (L6) · Meta E5 · Microsoft 63–64 · Apple ICT4 · Netflix L5 · Uber L5a · Adobe P40–50 · Salesforce LMTS · Atlassian P50 · LinkedIn IC3 · Nvidia IC4–5 · Oracle IC-4 · Stripe L3 · Databricks L5 · Airbnb G9 · Coinbase IC5 · GS/MS VP · DE Shaw Lead Member · Flipkart SDE 3 · PhonePe Senior SE · Swiggy L8.
+## Years
+US: entry 0–2, mid 2–4, senior 4–7, staff 7–10+ (levels.fyi). Amazon bands wide: L5 3–10.
+India: mid ~3–6, senior ~6–10; Google India L5 often 10+ (anecdotal).
+## Pay
+India ≈ 20–35% of US. Mid → senior jump ≈ 1.5–2× in India. Same title across tiers: 3–5× (Orosz).
+## Titles
+Inflated: Salesforce/Oracle MTS, LinkedIn Senior, Intuit, services "Senior/Lead". Above Google: Netflix, Databricks, Stripe, Airbnb.
+## Use
+Map by scope + pay → pick target → confirm with recruiter → compare level and 4-year pay.
+
+--- doubts
+Q: I'm a "Senior Software Engineer" with 5 years at an IT-services company. Should I apply for Google L5?
+A: Possibly, but expect to be considered for L4 and to have to show senior scope in interviews. What matters is the work: did you own a service end to end and lead its design? If yes, ask the recruiter about L5 and prepare design and behavioural stories at that scope. If not, L4 at a top company is often a better step than a senior title elsewhere.
+
+Q: Why does the same level pay so differently across companies?
+A: Companies sit in different pay tiers: their business model, stock performance and competition for talent differ. Netflix and Databricks pay at the top; many large enterprises pay less at the same scope. That's why comparing level *and* pay matters.
+
+Q: Can I trust levels.fyi numbers?
+A: As a direction, yes; as exact figures, no. They're self-reported medians, and thin samples (common for India at some companies) make individual cells unreliable. Check sample sizes and recent entries for your city.
+
+--- exercises
+[choose] You have offers for Amazon SDE II and Microsoft 63 (Senior SDE). Which is the higher level relative to Google?
+A: Microsoft 63 maps to Google L5 (senior); Amazon SDE II maps to Google L4 (mid). Compare four-year pay too, since pay bands differ by company.
+
+[estimate] A Google L5 median in India is about 126K USD; the US median is about 417K. What ratio is that, and is it inside the 20–35% rule?
+A: 126 / 417 ≈ 0.30, about 30%: inside the range.
+
+[plan] Write the two sentences you'd use to confirm your target level with a Meta recruiter, given 6 years of experience leading one service.
+A: Suggested wording (not from a source): "Based on my scope (I've led the design and operation of our payments service for three years, with four engineers), I'd like to be considered for E5. Could you confirm which level the loop will be calibrated for?"
+
+--- pitfalls
+- Comparing titles instead of levels and scope
+- Assuming a services-company "Senior" title transfers to big-tech senior
+- Treating levels.fyi medians as exact
+- Comparing pay without comparing level
+- Not confirming the target level before the loop
+
+--- quiz
+Q: Meta E5 is roughly equivalent to…
+- Google L4
+- *Google L5
+- Google L6
+- Amazon SDE II
+W: E5 is Meta's senior rung.
+
+Q: Amazon's "L5" is called SDE II. Which Google level is it closest to?
+- *Google L4
+- Google L5
+- Google L3
+- Google L6
+W: Amazon's level numbers are one higher than Google's for the same rung.
+
+Q: Median pay in India at a given level is roughly what share of US pay?
+- 5–10%
+- *20–35%
+- 60–80%
+- The same
+W: Based on levels.fyi medians, November 2026.
+
+--- sources
+- tool :: Software engineer salaries and levels (Google, Amazon, Meta and others) :: levels.fyi :: https://www.levels.fyi/companies/google/salaries/software-engineer
+- article :: Big tech engineering levels compared :: levels.fyi blog (2026) :: https://www.levels.fyi/blog/big-tech-engineering-levels-compared.html
+- article :: The seniority rollercoaster :: Gergely Orosz, The Pragmatic Engineer :: https://newsletter.pragmaticengineer.com/p/the-seniority-rollercoaster
+- article :: Amazon salary negotiation (ex-recruiter) :: levels.fyi blog :: https://www.levels.fyi/blog/amazon-salary-negotiation.html
+
+=== levels-decided
+blurb: How your level is actually set: years of experience pick the range, the system design and behavioural rounds decide the rung, and uncertain loops are levelled down. How to raise the level question early, what to do when downlevelled, and how to ask for a re-evaluation.
+signals: The recruiter says you'll interview for a lower level than expected | You got an offer one level below your target | Your loop was strong except the design round | You're moving from a bank or services company to big tech
+prereq: level-map
+
+--- lesson
+:::words
+- **Levelling**: deciding which rung of the ladder an offer is for.
+- **Downlevel**: an offer one rung lower than you targeted (or than your loop was set for).
+- **Uplevel**: an offer higher than the loop's starting level. Rare.
+- **Scope**: how big your responsibility was: a feature, a project, a service, several teams.
+- **Calibration**: the committee or debrief aligning your evidence with the level definitions.
+- **Re-evaluation**: asking the company to reconsider the level, with evidence.
+:::
+
+## The problem in plain words
+
+Many candidates focus on passing and then discover the offer is a level below what they wanted. Level decides pay band, scope and how soon you can be promoted, so it can matter more than negotiating a few percent. Levelling is mostly decided *during* the loop, not at the offer, which means the time to act is before and during interviews.
+
+:::eli5
+Choosing which class a student joins in a new school: their age (years of experience) decides which classes they can be considered for, but an entrance test (interviews) decides the exact class. If the test is unclear, the school puts them in the lower class to be safe.
+:::
+
+## How it works
+
+1. **Years of experience set the range.** The recruiter slots you to interview for a level based on your resume. Amazon's ex-recruiter guidance: level "depends on experience and performance", with wide year bands because interview signal decides (reputable).
+2. **Interview signal sets the rung.** Aced (formerly Exponent) describes level as "the sum of subjective signals from recruiter screens, early interviews, and final-round interviews", with **system design and behavioural rounds as the main factors** and coding rounds rarely the cause (reputable, prep company).
+3. **Uncertainty resolves downward.** Gergely Orosz: "Candidates whom interviewers are unsure about would often get offered a level below"; down-levels are common when moving "up a tier", especially into big tech (reputable). Companies downlevel to hedge against a bad hire (anecdotal, recruiter blog).
+
+Upleveling above the loop's level is very rare (under 1% at Amazon per the ex-recruiter; reputable). A "Strong Hire" on a loop set *below* your experience is itself a warning sign that you may be stuck at that lower level (Orosz).
+
+## What senior signal looks like
+
+Because design and behavioural rounds decide senior level, the senior bar is mostly about **driving** and **scope**:
+
+| Round | Mid (L4) signal | Senior (L5) signal |
+|---|---|---|
+| System design | Reasonable design with prompting; knows components | Drives the discussion without prompting: requirements, estimates, trade-offs, failure modes, deep dives |
+| Behavioural | Delivered features well within a team | Owned a project end to end; influenced other teams; handled conflict and ambiguity |
+| Coding | Solid, clean, correct | Same bar, plus cleaner trade-off discussion |
+
+Exponent's framing: team-level impact reads as senior; org-level impact (breadth across teams, engineers influenced, stakeholders handled) reads as staff (reputable). A mid-level design performance on an otherwise strong loop is the classic downlevel pattern (inference).
+
+## Before the loop: settle the target level
+
+- Raise it at the **first recruiter call**, not at the offer: "Based on my scope, I'd like to be considered for L5. Which level will the loop be calibrated for?"
+- At Amazon, the ex-recruiter advises raising level before the recorded phone interview and asking which level you're considered for once invited to the first round; recruiters sometimes miscount years, so correct them with evidence; don't overstate experience (reputable).
+- If they slot you lower, ask what evidence would support the higher level and whether the loop can include the senior design round.
+
+## During the loop: show the scope
+
+- Prepare stories whose scope matches the target: owning a service, leading a design, cross-team influence, mentoring, handling an incident.
+- In design rounds, drive: state requirements and estimates, propose the design, raise trade-offs and failure modes before being asked.
+- See [Senior behavioural](/learn/senior-behavioural) and [The system design round](/learn/design-round-craft).
+
+## After a downlevel: asking for a re-evaluation
+
+Aced's advice (reputable):
+- Say plainly: "This is not the level I'm targeting."
+- **Settle level before pay**, start date or paperwork.
+- Propose a path: retake the round you underperformed in, a call with the hiring manager, or escalation.
+- Expect "Let me see what I can do" on the first call, not an instant answer.
+
+Other tactics:
+- Ask for the level definitions and which evidence was missing (sometimes recruiters share).
+- Give the recruiter a short "scope brief" (a few bullets of senior-level evidence) to take back to the hiring manager within 48–72 hours (anecdotal, recruiter blog; its ~30% reversal claim is single-source).
+- Some companies add **one more design interview** to gather senior signal rather than finalise a downlevel (anecdotal).
+- The strongest lever is a **competing offer at the higher level** from a same-tier company (Pragmatic Engineer reader reports; reputable).
+- Signal interest in the team and the role, not just the title.
+
+Level can rarely be negotiated *after* the committee at Amazon (reputable); pay usually can.
+
+## Should you accept a downlevel?
+
+Sometimes yes. A mid-level offer at a top company can beat a senior title elsewhere if it pays more, teaches more and promotes fairly. Compare honestly:
+- Four-year pay at the offered level vs alternatives.
+- Typical time to promotion (ask: "What does it take to reach L5 here, and how long does it usually take?").
+- Whether the team's scope will let you show senior work.
+
+Use the offer scorecard in [Biases in evaluating offers](/learn/offer-biases).
+
+## India-specific notes
+
+- Moving from IT services or a bank to a product company, expect the level to be anchored lower than your current title; describe past work by scope (team-wide, cross-team), not title.
+- India senior hires often have more years than US peers at the same level; that's normal, not a slight.
+
+--- revise
+### Mechanics
+? What sets the range and what sets the rung? :: Years of experience set the range; interview signal sets the rung.
+? Which rounds mostly decide senior level? :: System design and behavioural (scope).
+? How are uncertain loops resolved? :: Downward: a level below.
+? How common is upleveling above the loop's level? :: Very rare (under 1% at Amazon).
+
+### Signals
+? Senior system design signal? :: Driving without prompting: requirements, estimates, trade-offs, failure modes, deep dives.
+? Senior behavioural signal? :: Owning a project end to end, cross-team influence, handling ambiguity and conflict.
+? Team-level vs org-level impact reads as? :: Senior vs staff.
+
+### Actions
+? When do you raise the level question? :: At the first recruiter call, before the loop.
+? Aced's first words after a downlevel? :: "This is not the level I'm targeting."
+? Order of negotiation after a downlevel? :: Settle level before pay, start date or paperwork.
+? Strongest lever to reverse a downlevel? :: A competing offer at the higher level from a same-tier company.
+
+--- notes
+## Mechanics
+Years → range (recruiter slots you). Interviews → rung (Aced: design + behavioural matter; coding rarely).
+Unsure → level below (Orosz). Uplevel <1% (Amazon). Strong Hire on a low loop = warning.
+## Senior signal
+Design: drive unprompted (requirements, estimates, trade-offs, failures, deep dives).
+Behavioural: end-to-end ownership, cross-team influence. Team impact = senior; org impact = staff.
+## Before
+Raise target at first call; Amazon: before recorded phone screen; correct miscounted years; don't overstate.
+## After downlevel
+"Not the level I'm targeting" · level before pay · retake round / HM call / escalation · scope brief 48–72 h · extra design round · competing higher-level offer · show team interest.
+## Accept?
+Compare 4-year pay, promotion path ("what does it take to reach L5?"), team scope.
+## India
+Services/bank → product: anchored lower; describe scope, not title.
+
+--- doubts
+Q: Will asking for a higher level make me look arrogant?
+A: Not if it's evidence-based and early. Recruiters expect the conversation; "Based on my scope, I'd like to be considered for X; which level will the loop target?" is routine. What looks bad is overstating experience or demanding a level after a weak loop.
+
+Q: Can I ask to interview for both levels?
+A: Many companies effectively do this: the loop includes enough design and behavioural depth to place you at either. Ask the recruiter whether the loop can be calibrated for the higher level, with the lower as the fallback.
+
+Q: My loop was strong but I was downlevelled. What happened?
+A: Often the design or behavioural evidence was at mid scope, or one interviewer was unsure about senior signal. Ask which signal was missing and whether an extra design round is possible.
+
+--- exercises
+[say] The recruiter says you'll interview for SDE II but you have 7 years and led a team's main service. Write your response.
+A: Suggested wording (not from a source): "Thanks. Over the last three years I've owned the design and on-call for our order service, led a migration across two teams and mentored three engineers. Based on that scope, I'd like to be considered for SDE III. Would the loop be able to assess that level, including the senior design round?"
+
+[plan] You've been downlevelled from L5 to L4. Write your three-step plan for the next 72 hours.
+A: (1) Tell the recruiter "this is not the level I'm targeting" and ask which signal was missing; settle level before discussing pay. (2) Send a short scope brief (three or four bullets of senior evidence) and propose an extra design round or a hiring-manager call. (3) Accelerate any other process that could produce a same-tier L5 offer; meanwhile compare the L4 offer's four-year pay and promotion path honestly.
+
+[choose] Two offers: Google L4 and a smaller company's "Senior Engineer" with 15% more pay. What should you compare beyond title?
+A: Four-year pay (not just year one), the promotion path and timing at Google, learning and scope on each team, and brand as its own line. The title alone tells you little.
+
+--- pitfalls
+- Raising level only at the offer stage
+- Overstating years or scope
+- Telling only mid-scope stories while targeting senior
+- Negotiating pay before settling level
+- Rejecting a good downlevelled offer on title alone, or accepting one without comparing promotion paths
+
+--- quiz
+Q: Which rounds most often decide whether you're levelled senior?
+- Coding rounds
+- *System design and behavioural rounds
+- The recruiter screen
+- The online assessment
+W: Senior signal is driving design and showing end-to-end scope.
+
+Q: After a downlevel, what should you settle first?
+- Joining date
+- Salary
+- *The level
+- Relocation
+W: Pay and terms follow from the level.
+
+Q: The strongest lever to reverse a downlevel is usually…
+- Complaining to the hiring committee
+- *A competing offer at the higher level from a similar company
+- Accepting and asking later
+- Writing a longer resume
+W: It shows the market values you at that level.
+
+--- sources
+- article :: The seniority rollercoaster :: Gergely Orosz, The Pragmatic Engineer :: https://newsletter.pragmaticengineer.com/p/the-seniority-rollercoaster
+- article :: How to avoid down-levelling :: Exponent (Aced) :: https://tryexponent.com/blog/avoid-down-leveling
+- article :: Reversing downlevel offers :: Exponent (Aced) :: https://tryexponent.com/blog/reversing-downlevel-offers
+- article :: Amazon salary negotiation (ex-recruiter) :: levels.fyi blog :: https://www.levels.fyi/blog/amazon-salary-negotiation.html

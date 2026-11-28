@@ -69,4 +69,12 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "ai/production": () => Promise.all([import("./ai/production"), import("./ai/notes/production")]).then(([m, n]) => withNotes(m.production, n.notes)),
   "ai/sysdesign": () => Promise.all([import("./ai/sysdesign"), import("./ai/notes/sysdesign")]).then(([m, n]) => withNotes(m.sysdesign, n.notes)),
   "ai/rnn": () => Promise.all([import("./ai/rnn"), import("./ai/notes/rnn")]).then(([m, n]) => withNotes(m.rnn, n.notes)),
+  "craft/biases": () => Promise.all([import("./craft/biases"), import("./craft/notes/biases")]).then(([m, n]) => withNotes(m.biases, n.notes)),
+  "craft/hiring": () => Promise.all([import("./craft/hiring"), import("./craft/notes/hiring")]).then(([m, n]) => withNotes(m.hiring, n.notes)),
+  "craft/search": () => Promise.all([import("./craft/search"), import("./craft/notes/search")]).then(([m, n]) => withNotes(m.search, n.notes)),
+  "craft/situations": () => Promise.all([import("./craft/situations"), import("./craft/notes/situations")]).then(([m, n]) => withNotes(m.situations, n.notes)),
+  "craft/situations2": () => Promise.all([import("./craft/situations2"), import("./craft/notes/situations2")]).then(([m, n]) => withNotes(m.situations2, n.notes)),
+  "craft/rounds": () => Promise.all([import("./craft/rounds"), import("./craft/notes/rounds")]).then(([m, n]) => withNotes(m.rounds, n.notes)),
+  "craft/behavioural": () => Promise.all([import("./craft/behavioural"), import("./craft/notes/behavioural")]).then(([m, n]) => withNotes(m.behavioural, n.notes)),
+  "craft/offers": () => Promise.all([import("./craft/offers"), import("./craft/notes/offers")]).then(([m, n]) => withNotes(m.offers, n.notes)),
 };
