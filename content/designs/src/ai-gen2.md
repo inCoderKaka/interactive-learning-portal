@@ -1,0 +1,734 @@
+=== d-gen-eval-platform
+title: Design an LLM evaluation platform
+topic: ai-evals
+tier: 3
+est: 60
+prompt: Design a platform that lets product teams evaluate LLM features (prompts, models, RAG pipelines) before and after launch, so every change is measured.
+--- words
+- **Eval set**: a fixed list of inputs with expected outputs or grading rubrics.
+- **LLM-as-judge**: a strong model grades outputs against a rubric; must be checked against human labels.
+- **Pairwise comparison**: the judge picks the better of two outputs, which is more reliable than absolute scores.
+- **Regression gate**: a check in CI that blocks a change if metrics drop.
+- **Online evaluation**: measuring real traffic: user feedback, sampled judging, A/B tests.
+--- flow
+1. **0–5**: users (product teams), what they evaluate, metrics types, scale, turnaround time.
+2. **5–12**: data model: datasets, runs, graders, results.
+3. **12–25**: pipeline: dataset → run the system under test → graders (exact, code, judge, human) → aggregate → compare.
+4. **25–40**: deep dives: judge reliability, statistics, online sampling, cost.
+5. **40–45**: integration with CI and launches.
+--- req
+**Functional**: versioned datasets (curated, production samples, synthetic); define graders (exact match, regex/JSON checks, code execution, LLM judges with rubrics, human review); run evaluations of a candidate vs baseline; dashboards and slice analysis; CI gates; online sampling of production traffic.
+
+**Non-functional**: a 1,000-example eval finishes in < 15 minutes; results reproducible (same versions → same scores within noise); cost tracked; private data handled per policy.
+--- est
+- 200 teams × ~20 eval runs/day × ~1,000 examples × (1 system call + 2 judge calls) ≈ 12M LLM calls/day ≈ 140/s average: needs batching and quota management with the serving platform.
+- Results: 4M rows/day with outputs and scores → a columnar store.
+--- api
+- `POST /datasets {name, examples[]}` (versioned); `POST /graders {type, rubric, model}`; `POST /runs {system_config, dataset@version, graders[]}` → run id; `GET /runs/{id}/compare?baseline=` → metrics with confidence intervals and per-example diffs.
+- Online: SDK logs traces of production calls; a sampler sends a share to graders.
+--- hl
+1. **Dataset service**: versioned examples with tags (slice labels), sources and privacy flags.
+2. **Runner**: executes the system under test (prompt + model + tools) for each example in parallel with rate limits; captures full traces.
+3. **Grading workers**: deterministic checks first, then judge calls (cached by (output, rubric, judge version)), then human review queues for a sample.
+4. **Results store + analysis**: aggregates by slice, computes bootstrap confidence intervals and paired significance against the baseline.
+5. **CI integration**: required evals per feature; gate on thresholds.
+6. **Online**: trace logging, sampling, the same graders on production data, drift dashboards.
+--- deep
+**Judge reliability**: calibrate each judge rubric against human labels (agreement, Cohen's kappa); use pairwise with position swapping to cancel position bias; avoid the same model family judging itself; version judges.
+
+**Statistics**: small eval sets give noisy differences; paired comparisons on the same examples, bootstrap intervals, minimum detectable effect, and enough examples per slice.
+
+**Datasets**: mix curated hard cases, production samples (de-identified), and synthetic ones; refresh to avoid overfitting to the eval; hold out a hidden set.
+--- wrap
+**Monitoring**: eval run duration, judge cost, agreement with humans over time.
+
+**Adoption**: templates for common features (RAG faithfulness, summarisation quality, safety), launch checklists that require evaluations.
+--- steer
+Q: How do you know the judge is right?
+A: Human-labelled calibration sets, agreement metrics, pairwise with swaps, versioning.
+Q: The new prompt scored 2% higher. Ship it?
+A: Confidence intervals, paired tests, slices, online A/B.
+Q: Teams overfit to the eval set.
+A: Hidden holdouts, refreshes from production, multiple graders.
+--- pitfalls
+- Uncalibrated LLM judges
+- Reporting differences without confidence intervals
+- Eval sets that never change
+- No link between offline evals and online metrics
+--- level
+- **L4**: run a dataset through a model and score it.
+- **L5**: grader hierarchy with calibrated judges, paired statistics, versioned datasets, CI gates, online sampling with the same graders.
+- **L6**: company-wide evaluation standards and launch governance.
+--- nodes
+team|Product teams|client|0|160|Define datasets, graders, runs.
+ds|Dataset service|db|170|40|Versioned examples with slices.
+run|Runner|worker|340|160|Runs the system under test with rate limits.
+llm|Serving platform|ext|340|20|Models for systems and judges.
+grade|Grading workers|worker|520|160|Checks, judges (cached), human queues.
+res|Results + analysis|db|700|160|Slices, intervals, comparisons, CI gates.
+prod|Production traces|queue|520|300|Sampled live traffic to graders.
+--- edges
+team>run|start run
+run>ds|examples
+run>llm|calls
+run>grade|outputs
+grade>llm|judge calls
+grade>res|scores
+prod~grade|samples
+res~team|reports
+--- prereqs
+llm-eval-methods, eval-pipelines
+--- paths
+- [deep] Grader hierarchy :: Exact and code checks, calibrated judges, human review.
+  - Judge prefers the first answer :: Pairwise with position swaps.
+- [deep] Statistics :: Paired comparisons, bootstrap intervals, examples per slice.
+- [deep] Online evaluation :: Trace sampling with the same graders, drift dashboards.
+- [failure] Teams overfit to the eval :: Hidden holdouts, refreshed datasets.
+
+=== d-gen-meeting-summarizer
+title: Design a meeting summariser
+topic: ai-evals
+tier: 2
+est: 45
+prompt: Design a feature for a video-meeting product that produces a summary, decisions and action items after each meeting, for 10 million meetings a day.
+--- words
+- **ASR (automatic speech recognition)**: turning audio into text.
+- **Diarisation**: working out who spoke when.
+- **Map-reduce summarisation**: summarise chunks first, then summarise the summaries.
+- **Faithfulness**: every statement in the summary is backed by the transcript.
+--- flow
+1. **0–5**: outputs, languages, latency after the meeting, privacy and consent, long meetings.
+2. **5–12**: audio hours, ASR and LLM cost.
+3. **12–25**: pipeline: audio → ASR + diarisation → cleaning → chunked summarisation → action-item extraction → delivery.
+4. **25–40**: deep dives: long transcripts, faithfulness, action items with owners, privacy.
+5. **40–45**: evaluation and feedback.
+--- req
+**Functional**: summary, decisions, action items with owners and due dates; available within 2 minutes after the meeting; editable; searchable; respects who was invited.
+
+**Non-functional**: opt-in with notice to participants; data retention controls; multilingual; cost per meeting-hour under budget.
+--- est
+- 10M meetings/day × 40 min ≈ 6.7M audio hours/day → ASR cost dominates; streaming ASR during the meeting spreads load.
+- Transcript ≈ 150 words/min × 40 ≈ 6K words ≈ 8K tokens; summarisation ~10K input tokens per meeting → ~100B tokens/day: a mid-size model, batched.
+--- api
+- Event `meeting.ended {meeting_id}` triggers the job; `GET /meetings/{id}/summary` returns summary, decisions, action items with transcript timestamps; `PATCH` for edits (kept as feedback).
+--- hl
+1. **Streaming ASR + diarisation** during the meeting, with speaker names from the meeting roster.
+2. **Transcript store** with timestamps and speakers.
+3. **Summariser job** after the meeting: clean filler words, split into topic segments, summarise each (map), then combine (reduce) into the final structure with a JSON schema.
+4. **Action-item extractor**: structured output with owner resolved to participants, due dates normalised.
+5. **Checks**: each item links back to transcript timestamps; low-confidence items flagged.
+6. **Delivery**: to participants with access, via email and the meeting page.
+--- deep
+**Long meetings**: hierarchical map-reduce over topic segments; or a long-context model when cost allows; keep timestamps so claims are traceable.
+
+**Faithfulness**: require citations (timestamps) for decisions and action items; a verifier pass checks each claim against the segment; prefer omission over invention.
+
+**ASR errors**: names and jargon; bias the recogniser with participant names and company vocabulary.
+
+**Privacy**: consent banner, only participants see the summary, no training on meeting content without permission, retention limits.
+--- wrap
+**Evaluation**: human-rated sets for coverage and faithfulness; LLM judge calibrated against them; online: edit distance of user edits, thumbs, action items marked done.
+
+**Cost**: streaming ASR, mid-size model, skip summaries for very short meetings.
+--- steer
+Q: A 3-hour meeting doesn't fit the context.
+A: Topic segmentation and map-reduce, or long context with cost trade-off.
+Q: The summary invents a decision.
+A: Timestamp citations, verifier pass, prefer omission.
+Q: Who gets to see the summary?
+A: Participants with access; consent; retention.
+--- pitfalls
+- Feeding the raw transcript without speakers or timestamps
+- No faithfulness check
+- Ignoring consent and access rules
+--- level
+- **L4**: ASR then summarise with an LLM.
+- **L5**: diarisation with roster names, hierarchical summarisation with citations, structured action items, verifier pass, privacy design, edit-based metrics.
+- **L6**: cross-product meeting intelligence and policy.
+--- nodes
+mtg|Meeting|client|0|160|Audio streams with participant roster.
+asr|Streaming ASR + diarisation|service|180|160|Text with speakers and timestamps.
+ts|Transcript store|db|360|40|Segments, speakers, times.
+job|Summariser job|worker|360|160|Clean, segment, map-reduce, structured output.
+chk|Verifier|service|540|160|Claims checked against segments.
+out|Delivery|service|720|160|Summary to participants.
+--- edges
+mtg>asr|audio
+asr>ts|transcript
+ts>job|meeting ended
+job>chk|draft
+chk>out|verified
+--- prereqs
+speech-models, context-window, llm-eval-methods
+--- paths
+- [deep] Long transcripts :: Topic segments, map-reduce with timestamps, or long context.
+- [deep] Faithfulness :: Citations, verifier pass, omission over invention.
+- [deep] Action items :: Structured output, owner resolution from roster, due date normalisation.
+- [failure] ASR mangles names :: Vocabulary biasing with participant names.
+- [deep] Privacy :: Consent, access, retention.
+
+=== d-gen-voice-assistant
+title: Design a voice assistant
+topic: ai-multimodal
+tier: 3
+est: 60
+prompt: Design a voice assistant on phones and smart speakers that answers questions and controls devices and apps, with a natural back-and-forth conversation.
+--- words
+- **Wake word**: a small always-on model that listens only for "Hey ...".
+- **Endpointing**: deciding the user has finished speaking.
+- **Speech-to-speech model**: one model that takes audio in and produces audio out, skipping text in between.
+- **Barge-in**: the user interrupts while the assistant is talking.
+- **Function calling**: the model outputs a structured call (set a timer for 10 minutes) instead of text.
+--- flow
+1. **0–5**: devices, capabilities (questions, actions), latency (<1 s to start replying), privacy, languages.
+2. **5–12**: requests, audio processing, model costs.
+3. **12–25**: pipeline: wake word on device → streaming ASR → understanding + tools (LLM) → TTS streaming; or a speech-to-speech model.
+4. **25–40**: deep dives: latency budget, endpointing and barge-in, actions safety, on-device vs cloud.
+5. **40–60**: evaluation, privacy, failures.
+--- req
+**Functional**: answer questions, control devices (lights, timers), app actions (send message, play music), follow-up questions with context, interruptions.
+
+**Non-functional**: response starts < 800 ms after the user stops speaking; audio only sent after the wake word; works offline for basic commands; confirmation for sensitive actions (purchases, messages).
+--- est
+- 100M daily users × 10 requests → 1B requests/day ≈ 12K/s average, ~40K/s peak.
+- Each request: ~5 s audio → streaming ASR; ~500 input tokens and ~60 output to an LLM; TTS ~5 s audio.
+--- api
+- Device opens a streaming session (gRPC/WebSocket) after the wake word: audio up, partial transcripts and audio down; events for tool results and device commands.
+--- hl
+1. **On device**: wake word, voice activity detection, optional on-device ASR and small model for common commands (timers, lights) and offline use.
+2. **Cloud streaming ASR** with partial results and endpointing.
+3. **Orchestrator / LLM**: intent and function calling against device and app tools; retrieval for knowledge questions; conversation state.
+4. **Action layer**: executes device commands via the smart-home graph; confirmation flows for sensitive actions.
+5. **Streaming TTS**: starts speaking from the first sentence of the reply.
+--- deep
+**Latency budget** (~800 ms): endpointing 200–300 ms, ASR final ~100 ms, LLM first tokens ~250 ms, TTS first audio ~100 ms; stream everything, start LLM on stable partials, speak the first sentence early.
+
+**Endpointing and barge-in**: semantic endpointing (is the sentence complete?) beats fixed silence; echo cancellation lets the device hear the user over its own speech; stop TTS on barge-in.
+
+**Action safety**: confirm purchases and messages; recognise the speaker (voice match) for personal data; children's accounts.
+
+**On-device vs cloud**: privacy and offline for simple commands on device; cloud for open questions.
+--- wrap
+**Evaluation**: word error rate by accent and noise; task success on scripted scenarios; latency percentiles; user satisfaction (follow-up rephrases as failure).
+
+**Failures**: network loss → on-device fallback; ASR uncertainty → ask to repeat.
+--- steer
+Q: Users wait too long for replies.
+A: Streaming at every stage, semantic endpointing, early TTS.
+Q: The assistant sent a message to the wrong person.
+A: Confirmations, read-back, contact disambiguation.
+Q: Why not a speech-to-speech model?
+A: Lower latency and prosody, but harder tool use and debugging; hybrid approaches.
+--- pitfalls
+- A sequential pipeline with no streaming
+- Fixed-silence endpointing
+- No confirmation for irreversible actions
+- Sending audio before the wake word
+--- level
+- **L4**: ASR → LLM → TTS pipeline.
+- **L5**: latency budget with streaming at every stage, endpointing and barge-in, function calling with confirmations, on-device fallback, WER and task-success evaluation by slice.
+- **L6**: device ecosystem, privacy strategy, model placement across device and cloud.
+--- nodes
+dev|Device|client|0|160|Wake word, VAD, on-device commands.
+asr|Streaming ASR|service|180|160|Partials and endpointing.
+orch|LLM orchestrator|service|360|160|Intents, function calls, retrieval.
+act|Action layer|service|540|60|Device graph, app actions, confirmations.
+tts|Streaming TTS|service|540|260|Speaks from the first sentence.
+kb|Knowledge retrieval|ext|360|20|Search and knowledge graph.
+--- edges
+dev>asr|audio
+asr>orch|transcript
+orch>kb|lookup
+orch>act|function call
+orch>tts|reply text
+tts>dev|audio
+act~dev|command
+--- prereqs
+speech-models, agent-loop-tools, latency-cost
+--- paths
+- [deep] Latency budget :: Streaming everywhere, endpointing time, early TTS.
+- [deep] Endpointing and barge-in :: Semantic endpointing, echo cancellation, stop on interrupt.
+- [deep] Actions :: Function calling with confirmations and speaker recognition.
+- [variation] Offline mode :: On-device ASR and small model for common commands.
+- [variation] Speech-to-speech model :: Latency and prosody vs tool use and debuggability.
+
+=== d-gen-doc-qa
+title: Design multimodal document Q&A
+topic: ai-multimodal
+tier: 3
+est: 45
+prompt: Design a system that answers questions over a company's PDFs, scanned forms, slides and spreadsheets, including charts and tables, with citations to the page.
+--- words
+- **Layout parsing**: finding text blocks, tables and figures on a page and their reading order.
+- **OCR**: reading text from images of pages.
+- **Page-image retrieval**: embedding whole page images (ColPali-style) so charts and layout are searchable without perfect parsing.
+- **Vision-language model (VLM)**: a model that reads images and text together.
+--- flow
+1. **0–5**: document types, question types (lookup, tables, charts), accuracy bar, permissions.
+2. **5–12**: pages, embedding and VLM costs.
+3. **12–25**: ingestion (parse, OCR, tables, figure captions, page images) → hybrid retrieval → VLM answer with page citations.
+4. **25–40**: deep dives: tables, charts, scanned pages, evaluation.
+5. **40–45**: cost and scale.
+--- req
+**Functional**: ask questions in natural language; answers cite document and page with a highlighted region; handles tables (numbers), charts, scanned forms; permissions respected.
+
+**Non-functional**: answer < 10 s; ingestion within an hour of upload; numbers in answers must be exact.
+--- est
+- 50M pages; per page: text chunks + one page-image embedding (multi-vector embeddings are large: compress).
+- Queries: 100K/day; each answer sends 3–5 page images (~1–2K tokens each) + text to a VLM.
+--- api
+- `POST /ask {question}` → `{answer, citations:[{doc, page, bbox}]}`; ingestion events from document stores.
+--- hl
+1. **Ingestion**: layout parser → text blocks with reading order; OCR for scans; tables to structured form (HTML/Markdown or rows); figures with generated captions; page images rendered and embedded.
+2. **Index**: text chunks (BM25 + embeddings) and page-image embeddings; ACLs.
+3. **Retrieval**: hybrid text retrieval + page-image retrieval, fused and reranked → top pages.
+4. **Answering**: VLM reads the page images plus extracted tables; structured output with page and region citations; numeric answers checked against extracted table cells.
+--- deep
+**Tables**: flattening loses structure; keep tables as structured rows and let the model or a SQL-like tool compute; verify numbers.
+
+**Charts**: page-image retrieval plus VLM reading; captions generated at ingestion help text search.
+
+**Scans**: OCR quality varies; keep confidence scores; fall back to page images.
+
+**Evaluation**: question sets by type (lookup, table arithmetic, chart reading), exact-match for numbers, citation accuracy.
+--- wrap
+**Monitoring**: parse failures per document type, retrieval recall on a labelled set, answer abstention rate.
+
+**Cost**: send fewer, better pages; downscale images; cache page-image tokens.
+--- steer
+Q: The answer gets a table number wrong.
+A: Structured table extraction, calculation tools, number verification.
+Q: Questions about charts fail.
+A: Page-image retrieval, generated captions, VLM reading.
+Q: Scanned forms from the 1990s?
+A: OCR with confidence, page-image fallback.
+--- pitfalls
+- Flattening tables into plain text
+- Text-only retrieval for visual content
+- No page-level citations
+--- level
+- **L4**: OCR + text RAG.
+- **L5**: layout-aware parsing, structured tables with verification, page-image retrieval fused with text, VLM answers with region citations, evaluation by question type.
+- **L6**: document AI platform across products.
+--- nodes
+docs|Document stores|client|0|160|PDFs, scans, slides, sheets.
+ing|Ingestion|worker|180|160|Layout, OCR, tables, captions, page images.
+idx|Indexes|db|360|160|Text (BM25 + vectors), page-image embeddings, ACLs.
+ret|Retriever + reranker|service|540|160|Fuses text and image retrieval.
+vlm|VLM answerer|service|720|160|Page images + tables → answer with citations.
+user|User|client|540|20|Asks questions.
+--- edges
+docs>ing|new docs
+ing>idx|chunks and pages
+user>ret|question
+ret>idx|search
+ret>vlm|top pages
+vlm>user|answer
+--- prereqs
+rag-pipeline, retrieval-quality, multimodal-llms
+--- paths
+- [deep] Tables :: Structured extraction, tools for arithmetic, number verification.
+- [deep] Charts and figures :: Page-image retrieval, generated captions, VLM reading.
+- [failure] Bad scans :: OCR confidence, page-image fallback.
+- [deep] Evaluation :: Question types, exact numbers, citation accuracy.
+
+=== d-gen-smart-reply
+title: Design Smart Reply for messaging
+topic: ai-embeddings
+tier: 2
+est: 45
+prompt: Design the feature that suggests three short replies (like "Sounds good!" or "I'll be there") under incoming messages in a messaging or email app with a billion users.
+--- words
+- **Response set**: a curated list of allowed short replies; suggestions are chosen from it, not generated freely.
+- **Dual encoder**: one encoder for the incoming message, one for candidate replies; the reply with the closest vector wins.
+- **Diversity**: the three suggestions should mean different things (yes / no / maybe), not three ways to say yes.
+- **Trigger model**: decides whether to show suggestions at all.
+--- flow
+1. **0–5**: when to show, languages, privacy, latency (instant on open), safety.
+2. **5–12**: data: message–reply pairs; building the response set.
+3. **12–25**: trigger model → dual-encoder retrieval over the response set → diversity → personalisation light.
+4. **25–35**: metrics: click-through on suggestions, usage; safety checks.
+5. **35–45**: on-device vs server, privacy.
+--- req
+**Functional**: up to three reply suggestions for messages that warrant a short reply; tapping sends or inserts the reply; multilingual.
+
+**Non-functional**: shown when the message opens (< 100 ms); suggestions must never be offensive or inappropriate; no message content leaves privacy boundaries beyond what policy allows.
+--- est
+- Billions of messages/day; scoring is cheap if responses are pre-embedded: encode the message once, nearest neighbours among ~20K responses.
+--- api
+- Client or server calls `suggest(message, thread_context)` → up to 3 replies; feedback events (shown, tapped, ignored).
+--- hl
+1. **Trigger model**: a small classifier: does this message call for a short reply? (questions, invitations, not newsletters).
+2. **Message encoder** (small transformer) → vector.
+3. **Response set** (~20K curated replies per language, pre-embedded, clustered by meaning).
+4. **Retrieval**: nearest neighbours by dot product; pick the top from different semantic clusters for diversity.
+5. **Personal tweaks**: boost replies the user often sends; never personalise into unsafe content.
+--- deep
+**Why a fixed response set**: safety (every reply reviewed), quality (no grammar mistakes), and cheap retrieval; generative models are used offline to propose new candidates for review.
+
+**Training**: dual encoder on (message, actual reply) pairs with in-batch negatives; map real replies to the nearest response in the set.
+
+**Diversity**: cluster responses by intent; choose one per cluster; ensures a positive, a negative and a neutral option where suitable.
+
+**Privacy**: on-device inference or server with strict data handling; train with aggregated or federated data.
+--- wrap
+**Metrics**: suggestion usage rate, share of replies sent via suggestions, trigger precision; safety review of the response set; slices by language.
+--- steer
+Q: Why not generate replies with an LLM?
+A: Safety, quality and cost: retrieval from a reviewed set; generation offline to grow the set.
+Q: All three suggestions say yes.
+A: Semantic clusters and one-per-cluster selection.
+Q: How is it trained?
+A: Dual encoder on message–reply pairs with in-batch negatives.
+--- pitfalls
+- Free generation of replies without review
+- No trigger model (suggestions under every message)
+- Duplicated meanings in the three suggestions
+--- level
+- **L4**: classify message, pick top replies.
+- **L5**: trigger model, dual-encoder retrieval over a curated set, diversity by clustering, privacy-aware training, usage metrics.
+- **L6**: across Gmail, Chat and Messages with shared models and policy.
+--- nodes
+msg|Incoming message|client|0|160|Opened by the user.
+trig|Trigger model|service|180|160|Should we suggest at all?
+enc|Message encoder|service|360|160|Small transformer → vector.
+set|Response set index|db|360|20|Curated replies, pre-embedded, clustered.
+pick|Diversity picker|service|540|160|One reply per meaning cluster.
+--- edges
+msg>trig|message
+trig>enc|yes
+enc>set|nearest
+set>pick|candidates
+pick>msg|3 replies
+--- prereqs
+contrastive-embeddings, embedding-similarity
+--- paths
+- [deep] Retrieval vs generation :: Reviewed response set for safety, quality, cost.
+- [deep] Training the dual encoder :: Message–reply pairs, in-batch negatives.
+- [deep] Diversity :: Semantic clusters, one per cluster.
+- [deep] When to trigger :: Trigger classifier for messages that warrant short replies.
+
+=== d-gen-guardrails
+title: Design an LLM guardrails service
+topic: ai-safety
+tier: 3
+est: 45
+prompt: Design a shared service that every LLM product in a company calls to check inputs and outputs for safety, privacy and policy problems, with minimal added latency.
+--- words
+- **Guardrail**: a check before or after the model that blocks, rewrites or routes content.
+- **PII**: personally identifiable information (emails, phone numbers, ids).
+- **Jailbreak**: a prompt that tries to make the model break its rules.
+- **Groundedness check**: does the answer stay within the provided sources?
+--- flow
+1. **0–5**: checks needed, products, latency budget, policies per product, false-positive tolerance.
+2. **5–12**: traffic and cost of classifiers.
+3. **12–25**: API, policy configuration, check pipeline (fast rules → classifiers → LLM-based checks), streaming outputs.
+4. **25–40**: deep dives: latency, streaming moderation, tuning per product, evaluation.
+5. **40–45**: monitoring and incident response.
+--- req
+**Functional**: input checks (jailbreak, prompt injection, disallowed topics, PII), output checks (toxicity, PII leakage, groundedness, policy topics), per-product policies (block, redact, warn, log), streaming support, audit logs.
+
+**Non-functional**: added latency < 50 ms p50 for input checks; output checks keep up with streaming; high availability with clear fail-open or fail-closed per check.
+--- est
+- 20 products, 5K requests/s total; each request: input check + output check; small classifiers (~100M params) on GPUs handle thousands of checks/s each.
+--- api
+- `POST /check {product, stage: input|output, text, context?}` → `{action, categories:[{name, score}], redacted_text?}`; streaming endpoint for outputs in chunks.
+- Policy config per product: categories, thresholds, actions, fail mode.
+--- hl
+1. **Fast layer**: regexes and dictionaries (PII patterns, blocked terms), ~1 ms.
+2. **Classifier layer**: small fine-tuned models for toxicity, jailbreak/injection, topics; batched on GPUs.
+3. **LLM layer** (selective): groundedness or nuanced policy checks only when cheap layers are uncertain or the product requires them.
+4. **Policy engine**: maps scores to actions per product.
+5. **Logging and review**: flagged items sampled for human review; feedback to retrain classifiers.
+--- deep
+**Latency**: run input checks in parallel with the model's prefill (cancel if blocked); cascade so most traffic stops at cheap layers.
+
+**Streaming outputs**: check sentence-sized windows as tokens arrive; hold back a small buffer; stop and replace if a violation appears.
+
+**Per-product tuning**: a children's product blocks far more than an internal coding tool; thresholds from product-specific evaluation sets.
+
+**Fail modes**: PII redaction fail-closed; low-risk checks fail-open with logging.
+--- wrap
+**Evaluation**: labelled sets per category with precision/recall; red-team sets for jailbreaks updated continuously; false-positive rate on normal traffic.
+
+**Monitoring**: block rates per product and category, latency, classifier drift; incident playbook for new jailbreaks (rule hotfix, then retrain).
+--- steer
+Q: Guardrails add 300 ms.
+A: Cascade, parallel with prefill, batching, small models.
+Q: A new jailbreak spreads on social media.
+A: Rule hotfix, red-team set update, classifier retraining, monitoring.
+Q: How do you check streamed output?
+A: Windowed checks with a small buffer; stop and replace.
+--- pitfalls
+- One threshold for every product
+- Running an LLM judge on every request
+- No fail-mode decision per check
+- No evaluation of false positives
+--- level
+- **L4**: moderation API before and after the model.
+- **L5**: layered cascade, parallel checks, streaming windows, per-product policies and fail modes, evaluation and red-team refresh.
+- **L6**: company-wide responsible-AI governance.
+--- nodes
+prod|LLM products|client|0|160|Call checks around their model calls.
+api|Guardrails API|edge|180|160|Input and output checks, streaming.
+fast|Rules layer|service|360|40|PII patterns, blocklists.
+clf|Classifiers|service|360|160|Toxicity, jailbreak, topics on GPUs.
+llmc|LLM checks|service|360|290|Groundedness and nuanced policy, selective.
+pol|Policy engine|service|540|160|Scores → actions per product.
+log|Audit + review|queue|720|160|Samples for human review and retraining.
+--- edges
+prod>api|text
+api>fast|step 1
+api>clf|step 2
+api>llmc|if needed
+api>pol|scores
+pol>prod|action
+pol~log|flagged
+--- prereqs
+prompt-injection, hallucination-guardrails
+--- paths
+- [deep] Latency :: Cascade, parallel with prefill, batching.
+- [deep] Streaming outputs :: Windowed checks, small buffer, stop and replace.
+- [deep] Per-product policy :: Thresholds and actions from product eval sets; fail modes.
+- [failure] A new jailbreak :: Hotfix rules, update red-team sets, retrain.
+
+=== d-gen-deep-research
+title: Design a deep-research agent
+topic: ai-agents
+tier: 3
+est: 60
+prompt: Design an agent that takes a research question, searches the web for several minutes, reads dozens of sources and writes a cited report.
+--- words
+- **Planner**: the part that breaks the question into sub-questions and decides what to search next.
+- **Sub-agent**: a worker agent that researches one sub-question in parallel.
+- **Citation**: a link from each claim in the report to the source passage.
+- **Budget**: limits on time, searches, pages read and tokens.
+--- flow
+1. **0–5**: report quality bar, time budget (5–20 min), cost per report, source quality, citations.
+2. **5–12**: searches and pages per report, token cost.
+3. **12–25**: architecture: planner → parallel researchers (search, fetch, extract notes) → synthesiser → citation verifier.
+4. **25–40**: deep dives: planning and stopping, context management, source quality, injection.
+5. **40–60**: evaluation, cost, failures.
+--- req
+**Functional**: accept a question; clarify if ambiguous; research with search and page reading; produce a structured report with citations for every claim; show progress.
+
+**Non-functional**: finishes within the chosen budget; claims supported by sources; resistant to injected instructions in web pages; cost per report under a cap.
+--- est
+- Per report: ~50 searches, ~80 pages read (~4K tokens each after extraction) ≈ 320K tokens read + planning and writing ≈ 500K tokens → significant cost: use small models for extraction, a strong model for planning and writing.
+--- api
+- `POST /research {question, depth}` → job id; event stream of plan, searches, sources, draft; `GET /research/{id}` → report with citations.
+--- hl
+1. **Clarifier + planner** (strong model): sub-questions and a research plan.
+2. **Researcher sub-agents** in parallel: search → choose pages → fetch → extract relevant notes with source quotes (small model) → report back compact notes, not raw pages.
+3. **Planner loop**: reads notes, finds gaps, issues new tasks, stops by budget or when sub-questions are answered.
+4. **Synthesiser**: writes the report from notes with citation markers.
+5. **Citation verifier**: checks each claim against its quoted passage; removes or flags unsupported claims.
+--- deep
+**Context management**: sub-agents keep raw pages out of the planner's context; notes with quotes and URLs are the shared memory.
+
+**Stopping**: explicit budgets; stop when each sub-question has enough independent sources; diminishing new information triggers stop.
+
+**Source quality**: prefer primary sources, rank domains, cross-check facts across sources, record publication dates.
+
+**Injection**: web pages are untrusted data; sub-agents have no dangerous tools; the planner never executes instructions found in pages.
+--- wrap
+**Evaluation**: expert-rated reports on a benchmark of questions (coverage, correctness, citation precision); automated citation-support checks; cost and time per report.
+
+**Failures**: search API errors → retries and alternative engines; sub-agent stuck → timeouts.
+--- steer
+Q: The planner's context overflows.
+A: Sub-agents return compact notes; raw pages never reach the planner.
+Q: The report cites a page that doesn't say that.
+A: Citation verifier with quotes; drop unsupported claims.
+Q: Cost per report is too high.
+A: Small models for extraction, budgets, caching pages.
+--- pitfalls
+- One agent reading everything into one context
+- No stopping rule
+- Citations without verification
+- Trusting web page instructions
+--- level
+- **L4**: search-and-summarise loop.
+- **L5**: planner + parallel sub-agents with compact notes, budgets and stopping, citation verification, injection defences, model tiers for cost.
+- **L6**: research product strategy, evaluation with experts, source partnerships.
+--- nodes
+user|User|client|0|160|Question and depth.
+plan|Planner|service|180|160|Plans, reads notes, stops by budget.
+sub|Researcher sub-agents|worker|360|160|Search, fetch, extract notes with quotes.
+web|Search + fetch|ext|540|160|Untrusted web content.
+notes|Notes store|db|360|20|Compact notes, quotes, URLs.
+syn|Synthesiser + verifier|service|180|300|Writes report; checks citations.
+--- edges
+user>plan|question
+plan>sub|tasks
+sub>web|search and read
+sub>notes|notes
+plan>notes|read
+plan>syn|write
+syn>user|report
+--- prereqs
+agent-planning-memory, multi-agent, advanced-rag
+--- paths
+- [deep] Planner and sub-agents :: Parallel researchers returning compact notes.
+- [deep] Stopping :: Budgets, coverage per sub-question, diminishing returns.
+- [deep] Citation accuracy :: Quotes with notes, verifier pass.
+- [failure] Injected instructions in a page :: Data not instructions, no dangerous tools.
+- [deep] Cost :: Model tiers, caching, budgets.
+
+=== d-gen-finetune-platform
+title: Design a fine-tuning platform
+topic: ai-fine-tuning
+tier: 3
+est: 45
+prompt: Design a self-service platform where product teams upload data and fine-tune open-weight LLMs (with LoRA or full fine-tuning), evaluate them, and deploy them to serving.
+--- words
+- **LoRA**: training small low-rank adapter matrices instead of all weights; adapters are megabytes, not gigabytes.
+- **Full fine-tuning**: updating every weight; costly, needs sharded training (FSDP).
+- **Data validation**: checking format, duplicates, leakage of eval data, PII.
+- **Adapter serving**: one base model in memory serving many LoRA adapters.
+--- flow
+1. **0–5**: users, model sizes, methods, data sizes, governance.
+2. **5–12**: GPU-hours per job, scheduling.
+3. **12–25**: pipeline: dataset upload → validation → training job (LoRA/QLoRA/full) → evaluation → registry → deployment.
+4. **25–40**: deep dives: scheduling GPUs, hyperparameter defaults, evaluation gates, serving many adapters.
+5. **40–45**: monitoring, governance.
+--- req
+**Functional**: upload chat-format datasets; choose base model and method; sensible defaults; training progress; automatic evaluation vs base; register and deploy adapters; rollback.
+
+**Non-functional**: jobs isolated; data stays private per team; reproducible (versions of data, code, base model, seed); quotas.
+--- est
+- LoRA on an 8B model with 50K examples × 1K tokens ≈ 50M tokens × 3 epochs: a few GPU-hours on one 80 GB GPU; full fine-tuning a 70B model: hundreds of GPU-hours across nodes.
+- 200 jobs/week mostly LoRA → a modest shared GPU pool with a scheduler.
+--- api
+- `POST /datasets` (validated, versioned); `POST /jobs {base_model, method, dataset@v, hyperparams?}`; `GET /jobs/{id}` (loss curves, eval results); `POST /deployments {adapter_id, traffic_share}`.
+--- hl
+1. **Data service**: validation (schema, token lengths, duplicates, PII scan, overlap with eval sets), versioning.
+2. **Scheduler**: queues jobs on a GPU pool with quotas and priorities; preemption with checkpointing.
+3. **Training workers**: LoRA/QLoRA for most; FSDP for full fine-tuning; mixed precision; checkpoints to object storage.
+4. **Evaluation**: automatic suite: team's eval set, general capability regression checks, safety checks.
+5. **Registry + serving**: adapters registered with lineage; served on the multi-LoRA platform; canary traffic.
+--- deep
+**Defaults**: learning rate, rank, epochs chosen from prior runs per model size; early stopping on validation loss; warn on small or duplicated data.
+
+**Evaluation gates**: fine-tuning can damage general abilities and safety (catastrophic forgetting); regression suites must pass before deployment.
+
+**GPU scheduling**: bin-pack small LoRA jobs, gang-schedule multi-node jobs, checkpoint for preemption.
+
+**Serving many adapters**: multi-LoRA batching on shared base models; load adapters on demand.
+--- wrap
+**Monitoring**: job success rate, queue time, GPU utilisation, deployed adapters' online metrics.
+
+**Governance**: data access approvals, model cards, audit trails.
+--- steer
+Q: A team's fine-tuned model got worse at everything else.
+A: Forgetting: regression suites, lower learning rate, mixing general data, LoRA.
+Q: Should this team use LoRA or full fine-tuning?
+A: Data size, task shift, cost and serving: LoRA by default.
+Q: How do you serve 300 adapters?
+A: Multi-LoRA serving on shared base models.
+--- pitfalls
+- No eval-set leakage checks
+- Deploying without regression and safety evals
+- One dedicated GPU deployment per adapter
+--- level
+- **L4**: training jobs on GPUs with an API.
+- **L5**: data validation, defaults, scheduler with preemption, evaluation gates incl. forgetting and safety, multi-LoRA serving.
+- **L6**: platform economics and governance.
+--- nodes
+team|Product teams|client|0|160|Datasets, jobs, deployments.
+data|Data service|db|180|40|Validation and versions.
+sch|Scheduler|service|180|160|Quotas, priorities, preemption.
+gpu|Training workers|worker|360|160|LoRA, QLoRA, FSDP full fine-tuning.
+eval|Evaluation|worker|540|160|Team evals, regressions, safety.
+reg|Registry + serving|service|720|160|Adapters with lineage; multi-LoRA serving.
+--- edges
+team>data|upload
+team>sch|job
+sch>gpu|run
+gpu>eval|checkpoint
+eval>reg|passed
+reg~team|endpoint
+--- prereqs
+peft-vs-full, lora-qlora, distributed-training
+--- paths
+- [deep] Method choice :: LoRA by default; full fine-tuning when data and shift justify it.
+- [deep] Evaluation gates :: Team evals, general regression, safety; forgetting.
+- [deep] Scheduling :: Bin-packing LoRA jobs, gang scheduling, preemption with checkpoints.
+- [deep] Serving adapters :: Multi-LoRA on shared base models.
+
+=== d-gen-marketing-copy
+title: Design a personalised marketing copy generator
+topic: ai-safety
+tier: 2
+est: 45
+prompt: Design a system that writes personalised marketing emails and ad text for millions of customers of an e-commerce company, and learns which copy works.
+--- words
+- **Copy**: the words of an email or ad: subject line, body, call to action.
+- **Brand guidelines**: rules on tone, claims and words the company allows.
+- **Bandit**: an experiment that shifts traffic towards better variants while still exploring.
+- **Claim checking**: verifying statements (prices, discounts) against product data.
+--- flow
+1. **0–5**: channels, personalisation level, review requirements, legal limits, volume.
+2. **5–12**: generation cost vs templates.
+3. **12–25**: pipeline: segment → generate variants with product data → checks (brand, claims, safety) → human review where needed → send → measure.
+4. **25–40**: deep dives: hallucinated claims, personalisation vs privacy, experiments.
+5. **40–45**: monitoring and cost.
+--- req
+**Functional**: generate subject lines and bodies for campaigns per segment or person; use product and offer data; follow brand rules; A/B and bandit testing; marketer review UI.
+
+**Non-functional**: no false claims (prices, discounts, availability); privacy rules for personal data; unsubscribe and legal compliance.
+--- est
+- 20M emails per campaign: generate per segment (hundreds of variants) rather than per person, then fill personal slots with templates: thousands of LLM calls, not millions.
+--- api
+- `POST /campaigns {goal, products, segments}` → variants for review; `POST /campaigns/{id}/launch`; metrics endpoint.
+--- hl
+1. **Segmenter**: groups customers by interests and behaviour.
+2. **Generator**: LLM with brand guidelines, product facts (from the catalogue, not the model's memory) and segment description; several variants each.
+3. **Checks**: claim checker compares prices and offers to catalogue data; brand and safety classifiers; legal phrases.
+4. **Review UI**: marketers approve or edit; edits are feedback.
+5. **Delivery + experiments**: bandit over variants per segment on opens and conversions; personal slots filled by templates.
+--- deep
+**Hallucinated claims**: generate only from provided facts; structured slots for numbers filled from data; claim checker blocks mismatches.
+
+**Personalisation and privacy**: segment-level generation avoids sending personal data to the model; no sensitive inferences (health, finances).
+
+**Experiments**: bandits per segment optimise conversions; guard against clickbait subject lines with unsubscribe and complaint rates.
+--- wrap
+**Metrics**: conversion per email, unsubscribe and complaint rates, review edit rate, claim-check block rate.
+--- steer
+Q: The email says 50% off but the offer is 30%.
+A: Numbers from data slots, claim checker, review.
+Q: Why not generate per person?
+A: Cost, review, privacy: segments plus template slots.
+Q: Subject lines become clickbait.
+A: Guardrail metrics: unsubscribes and complaints in the bandit reward.
+--- pitfalls
+- Letting the model invent prices and offers
+- Sending personal data to the model unnecessarily
+- Optimising opens only
+--- level
+- **L4**: LLM generates copy from a prompt.
+- **L5**: fact-grounded generation with slots, claim checks, segment-level design, bandits with guardrails, review loop.
+- **L6**: brand and legal governance across marketing.
+--- nodes
+mkt|Marketer|client|0|160|Campaign goals and review.
+seg|Segmenter|service|180|40|Customer groups.
+gen|Generator|service|180|160|LLM with brand rules and product facts.
+cat|Catalogue|db|180|290|Prices, offers, availability.
+chk|Checks|service|360|160|Claims, brand, safety, legal.
+send|Delivery + bandit|service|540|160|Variants per segment; opens and conversions.
+--- edges
+mkt>gen|campaign
+seg>gen|segments
+gen>cat|facts
+gen>chk|variants
+chk>mkt|review
+mkt>send|launch
+send~gen|results
+--- prereqs
+prompts-production, ab-testing-ml, hallucination-guardrails
+--- paths
+- [deep] Grounded claims :: Facts from the catalogue, numeric slots, claim checker.
+- [deep] Personalisation level :: Segment generation plus template slots; privacy.
+- [deep] Learning what works :: Bandits with unsubscribe and complaint guardrails.
+- [failure] A wrong discount goes out :: Claim checks, review, rollback and correction email.
