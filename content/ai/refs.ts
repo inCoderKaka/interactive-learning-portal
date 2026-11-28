@@ -9,6 +9,19 @@ const course = (title: string, by: string, url: string): Ref => ({ kind: "course
 
 /** Further reading for the AI topics, keyed by topic id. */
 export const AI_REFS: Record<string, Ref[]> = {
+  "ai-math": [
+    yt("PFDu9oVAE-g", "Eigenvectors and eigenvalues | Essence of linear algebra, chapter 14", "3Blue1Brown", true),
+    yt("HZGCoVF3YvM", "Bayes theorem, the geometry of changing beliefs", "3Blue1Brown"),
+    yt("XepXtl9YKwc", "Maximum Likelihood, clearly explained", "StatQuest"),
+    yt("vemZtEM63GY", "p-values: what they are and how to interpret them", "StatQuest"),
+    book("Mathematics for Machine Learning", "Deisenroth, Faisal, Ong", "https://mml-book.github.io/"),
+  ],
+  "ai-data": [
+    yt("yh2AKoJCV3k", "Imbalanced data: undersampling, oversampling, SMOTE", "CampusX", true),
+    yt("KHvcr0Q7jSk", "Session on data leakage", "CampusX"),
+    book("Designing Machine Learning Systems (chapters 4–5)", "Chip Huyen", "https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/"),
+    p("Hidden Technical Debt in Machine Learning Systems", "Sculley et al., Google (NeurIPS 2015)", "https://papers.nips.cc/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html"),
+  ],
   "ai-history": [
     yt("WXuK6gekU1Y", "AlphaGo: the full documentary", "Google DeepMind", true),
     a("The Bitter Lesson", "Rich Sutton", "http://www.incompleteideas.net/IncIdeas/BitterLesson.html"),

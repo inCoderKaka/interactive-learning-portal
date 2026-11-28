@@ -7,4 +7,5 @@ export const AI_WIDGET_IDS = new Set([
 export const AI_DEEP_WIDGET_IDS = new Set([
   "matrix-transform", "likelihood", "ab-test-sim", "bias-variance", "loss-shapes", "regularisation-paths",
   "feature-hashing", "least-squares", "logistic-boundary", "tree-split", "boosting-residuals", "knn-boundary", "kmeans", "pca-projection",
+  "calibration", "ndcg-ranking", "activations", "backprop-steps", "lr-schedules", "activation-stats", "resnet-block", "loss-doctor", "broadcasting", "roofline", "receptive-field", "iou-nms",
 ]);

@@ -1,4 +1,4 @@
-import { T } from "../h";
+import { Q, T } from "../h";
 import type { Topic } from "@/lib/types";
 
 /** Chapters added in the req3 AI deep pass. Their lessons are the overviews in content/deep/ai/overviews.ts. */
@@ -7,13 +7,20 @@ export const aiTopics6: Record<string, Topic> = {
     signals: ["'Derive the gradient of the log-loss'", "'Why does PCA use eigenvectors?'", "'Is this A/B result significant?'"],
     lesson: "The maths behind machine learning, explained from zero.",
     pitfalls: ["Memorising formulas without the picture behind them", "Mixing up likelihood and probability", "Treating a p-value as the chance the result is wrong"],
-    quiz: [],
+    quiz: [
+      Q("Which matrix decomposition gives the best rank-k approximation of any matrix?", ["Cholesky", "LU", "*Singular value decomposition", "QR"], "Truncating the SVD to the top-k singular values is optimal (Eckart–Young)."),
+      Q("Minimising cross-entropy against the data is equivalent to minimising what?", ["Variance", "*KL divergence from the data distribution to the model", "Entropy of the model", "Squared error"], "KL(p‖q) = H(p, q) − H(p), and H(p) is fixed."),
+      Q("An A/B test is checked daily and stopped when p < 0.05. The false-positive rate is?", ["Exactly 5%", "Below 5%", "*Well above 5%", "Zero"], "Each look is another chance to cross the threshold by luck."),
+    ],
   }),
   "ai-data": T("ai", "ai-data", "Data and features", 1, 30, "Where training data and labels come from, how sampling and imbalance bend a model, and how raw data becomes features that are identical in training and serving.", {
     signals: ["'Where do your labels come from?'", "'Only 0.1% of examples are positive'", "'The model was great offline and bad in production'"],
     lesson: "Data, labels and features: the part of an ML system that decides most of its quality.",
     pitfalls: ["Designing the model before asking where labels come from", "Computing features differently in training and serving", "Random splits on time-ordered data"],
-    quiz: [],
+    quiz: [
+      Q("You keep all positives and 10% of negatives. What must you do before using predicted probabilities in an auction?", ["Nothing", "*Recalibrate for the downsampling", "Retrain on all data", "Use a higher threshold"], "Downsampling inflates P(positive); correct with p = p'/(p' + (1 − p')/w)."),
+      Q("Which feature is most likely target leakage when predicting fraud at transaction time?", ["Card age", "Merchant category", "*Whether a chargeback was later filed", "Transaction amount"], "It's only known after the outcome."),
+    ],
     prereq: ["ai-ml-basics"],
   }),
   "ai-recsys": T("ai", "ai-recsys", "Recommendation and ranking systems", 1, 40, "How YouTube, Play and Search pick a few items out of billions: candidate retrieval, ranking models, and the problems unique to recommenders.", {
