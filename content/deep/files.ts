@@ -64,4 +64,5 @@ export const DEEP_FILES: Record<string, () => Promise<Bodies>> = {
   "ai/prompting": () => Promise.all([import("./ai/prompting"), import("./ai/notes/prompting")]).then(([m, n]) => withNotes(m.prompting, n.notes)),
   "ai/retrieval": () => Promise.all([import("./ai/retrieval"), import("./ai/notes/retrieval")]).then(([m, n]) => withNotes(m.retrieval, n.notes)),
   "ai/agents": () => Promise.all([import("./ai/agents"), import("./ai/notes/agents")]).then(([m, n]) => withNotes(m.agents, n.notes)),
+  "ai/multimodal": () => Promise.all([import("./ai/multimodal"), import("./ai/notes/multimodal")]).then(([m, n]) => withNotes(m.multimodal, n.notes)),
 };
