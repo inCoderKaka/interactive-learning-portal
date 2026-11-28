@@ -1,9 +1,6 @@
 zqzk43bSdDI	We've been asking: “What if AI solved the Riemann Hypothesis?”
-qbsb9DpdZ6s	This algorithm changed how I think about compression | Information theory, part 3
 LKrwhjOI8Nc	Will mathematicians still exist?
 Nbwv5wHQoj0	The last IMO problem AI could not solve
-GlYgs6v2YfU	What is cross-entropy, and why is it used in ML? | Information theory, part 2
-l6DKRf-fAAM	Shannon's dream: The limit of compressibility | Information theory, part 1
 ldxFjLJ3rVY	Escher’s “most peculiar” piece touches deeper math than he realized
 fsLh-NYhOoU	The most beautiful formula not enough people understand
 BHdbsHFs2P0	Why you can't comb a hairy ball, and why we care
@@ -27,7 +24,6 @@ rbu7Zu5X1zI	How I animate 3Blue1Brown | A Manim demo with Ben Sparks
 EmKQsSDlaa4	How are holograms possible?
 9-Jl0dxWQs8	How might LLMs store facts | Deep Learning Chapter 7
 W3I3kAg2J7w	What "Follow Your Dreams" Misses | Harvey Mudd Commencement Speech 2024
-eMlx5fFNoYc	Attention in transformers, step-by-step | Deep Learning Chapter 6
 wjZofJX0v4M	Transformers, the tech behind LLMs | Deep Learning Chapter 5
 Cz4Q4QOuoo8	Answering viewer questions about refraction
 KTzGBJPuJwM	But why would light "slow down"? | Visualizing Feynman's lecture on the refractive index
@@ -38,20 +34,15 @@ d_qvLDhkg00	A pretty reason why Gaussian + Gaussian = Gaussian
 YtkIWDE36qU	This pattern breaks, but for a good reason | Moser's circle problem
 NOCsdhzo6Jg	How They Fool Ya (live) | Math parody of Hallelujah
 IaSGqQa5O-M	Convolutions | Why X+Y in probability is a beautiful mess
-cy8r7WSuT1I	Why π is in the normal distribution (beyond integral tricks)
-zeJD6dqJ5lo	But what is the Central Limit Theorem?
-KuXjwB4LzSA	But what is a convolution?
 851U557j6HE	Researchers thought this was a bug (Borwein integrals)
 cDofhN-RJqg	What makes a great math explanation? | SoME2 results
 VYQVlVoWoPY	How to lie using visual proofs
 bOXCLR3Wric	Olympiad level counting  (Generating functions)
 fRed0Xmc2Wg	Oh, wait, actually the best Wordle opener is not “crane”…
-v68zYyaEmEA	Solving Wordle using information theory
 ltLUadnCyi0	A tale of two problem solvers | Average cube shadow area
 F3Qixy-r_rQ	2021 Summer of Math Exposition results
 LqbZpur38nw	Beyond the Mandelbrot set, an intro to holomorphic dynamics
 -RdOwhmqP5s	Newton’s fractal (which Newton knew nothing about)
-e50Bj7jn9IQ	A quick trick for computing eigenvalues | Chapter 15, Essence of linear algebra
 lG4VkPoG3ko	The medical test paradox, and redesigning Bayes' rule
 b3NxrZOu_CE	Hamming codes part 2: The one-line implementation
 X8jsijhllIA	But what are Hamming codes? The origin of error correction
@@ -59,10 +50,7 @@ mH0oCDa74tE	Group theory, abstraction, and the 196,883-dimensional monster
 wTJI_WuZSwE	The impossible chessboard puzzle
 ZA4JkHKZM50	Why “probability of 0” does not mean “impossible” | Probabilities of probabilities, part 2
 gxAaO2rsdIs	Simulating an epidemic
-8idr1WZ1A7Q	Binomial distributions | Probabilities of probabilities, part 1
 Kas0tIxDvrg	Exponential growth and epidemics
-U_85TaXbeIo	The quick proof of Bayes' theorem
-HZGCoVF3YvM	Bayes theorem, the geometry of changing beliefs
 M64HUIJFTZM	The unexpectedly hard windmill question (2011 IMO, P2)
 v0YEaeIClKY	e^(iπ) in 3.14 minutes, using dynamics | DE5
 -qgreAUpPwM	Pure Fourier series animation montage
@@ -70,7 +58,6 @@ r6sGWTCMz2k	But what is a Fourier series?  From heat flow to drawing with circle
 ToIXSwZ1pJU	Solving the heat equation | DE3
 ly4S0oi3Yz8	But what is a partial differential equation?  | DE2
 p_di4Zn4wz4	Differential equations, a tourist's guide | DE1
-jBsC34PxzoM	Cramer's rule, explained geometrically | Chapter 12, Essence of linear algebra
 brU5yLm9DZM	How colliding blocks act like a beam of light...to compute pi.
 HEfHFsfGXjs	The most unexpected answer to a counting puzzle
 GNcFjFmqEc8	But why is a sphere's surface area four times its shadow?
@@ -81,7 +68,6 @@ d4EgbgTm0Bg	Visualizing the 4d numbers Quaternions
 pQa_tWZmlGs	Why slicing a cone gives an ellipse (beautiful proof)
 VcgJro0sTiM	Other math channels you'd enjoy
 rB83DpBJQsE	Divergence and curl:  The language of Maxwell's equations, fluid flow, and more
-CfW845LNObM	The other way to visualize derivatives | Chapter 12, Essence of calculus
 8GPy_UMV-08	The Wallis product for pi, proved geometrically
 b7FxPsqfkOY	Winding numbers and domain coloring
 bcPTiiiYDs8	How pi was almost 6.283185...
@@ -89,11 +75,6 @@ d-o3eB9sfls	Why is pi here?  And why is it squared?  A geometric answer to the B
 MBnnXbOM5S4	The more general uncertainty principle, regarding Fourier transforms
 spUNpyF58BY	But what is the Fourier Transform?  A visual introduction.
 VvCytJvd4H0	Why this puzzle is impossible
-OkmNXy7er84	The hardest problem on the hardest test
-tIeHLnjs5U8	Backpropagation calculus | Deep Learning Chapter 4
-Ilg3gGewQ5U	Backpropagation, intuitively | Deep Learning Chapter 3
-IHZwWFHWa-w	Gradient descent, how neural networks learn | Deep Learning Chapter 2
-aircAruvnKk	But what is a neural network? | Deep learning chapter 1
 MzRCDLre1b4	Some light quantum mechanics (with minutephysics)
 zwAD6dRSVyI	Thinking outside the 10-dimensional box
 3s7h2MHQtxc	Hilbert's Curve: Is infinite math useful?
@@ -101,17 +82,6 @@ S9JGmA5_unY	How secure is 256 bit security?
 bBC-nXj3Ng4	But how does bitcoin actually work?
 QJYmyhnaaek	All possible pythagorean triples, visualized
 NaL_Cb42WyY	Pi hiding in prime regularities
-3d6DsjIBzJ4	Taylor series | Chapter 11, Essence of calculus
-BLkz5LGWihw	Higher order derivatives | Chapter 10, Essence of calculus
-FnJqaIESC2s	What does area have to do with slope? | Chapter 9, Essence of calculus
-rfG8ce4nNh0	Integration and the fundamental theorem of calculus | Chapter 8, Essence of calculus
-kfF40MiS7zA	Limits, L'Hôpital's rule, and epsilon delta definitions | Chapter 7, Essence of calculus
-qb40J4N1fa4	Implicit differentiation, what's going on here? | Chapter 6, Essence of calculus
-m2MIpDrF7Es	What's so special about Euler's number e? | Chapter 5, Essence of calculus
-YG15m2VwSjA	Visualizing the chain rule and product rule | Chapter 4, Essence of calculus
-S0_qX4VJhMQ	Derivative formulas through geometry | Chapter 3, Essence of calculus
-9vKqVkMQHKk	The paradox of the derivative | Chapter 2, Essence of calculus
-WUvTyaaNkzM	The essence of calculus
 mvmuCPvRoWQ	Euler's formula with introductory group theory
 gB9n2gHsHN4	Fractals are typically not self-similar
 IxNb1WG_Ido	Tattoos on Math
@@ -120,20 +90,6 @@ bdMfjfT0lKk	Binary, Hanoi, and Sierpinski, part 2
 2SUvWfNJSsM	Binary, Hanoi and Sierpinski, part 1
 R7p-nPg8t_g	3blue1brown channel trailer
 AmgkSdhK4K8	Who cares about topology?   (Old version)
-TgKwz5Ikpc8	Abstract vector spaces | Chapter 16, Essence of linear algebra
-PFDu9oVAE-g	Eigenvectors and eigenvalues | Chapter 14, Essence of linear algebra
-P2LTAUO1TdA	Change of basis | Chapter 13, Essence of linear algebra
-eu6i7WJeinw	Cross products | Chapter 10, Essence of linear algebra
-BaM7OCEm3G0	Cross products in the light of linear transformations | Chapter 11, Essence of linear algebra
-LyGKycYT2v0	Dot products and duality | Chapter 9, Essence of linear algebra
-v8VSDg_WQlA	Nonsquare matrices as transformations between dimensions | Chapter 8, Essence of linear algebra
-uQhTuRlWMxw	Inverse matrices, column space and null space | Chapter 7, Essence of linear algebra
-Ip3X9LOh2dk	The determinant | Chapter 6, Essence of linear algebra
-rHLEWRxRGiM	Three-dimensional linear transformations | Chapter 5, Essence of linear algebra
-kYB8IZa5AuE	Linear transformations and matrices | Chapter 3, Essence of linear algebra
-k7RM-ot2NWY	Linear combinations, span, and basis vectors | Chapter 2, Essence of linear algebra
-fNk_zzaMoSs	Vectors | Chapter 1, Essence of linear algebra
-kjBOesZCoqc	Essence of linear algebra preview
 sULa9Lc4pck	Triangle of Power
 Iq1a_KJTWJ8	Snell's law proof using springs
 Cld0p3a43fU	The Brachistochrone, with Steven Strogatz

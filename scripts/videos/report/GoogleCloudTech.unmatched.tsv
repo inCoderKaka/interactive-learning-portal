@@ -10,7 +10,6 @@ EFejzwBLAVo	Build a "software factory" that doesn’t produce AI Slop
 oImvnR5-IUI	What is native multilinguality? 🍿 Just a moment #03
 1fJVOyLmtOI	Build a hidden edit mode for your AI app with reusable agent skills
 QsGQQYj1vEY	Ground AI Agents with Looker and Knowledge Catalog on Google Cloud
-RvJ6UpR2oj8	Why your AI agent keeps forgetting (and getting slower)
 3FmEdUNeqIw	Deep dive into the Looker CLI
 yQADxQU0trc	Gemini 4 Argon demo: Remixing 3D apps & Firebase in Google AI Studio
 -nRo5q63b2Y	Watch me build a full AI app (no code)
@@ -18,7 +17,6 @@ yQADxQU0trc	Gemini 4 Argon demo: Remixing 3D apps & Firebase in Google AI Studio
 -4uuPJ_YNIc	How to compare documents 🍿 Just a moment #02
 GatM9XV0gOw	Building a custom evaluation for your agent
 WxdwhoUxBZU	What is native multimodality? 🍿 Just a moment #01
-gg-gXO0tIUY	Multimodal AI agent architecture: Voice, vision, tools & memory
 fTIryoW5U98	6 Front-End Concepts Every AI Builder Needs to Know
 sUcvhFGc4mw	How Gemini 4 Argon & Carbon were built (ft. DeepMind’s Head of Gemini Product)
 ivW7cqypZEY	Fix your vibe coded app with one prompt
@@ -42,7 +40,6 @@ ljocUEpTgUA	Developing with advanced agent workflows in Looker
 u4n558Ul6w0	Introducing TorchTPU: Native PyTorch on Google Cloud TPUs
 UnkUpqNv-10	Can Gemini transcribe a song?
 1TdBFTUbUrU	Plan your app’s system spec (No code)
-qeWzgLGSkls	How Knowledge Catalog’s self-learning enrichment grounds enterprise AI agents
 2C_CefSQEAQ	AI harness crash course
 7ZqwcaRX-c0	Which model should I use? | The Agent Factory
 gRhM1h10T3U	Gemini 4 Argon: 10 incredible AI demos (1M token output in action)
@@ -53,9 +50,6 @@ jX-EGkYIhsI	IDE-driven deployments: Creating & debugging pipelines with Harness 
 JvASK8qX4hg	Navigating AI automation in Looker: Essential developer tools for agents
 TiH2E2mPZIk	Scaling agentic coding practices across your team
 HQqb_TmrMCc	Build & connect an incident investigation agent with Elastic Agent Builder and Gemini Enterprise
-xDL5DFMo1-Y	How voice AI agents control your browser
-6nofrnjOCNI	How to build an agentic C-Suite with Google Cloud ADK and Cloud Run
-wPdoZRbvaF4	Why Your AI Agent Fails in Production (And How to Catch It)
 Bhba288HpQc	The key to using AI in healthcare
 TMW8wot2sd4	A Developer’s Guide to Gemini 3.5 Transcribe
 r2xhPB-wWIQ	Turn Audio into Action with Gemini 3.5 Transcribe
@@ -84,7 +78,6 @@ CxTUFiWCVjk	Getting started with JAX on NVIDIA GPUs
 ruNekO9De8E	4 ways loop engineering fails (and how to fix them)
 AmSq0qsmOsk	Building apps on Google Cloud
 RKvckuC6Bsk	How to modernize legacy codebases using AI coding agents (Step by step guide)
-YGgErBnx6po	Real-time voice AI agents, explained (before you build one)
 1LInqYY2m9Y	Building a viral Odyssey movie app with Temporal & Cloud Run
 L8pR2YAV8Fw	This AI agent is raising millions for startups | The Agent Factory
 FARxSG_EY98	Make your website agent ready with WebMCP
@@ -93,7 +86,6 @@ _KQmsFIZVYw	Architecting production-ready AI apps with Google Cloud & Firebase
 5Xw3LtPeByE	Build next-gen AI agents in the All things agentic hackathon
 WsNABV2QQXI	How to vibe code securely (without getting hacked)
 6LQNHQ7-IcI	From tokenmaxxing to tokenomics for your AI agents
-T6PQIPMlj3E	Skills vs MCP: How AI tools have evolved
 ABC7ifp8-Uo	Reviewing code from AI coding agents
 6b5GyqAdSyM	Senior Engineer's best practices for using coding agents
 pIq2s5BKpkw	11 tips for Claude code on Google Cloud
@@ -101,14 +93,12 @@ tHO9vbS62M0	How to design a game with Claude code on Gemini Agent Platform
 vYB0P9rPXt8	AlloyDB: The ultimate hybrid search engine
 xW-yPOlOCH4	Why "vibe coding" fixed her imposter syndrome | The Agent Factory
 o3aE4tw3vrI	Build a BigQuery AI agent with ADK & Cloud Run
-BnEhq2lPRz4	AI builder essentials: Tokens, Context Windows, RAG 101
 IYnUpJi7zjY	Why AI apps fail in production (and how Google solved it)
 4DJD3RHOnPA	How to find & fix code vulnerabilities autonomously with Google CodeMender
 ymHZu2ujuXE	Network Security Integration with Check Point - Demo
 3ERbYtUwHE8	Emergent: How Google engineers actually ship AI (official trailer)
 -L5khDHrQSE	Give your app search superpowers: Agent Retrieval (Vector Search 2.0)
 W9BX0jyzd2k	What is an Agentic Harness?
-BBPQYtR7oUk	Context engineering explained: What every AI developer should know
 FYD1cV2F6sc	This AI generates video lessons in seconds | The Agent Factory
 K3YYr6yauAw	Automate your entire SDLC with Google Antigravity
 hZ6vAiJlqWs	BigQuery Agent Analytics Looker
@@ -119,11 +109,7 @@ SpfgNqPIMNI	20 minutes to 2 minutes: How Home Depot automated incident responses
 SKT9wiBh29A	How BBVA manages 1,000+ GCP projects
 51mVFPObVQU	Building an MCP-powered autonomous incident response ecosystem
 jb-td2mspPE	Inside Google’s new AI hardware
-bjZ2M7ThOBc	How to deploy an AI agent to Cloud Run (step by step)
 6ERUGFurDHY	Intent-driven development with Claude Code & Fable 5
-G7olcqETSn8	How to speed up AI agents by 80% on the Gemini Enterprise Agent Platform
-185XGEMefgc	MCP vs API: Why traditional APIs are failing AI agents
-NpQOHAOOFKg	Breaking silos with agentic AI: How Google Cloud transforms enterprise data into real-time action
 Vl9HYB9tmdw	Build your first Android app in AI Studio in 5 minutes
 W54cRxp-bSA	Build a multi-agent system using ADK & MCP
 HA1ORLiuuTc	Build a full stack app with Antigravity voice prompts & sub-agents
@@ -161,7 +147,6 @@ t6jH_GPFqgs	Beyond the hype: Orchestrating end-to-end developer workflows with a
 eLQAJqydXqY	The agent-quality flywheel: Using Gemini Enterprise Agent Platform evaluations to optimize agents
 nhoLefVqv6I	Accelerate R&D with Gemini-based agents Co-Scientist and AlphaEvolve
 YKLkHvzjFDk	Agent context engineering for production
-3vf9eL-LKUY	Building enterprise-grade AI agents: How enterprises scale business with Agentic AI on Google Cloud
 mJR1g4UJcLI	Building next-gen audio-first experiences: Lessons from PlayStation
 df7ZdrBxlsE	Beyond the prompt: Build production-ready agents with Google's MCP servers
 lRcMin582KI	Accelerate CI/CD with coding agents
@@ -175,29 +160,23 @@ ZaR4aInpm6A	Boost AI context with hybrid search in Spanner
 MNr7scIro9Y	What's new in Google Cloud databases for the agentic era
 AKGV5wPQdd8	Agent development and AgentOps with BigQuery, ADK, and MCP
 bjaXpSz4ao0	Build connected AI: Orchestrate tools and agents with registries and ADK
-cGuyrANVi4A	How Model Context Protocol (MCP) actually works
 eHnUcar6tL4	Converting T-SQL code to PL/pgSQL with confidence
 pg6TOXyiIuo	Google’s new AI agent stack from I/O 2026
 PxbLWePxt40	Bring Gemini’s intelligence to AlloyDB using AI functions
 EDDgH3hs-5U	Beyond chatbots: How AI agents built a full OS, web apps, and more
-CgwslR4pgL4	Governed agents: Looker + MCP explained
 l6KeLCuB90o	3 patterns to build long-running AI agents
 zvPyEKax914	7 tips for using Antigravity 2.0 on enterprise codebases, coding phase
-wBnnA8aIxUs	How to build an AI Agent and MCP Server (step-by-step)
 U1MQ9RZ0wC4	How to build a custom vision agent
 W4nKY6Tk_eQ	Converting SQL Server types and rules to PostgreSQL
 JsNbFnT0QCw	Building long-running AI agents with ADK
-nGjGUCOiXk4	Building with ADK & A2A: How multi-agent collaboration designs a game
 jYvNSLQ_Qio	Are senior developers going back to writing code by hand?
 DHWiny5bjJc	The magic behind GenLatte: Flutter, Firebase, and Gemini
 MGNPQZiUl6c	Converting SQL Server code to PostgreSQL
 yeRvxe7MRj4	Your first agent configuration with MCP and Looker
 ESUhJ9tsSUY	Build a calendar app in AI Studio in 6 minutes
-Zqno_vux6d8	AI agents explained: Build your first agent in 8 minutes
 lKUohuLy43M	Build an app from your phone in AI Studio
 0Z0GUDakR_A	Intro to multi-agent systems with ADK
 Dk4MD6TNiWE	Inside Google Antigravity 2.0: The complete developer guide | The Agent Factory
-Fzd0BWMH65s	How to design a multi-agent system that skips the LLM
 OQHX15CVwLY	What’s going on with Developers and AI?
 HyGm01UKfaE	5 tips for using Antigravity 2.0 on enterprise codebases, planning phase
 9BwFgEFVLOk	Automate M365 to Google Workspace Migrations with ADK multi-agents
@@ -205,10 +184,8 @@ bxfqwGdoS2w	Converting Oracle data types to PostgreSQL
 z4CXn4CKHQI	Automate SAP order-to-cash with multi-agent AI & Google Agent Development Kit (ADK)
 okx6dUzDPRY	Automate project intake with multi-agent AI using MCP, Google ADK, Cloud Run, and BigQuery
 gKHLlObVwrA	AlloyDB AI: Revolutionizing Hybrid Search for PostgreSQL
-WSIzaih2vq4	How we built 1,000 AI agents that run a marathon
 0yKGILWlngY	[Demo] Autonomous ML Reliability - Data Center Network
 jah2yf2rARg	[Demo] High Resolution Network Telemetry: Data Center Network
--dPZ19fGM20	How to connect AI agents directly to your enterprise data: Introducing the AlloyDB remote MCP server
 M43nN___cl0	Stop rogue AI: Enforce policy & cut costs in Agent Development Kit (ADK)
 cZdv9ySzkOA	Oracle packages: From black box to PostgreSQL
 3MeM5_s-6Bw	Vibe coding an AI racing coach in 2 weeks
@@ -242,26 +219,21 @@ HE1ldmzennU	Building conversational applications with Bigtable and ADK
 9ebzuW5PMW4	Your AI agent still has no memory? Fix it with these 3 patterns
 iofy_GTwt3E	Automatic Read Scaling with AlloyDB Transparent Query Forwarding (TQF)
 hNHE301qF1A	No design skills? Use this free AI powered design tool from Google | The Agent Factory
-b9Dx7uGxwsg	Your AI agent is forgetful. Here’s how to give it a brain.
 I1ouAtwryww	Build cost effective, scalable apps using Firestore with MongoDB compatibility
 yArSgUhQHT8	Welcome to Bigtable
 gY95kEL-JGI	Cross-cloud infrastructure for the agentic enterprise
-ZRs1PHngOIA	Build AI agents at scale with Google Cloud
 nXafozNIk3c	Google’s Agents CLI is here: Build, eval, and deploy AI agents in minutes | The Agent Factory
 j8qW5poBkEU	What is Gemini Enterprise Agent Platform?
 njWyDHKYeVA	Self host Gemma 4: Deploy LLMs on Cloud Run GPUs
 mpgoqDUAN6k	How to scale to 60 million requests (with ZERO ops team) using Cloud Run
 KZPo15M2DbM	AI agent long-term memory with memory bank
 coP5_SmE4AI	Orchestrating ML/AI workloads with TPUs on GKE
-HDqzJJhZsxw	How to add persistent memory to your AI agent
 qCBreTfjFHQ	Vibe coding to production: AI agents, testing & CI/CD with Gemini CLI
 cfPW2nTVNOQ	Vibe coding with Gemini CLI: Context engineering, MCP servers & extensions
 kDtJXgllXko	Run Security Analysis using Gemini CLI locally and on GitHub
 h7nYnzGQp9k	Build personal AI Assistants as Google Workspace Add-ons, in Gmail, Calendar, etc
-Ni1P8TITtE8	How to Build a production-ready RAG AI agent
 zvmtHZSt8es	Build an AI Agent knowledge base using SQL (BigQuery + Gemini)
 SdzqVyWDUpI	Looker Continuous Integration: Pro tips for efficiency
-vfVcDUCucSs	How to add short-term memory to your  AI agent (Sessions & State Explained)
 pEAZ5iyKgWE	Build multi-agent AI A2A + Cloud Run | Hands On AI (Part 2)
 rHtRWyxVQps	Build a multi-agent system | Hands On AI (Part 1)
 FLNw4h_-F5s	Kickstart Conversational Analytics agents with the Looker ChromeUX Block
@@ -290,7 +262,6 @@ OLTjjuyhDCw	Customize Gemini CLI: The guide to context & memory
 se1GHqqVslE	Build with AI: A guide to Gemini CLI
 C5Cjvpfzc_0	Gemini CLI: The AI agent that lives in your terminal
 Lov1pI6kNxA	How to use generative AI to make data science better
-Fbr_Solax1w	Introduction to Agent2Agent (A2A) Protocol
 p-MguQf84Tg	Embed analytics experiences in your applications using the Conversational Analytics API
 QmW9M01zu_k	Security and stability with test driven AI coding
 20W-tHXcsb4	Stop guessing and start testing your AI agents with ADK
@@ -299,17 +270,14 @@ vRdV9IpG35A	Concepts of networking: Apigee X
 jinUBmblW5k	Intro to Gemini Enterprise CX for developers
 sOBF_Y-VSTA	[Demo] Network Security integration with Fortinet
 TokTTzq5rtg	Build a multi-agent AI app with Google Cloud
-dWumWR3JK3o	Foundations of Secure MCP: Architecture and Threat Model
 35rRK49HnAQ	What are domain specific language models?
 jezp1o4zynU	Cloud Run Networking explained (Updated!)
 WksXdbz_m7c	Private routing to Google with Network Connectivity Center
-0J_fz6RlqVg	Running a multi-agent AI architecture
 5ivFW9gYmq0	How to get started with Google Cloud Client Libraries
 -cEM6l11Hbs	BigQuery Migration Service: Validation and optimization
 YXOipluh87g	Build an AI agent with Gemini CLI and Agent Development Kit
 4v_YF4tGGb8	Mainframe Connector demo series
 z58Fo5nUQUM	Quickstart: Conversational Analytics with GCP Billing and Looker
-TxfMGxOkrcQ	Scaling your AI agent architecture with Cloud Run
 _79txIhM_tQ	Building AI agents that speak to each other
 AF-Nnegz6mY	What are Google Cloud Client Libraries?
 j_l-9uNX2SA	Architecting multi-agent systems
@@ -319,7 +287,6 @@ iqnDtDXaA6E	Can we build the ultimate AI co-founder in 72 hours with Gemini?
 UWO871XXoM4	What is Cluster Director?
 yImulinB81w	Serving open models on Vertex AI: The comprehensive developer's guide
 vuBvf7ZRKTA	How to evaluate agents in practice
-Udx7SLFDsxo	How to build context systems for AI agents
 Gs0Cudlngfw	Run MongoDB compatible apps on Firestore (Zero code changes)
 ooHyVrYY_2U	Stop coding, start architecting: Google Antigravity + Cloud Run
 s2MJ5WDk8y8	[Demo] Network Security Integration with Palo Alto
@@ -336,13 +303,11 @@ XwlVHm3JKWU	Building your own MCP server with ADK
 knT3kN4EpOo	This AI agent runs on Cloud Run + NVIDIA GPUs
 8zBaa20mvoc	Scaling AI with Google Cloud's TPUs
 hkXGXen6eL4	Deploying scalable and reliable AI inference on Google Cloud
-kH63PGZsDY4	Serving AI models at scale with vLLM
 DpH3LuTnvsY	AI workload orchestration options
 nguJYDAHOi4	AI/ML frameworks for cloud TPUs
 XmJUDAfxmWs	Model types and performance bottlenecks
 Ue7zitSUN9M	AI workload storage options
 JnKkdHaatwU	Connecting ADK Agents to MCP Servers
-NrgoZLcY3Kk	Introduction to Vertex AI Agent Engine
 04Gap8vWV28	Power your AI agents with MCP tools on Google Cloud Run
 FGgW5EIrlxM	Dataplex fundamentals: Aspects & glossaries
 ZZWucnh3wuo	We tried to jailbreak our AI (and Model Armor stopped it)
@@ -360,7 +325,6 @@ ESIL0Rzl5VQ	Autoscaling your AI agent under load
 oKzsluaEtgI	Common Looker CI errors (and how to tackle them)
 RunwI3gYLAE	Spanner: The always-on, virtually unlimited scale database
 QpMweHAiE4o	Agent Sessions and Tool Authentication
-LdKBJODIhwc	How to build a multi-agent app with ADK and Gemini
 UOsbFesKqDg	Connecting your AI agent to a cloud hosted LLM
 0CQxF56MKWo	Gemini vs. the clock: 5 hours to build a FinTech agent
 p1eJzkLnDIk	This month in GKE: September edition
@@ -383,12 +347,10 @@ rGEm6qN2fEg	The Looker MCP server: Your data's universal translator for AI
 JTN6Cs_p7t8	Observability in action: A Google Cloud Next demo
 wHupt80SXxE	This month in GKE: August edition
 PEQfDFB7KUA	Effortless data prep in BigQuery: A low coder's guide
-HvZGl2qZVc4	Brunch, automated: How to architect AI agents for everyday tasks
 KTTGUw2phKg	Say hi to the new GKE: A better default compute for every workload
 86AY-psXRmE	How to connect Cloud Run to NoSQL Firestore
 3BRLfhJdXK8	Apache Kafka pricing on Google Cloud explained: Use the calculator to size your cluster
 jkqZb4k8zI4	Configure a Java Producer for Google Cloud’s managed Apache Kafka service (step-by-step)
-52xTxeqT4ws	How memory makes AI agents more effective
 QE0RhsBLKn8	Spin up Apache Kafka on Google Cloud fast - Create, monitor, and resize a cluster
 9vvHIPjfhgY	Gemini: Your personal sportscast announcer
 Y6ufrXn_cZs	What is Google AI Studio?
@@ -403,7 +365,6 @@ YLz3Xtf8LTc	Secure Cloud Run with IAP (Identity-Aware Proxy)
 t_q-qLa1lX0	Visualizing BigQuery geospatial data in Colab
 zihPR6TeqjY	How to deploy a container image to Cloud Run
 neI5pn3rqf4	Container-Optimized Compute Platform for GKE Autopilot
-Ez-uqo8kIU0	The future of automation: How AI agents are revolutionizing data and robotics
 OE5ZOvrWxxs	GKE Inference Reference Architecture, Your Blueprint for Production-Ready Inference
 HvKOs2PsmNI	This Month in GKE: July Edition
 miUQB7WnGqk	The future of AI architecture: Using agents to supervise other agents
@@ -438,7 +399,6 @@ VRgR-lmCUgY	Looker Performance Optimization  - Episode 5
 r4_Oz7mBo2o	Looker Performance Optimization - Episode 4
 0jrqpFfVPcs	Looker Performance Optimization  - Episode 3
 RKMEBOeJsR8	Looker Performance Optimization - Episode 2
-bLYbL3d5MwQ	How to create AI agents with Agent Development Kit (ADK)
 F8kWyYpQ5yI	This Month in GKE: May Edition
 x12EOsVt2oU	Moving from GKE to Cloud Run
 EGdHKoOvVcQ	Looker Performance Optimization  - Episode 1
@@ -458,12 +418,10 @@ ROFC-dQ421A	Unlocking ML Performance on TPUs and GPUs
 _98yGqz8_YM	Build no-code intelligent Agents with AppSheet, Gemini, and Vertex AI
 8rlNdKywldQ	Building AI agents on Google Cloud
 6eTiMIhtnBA	Cloud Assist in action
-tMUxxCKXz4c	Introduction to Imagen, Veo, and Generative Media on Vertex AI
 Wzpz_y_EFPs	Protect your cloud data with Security Command Center
 BqQiJ5LSASI	Technical benefits of the Google Developer Program
 jrr8gRI1GaY	Reduce toil and boost productivity with AI agents across the SDLC
 wz3kQQubPkc	Boost productivity with custom solutions on Google Workspace
-TLWLX_LGjUc	How to deploy an AI agent
 iD8qL_VM5iU	Develop with Looker Studio Community Connectors and Visualizations
 Y0dKNrOigC4	Secure Your AI Lifecycle with AI Protection in Security Command Center
 zDoSNJyuxg0	Build AI Agents in the Agent Development Kit Hackathon
@@ -523,7 +481,6 @@ tgcixab_Yk8	How to build interactive Gen AI applications with Vertex AI
 JGyf5F6kdRw	Securing your AI inference pipeline
 Z4hGh_5Kcn4	Why use GKE for AI/ML workloads?
 os5-LkmIkgU	Skip versions when upgrading clusters on GDC
-xC4PrDBrQ5I	How to use Gemini function calling with Cloud Run
 h_r3NsfrrRI	Google Cloud Tech
 AMfjDjha2vA	Securing your AI model development pipeline
 s9Ag_YNdl0M	How to deploy a Gemini powered Mesop app to Cloud Run
@@ -536,13 +493,11 @@ AUSunZXC2rg	Evaluate any generative AI model with Vertex AI
 ovS7OvwORIo	Gemini Code Assist tools: Stay in the flow while coding
 AlGMuCIGqSY	Google Cloud x MLB Hackathon - Building with Gemini Models
 wcPnAUbnWpo	How to create Looker Studio Reports in Looker
-BvH6y7tC_eQ	How to use Stable Diffusion on Cloud Run
 tcijk-5b7JQ	Your first workload with AI Hypercomputer
 XWiDA6Kwlog	Deploy Gemma 2 with multiple LoRA adapters on GKE
 pEmCgIGpIoo	Multimodal AI in action
 eihYrX7F7as	How to prepare data for LLMs
 KGkMFe3GvJU	Cloud migration insights from banking
-Ph0g6dnsB4g	Introduction to grounding with Gemini on Vertex AI
 cnGyyM0vOes	Fine-tuning open AI models using Hugging Face TRL
 nicwHD7M8l8	Run Hugging Face transformers on GPU enabled Cloud Run functions
 NPmNCu1L7uw	Ollama and Cloud Run with GPUs
@@ -551,7 +506,6 @@ ytqXtZhX5ig	Running Diffusion with Cloud Run GPUs
 YfiLUpNejpE	Introduction to Gemini on Vertex AI
 OREE2Iui6m0	How to evaluate AI applications
 539_P8SnW4M	Choosing between self-hosted GKE and managed Vertex AI to host AI models
-QjLZ5eteDds	How to autoscale a TGI deployment on GKE
 k65G0yZD8X4	Looker Conversational Analytics
 I_l91kdNE4w	Using RAG expansion to improve model speed and accuracy
 ct1nuLS-wlA	Protecting sensitive data in AI apps
@@ -572,7 +526,6 @@ I0DBxnTlaMw	Prompt engineering for developers
 Ty9KiDF1pWg	How to run anything on Google Axion Processors
 0aDJ6GqsJqc	Google Axion Processors, explained
 aWMp_hUUa0c	What are Hugging Face Deep Learning Containers?
-oVtlp72f9NQ	How to use Retrieval Augmented Generation (RAG)
 5M6JCMl_JmQ	Data insights with Looker for Google Workspace
 A7qjjkjjZu0	Build RAG apps with embeddings
 5lcrA3sANHk	How to secure your cloud with VPC Service Controls
@@ -979,7 +932,6 @@ fEzEM6ADwXg	BigQuery Cost Optimization: Compute
 fJlo7LsG4Mw	BigQuery Cost Optimization: Storage
 J4S39XjV4L4	Introduction to Assured Open Source Software
 wAsYOY34LUQ	Faster analytical queries with AlloyDB
-3-xhMXeYIcg	Introduction to Responsible AI
 ZgVhU5qvK1M	How to use Github Actions with Google's Workload Identity Federation
 -7nf5EJ2Fsc	Introduction to Generative AI Studio
 dt2NjPIISdA	Why choose Google Kubernetes Engine?
@@ -998,10 +950,7 @@ oj1Alhm-cIo	From beauty queen to Google Cloud
 AGi12Q-BpCU	How Google Cloud reached 1 million subs
 ayTGOuCaxuc	Cloud Run user auth for internal apps
 I7UiSU96CLc	Introduction to Vertex AI Model Garden
-zbdong_h-x4	Encoder-decoder architecture: Overview
-LWIZj_RJYjM	Create image captioning models: Overview
 kzxz8CO_oG4	Introduction to image generation
-t45S_MwAcOw	Transformer models and BERT model: Overview
 fjJOgb-E41w	Attention mechanism: Overview
 _H0Q_0oz5hM	Cloud Run deployments with YAML
 6n5ngB88DHU	Generate and edit images with Generative AI Studio
@@ -1046,7 +995,6 @@ vFOcNnz0YBY	Introducing query plan samples for Cloud Spanner
 R3YF8uly_gw	Moving serverless forward with Cloud Run
 w33u4YMc-Es	How Glance is modernizing phone lock screens
 bEk6oHMnVts	Faster workload startup times with GKE Image Streaming
--3Olw-C4FN4	Introduction to Machine Learning on Vertex AI
 Puj7JV5sMSI	Cloud PSO 101
 -rHJLI7Pwy0	Service Orchestration and Chorography on Google Cloud course preview
 Hg6GH-V5YqE	Networking in Google Cloud course series preview
@@ -1106,7 +1054,6 @@ pSdD28cY6r8	How to build an event-driven serverless app
 44tXFbZah2Y	Assured Workloads for EU Data Sovereignty
 H9QGSFboy9g	Cloud Monitoring: Create custom notification channels
 2DQPJdVnHp8	Live demo: Factory visibility & analytics
-rHChrruNBTo	What is Explainable AI?
 AL2rAmWFZjM	Cloud Run in a minute
 FksaG1-QuFk	Troubleshoot permission errors accessing datasets and tables
 4Vvfj5ItBi8	How to enable internet access and public IP for GCVE VMs
@@ -1128,7 +1075,6 @@ S8kNdfuGyDs	Troubleshoot Dataproc Cluster Creation Errors
 SKtSlh_zOx0	BigQuery: Manage your workloads
 UpCX7z0OqSc	Cloud Monitoring: Troubleshoot misfired alerts
 VN-xYi9SgPM	GCVE: Autoscale nodes in private cloud
-qeuRQAityB8	What is Human-in-the-Loop?
 gl0xBO_TMrM	The Machine Learning Boost for Asset Performance and Production Uptime
 ertbL2Rxbvk	How to design a serverless app
 P9MCC9KmM_8	Getting started on Cloud Tasks and Cloud Scheduler
@@ -1480,7 +1426,6 @@ b7GdpEEvGDQ	How to ensure only trusted container images are deployed to Cloud Ru
 DL_8bHeTlgg	Engineering for Reliability is here!
 x3jM9DaHb94	Episode 1: How Telus serves 9.5M subscribers with a strong data strategy
 YZhe7bqkKhg	An introduction to Google Cloud's Data Journeys
-w13ShzjJMis	How VMs are the Matryoshka doll of compute
 GpiQPym27II	Billing Administration on Google Cloud
 orZEBSXbmFU	CI/CD on Google Cloud
 E3ReKuJ8ewA	The Art of SLOs (Service Level Objectives)
@@ -1504,7 +1449,6 @@ hxpGC19PzwI	Creating a GKE cluster (demo)
 h8_xCbTYtTU	Analytics Hub in a minute
 y6NSnpiVSaQ	reCAPTCHA Enterprise in a minute
 JAFagcQBV08	What is Private Service Connect?
-jXD8Sfx4hvQ	Introduction to Vertex AI Feature Store
 hmE19iZUONc	Introducing Google Cloud Technical Guides for Startups - Start Series
 Fzd6WP0_bWM	Monitoring compute infrastructure with the Cloud Ops Agent
 Il8FlhR9jKM	Introducing Cloud Deploy
@@ -1514,11 +1458,9 @@ yDbYSj8XaT8	Understanding Apigee API Monitoring
 UY_jy02jBoI	Monitoring in BigQuery
 1ykDWsnL2LE	End-to-end MLOps with Vertex AI
 cbSFJYq2CnU	Understanding the BigQuery API landscape
-SZorAJ4I-sA	Transformers, explained: Understand the model behind GPT, BERT, and T5
 A2KQ3GJvb98	Understanding Apigee API Analytics
 wR4l6IKr8zg	Understanding BigQuery data governance
 NQeK8Kbu6UM	Distributed tracing with OpenTelemetry and Cloud Trace
-Jrh-QLrVCvM	Introduction to MLOps and Vertex Pipelines
 iz6lxi9BczA	Strategies for optimizing your BigQuery queries
 Zrxn247FqtM	Understanding the Apigee API developer portal
 6-OSxmD5HaU	Manage user permissions for your payments profile
@@ -1584,7 +1526,6 @@ ZzFhKnyzstc	Delivering your first API business outcome
 QCrpnFyS-O4	API product mindset
 Dhav-E0PJ4w	Apigee API publishing basics
 SDhMwyyd9_0	Service Account keys and impersonation
-17l3VR2MIeg	How to build an ML pipeline with TFX
 cBrn5IM4mA8	Cloud Run + Cloud SQL, setup
 OMurp_9B1Z4	7 best practices for Dialogflow CX
 hpliG_-G5nU	Enhance API security with Apigee and Cloud Armor
@@ -1622,7 +1563,6 @@ maFV-fZA6To	Enabling, disabling, or changing billing for a billing project
 Amow8BJm5Go	What is a Data Center?
 55g8J7UX_d0	Creating a single-flow conversational agent
 Jj6mp7Sam10	Dataproc in a minute
-X8YYWunttOY	What is Federated Learning?
 xZ6DYaSZ4WI	Introduction to Apigee X
 6_Gilug2QYw	What is Dialogflow CX?
 aOTFhWpjrFI	Introducing Google Cloud Workflows
@@ -1650,7 +1590,6 @@ aRswG2oowEA	Integrate Dialogflow with Google Chat
 xM9-FSU5MoY	Centralize access to your organization’s websites with Identity Aware Proxy (IAP)
 0cyTHbkARwY	Querying Cloud SQL from BigQuery
 ZMQ2n6i-7jw	Cloud SQL in a minute
-h0BnA7R8vg4	How to use tokenization with Cloud DLP
 h8EqM6Xt3MA	What is Cloud Load Balancing?
 zRjOSxTpC3A	Cloud Functions vs. Cloud Run
 7Z1mgOxWTs8	Moving Cron Jobs to the Cloud
@@ -1671,7 +1610,6 @@ OjMnlizubTU	What is Data Loss Prevention (DLP)?
 q-nvbuc59Po	How to convert PDFs to audiobooks with machine learning
 uBXawQhYmWQ	Getting started with Event Threat Detection
 CUwpXqEitA0	Filestore in a minute
-JY7za08sAIU	How to build a Kubeflow Pipeline
 Rl5M1CzgEH4	What is Google Kubernetes Engine (GKE)?
 1FV0Vv-me08	Choosing between service management and API management
 SiZ5b4a4EUY	How to limit public IPs on Google Cloud
@@ -1703,5 +1641,4 @@ kd33UVZhnAA	Google Data Center Security: 6 Layers Deep
 Abzj-Vyhi74	Loading data into BigQuery
 Davhwj_8b8Q	Asking questions, running queries
 _AY8mmbR1o4	Intro to Kubeflow Pipelines
-HcqpanDadyQ	What is Machine Learning?
 zDAYZU4A3w0	Google Data Center 360° Tour

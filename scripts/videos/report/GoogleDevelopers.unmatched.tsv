@@ -152,7 +152,6 @@ lT3YDLqllVI	Rewinding back to our favorites launches from 2025 - Google Develope
 E1ZZbRDBG5A	Strategic thinking for software engineers: outputs vs outcomes
 UC4mxfQGh5s	URL Context with Gemini | Intro to Tools
 IMHneaMO-dg	How to become a "T-shaped" software engineer
-W3h_-eCcmqc	A2A and MCP explained: with ADK
 lqcKquUl3Wk	Software engineering: efficiency vs. effectiveness
 1ZGmqjVTVpo	Profiling Pytorch/XLA on TPUs with XProf
 zlySClpEIdc	Optimizing Flax NNX Models with Optax (Part 2)
@@ -179,12 +178,9 @@ Autf6AUoQMY	Introducing Flax NNX (Part 1)
 3nrg1XuPl6A	Enhancing Reliability (Part 2)
 1X4GW2mtSXA	Leveraging the JAX AI Stack
 gfmsMGYDwfg	Stunning Visualizations with AI-First Colab
-jZXvqEqJT7o	How to secure your AI Agents: A Technical Deep-dive
 8Wn8-nTxxmI	GDG Summit MENA-T
-xCRvOUykOX0	How do thinking and reasoning models work?
 4-PrWrkhq6c	Simplify framework updates with Google Antigravity
 _Md_XD67oTY	End to End Machine Learning with AI First Colab
-6mQwHqK1I5w	How to build an AI agent with MCP, ADK, and A2A on Google Cloud
 yF5wqZR9qCU	Visualizing and Translating International Menus with Nano Banana Pro
 sE40CZVl01s	Visualizing Text-Only Menus with Images with Nano Banana Pro
 zmtrkVTOGtE	Turning PDFs into Interactive Apps with Gemini 3
@@ -204,7 +200,6 @@ Yr4e_OkhppU	Creating Custom AI Comic Books with Nano Banana Pro
 PTRTIaoKh7I	Vibe Coding a 4K Wallpaper Generator with Nano Banana Pro
 NjiF9eCQ4mU	Vibe Coding a Jogging App with Real-World Maps Data
 Co-97Ht5vAY	Vibe Coding a Video Generation App with Gemini 3 and Veo 3.1
-Cf1PK-7of4o	Annotating Real-World Architecture with Search Grounding and Nano Banana Pro
 JO7L_0_U-ok	Vibe Coding 3D Landing Pages with Gemini 3
 E9Y1gCwuN5o	Building an Interactive News App with Nano Banana Pro
 Cgutj_h7FOg	Vibe Coding a 3D Flight Simulator Game with Gemini 3
@@ -217,7 +212,6 @@ aYw3minHIQA	Building an RPG Character Sheet with Nano Banana Pro
 0RkQE1cu_KI	Vibe Coding a 3D Voxel Art Generator with Gemini 3
 a7nJeXk6VxU	Vibe coding and context engineering with ADK
 iFqDyWFuw1c	Sundar Pichai: Gemini 3, Vibe Coding and Google's Full Stack Strategy
-fBshJ_ps6WI	How to build reliable AI Agents?
 hk6gwiZmSWA	Nano Banana Pro: Hands-on with the World’s Most Powerful Image Model
 fXtna7UrL44	Koray Kavukcuoglu: “This Is How We Are Going to Build AGI”
 9oYHU1hdDog	Agents, AI & The Next Wave: Mike Clark on Vertex AI at DevFest Silicon Valley
@@ -243,8 +237,6 @@ BWX8cnMTq7E	Google Computer Use model, Gemini CLI extensions, and more! - Google
 DePOMEBfvWQ	Introducing the new vibe coding in AI Studio
 VldX34mM95o	How a Moonshot Led to Google DeepMind's Veo 3
 SThT9rw0sPU	Supercharge Your Workflows with AI-First Colab
-sMtrelDNxIc	How to build AI agents with memory
-8essLqkBsX8	How to fine-tune LLMs for with Tunix
 2j0J4Ea2-t0	What is Vets Who Code: Teaching veterans and leveraging AI
 QNA-JB9YjAk	What is Genkit Go?
 iYcd8v477Go	Google Developer Groups and Organizers
@@ -295,7 +287,6 @@ LaLK_FyZOdc	Build a mobile app using the Home APIs on iOS
 GFQaUd1JF-U	Announcing Angular v20, find us on Bluesky, and more! - Google Developer News June 2025
 3GYgkcFd_ec	Deep dive on multilinguality in Gemma 3
 UIntXBP--gI	Build AI agents for e-commerce with ADK + Vector Search
-LtRi2F3JRpo	Deep dive on long context in Gemma 3
 jwbG_m-X-gE	Release Notes: Building Gemini's coding capabilities
 _cdjPCkdGXU	Build a mobile app using the Home APIs on Android
 PvKEHPbZ4-Y	Hybrid LLMs: Utilizing Gemini and Gemma for Edge AI applications
@@ -335,7 +326,6 @@ XV1kOFo1C8M	Gemma | Chess: Learn, analyze, and discover a new dimension
 G4RNny8s8Vw	Revolutionizing AI assistants with the Gemini API
 pC2DhFJQocY	Get started with Gemma 3 on Vertex AI
 hPzjkQFV5yI	Build a Browser Use Agent with ADK and Selenium
-NHMJ9mqKeMQ	Deep Dive into Long Context
 DbwWEt32CJU	Customize Gemma with Hugging Face Transformers
 JTUsmSHixSc	Inside Gemma 3: Modifying the output through activation hacking
 YQPrKOwsWlc	Unveiling DolphinGemma, Google Cloud Next ‘25 recap, and more! -  Google Developer News April 2025
@@ -515,7 +505,6 @@ PJm8WNajZtw	Web AI: On-device machine learning models and tools for your next pr
 1WECqGmT6Hc	Best practices for designing generative AI products that are safe, trustworthy, and helpful
 uWCX1h9YamI	Generative AI on mobile and web with Google AI Edge
 P39vzzVUEN8	Kaggle is your home for trustworthy AI resources
-LF7I6raAIL4	How to build Multimodal Retrieval-Augmented Generation (RAG) with Gemini
 WJqdeSYuUkI	Gemma models: Unveiling the latest advancements
 TV7qCk1dBWA	Large language models with Keras
 R8lk0QxST6g	AI-assisted creativity for images
@@ -582,7 +571,6 @@ GaWj8_O7R_8	MLOps x Generative AI best practices
 4SEHPZ7UpAw	What’s new in Jetpack Compose, Google Summer of Code 2024, and more dev news!
 I-YQpEK7rqc	Prototyping apps with Project IDX, Firebase extensions and the PaLM API
 BWh_fPgZGEU	Google for Startups Accelerator: India Class 8 (AI-first) Bootcamp Highlights
-SaoD47L83Ak	How can you get into MLOps?
 s57wHChbRak	Google Machine Learning Bootcamp Korea 2023  Recap
 83gvHDm-2AI	The LLM Landscape
 YGq9ChGBLI8	New Generative AI trainings, What’s new with Google Cast, and more dev news!
@@ -723,7 +711,6 @@ Srm4WJLl6KQ	This is what we mean when we say Google Developer Experts (GDE)
 -GxpuDee-a0	4.7.2: Beyond perceptrons: Convolutional Neural Network (CNNs) - Implementation with TensorFlow.js
 lfTHBA-qpXU	4.7.1: Beyond perceptrons: Convolutional Neural Network (CNNs) in the web browser
 48GnPgVGUKs	4.6.2: Multi-layer perceptrons for classification -  Implementing a classifier in TensorFlow.js
-BqiOc7iCut0	ML tutorial: How to solve classification problems with TensorFlow and multi-layer perceptrons
 Hi6Sb_TsoFg	4.5.2: Multi-layer perceptrons - Deep neural networks for non linear data
 K1sf7Bj-x_o	4.5.1: Multi-layer perceptrons - The limits of a single neuron
 aJ2IM6iy8y0	TensorFlow.js tutorial: A neuron implementation for linear regression
@@ -896,7 +883,6 @@ RshG6RYiVdY	The Hash Code 2022 World Finals are a wrap!
 gU1eEVtvHqI	How to integrate the Smart Home API with your devices
 ig--SbOm4mQ	Climbing up the slope of enlightenment in AI and ML
 9dwwbHEskn4	Automate workflow, Speech AI guide, and more dev news!
-E-JoAdkV0n0	Principles behind neural networks and one hot encoding
 f1mtWFoF6fI	Device types and traits for Smart Home
 7nTtApoOVf8	Introduction to artificial ML neural networks
 KjfMPxS2on8	Machine Learning basics
@@ -2543,7 +2529,6 @@ j9i4Eq9_S5Y	A quest to save the universe with JavaScript -- LazyWeb #2
 6bFjZq3OM8Y	Project Tango concepts - DevBytes
 p7Q1mQtFGM8	Create reusable elements with ease -- Polycasts #14
 9bM5jF5rKrc	Chat with Adriana Cerundolo about Google Developer Groups - Coffee with a Googler
-xc64NOETsZg	How We: Use pilot tests and Android sensors to democratize science
 REAnmF5FHUA	The physical web is all around us -- LazyWeb #1
 GgiusBuk-4Y	Chat with Colt McAnlis - Coffee with a Googler
 XVrZs-0lfcg	How I: Build open platforms on Android
